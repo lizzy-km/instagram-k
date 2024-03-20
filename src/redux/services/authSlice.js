@@ -6,21 +6,21 @@ const initialState = {
   token: null,
   viewImage: null,
   viewStoryImage: null,
-  isLogin:false
+  isLogin:[]
   // friend:[]
 };
 
-// const STORAGE_KEY = 'token';
+const STORAGE_KEY = 'Auth';
 
 //____________________________________________________storedItems_____________________Null_____//
-// const storedItems = Cookies.get(STORAGE_KEY) ? JSON.parse(Cookies.get(STORAGE_KEY)) : null;
+const storedItems = Cookies.get(STORAGE_KEY) ? JSON.parse(Cookies.get(STORAGE_KEY)) : null;
 
-// if (storedItems) {
-//   initialState.user = storedItems.user;
-//   initialState.token = storedItems.token;
-// //   initialState.friend = storedItems.friend;
+if (storedItems) {
 
-// }
+  initialState.isLogin = storedItems;
+  
+
+}
 
 export const authSlice = createSlice({
   name: "authSlice",
@@ -39,6 +39,8 @@ export const authSlice = createSlice({
     },
     setLogin: (state,{payload})=> {
       state.isLogin = payload
+      Cookies.set(STORAGE_KEY, JSON.stringify(state.isLogin));
+
     }
   },
 });
