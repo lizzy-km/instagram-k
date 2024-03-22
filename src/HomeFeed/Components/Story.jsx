@@ -46,8 +46,8 @@ const Story = () => {
             <div className=" z-n1  relative w-full h-[20%] flex rounded-b-md justify-center items-center ">
               <div className=" p-[3px] absolute bg-[#242526] rounded-full w-[40px] h-[40px] top-[-30%] ">
                 <div className=" cursor-pointer flex justify-center items-center relative rounded-full w-full h-full bg-[#0866ff] ">
-                  <div className=" w-[60%] rounded-full h-[2px] bg-slate-200 "></div>
-                  <div className=" absolute w-[2px] rounded-full h-[60%] bg-slate-200 "></div>
+                  <div className=" w-[50%] rounded-full h-[2px] bg-slate-200 "></div>
+                  <div className=" absolute w-[2px] rounded-full h-[50%] bg-slate-200 "></div>
                 </div>
               </div>
               <div className=" flex justify-center items-center pt-3 text-[0.8rem] font-[600] w-full  ">

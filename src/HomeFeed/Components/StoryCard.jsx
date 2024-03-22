@@ -19,7 +19,7 @@ const StoryCard = () => {
                 </div>
             </div>
 
-            <div className="z-[9] w-full p-2 backdrop-blur-sm text-[#d4d4d4] font-[450] bg-[#2121210e] " >
+            <div className="z-[9] w-full p-2 gradient-story text-[#d1d1d1] font-[450]  " >
                 <p>Babymonster</p>
             </div>
         </div>
