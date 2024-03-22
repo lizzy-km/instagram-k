@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    color: #d4d4d4;
+}
+
+.cl-internal-b3fm6y, .cl-userButtonPopoverFooter, .cl-internal-uyu30o {
+    display: none !important;
+}
+
+.active > .out_line {
+    background-color: #0866ff;
+   
+}
+
+*{
+    scrollbar-width: none;
+    transition: all .3s;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

@@ -1,19 +1,19 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const token = "4014|u4yp9RlCwObTqWeu9SoKIEnhAUXd90FsosqjEEYT";
+const token = "pk_test_c3Ryb25nLWpheS01OS5jbGVyay5hY2NvdW50cy5kZXYk";
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://contact-app.mmsdev.site/api/v1",
+    baseUrl: "https://strong-jay-59.clerk.accounts.dev/v1",
   }),
 
   tagTypes: ["auth"],
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (user) => ({
-        url: "/register",
+        url: "/sign-up",
         method: "POST",
         body: user,
       }),
@@ -22,7 +22,7 @@ export const authApi = createApi({
 
     login: builder.mutation({
       query: (user) => ({
-        url: "/login",
+        url: "/sign-in",
         method: "POST",
         body: user,
       }),
@@ -36,14 +36,14 @@ export const authApi = createApi({
         headers: { Authorization: `Bearer ${token}` },
       }),
     }),
-    Contact: builder.mutation({
-      query: (data) => ({
-        url: "/contact",
+    Environment: builder.query({
+      query: () => ({
+        url: "/dev_browser",
         method: "POST",
-        body: data,
+        // body: data,
         headers: { Authorization: `Bearer ${token}` },
       }),
-      invalidatesTags: ["auth"],
+      providesTags: ["auth"],
     }),
 
     getPost: builder.query({
@@ -80,7 +80,7 @@ export const authApi = createApi({
 export const {
   useRegisterMutation,
   useLoginMutation,
-  useContactMutation,
+  useLazyEnvironmentQuery,
   useGetPostQuery,
   useLogoutMutation,
   useDeletePostMutation,

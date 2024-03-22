@@ -1,19 +1,12 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { setLogin } from '../redux/services/authSlice'
 
 const Login = () => {
 
-    const dispatch = useDispatch()
-
-    const Login = ()=> {
-        dispatch(setLogin(true))
-    }
+   
   return (
-    <div>
-     <div onClick={Login} >
-     Login
-     </div> 
+    <div className=' flex flex-col justify-center items-center w-full h-screen ' >
+    Login
+
     </div>
   )
 }

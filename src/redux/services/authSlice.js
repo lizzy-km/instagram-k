@@ -6,7 +6,7 @@ const initialState = {
   token: null,
   viewImage: null,
   viewStoryImage: null,
-  isLogin:[]
+  isLogin:true
   // friend:[]
 };
 
