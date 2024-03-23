@@ -39,7 +39,7 @@ const Story = () => {
                 className=" cursor-pointer hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-t-md "
                 src="https://i.pinimg.com/originals/70/d5/50/70d5505465ff94d11d911f2f8b64bcda.jpg"
                 alt="profile_picture"
-                srcset=""
+                srcSet=""
               />
             </div>
 

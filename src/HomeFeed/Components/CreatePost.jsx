@@ -22,7 +22,7 @@ const CreatePost = () => {
                 className=" rounded-full object-cover w-full h-full "
                 src="https://i.pinimg.com/originals/70/d5/50/70d5505465ff94d11d911f2f8b64bcda.jpg"
                 alt=""
-                srcset=""
+                srcSet=""
               />
             </div>
             <div className=" flex justify-start items-center w-[93%] rounded-full bg-[#333333] h-[40px] ">
@@ -44,7 +44,7 @@ const CreatePost = () => {
                   className=" w-full "
                   src="/src/HomeFeed/Components/assets/Live.png"
                   alt=""
-                  srcset=""
+                  srcSet=""
                 />
               </div>
               <div className=" flex justify-start items-center text-[#d4d4d4dc] font-[500] tracking-wide ">
@@ -57,7 +57,7 @@ const CreatePost = () => {
                   className=" w-full "
                   src="/src/HomeFeed/Components/assets/Photo.png"
                   alt=""
-                  srcset=""
+                  srcSet=""
                 />
               </div>
               <div className=" flex justify-start items-center text-[#d4d4d4dc] font-[500] tracking-wide ">
@@ -70,7 +70,7 @@ const CreatePost = () => {
                   className=" w-full "
                   src="/src/HomeFeed/Components/assets/Feeling.png"
                   alt=""
-                  srcset=""
+                  srcSet=""
                 />
               </div>
               <div className=" flex justify-start items-center text-[#d4d4d4dc] font-[500] tracking-wide ">

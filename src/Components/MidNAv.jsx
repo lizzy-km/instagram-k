@@ -13,7 +13,7 @@ const MidNAv = () => {
               className=" w-[24px] h-[24px] "
               src="/src/Components/assets/Home.svg"
               alt=""
-              srcset=""
+              srcSet=""
             />
           </div>
         </NavLink>
@@ -26,7 +26,7 @@ const MidNAv = () => {
               className=" w-[24px] h-[24px] "
               src="/src/Components/assets/Watch.svg"
               alt=""
-              srcset=""
+              srcSet=""
             />
           </div>
         </NavLink>
@@ -38,7 +38,7 @@ const MidNAv = () => {
               className=" w-[24px] h-[24px] "
               src="/src/Components/assets/Group.svg"
               alt=""
-              srcset=""
+              srcSet=""
             />
           </div>
         </NavLink>
@@ -50,7 +50,7 @@ const MidNAv = () => {
               className=" w-[24px] h-[24px] "
               src="/src/Components/assets/Game.svg"
               alt=""
-              srcset=""
+              srcSet=""
             />
           </div>
         </NavLink>

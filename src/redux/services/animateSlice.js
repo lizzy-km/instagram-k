@@ -3,6 +3,10 @@ import Cookies from "js-cookie";
 
 const initialState = {
   blur: false,
+  noti: false,
+  account: false,
+  menu: false,
+  messenger: false,
 };
 
 const STORAGE_KEY = "Animate";
@@ -22,10 +26,36 @@ export const animateSlice = createSlice({
   reducers: {
     blurOn: (state, { payload }) => {
       state.blur = payload.blur;
-      Cookies.set(STORAGE_KEY, JSON.stringify(state.blur));
+    },
+    accountSettingOn: (state, { payload }) => {
+      state.account = payload.account;
+      state.noti = false;
+      state.messenger = false;
+      state.menu = false;
+    },
+    notiOn: (state, { payload }) => {
+      state.account = false;
+      state.noti = payload.noti;
+      state.messenger = false;
+      state.menu = false;
+    },
+    messengerOn: (state, { payload }) => {
+      state.messenger = payload.messenger;
+
+      state.account = false;
+      state.noti = false;
+      state.menu = false;
+    },
+    menuOn: (state, { payload }) => {
+      state.menu = payload.menu;
+
+      state.account = false;
+      state.noti = false;
+      state.messenger = false;
     },
   },
 });
 
-export const { blurOn } = animateSlice.actions;
+export const { blurOn, accountSettingOn, notiOn, messengerOn, menuOn } =
+  animateSlice.actions;
 export default animateSlice.reducer;
