@@ -6,7 +6,7 @@ const MidNAv = () => {
     <section className="  h-full flex justify-center items-center w-[40%] ">
       <div className=" flex w-[80%] h-full  justify-between items-center ">
       <NavLink to={"/"} className=" relative py-1 w-[25%] h-full">
-          <div className=" out_line absolute bottom-0  rounded-t-lg z-[9999] w-full h-1 " />
+          <div className=" out_line absolute bottom-0  rounded-t-lg z-[99] w-full h-1 " />
 
           <div className="transition-colors rounded-md py-0 justify-center items-center cursor-pointer hover:bg-slate-600 flex h-full ">
             <img
@@ -19,7 +19,7 @@ const MidNAv = () => {
         </NavLink>
 
         <NavLink to={"/watch"} className=" relative py-1 w-[25%] h-full">
-          <div className=" out_line absolute bottom-0  rounded-t-lg z-[9999] w-full h-1 " />
+          <div className=" out_line absolute bottom-0  rounded-t-lg z-[99] w-full h-1 " />
 
           <div className="transition-colors rounded-md py-0 justify-center items-center cursor-pointer hover:bg-slate-600 flex h-full ">
             <img
@@ -31,7 +31,7 @@ const MidNAv = () => {
           </div>
         </NavLink>
         <NavLink to={"/group"} className=" relative py-1 w-[25%] h-full">
-          <div className=" out_line absolute bottom-0  rounded-t-lg z-[9999] w-full h-1 " />
+          <div className=" out_line absolute bottom-0  rounded-t-lg z-[99] w-full h-1 " />
 
           <div className="transition-colors rounded-md py-0 justify-center items-center cursor-pointer hover:bg-slate-600 flex h-full ">
             <img

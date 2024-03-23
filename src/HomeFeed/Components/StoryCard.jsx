@@ -14,7 +14,7 @@ const StoryCard = () => {
             </div>
 
             <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  " >
-                <div className=" cursor-pointer hover:p-[2px] flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#0866ff] " >
+                <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#0866ff] " >
                     <img className=" rounded-full object-cover w-full h-full "  src="https://i.pinimg.com/originals/33/9c/62/339c62a0f474a488aa8794a4bf4f3afc.jpg" alt="" srcset="" />
                 </div>
             </div>

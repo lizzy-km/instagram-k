@@ -34,7 +34,7 @@ const Story = () => {
       <div className=" h-full gap-3 flex overflow-x-auto overflow-y-hidden  justify-start items-center ">
         <div className=" p-0 shadow-md flex min-w-[140.6px] h-full bg-[#242526] rounded-md ">
           <div className=" h-full flex flex-col justify-between items-center rounded-md ">
-            <div className="h-[80%] z-0  bg-center object-center    object-cover rounded-t-md ">
+            <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
               <img
                 className=" cursor-pointer hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-t-md "
                 src="https://i.pinimg.com/originals/70/d5/50/70d5505465ff94d11d911f2f8b64bcda.jpg"
