@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import StoryCard from "./StoryCard";
 
 const Story = () => {
@@ -29,6 +29,12 @@ const Story = () => {
     },
   ];
 
+  const [plus,setPlus] = useState(false)
+
+  const createStory = () => {
+    setPlus(!plus)
+  }
+
   return (
     <div className=" absolute top-3 w-full h-[250px] mini-h-[250px] flex justify-start items-center gap-3   ">
       <div className=" h-full gap-3 flex overflow-x-auto overflow-y-hidden  justify-start items-center ">
@@ -45,12 +51,16 @@ const Story = () => {
 
             <div className=" z-n1  relative w-full h-[20%] flex rounded-b-md justify-center items-center ">
               <div className=" p-[3px] absolute bg-[#242526] rounded-full w-[40px] h-[40px] top-[-30%] ">
-                <div className=" cursor-pointer flex justify-center items-center relative rounded-full w-full h-full bg-[#0866ff] ">
+                <div
+                onClick={createStory}
+                 style={{
+                    rotate: plus === true ? '180deg' : '0deg'
+                }} className=" cursor-pointer flex justify-center items-center relative rounded-full w-full h-full bg-[#0866ff] ">
                   <div className=" w-[50%] rounded-full h-[2px] bg-slate-200 "></div>
                   <div className=" absolute w-[2px] rounded-full h-[50%] bg-slate-200 "></div>
                 </div>
               </div>
-              <div className=" flex justify-center items-center pt-3 text-[0.8rem] font-[600] w-full  ">
+              <div className=" flex justify-center items-center pt-4 text-[0.8rem] font-[600] w-full tracking-wide  ">
                 Create story
               </div>
             </div>

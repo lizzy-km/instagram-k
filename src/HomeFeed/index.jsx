@@ -1,4 +1,3 @@
-import React, { useRef, useState } from "react";
 import Story from "./Components/Story";
 import CreatePost from "./Components/CreatePost";
 import Post from "./Components/Post";
@@ -10,7 +9,11 @@ const HomeFeed = () => {
       <section className=" absolute top-[270px] h-auto w-[100%] flex flex-col justify-center items-center ">
         <CreatePost />
         <Post />
+        <section className=" w-full h-[200px] flex p-2 " >
+        
       </section>
+      </section>
+      
     </div>
   );
 };

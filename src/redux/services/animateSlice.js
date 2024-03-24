@@ -7,6 +7,8 @@ const initialState = {
   account: false,
   menu: false,
   messenger: false,
+  width:null,
+  height:null
 };
 
 const STORAGE_KEY = "Animate";
@@ -53,9 +55,13 @@ export const animateSlice = createSlice({
       state.noti = false;
       state.messenger = false;
     },
+    setArea: (state, {payload}) => {
+      state.width = payload.width
+      state.height = payload.height
+    }
   },
 });
 
-export const { blurOn, accountSettingOn, notiOn, messengerOn, menuOn } =
+export const { blurOn, accountSettingOn, notiOn, messengerOn, menuOn, setArea } =
   animateSlice.actions;
 export default animateSlice.reducer;

@@ -64,7 +64,9 @@ const RightNav = () => {
               srcSet=""
             />
             <div className=" bg-[#333333] cursor-pointer rounded-full absolute bottom-0 right-0 z-[99]  ">
-              <img
+              <img style={{
+                rotate:account === true ? "180deg" : "0deg"
+              }}
                 className=" w-[14px] "
                 src="/src/Components/ArrowDown.svg"
                 alt="ArrowDown"

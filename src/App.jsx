@@ -9,20 +9,26 @@ import NavBar from "./Components/NavBar";
 import Group from "./Group/Group";
 import Game from "./Game/Game";
 import Watch from "./Watch/Watch";
-import { blurOn } from "./redux/services/animateSlice";
+import { useEffect } from "react";
+import { blurOn, setArea } from "./redux/services/animateSlice";
+import CreatePostBox from "./Components/CreatePostBox";
 
 function App() {
   const isAuth = useSelector((state) => state.authSlice.isLogin);
 
-  const blur = useSelector((state) => state.animateSlice.blur);
-
-  const dispatch = useDispatch();
-  const blurOff = () => {
-    dispatch(blurOn({ blur: false }));
-  };
+  const { width, height, blur } = useSelector((state) => state.animateSlice);
 
   return (
     <section className=" bg-[#18191a] w-full flex flex-col justify-start items-center h-screen ">
+      <section
+        style={{
+          width: blur === true ? width : "0%",
+          height: blur === true ? height : "0%",
+        }}
+        className="  flex justify-center items-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50   "
+      >
+        <CreatePostBox />
+      </section>
       <BrowserRouter>
         <NavBar />
         {isAuth === true ? (
@@ -41,14 +47,6 @@ function App() {
           </Routes>
         )}
       </BrowserRouter>
-
-      <section
-        onClick={blurOff}
-        style={{
-          visibility: blur === true ? "visible" : "hidden",
-        }}
-        className=" bg-[#21212134] flex w-full h-screen backdrop-blur-md absolute top-[0%] z-[99] justify-center items-center "
-      ></section>
     </section>
   );
 }

@@ -8,18 +8,14 @@ const CreatePost = () => {
     dispatch(blurOn({ blur: true }));
   };
 
-  const closeCreatePost = () => {
-    dispatch(blurOn({ blur: false }));
-  }
-
   return (
     <>
       <div className=" tracking-wider  flex w-full my-2 p-2 min-h-[122.6px] bg-[#242526] rounded-md  ">
         <div className=" px-2 flex rounded-md justify-between flex-col items-center w-full h-full ">
           <div className=" flex justify-between items-center w-full h-[60px] border-b-[1px] border-[#333333] ">
-            <div className=" flex  rounded-full w-[40px] h-[40px] bg-[#333333] ">
+            <div className=" flex cursor-pointer  rounded-full w-[40px] h-[40px] bg-[#333333] ">
               <img
-                className=" rounded-full object-cover w-full h-full "
+                className=" hover:brightness-75 rounded-full object-cover w-full h-full "
                 src="https://i.pinimg.com/originals/70/d5/50/70d5505465ff94d11d911f2f8b64bcda.jpg"
                 alt=""
                 srcSet=""
