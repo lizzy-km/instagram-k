@@ -4,3 +4,6 @@
 
 }
 
+::-webkit-resizer {
+    display: none;
+  }
