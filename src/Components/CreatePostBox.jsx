@@ -27,7 +27,7 @@ const CreatePostBox = () => {
 
   const dispatch = useDispatch();
   const [privacy, setPrivacy] = useState(false);
-  const Create_post = document.getElementById("Create_post");
+  const Create_post = ['Create_post']
   const { blur } = useSelector((state) => state.animateSlice);
 
   useEffect(() => {
@@ -118,7 +118,7 @@ const CreatePostBox = () => {
                     visibility: privacy === true ? "visible" : "hidden",
                     bottom: privacy === true ? "-190%" : "0%",
                   }}
-                  className=" tracking-wide font-normal text-[12px] flex flex-col justify-start items-start  absolute w-auto bg-[#212121] px-2 rounded py-1 "
+                  className=" z-[999] tracking-wide font-normal text-[12px] flex flex-col justify-start items-start  absolute w-auto bg-[#212121] px-2 rounded py-1 "
                 >
                   {privacyData?.map((data) => {
                     return (

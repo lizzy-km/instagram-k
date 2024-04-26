@@ -30,7 +30,9 @@ function App() {
         <CreatePostBox />
       </section>
       <BrowserRouter>
-        <NavBar />
+      {
+        isAuth === true && <NavBar />
+      }  
         {isAuth === true ? (
           <Routes>
             <Route exact path="/*" element={<HomeFeed />} />

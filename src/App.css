@@ -1,9 +1,90 @@
-
 .gradient-story {
-    background: linear-gradient(360deg, rgba(33, 33, 33, 0.58) 0%, rgba(1, 8, 26, 0.097) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(11, 11, 11, 0.78) 0%,
+    rgba(11, 11, 11, 0.538302) 36.62%,
+    rgba(11, 11, 11, 0.352875) 59.63%,
+    rgba(164, 163, 163, 0) 75.93%
+  );
+}
 
+.backdrop-shadow {
+  -webkit-filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.62));
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.62));
+}
+
+.highlight {
+  -webkit-tap-highlight-color: transparent;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.bg-img {
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0.0029348165) 11.79%,
+    rgba(0, 0, 0, 0.01134518) 21.38%,
+    rgba(0, 0, 0, 0.02464) 29.12%,
+    rgba(0, 0, 0, 0.0422282) 35.34%,
+    rgba(0, 0, 0, 0.06351835) 40.37%,
+    rgba(0, 0, 0, 0.08792) 44.56%,
+    rgba(0, 0, 0, 0.11484165) 48.24%,
+    rgba(0, 0, 0, 0.1436918) 51.76%,
+    rgba(0, 0, 0, 0.17388) 55.44%,
+    rgba(0, 0, 0, 0.20481475) 59.63%,
+    rgba(0, 0, 0, 0.23590525) 64.66%,
+    rgba(0, 0, 0, 0.26656) 70.88%,
+    rgba(0, 0, 0, 0.2961882) 78.62%,
+    rgba(0, 0, 0, 0.32419835) 88.21%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
 }
 
 ::-webkit-resizer {
-    display: none;
-  }
+  display: none;
+}
+
+/* Button styles */
+.btn {
+  @apply px-4 py-2 rounded-md text-white;
+}
+
+.btn-primary {
+  @apply bg-blue-500 hover:bg-blue-700;
+}
+
+.btn-secondary {
+  @apply bg-gray-500 hover:bg-gray-700;
+}
+
+.main {
+  @apply relative h-screen flex overflow-y-auto  pt-3 w-[40%] gap-3 flex-col justify-around items-start max-h-screen;
+}
+
+.story {
+  @apply absolute top-3 w-full h-[250px] min-h-[250px] flex justify-start items-center gap-3;
+}
+
+.story-holder {
+  @apply h-full gap-3 flex overflow-x-auto overflow-y-hidden  justify-start items-center;
+}
+
+.nextStory {
+  @apply flex justify-center items-center h-full px-2 absolute right-[-1%] z-[999];
+}
+
+.moveStory {
+  @apply cursor-pointer relative flex justify-center items-center w-[35px] h-[35px] rounded-full bg-[#333333];
+}
+
+.post {
+  @apply absolute top-[270px] h-auto w-[100%] flex flex-col justify-center items-center;
+}
+
+.postFooter {
+  @apply w-full h-[200px] flex p-2;
+}
+
+.storyCreateCard {
+  @apply p-0 shadow-md flex min-w-[140.6px] h-full bg-[#242526] rounded-md;
+}

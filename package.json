@@ -11,11 +11,15 @@
   "dependencies": {
     "@clerk/clerk-react": "^4.30.7",
     "@reduxjs/toolkit": "^2.2.1",
+    "firebase": "^10.9.0",
     "js-cookie": "^3.0.5",
+    "m3u8-parser": "^7.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-firebase-hooks": "^5.1.1",
     "react-redux": "^9.1.0",
-    "react-router-dom": "^6.22.3"
+    "react-router-dom": "^6.22.3",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

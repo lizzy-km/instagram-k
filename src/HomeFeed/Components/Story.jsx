@@ -35,10 +35,36 @@ const Story = () => {
     setPlus(!plus)
   }
 
+  const [translateX,setTranslateX] = useState(0)
+
+  const translateStoryCard = () => {
+    array.length*150-500 >= translateX ?
+    setTranslateX(translateX+array.length*150/4) :
+    setTranslateX(0)
+  }
+
   return (
-    <div className=" absolute top-3 w-full h-[250px] mini-h-[250px] flex justify-start items-center gap-3   ">
-      <div className=" h-full gap-3 flex overflow-x-auto overflow-y-hidden  justify-start items-center ">
-        <div className=" p-0 shadow-md flex min-w-[140.6px] h-full bg-[#242526] rounded-md ">
+    <div className=" story  ">
+      <div
+      
+       className=" story-holder  ">
+        <div
+       
+         className=" nextStory   " >
+          <div onClick={translateStoryCard} className=" moveStory " >
+            <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full " >
+              
+            </div>
+            <div className=" absolute bottom-[37%] left-[37%] rotate-[135deg] w-[30%] h-[2px] bg-[#d4d4d4] rounded-full " >
+              
+            </div>
+          </div>
+        </div>
+        <div
+         style={{
+          translate:-translateX
+         }}
+         className=" storyCreateCard   ">
           <div className=" h-full flex flex-col justify-between items-center rounded-md ">
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
               <img
@@ -69,7 +95,7 @@ const Story = () => {
 
         {array?.length > 0 &&
           array?.map((arr) => {
-            return <StoryCard key={arr?.id} />;
+            return <StoryCard translateX={translateX} key={arr?.id} />;
           })}
       </div>
     </div>

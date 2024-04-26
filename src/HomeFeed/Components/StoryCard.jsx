@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const StoryCard = () => {
+const StoryCard = ({translateX}) => {
     const storyVideo = '/src/HomeFeed/Components/assets/Story_Video.mp4'
     const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
@@ -20,7 +20,11 @@ const StoryCard = () => {
     }
   }, [isPlaying]);
   return (
-    <div className=" tracking-wider flex min-w-[140.6px] h-full bg-[#242526] rounded-md ">
+    <div
+    style={{
+      translate:-translateX
+    }}
+     className="  tracking-wider flex min-w-[140.6px] h-full bg-[#242526] rounded-md ">
         <div className=" relative flex flex-col justify-between items-start w-full h-full rounded-md " >
         <div className="h-[100%] absolute  bg-center object-center    object-cover rounded-md ">
               {/* <img
@@ -29,7 +33,7 @@ const StoryCard = () => {
                 alt="profile_picture"
                 srcSet=""
               /> */}
-              <video   className=" cursor-pointer "
+              <video   className=" rounded-md cursor-pointer "
               ref={videoRef} 
               src={storyVideo} 
               onClick={handlePlayPause}
@@ -52,9 +56,15 @@ const StoryCard = () => {
                 </div>
             </div>
 
-            <div className="z-[9] w-full p-0 gradient-story text-[#d1d1d1] font-[450]  " >
-                <p className=" p-2 flex w-full h-full backdrop-blur-sm " >Babymonster</p>
+
+            
+              <div className=" rounded-b-md relative z-[9] w-full p-0 " >
+                
+              <div className="  bg-img rounded-b-md    text-[#d1d1d1] font-[450]  " >
+                <p className=" p-2 flex w-full h-full backdrop-shadow " >Babymonster</p>
             </div>
+              </div>
+            
         </div>
     </div>
   );
