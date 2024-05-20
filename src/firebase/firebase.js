@@ -6,14 +6,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 const firebaseConfig = {
   apiKey: import.meta.env.API_KEY_FIREBASE,
-  authDomain: "anynote-m.firebaseapp.com",
-  databaseURL:
-    "https://anynote-m-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "anynote-m",
-  storageBucket: "anynote-m.appspot.com",
-  messagingSenderId: "225963404826",
-  appId: "1:225963404826:web:a6d81c3506a77d07f46ba3",
-  measurementId: "G-DTLPTVRJFG",
+  authDomain: "look-vince.firebaseapp.com",
+  databaseURL: "https://look-vince-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "look-vince",
+  storageBucket: "look-vince.appspot.com",
+  messagingSenderId: "1001354898081",
+  appId: "1:1001354898081:web:ad7b211141974cf82fdee0",
+  measurementId: "G-0Y8J2Q1G13"
 };
 
 // Initialize Firebase

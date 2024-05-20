@@ -5,7 +5,7 @@ import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
 
 const CreatePostBox = () => {
   const [option, setOption] = useState("Public");
-  const [icon, setIcon] = useState("/src/Components/assets/Public.png");
+  const [icon, setIcon] = useState("https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34");
 
   const privacyData = [
     {
@@ -106,7 +106,7 @@ const CreatePostBox = () => {
                         rotate: privacy === true ? "180deg" : "0deg",
                       }}
                       className=" w-[16px] h-[16px] "
-                      src="/src/Components/ArrowDown.svg"
+                      src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FArrowDown.svg?alt=media&token=9c43da96-a4d0-4894-bc09-54ea459ee604"
                       alt=""
                     />
                   </div>

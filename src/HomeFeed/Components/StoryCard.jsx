@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const StoryCard = ({translateX}) => {
-    const storyVideo = '/src/HomeFeed/Components/assets/Story_Video.mp4'
+    const storyVideo = 'https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FStory_Video.mp4?alt=media&token=b28f5198-3080-4168-9283-f85d5e083c20'
     const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 

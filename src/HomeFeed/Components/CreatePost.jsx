@@ -45,7 +45,7 @@ const CreatePost = () => {
               <div className="  cursor-pointer flex w-[30px] p-1  justify-evenly items-center ">
                 <img
                   className=" w-full "
-                  src="/src/HomeFeed/Components/assets/Live.png"
+                  src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FLive.png?alt=media&token=89c104f6-b7ce-4395-9fe0-dbff1fdc90b5"
                   alt=""
                   srcSet=""
                 />
@@ -61,7 +61,7 @@ const CreatePost = () => {
               <div className=" cursor-pointer flex w-[30px] p-1  justify-evenly items-center ">
                 <img
                   className=" w-full "
-                  src="/src/HomeFeed/Components/assets/Photo.png"
+                  src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPhoto.png?alt=media&token=95877346-4e5d-4d4a-8859-60aebceb6f3d"
                   alt=""
                   srcSet=""
                 />
@@ -77,7 +77,7 @@ const CreatePost = () => {
               <div className=" cursor-pointer flex w-[30px] p-1  justify-evenly items-center ">
                 <img
                   className=" w-full "
-                  src="/src/HomeFeed/Components/assets/Feeling.png"
+                  src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FFeeling.png?alt=media&token=e3828339-7c4c-44df-98c3-fc574b9a865a"
                   alt=""
                   srcSet=""
                 />
