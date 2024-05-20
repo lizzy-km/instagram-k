@@ -1,6 +1,6 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const token = "pk_test_c3Ryb25nLWpheS01OS5jbGVyay5hY2NvdW50cy5kZXYk";
+const token = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({

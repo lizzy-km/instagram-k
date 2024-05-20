@@ -5,7 +5,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 const firebaseConfig = {
-  apiKey: "AIzaSyDh2Jc4fV4vyRj7F2KEJS_6ekJcdEpqL-g",
+  apiKey: import.meta.env.API_KEY_FIREBASE,
   authDomain: "anynote-m.firebaseapp.com",
   databaseURL:
     "https://anynote-m-default-rtdb.asia-southeast1.firebasedatabase.app",
