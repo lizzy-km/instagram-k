@@ -1,16 +1,14 @@
-import React from 'react'
-import { useGetPlaylistDataQuery } from '../redux/api/TvApi';
+
 
 const Watch = () => {
 
-  const data = useGetPlaylistDataQuery();
-
-  console.log(data);
-
-
+  
+  
   return (
-    <div className=' flex w-[50%] h-screen justify-center items-center ' >Watch</div>
-  )
-}
+    <div className=" relative h-screen flex overflow-y-auto  pt-3 w-[40%] gap-3 flex-col justify-around items-start max-h-screen ">
+     
+    </div>
+  );
+};
 
-export default Watch
+export default Watch;

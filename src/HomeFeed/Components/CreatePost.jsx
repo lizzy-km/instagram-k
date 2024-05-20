@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { blurOn } from "../../redux/services/animateSlice";
 
 const CreatePost = () => {
@@ -7,6 +7,10 @@ const CreatePost = () => {
   const createPost = () => {
     dispatch(blurOn({ blur: true }));
   };
+
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
 
   return (
     <>
@@ -34,8 +38,11 @@ const CreatePost = () => {
           </div>
 
           <div className=" py-2 h-[30%] w-full flex justify-between items-center ">
-            <div className=" px-2 flex justify-center gap-3 items-center w-[25%] h-[40px] rounded-md hover:bg-[#333333] cursor-pointer transition-colors ">
-              <div className=" cursor-pointer flex w-[30px] p-1  justify-evenly items-center ">
+            <div
+              id=""
+              className=" px-2 relative flex justify-center gap-3 items-center w-[25%] h-[40px] rounded-md hover:bg-[#333333] cursor-pointer transition-colors "
+            >
+              <div className="  cursor-pointer flex w-[30px] p-1  justify-evenly items-center ">
                 <img
                   className=" w-full "
                   src="/src/HomeFeed/Components/assets/Live.png"
@@ -43,8 +50,11 @@ const CreatePost = () => {
                   srcSet=""
                 />
               </div>
-              <div className=" flex justify-start items-center text-[#d4d4d4dc] font-[500] tracking-wide ">
-                <p>Live video</p>
+              <div
+                id="parentText"
+                className="  flex justify-start items-center text-[#d4d4d4dc] font-[500] tracking-wide "
+              >
+                <p className=" p-1 ">Live video</p>
               </div>
             </div>
             <div className=" px-2 flex justify-center gap-3 items-center w-[25%] h-[40px] rounded-md hover:bg-[#333333] cursor-pointer transition-colors ">
@@ -56,7 +66,10 @@ const CreatePost = () => {
                   srcSet=""
                 />
               </div>
-              <div className=" flex justify-start items-center text-[#d4d4d4dc] font-[500] tracking-wide ">
+              <div
+                id="parentText"
+                className=" flex justify-start items-center text-[#d4d4d4dc] font-[500] tracking-wide "
+              >
                 <p>Photo/Video</p>
               </div>
             </div>
@@ -69,7 +82,10 @@ const CreatePost = () => {
                   srcSet=""
                 />
               </div>
-              <div className=" flex justify-start items-center text-[#d4d4d4dc] font-[500] tracking-wide ">
+              <div
+                id="parentText"
+                className=" flex justify-start items-center text-[#d4d4d4dc] font-[500] tracking-wide "
+              >
                 <p>Feeling/Activity</p>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogin } from "../redux/services/authSlice";
 import LeftNav from "./LeftNav";
 import MidNAv from "./MidNAv";
@@ -16,11 +16,19 @@ const NavBar = () => {
     dispatch(setLogin(false));
   };
 
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
+
   return (
     <>
-      <header className=" flex justify-between items-center h-[60px] bg-[#212121]    w-full px-2 ">
+      <header style={{
+        
+      }} className=" flex justify-between items-center  bg-[#212121]    w-full px-2 ">
         <LeftNav/>
-        <MidNAv/>
+      {
+        isDeskTop && <MidNAv/>
+      }  
         <RightNav/>
       </header>
     </>

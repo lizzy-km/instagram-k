@@ -72,9 +72,26 @@ const RightNav = () => {
     );
   };
 
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
+
   return (
-    <section className=" w-[30%] h-full flex justify-end items-center ">
-      <div className=" relative flex-row-reverse flex justify-start gap-3 items-center w-[70%] h-full p-2 ">
+    <section
+      style={{
+        width: isMobile ? "100%" : isTablet ? "70%" : "30%",
+        justifyContent: isMobile ? "end" : isTablet ? "end" : "start",
+        padding: isMobile ? "8px" : "0",
+        alignItems: isDeskTop ? "center" : "end",
+      }}
+      className=" h-full flex justify-end items-center "
+    >
+      <div
+        style={{
+          width: isMobile ? "100%" : isTablet ? "100%" : "70%",
+        }}
+        className=" relative flex-row-reverse flex justify-start gap-3 items-center w-[70%] h-full p-2 "
+      >
         <div
           onClick={accountSetting}
           className=" bg-[#212121] flex justify-between items-center w-auto h-full "
@@ -166,9 +183,11 @@ const RightNav = () => {
                   Kaung Myat Soe
                 </p>
               </div>
-              <Link onClick={()=>
-              dispatch(setLogin(false))}  className=" text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#333333] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center ">
-                <p className=" hover:text-red-600 " >Logout</p>
+              <Link
+                onClick={() => dispatch(setLogin(false))}
+                className=" text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#333333] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center "
+              >
+                <p className=" hover:text-red-600 ">Logout</p>
               </Link>
             </div>
           </div>

@@ -7,8 +7,11 @@ const initialState = {
   account: false,
   menu: false,
   messenger: false,
-  width:null,
-  height:null
+  width: null,
+  height: null,
+  isMobile: false,
+  isTablet: false,
+  isDeskTop: false,
 };
 
 const STORAGE_KEY = "Animate";
@@ -55,13 +58,42 @@ export const animateSlice = createSlice({
       state.noti = false;
       state.messenger = false;
     },
-    setArea: (state, {payload}) => {
-      state.width = payload.width
-      state.height = payload.height
-    }
+    setArea: (state, { payload }) => {
+      state.width = payload.width;
+      state.height = payload.height;
+    },
+
+    
+    setMobile: (state, { payload }) => {
+      state.isMobile = true;
+      state.isTablet = false;
+      state.isDeskTop = false;
+    },
+    setTablet: (state, { payload }) => {
+      state.isMobile = false;
+      state.isTablet = true;
+      state.isDeskTop = false;
+    },
+    setDesktop: (state, { payload }) => {
+      state.isMobile = false;
+      state.isTablet = false;
+      state.isDeskTop = true;
+    },
   },
 });
 
-export const { blurOn, accountSettingOn, notiOn, messengerOn, menuOn, setArea } =
-  animateSlice.actions;
+export const {
+  setMobile,
+  setTablet,
+  setDesktop,
+  blurOn,
+  accountSettingOn,
+  notiOn,
+  messengerOn,
+  menuOn,
+  setArea,
+  isDeskTop,
+  isMobile,
+  isTablet,
+} = animateSlice.actions;
 export default animateSlice.reducer;

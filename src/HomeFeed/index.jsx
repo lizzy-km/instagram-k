@@ -1,17 +1,44 @@
-import Story from "./Components/Story";
+import { useSelector } from "react-redux";
+import LeftNav from "../Components/LeftNav";
+import RightNav from "../Components/RightNav";
 import CreatePost from "./Components/CreatePost";
 import Post from "./Components/Post";
-import VideoPlayer from "./VideoPlayer";
+import Story from "./Components/Story";
 
 const HomeFeed = () => {
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
+
   return (
-    <div className=" main  ">
+    <div
+      style={{
+        width: isMobile
+          ? "100%"
+          : isTablet
+          ? "95%"
+          : isDeskTop
+          ? "40%"
+          : "100%",
+      }}
+      className=" relative h-screen flex  overflow-y-auto  pt-3 w-[40%] gap-3 flex-col justify-center items-center max-h-screen "
+    >
       <Story />
-      <section className=" post ">
+      <div
+        style={{
+          width: isMobile
+            ? "100%"
+            : isTablet
+            ? "90%"
+            : isDeskTop
+            ? "40%"
+            : "100%",
+        }}
+        className=" absolute w-full top-[270px] flex flex-col gap-6 "
+      >
         <CreatePost />
         <Post />
-        <section className=" postFooter  "></section>
-      </section>
+      </div>
     </div>
   );
 };

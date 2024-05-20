@@ -6,7 +6,8 @@ const initialState = {
   token: null,
   viewImage: null,
   viewStoryImage: null,
-  isLogin:true
+  isLogin:true,
+  element:null
   // friend:[]
 };
 
@@ -41,10 +42,13 @@ export const authSlice = createSlice({
       state.isLogin = payload
       Cookies.set(STORAGE_KEY, JSON.stringify(state.isLogin));
 
-    }
+    },
+    addElement: (state, { payload }) => {
+      state.element = payload;
+    },
   },
 });
 
-export const { addUser, addFriend, addViewImage, addStoryImage,setLogin } =
+export const { addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element } =
   authSlice.actions;
 export default authSlice.reducer;

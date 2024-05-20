@@ -10,29 +10,69 @@ import Group from "./Group/Group";
 import Game from "./Game/Game";
 import Watch from "./Watch/Watch";
 import { useEffect } from "react";
-import { blurOn, setArea } from "./redux/services/animateSlice";
+import {
+  blurOn,
+  setArea,
+  setDesktop,
+  setMobile,
+  setTablet,
+} from "./redux/services/animateSlice";
 import CreatePostBox from "./Components/CreatePostBox";
 
 function App() {
   const isAuth = useSelector((state) => state.authSlice.isLogin);
 
-  const { width, height, blur } = useSelector((state) => state.animateSlice);
+  const { width, height, blur, isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
+
+  let ScreenSize = window.innerWidth;
+
+  const dispatch = useDispatch();
+
+  window.addEventListener("resize", () => {
+    ResponsiveFun()
+
+  });
+
+  function  ResponsiveFun () { 
+    ScreenSize = window.innerWidth;
+
+    if (ScreenSize < 600) {
+      dispatch(setMobile());
+    }
+
+    if (ScreenSize > 600 && ScreenSize < 1150) {
+      dispatch(setTablet());
+    }
+    if (ScreenSize > 1150) {
+      dispatch(setDesktop());
+    }
+  }
+
+  useEffect(()=> {
+    ResponsiveFun()
+  },[])
+
+
+
+  function DeleteRounded () {
+  }
+
 
   return (
-    <section className=" bg-[#18191a] w-full flex flex-col justify-start items-center h-screen ">
+    <section className=" bg-[#18191a] overflow-hidden w-full flex flex-col justify-start items-center h-screen ">
       <section
         style={{
           width: blur === true ? width : "0%",
           height: blur === true ? height : "0%",
         }}
-        className="  flex justify-center items-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50   "
+        className="  flex justify-center overflow-hidden items-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50   "
       >
         <CreatePostBox />
       </section>
       <BrowserRouter>
-      {
-        isAuth === true && <NavBar />
-      }  
+        {isAuth === true && <NavBar />}
         {isAuth === true ? (
           <Routes>
             <Route exact path="/*" element={<HomeFeed />} />

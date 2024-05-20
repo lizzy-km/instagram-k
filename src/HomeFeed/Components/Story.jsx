@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import StoryCard from "./StoryCard";
+import { useSelector } from "react-redux";
 
 const Story = () => {
   let array = [
@@ -43,23 +44,30 @@ const Story = () => {
     setTranslateX(0)
   }
 
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
   return (
     <div className=" story  ">
+      
       <div
       
        className=" story-holder  ">
-        <div
+        {
+          isDeskTop &&  <div
        
-         className=" nextStory   " >
-          <div onClick={translateStoryCard} className=" moveStory " >
-            <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full " >
-              
-            </div>
-            <div className=" absolute bottom-[37%] left-[37%] rotate-[135deg] w-[30%] h-[2px] bg-[#d4d4d4] rounded-full " >
-              
-            </div>
-          </div>
-        </div>
+          className=" nextStory   " >
+           <div onClick={translateStoryCard} className=" moveStory " >
+             <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full " >
+               
+             </div>
+             <div className=" absolute bottom-[37%] left-[37%] rotate-[135deg] w-[30%] h-[2px] bg-[#d4d4d4] rounded-full " >
+               
+             </div>
+           </div>
+         </div>
+        }
+       
         <div
          style={{
           translate:-translateX
