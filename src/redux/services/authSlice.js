@@ -9,7 +9,8 @@ const initialState = {
   isLogin:true,
   element:null,
   UserData:[],
-  Post:[]
+  Post:[],
+  Story:[]
   // friend:[]
 };
 
@@ -54,10 +55,13 @@ export const authSlice = createSlice({
     addPost: (state, { payload }) => {
       state.Post = payload;
     },
+    addStory: (state, { payload }) => {
+      state.Story = payload;
+    },
     
   },
 });
 
-export const { addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post } =
+export const { addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post,addStory,Story } =
   authSlice.actions;
 export default authSlice.reducer;

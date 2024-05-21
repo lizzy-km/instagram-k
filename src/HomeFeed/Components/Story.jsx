@@ -1,48 +1,62 @@
-import React, {  useState } from "react";
+import React, { useEffect, useState } from "react";
 import StoryCard from "./StoryCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import GetData from "../../redux/services/Hooks/GetData";
+import { addStory } from "../../redux/services/authSlice";
+import OtherStoryCard from "./OtherStoryCard";
 
 const Story = () => {
-  let array = [
-    {
-      id: 0,
-    },
-    {
-      id: 1,
-    },
-    {
-      id: 2,
-    },
-    {
-      id: 3,
-    },
-    {
-      id: 4,
-    },
-    {
-      id: 5,
-    },
-    {
-      id: 6,
-    },
-    {
-      id: 7,
-    },
-  ];
-
   const [plus, setPlus] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const createStory = () => {
     setPlus(!plus);
   };
 
- 
+  const dispatch = useDispatch();
+
+  const { UserData, Story } = useSelector((state) => state.authSlice);
+
+  const userData = UserData.map((d) => d);
+
+  const user = userData
+    .filter((d) => d.isLogin.booleanValue === true)
+    ?.find((d) => d);
+
+  const userStory = Story.filter(
+    (d) =>
+      d.STID.stringValue ===
+      user.story.arrayValue.values.map(
+        (d) => d?.mapValue.fields.STID.stringValue
+      )[0]
+  );
+
+  const otherStory =  Story.filter(
+    (d) =>
+      d.STID.stringValue !==
+      user.story.arrayValue.values.map(
+        (d) => d?.mapValue.fields.STID.stringValue
+      )[0]
+  );
+
+  const getData = [GetData("storys")];
+
+  useEffect(() => {
+    Promise.all(getData)
+      .finally(() => setIsLoading(false))
+      .then((data) => dispatch(addStory(data[0])))
+      .catch((error) => console.log(error));
+  }, []);
+
+  const pf = user?.profile_picture?.arrayValue.values.filter(
+    (d) => d?.mapValue.fields.isActive.booleanValue === true
+  )[0]; // Check this profile picture is currently use
 
   const [translateX, setTranslateX] = useState(0);
 
   const translateStoryCard = () => {
-    array.length * 150 - 500 >= translateX
-      ? setTranslateX(translateX + (array.length * 150) / 4)
+    userStory.length * 150 - 500 >= translateX
+      ? setTranslateX(translateX + (userStory.length * 150) / 4)
       : setTranslateX(0);
   };
 
@@ -52,7 +66,7 @@ const Story = () => {
   return (
     <div className=" story  ">
       <div className=" story-holder  ">
-        {isDeskTop && (
+        {isDeskTop && userStory.length > 3 && (
           <div className=" nextStory   ">
             <div onClick={translateStoryCard} className=" moveStory ">
               <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
@@ -69,12 +83,16 @@ const Story = () => {
         >
           <div className=" h-full flex flex-col justify-between items-center rounded-md ">
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
-              <img
-                className=" cursor-pointer hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-t-md "
-                src="https://i.pinimg.com/originals/70/d5/50/70d5505465ff94d11d911f2f8b64bcda.jpg"
-                alt="profile_picture"
-                srcSet=""
-              />
+             
+             {
+              userStory.length > 0 && <img
+              className=" cursor-pointer hover:size-[102%] h-[100%] max-w-[140px]  bg-center object-center    object-cover rounded-t-md "
+              src={pf?.mapValue.fields.src.stringValue}
+              alt="profile_picture"
+              srcSet=""
+            />
+             }
+              
             </div>
 
             <div className=" z-n1  relative w-full h-[20%] flex rounded-b-md justify-center items-center ">
@@ -97,10 +115,31 @@ const Story = () => {
           </div>
         </div>
 
-        {array?.length > 0 &&
-          array?.map((arr) => {
-            return <StoryCard translateX={translateX} key={arr?.id} />;
-          })}
+        {
+        userStory?.length > 0 &&
+          userStory?.map((arr) => {
+            return (
+              <StoryCard
+                data={arr}
+                translateX={translateX}
+                key={arr?.STID.stringValue}
+              />
+            );
+          })
+          }
+
+          {
+             otherStory?.length > 0 &&
+             otherStory?.map((arr) => {
+               return (
+                 <OtherStoryCard
+                   data={arr}
+                   translateX={translateX}
+                   key={arr?.STID.stringValue}
+                 />
+               );
+             })
+          }
       </div>
     </div>
   );
