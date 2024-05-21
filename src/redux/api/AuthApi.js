@@ -1,12 +1,15 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const token = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+import { collection, getDocs, query } from 'firebase/firestore'; // Import Firebase Firestore methods
+
+
+const token = import.meta.env.API_KEY_FIREBASE;
 
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://strong-jay-59.clerk.accounts.dev/v1",
+    baseUrl: "/",
   }),
 
   tagTypes: ["auth"],
@@ -47,8 +50,8 @@ export const authApi = createApi({
     }),
 
     getPost: builder.query({
-      query: (page) => ({
-        url: `/contact?page=${page}`,
+      query: (name) => ({
+        url: `/contact?originalArgs=${name}`,
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       }),
@@ -72,6 +75,7 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["auth"],
     }),
+   
   }),
 });
 
@@ -85,4 +89,6 @@ export const {
   useLogoutMutation,
   useDeletePostMutation,
   useGetUserPostQuery,
+  
+  
 } = authApi;

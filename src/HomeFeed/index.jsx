@@ -31,7 +31,7 @@ const HomeFeed = () => {
             : isTablet
             ? "90%"
             : isDeskTop
-            ? "40%"
+            ? "100%"
             : "100%",
         }}
         className=" absolute w-full top-[270px] flex flex-col gap-6 "

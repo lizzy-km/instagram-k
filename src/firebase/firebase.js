@@ -4,8 +4,10 @@ import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+
+const arr = import.meta.env.VITE_KEY_FIREBASE
 const firebaseConfig = {
-  apiKey: import.meta.env.API_KEY_FIREBASE,
+  apiKey: arr ,
   authDomain: "look-vince.firebaseapp.com",
   databaseURL: "https://look-vince-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "look-vince",

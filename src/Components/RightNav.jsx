@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   accountSettingOn,
@@ -8,7 +8,9 @@ import {
 } from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
 import { Link } from "react-router-dom";
-import { setLogin } from "../redux/services/authSlice";
+import { addUserData, setLogin } from "../redux/services/authSlice";
+import GetData from "../redux/services/Hooks/GetData";
+import axios from "axios";
 
 const RightNav = () => {
   const { account, noti, messenger, menu } = useSelector(
@@ -76,6 +78,30 @@ const RightNav = () => {
     (state) => state.animateSlice
   );
 
+  const { UserData } = useSelector(
+    (state) => state.authSlice
+  );
+
+  
+
+  
+
+const getData =    [GetData('users')]
+
+const [isLoading,setIsLoading] = useState(true)
+
+  const userData = UserData.map(d => d)
+
+  const user = userData.filter(d=> d.isLogin.booleanValue === true )?.find(d => d)
+
+
+  const pf = user?.profile_picture?.arrayValue.values[0]?.mapValue.fields.src.stringValue
+
+  
+  useEffect(()=>{
+    Promise.all(getData).finally(()=>setIsLoading(false)).then((data)=>dispatch(addUserData(data[0]))).catch((error)=>console.log(error))
+  },[])
+
   return (
     <section
       style={{
@@ -97,22 +123,25 @@ const RightNav = () => {
           className=" bg-[#212121] flex justify-between items-center w-auto h-full "
         >
           <div className=" relative cursor-pointer flex w-[40px] h-[40px] rounded-full p-[3px] bg-[#333333] ">
-            <img
-              style={{
-                opacity: account === true ? "0.5" : "1",
-              }}
-              className=" cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
-              src="https://i.pinimg.com/originals/70/d5/50/70d5505465ff94d11d911f2f8b64bcda.jpg"
-              alt="profile_picture"
-              srcSet=""
-            />
+           {
+            !isLoading &&<img
+            style={{
+              opacity: account === true ? "0.5" : "1",
+            }}
+            className=" cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
+            src={pf}
+            alt="profile_picture"
+            srcSet=""
+          />
+           }
+            
             <div className=" bg-[#333333] cursor-pointer rounded-full absolute bottom-0 right-0 z-[99]  ">
               <img
                 style={{
                   rotate: account === true ? "180deg" : "0deg",
                 }}
                 className=" w-[14px] "
-                src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FArrowDown.svg?alt=media&token=9c43da96-a4d0-4894-bc09-54ea459ee604"
+                src={"https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FArrowDown.svg?alt=media&token=9c43da96-a4d0-4894-bc09-54ea459ee604"}
                 alt="ArrowDown"
               />
             </div>

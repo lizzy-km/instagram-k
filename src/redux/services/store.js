@@ -3,12 +3,15 @@ import { authApi } from "../api/AuthApi";
 import authSlice from "./authSlice";
 import  animateSlice  from "./animateSlice";
 import { TvApi } from "../api/TvApi";
+import { CollectionsApi } from "../api/CollectionsApis";
 
 export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [authApi.reducerPath]: authApi.reducer,
     [TvApi.reducerPath]: TvApi.reducer,
+    [CollectionsApi.reducerPath]: CollectionsApi.reducer,
+
 
 
     authSlice: authSlice,
@@ -19,7 +22,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authApi.middleware,
-      TvApi.middleware
+      TvApi.middleware,
+      CollectionsApi.middleware
 
     ),
 });
