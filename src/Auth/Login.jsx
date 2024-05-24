@@ -3,13 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {  useNavigate } from "react-router-dom";
 import {  setLogin } from "../redux/services/authSlice";
 import { collection, doc, getDocs } from "firebase/firestore";
-import {   ref } from "firebase/storage";
 
-<<<<<<< HEAD
 import { app, firestore, storage,auth } from "../firebase/firebase";
-import firebase from "firebase/compat/app";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-=======
 import {  firestore, storage, auth } from "../firebase/firebase";
 import addData from "../redux/services/Hooks/AddData";
 import {
@@ -17,7 +13,6 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import GetAdminData from "../redux/services/Hooks/GetAdminData";
->>>>>>> eb8790860e37780f2c119c22dbb78b5577332f12
 
 const Login = () => {
   const isAuth = useSelector((state) => state.authSlice.isLogin);
@@ -91,7 +86,6 @@ const Login = () => {
 
     const userId = name.replace(/ /g, "_") + "Official";
 
-<<<<<<< HEAD
 await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) {
     console.log('User registered successfully!',user);
   })
@@ -99,9 +93,6 @@ await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) 
     console.log('Error registering user:', error);
   });
     
-=======
-   
->>>>>>> eb8790860e37780f2c119c22dbb78b5577332f12
 
     // const not = await listAll(storageRef)
 
