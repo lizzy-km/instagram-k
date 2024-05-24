@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { setLogin } from "../redux/services/authSlice";
-import { collection, doc, getDocs,updateDoc } from "firebase/firestore";
-import { getStorage, getDownloadURL,ref,listAll } from "firebase/storage"
+import {  useNavigate } from "react-router-dom";
+import {  setLogin } from "../redux/services/authSlice";
+import { collection, doc, getDocs } from "firebase/firestore";
+import {   ref } from "firebase/storage";
 
+<<<<<<< HEAD
 import { app, firestore, storage,auth } from "../firebase/firebase";
 import firebase from "firebase/compat/app";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+=======
+import {  firestore, storage, auth } from "../firebase/firebase";
+import addData from "../redux/services/Hooks/AddData";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import GetAdminData from "../redux/services/Hooks/GetAdminData";
+>>>>>>> eb8790860e37780f2c119c22dbb78b5577332f12
 
 const Login = () => {
-  
   const isAuth = useSelector((state) => state.authSlice.isLogin);
   const [loginState, setLoginState] = useState(true);
   const navigate = useNavigate();
@@ -36,25 +45,21 @@ const Login = () => {
 
   const user = UserData[0]?.filter(
     (d) =>
-      d.email.stringValue === userData.email &&
-      d.password.stringValue === userData.password
+      d?.email?.stringValue === userData.email &&
+      d?.password?.stringValue === userData.password
   )[0];
 
   const [docId, setDocId] = useState("");
 
   const get = async () => {
-
-    const collectionRef = await getDocs(collection(firestore,'users'))
-
-
-
+    const collectionRef = await getDocs(collection(firestore, "users"));
 
     for (let i = 0; i < collectionRef.docs.length; i++) {
       if (
-        collectionRef.docs[i]._document.data.value.mapValue.fields.email
-          .stringValue === userData.email &&
+        collectionRef?.docs[i]?._document.data.value.mapValue.fields.email
+          ?.stringValue === userData.email &&
         collectionRef.docs[i]._document.data.value.mapValue.fields.password
-          .stringValue === userData.password
+          ?.stringValue === userData.password
       ) {
         setDocId(collectionRef.docs[i].id);
       }
@@ -65,16 +70,28 @@ const Login = () => {
     get();
   }, []);
 
-  
+  const dd = async () => {
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then(function (user) {
+        console.log("User registered successfully!", user);
+        addData("users", user.user.email, name);
+      })
+      .catch(function (error) {
+        console.log("Error registering user:", error);
+      });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     // addData()
+    const name = userData.username;
+    const email = userData.email;
+    const password = userData.password;
 
-    const email = userData.email
-    const password = userData.password
+    const userId = name.replace(/ /g, "_") + "Official";
 
+<<<<<<< HEAD
 await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) {
     console.log('User registered successfully!',user);
   })
@@ -82,21 +99,46 @@ await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) 
     console.log('Error registering user:', error);
   });
     
+=======
+   
+>>>>>>> eb8790860e37780f2c119c22dbb78b5577332f12
 
-    const collectionRef = doc(firestore,'users',docId);
-    const storageRef = ref(storage,'user_photo/dev.lizzy/profile_image/KMPP00');
-
-
-    
     // const not = await listAll(storageRef)
 
     const dataToUpdate = {
-      isLogin:true
-    }
-    
+      isLogin: true,
+    };
+
     // const res = await updateDoc(collectionRef,dataToUpdate)
     // console.log(res);
     // console.log(not);
+
+
+    loginState === false
+      ? await createUserWithEmailAndPassword(auth, email, password)
+          .then(function (user) {
+            console.log("User registered successfully!", user);
+            // addData(userId, email, name);
+          })
+          .catch(function (error) {
+            console.log("Error registering user:", error);
+          })
+      : await signInWithEmailAndPassword(auth, email, password).then( function(user){
+            console.log("User Login successfully!", user)
+            const getAdmin = [GetAdminData("users", userId)];
+
+            Promise.all(getAdmin).then((data) =>
+              {  
+                console.log(data);
+                dispatch(setLogin(true))   
+                      }
+            ).catch((error) => console.log(error));
+            
+          }).catch(function (error) {
+            console.log("Error Login user:", error);
+          });
+
+        
 
     setError({
       ...error,
@@ -124,26 +166,24 @@ await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) 
               : "Login with Facebook"}
           </h1>
           <form onSubmit={handleSubmit}>
-            {loginState === false && (
-              <div className="mb-6">
-                <label
-                  htmlFor="username"
-                  className="block text-sm font-medium text-gray-300 mb-2"
-                >
-                  Username
-                </label>
-                <input
-                  value={userData.username}
-                  onChange={(e) =>
-                    setUserData({ ...userData, username: e.target.value })
-                  }
-                  type="text"
-                  id="username"
-                  className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  required
-                />
-              </div>
-            )}
+            <div className="mb-6">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-300 mb-2"
+              >
+                Username
+              </label>
+              <input
+                value={userData.username}
+                onChange={(e) =>
+                  setUserData({ ...userData, username: e.target.value })
+                }
+                type="text"
+                id="username"
+                className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                required
+              />
+            </div>
 
             <div className="mb-6">
               <label

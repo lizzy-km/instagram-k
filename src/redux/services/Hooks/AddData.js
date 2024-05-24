@@ -1,14 +1,44 @@
-
+import {
+  addDoc,
+  collection,
+  collectionGroup,
+  doc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 import { firestore } from "../../../firebase/firebase";
-const addData = async (colName = "users") => {
-  const name = "Park Chaeyoung";
-  const email = "parkchaeyoung@gmail.com";
+const addData = async (
+  colName = "users",
+  uemail = "",
+  username = ""
+) => {
+  function getFirstChars() {
+    if (!username) return []; // Handle empty string case
+
+    const words = username.split(" ");
+    const firstChars = [];
+    for (const word of words) {
+      firstChars.push(word[0]);
+    }
+    return firstChars;
+  }
+
+  const firstCharacters = getFirstChars();
+
+  let nick;
+
+  for (let i = 0; i < firstCharacters.length; i++) {
+    nick = firstCharacters.reduce((prev,curr) => prev + curr  )
+  }
+
+  const name = username;
+  const email = uemail;
   const bio = "It's me " + name;
-  const UID = "dev.lizzy";
-  const shortName = "KM";
+  const UID = username.replace(/ /g, "_") + "Official";
+  const shortName = nick;
   const nickName = "tyui";
 
-  const userData =   {
+  const userData = {
     user_name: name,
     UID: UID,
     isLogin: false,
@@ -77,10 +107,10 @@ const addData = async (colName = "users") => {
     ],
     email: email,
     password: "Lizzy-020",
-  }
+  };
 
   const storyData = {
-    STID: shortName +"ST00",
+    STID: shortName + "ST00",
     STUID: UID,
     img_src: "",
 
@@ -90,16 +120,12 @@ const addData = async (colName = "users") => {
       "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FStory_Video.mp4?alt=media&token=b28f5198-3080-4168-9283-f85d5e083c20",
   };
 
-
-  
   // Add a new document in collection "cities" with ID 'LA'
-  const collectionRef = doc(firestore,'users')
+  const collectionRef = collection(firestore,colName);
 
-//   const res = await collectionRef.update({isLogin: true});
+   await addDoc(collectionRef,storyData).catch((error)=>console.log(error))
 
-//   await addDoc(collectionRef, storyData);
-
-  console.log(collectionRef);
+  // console.log(storyRef);
 };
 
 export default addData;

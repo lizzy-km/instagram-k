@@ -1,15 +1,38 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LeftNav from "../Components/LeftNav";
 import RightNav from "../Components/RightNav";
 import CreatePost from "./Components/CreatePost";
 import Post from "./Components/Post";
 import Story from "./Components/Story";
+import GetAdminData from "../redux/services/Hooks/GetAdminData";
+import { useEffect } from "react";
+import { addAdmin } from "../redux/services/authSlice";
 
 const HomeFeed = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
+  const  dispatch = useDispatch()
 
+  const { admin } = useSelector(
+    (state) => state.authSlice
+  );
+
+  const userId = localStorage.getItem('adminId')
+
+  const getAdmin = [GetAdminData("users", userId)];
+
+  useEffect(()=> {
+    Promise.all(getAdmin)
+              .then((data) =>
+                dispatch(addAdmin(data[0][0]))
+            )
+              .catch((error) => console.log(error))
+
+  },[])
+
+console.log(admin);
+ 
   return (
     <div
       style={{

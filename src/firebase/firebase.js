@@ -5,7 +5,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-const arr = import.meta.env.VITE_KEY_FIREBASE
+const arr = 'AIzaSyBIUKGA_wTZ57l2mjLpKVgD3WyQT6XCBXs'
 const firebaseConfig = {
   apiKey: arr ,
   authDomain: "look-vince.firebaseapp.com",

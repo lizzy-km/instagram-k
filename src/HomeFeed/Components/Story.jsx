@@ -1,61 +1,78 @@
 import React, { useEffect, useState } from "react";
 import StoryCard from "./StoryCard";
 import { useDispatch, useSelector } from "react-redux";
-import GetData from "../../redux/services/Hooks/GetData";
+import GetData from "../../redux/services/Hooks/useGetData";
 import { addStory } from "../../redux/services/authSlice";
 import OtherStoryCard from "./OtherStoryCard";
+import addData from "../../redux/services/Hooks/AddData";
+import { collection, getDocs } from "firebase/firestore";
+import { firestore } from "../../firebase/firebase";
 
 const Story = () => {
   const [plus, setPlus] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { UserData, Story,admin } = useSelector((state) => state.authSlice);
+
+  const email = 'hannipham@gmail.com'
+  const username = 'Kaung Myat Soe'
 
   const createStory = () => {
     setPlus(!plus);
+    addData('story',email,username)
   };
 
   const dispatch = useDispatch();
 
-  const { UserData, Story } = useSelector((state) => state.authSlice);
 
   const userData = UserData;
 
+
   const user = userData
-    .map((d) => d)[0]
-    ?.filter((d) => d.isLogin.booleanValue === true)[0];
+    ?.map((d) => d)
+    ?.filter((d) => d?.isLogin?.booleanValue === true)[0];
+
 
   
 
   const userStory = Story?.filter(
     (d) =>
-      d.STUID?.stringValue ===
-    user.UID.stringValue
+      d._document.data.value.mapValue.fields.STUID?.stringValue ===
+    admin.UID?.stringValue
   );
 
   const otherStory =  Story?.filter(
     (d) =>
-      d.STUID?.stringValue !==
-    user.UID.stringValue
+      d._document.data.value.mapValue.fields.STUID?.stringValue !==
+    admin?.UID?.stringValue
   );
 
 
-  const getData = [GetData("story")];
+
+  const getData = async () => {
+    const data = await getDocs(collection(firestore, "story"));
+
+    const doc = data.docs;
+
+    
+    dispatch(addStory(doc));
+
+  };
 
   useEffect(() => {
-    Promise.all(getData)
-      .finally(() => setIsLoading(false))
-      .then((data) => dispatch(addStory(data[0])))
-      .catch((error) => console.log(error));
+    getData();
   }, []);
 
-  const pf = user?.profile_picture?.arrayValue.values.filter(
+
+  const pf = admin?.profile_picture?.arrayValue.values.filter(
     (d) => d?.mapValue.fields.isActive.booleanValue === true
   )[0]; // Check this profile picture is currently use
+
 
   const [translateX, setTranslateX] = useState(0);
 
   const translateStoryCard = () => {
-    userStory.length * 150 - 500 >= translateX
-      ? setTranslateX(translateX + (userStory.length * 150) / 4)
+    Story.length * 150 - 400 >= translateX
+      ? setTranslateX(translateX + (Story.length * 150) / 4)
       : setTranslateX(0);
   };
 
@@ -65,7 +82,7 @@ const Story = () => {
   return (
     <div className=" story  ">
       <div className=" story-holder  ">
-        {isDeskTop && userStory.length > 3 && (
+        {isDeskTop && Story?.length > 1 && (
           <div className=" nextStory   ">
             <div onClick={translateStoryCard} className=" moveStory ">
               <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
@@ -84,8 +101,8 @@ const Story = () => {
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
              
              {
-              userStory.length > 0 && <img
-              className=" cursor-pointer hover:size-[102%] h-[100%] max-w-[140px]  bg-center object-center    object-cover rounded-t-md "
+              pf && <img
+              className=" cursor-pointer hover:scale-105 h-[100%] max-w-[140px]  bg-center object-center    object-cover rounded-t-md "
               src={pf?.mapValue.fields.src.stringValue}
               alt="profile_picture"
               srcSet=""
@@ -115,7 +132,7 @@ const Story = () => {
         </div>
 
        {
-        userStory?.length > 0 &&
+        userStory &&
           userStory?.map((arr) => {
             return (
               <StoryCard

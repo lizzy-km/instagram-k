@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 
 const OtherStoryCard = ({ data, translateX }) => {
   const storyVideo =
-    data?.vid_src?.stringValue;
+    data?._document.data.value.mapValue.fields.vid_src?.stringValue;
   const storyImg =
-    data?.img_src?.stringValue;
+    data?._document.data.value.mapValue.fields.img_src?.stringValue;
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
@@ -13,7 +13,9 @@ const OtherStoryCard = ({ data, translateX }) => {
 
 
 
-  const user = UserData[0]?.filter((d) => d.UID.stringValue === data.STUID.stringValue)[0];
+
+  const user = UserData.length > 0 && UserData?.filter((d) => d[0]?._document?.data.value.mapValue.fields.UID?.stringValue === data?._document?.data.value.mapValue.fields.STUID?.stringValue)[0][0]?._document?.data.value.mapValue.fields
+
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -68,7 +70,7 @@ const OtherStoryCard = ({ data, translateX }) => {
 
           <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  ">
             <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#0866ff] ">
-              {user.profile_picture?.arrayValue.values.map((d) => {
+              {user?.profile_picture?.arrayValue.values.map((d) => {
                 return (
                   <>
                     {d.mapValue.fields.isActive.booleanValue === true ? (
@@ -88,7 +90,7 @@ const OtherStoryCard = ({ data, translateX }) => {
           <div className=" rounded-b-md relative z-[9] w-full p-0 ">
             <div className="  bg-img rounded-b-md    text-[#d1d1d1] font-[450]  ">
               <p className=" p-2 flex w-full h-full backdrop-shadow ">
-                {user.user_name?.stringValue}
+                {user?.user_name?.stringValue}
               </p>
             </div>
           </div>
