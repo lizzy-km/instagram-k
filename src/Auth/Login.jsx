@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setLogin } from "../redux/services/authSlice";
+import { collection, doc, getDocs,updateDoc } from "firebase/firestore";
+import { getStorage, getDownloadURL,ref,listAll } from "firebase/storage"
+
+import { app, firestore, storage } from "../firebase/firebase";
 
 const Login = () => {
+  
   const isAuth = useSelector((state) => state.authSlice.isLogin);
   const [loginState, setLoginState] = useState(true);
   const navigate = useNavigate();
@@ -25,8 +30,72 @@ const Login = () => {
     confrimPassword: "",
   });
 
-  const handleSubmit = (event) => {
+  const { UserData } = useSelector((state) => state.authSlice);
+
+  const user = UserData[0]?.filter(
+    (d) =>
+      d.email.stringValue === userData.email &&
+      d.password.stringValue === userData.password
+  )[0];
+
+  const [docId, setDocId] = useState("");
+
+  const get = async () => {
+
+    const collectionRef = await getDocs(collection(firestore,'users'))
+
+
+
+
+    for (let i = 0; i < collectionRef.docs.length; i++) {
+      if (
+        collectionRef.docs[i]._document.data.value.mapValue.fields.email
+          .stringValue === userData.email &&
+        collectionRef.docs[i]._document.data.value.mapValue.fields.password
+          .stringValue === userData.password
+      ) {
+        setDocId(collectionRef.docs[i].id);
+      }
+    }
+  };
+
+  useEffect(() => {
+    get();
+  }, []);
+
+  
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // addData()
+
+    const email = userData.email
+    const password = userData.password
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then(function(user) {
+    console.log('User registered successfully!',user);
+  })
+  .catch(function(error) {
+    console.log('Error registering user:', error);
+  });
+    
+
+    const collectionRef = doc(firestore,'users',docId);
+    const storageRef = ref(storage,'user_photo/dev.lizzy/profile_image/KMPP00');
+
+
+    
+    // const not = await listAll(storageRef)
+
+    const dataToUpdate = {
+      isLogin:true
+    }
+    
+    // const res = await updateDoc(collectionRef,dataToUpdate)
+    // console.log(res);
+    // console.log(not);
 
     setError({
       ...error,
@@ -39,7 +108,7 @@ const Login = () => {
 
     !userData.email || !userData.password
       ? alert("Please fill all the fields!")
-      :  userData.email === admin.email && userData.password === admin.password
+      : userData.email === admin.email && userData.password === admin.password
       ? dispatch(setLogin(true))
       : dispatch(setLogin(false));
   };

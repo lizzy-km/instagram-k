@@ -84,20 +84,20 @@ const RightNav = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const userData = UserData.map((d) => d);
+  const userData = UserData;
 
   const user = userData
-    .filter((d) => d.isLogin.booleanValue === true)
-    ?.find((d) => d);
+    .map((d) => d)[0]
+    ?.filter((d) => d.isLogin.booleanValue === true)[0];
 
-  const pf =
-    user?.profile_picture?.arrayValue.values[0]?.mapValue.fields.src
-      .stringValue;
+  const pf = user?.profile_picture.arrayValue.values.filter(
+    (d) => d.mapValue.fields.isActive.booleanValue === true
+  )[0].mapValue.fields.src.stringValue;
 
   useEffect(() => {
     Promise.all(getData)
       .finally(() => setIsLoading(false))
-      .then((data) => dispatch(addUserData(data[0])))
+      .then((data) => dispatch(addUserData(data)))
       .catch((error) => console.log(error));
   }, []);
 

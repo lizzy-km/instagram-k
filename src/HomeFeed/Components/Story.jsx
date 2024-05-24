@@ -17,29 +17,28 @@ const Story = () => {
 
   const { UserData, Story } = useSelector((state) => state.authSlice);
 
-  const userData = UserData.map((d) => d);
+  const userData = UserData;
 
   const user = userData
-    .filter((d) => d.isLogin.booleanValue === true)
-    ?.find((d) => d);
+    .map((d) => d)[0]
+    ?.filter((d) => d.isLogin.booleanValue === true)[0];
 
-  const userStory = Story.filter(
+  
+
+  const userStory = Story?.filter(
     (d) =>
-      d.STID.stringValue ===
-      user.story.arrayValue.values.map(
-        (d) => d?.mapValue.fields.STID.stringValue
-      )[0]
+      d.STUID?.stringValue ===
+    user.UID.stringValue
   );
 
-  const otherStory =  Story.filter(
+  const otherStory =  Story?.filter(
     (d) =>
-      d.STID.stringValue !==
-      user.story.arrayValue.values.map(
-        (d) => d?.mapValue.fields.STID.stringValue
-      )[0]
+      d.STUID?.stringValue !==
+    user.UID.stringValue
   );
 
-  const getData = [GetData("storys")];
+
+  const getData = [GetData("story")];
 
   useEffect(() => {
     Promise.all(getData)
@@ -115,18 +114,18 @@ const Story = () => {
           </div>
         </div>
 
-        {
+       {
         userStory?.length > 0 &&
           userStory?.map((arr) => {
             return (
               <StoryCard
                 data={arr}
                 translateX={translateX}
-                key={arr?.STID.stringValue}
+                key={arr?.STID?.stringValue}
               />
             );
           })
-          }
+          } 
 
           {
              otherStory?.length > 0 &&
@@ -135,11 +134,11 @@ const Story = () => {
                  <OtherStoryCard
                    data={arr}
                    translateX={translateX}
-                   key={arr?.STID.stringValue}
+                   key={arr?.STID?.stringValue}
                  />
                );
              })
-          }
+          } 
       </div>
     </div>
   );
