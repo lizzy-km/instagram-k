@@ -5,7 +5,9 @@ import { setLogin } from "../redux/services/authSlice";
 import { collection, doc, getDocs,updateDoc } from "firebase/firestore";
 import { getStorage, getDownloadURL,ref,listAll } from "firebase/storage"
 
-import { app, firestore, storage } from "../firebase/firebase";
+import { app, firestore, storage,auth } from "../firebase/firebase";
+import firebase from "firebase/compat/app";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   
@@ -73,8 +75,7 @@ const Login = () => {
     const email = userData.email
     const password = userData.password
 
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then(function(user) {
+await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) {
     console.log('User registered successfully!',user);
   })
   .catch(function(error) {
