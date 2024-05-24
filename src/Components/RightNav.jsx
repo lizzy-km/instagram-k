@@ -9,8 +9,9 @@ import {
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
 import { Link } from "react-router-dom";
 import { addUserData, setLogin } from "../redux/services/authSlice";
-import GetData from "../redux/services/Hooks/GetData";
 import axios from "axios";
+import { collection, getDocs } from "firebase/firestore";
+import { firestore } from "../firebase/firebase";
 
 const RightNav = () => {
   const { account, noti, messenger, menu } = useSelector(
@@ -77,29 +78,45 @@ const RightNav = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
+  const { UserData, Story } = useSelector((state) => state.authSlice);
 
-  const { UserData } = useSelector((state) => state.authSlice);
+  const { admin } = useSelector((state) => state.authSlice);
 
-  const getData = [GetData("users")];
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [uD, setUD] = useState([]);
 
-  const userData = UserData;
+  const getData = async () => {
+    const data = await getDocs(collection(firestore, "users"));
 
-  const user = userData
-    .map((d) => d)[0]
-    ?.filter((d) => d.isLogin.booleanValue === true)[0];
+    const doc = data.docs;
 
-  const pf = user?.profile_picture.arrayValue.values.filter(
+    let u = [];
+
+    for (let i = 0; i < doc?.length; i++) {
+      const User = await getDocs(
+        collection(firestore, "users", `${doc[i].id}/data`)
+      )
+
+      u.push(User.docs);
+    }
+    dispatch(addUserData(u));
+
+    return u;
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+
+  const pf = admin?.profile_picture?.arrayValue.values?.filter(
     (d) => d.mapValue.fields.isActive.booleanValue === true
   )[0].mapValue.fields.src.stringValue;
 
-  useEffect(() => {
-    Promise.all(getData)
-      .finally(() => setIsLoading(false))
-      .then((data) => dispatch(addUserData(data)))
-      .catch((error) => console.log(error));
-  }, []);
+
+
+  useEffect(() => {}, []);
 
   return (
     <section
@@ -127,7 +144,7 @@ const RightNav = () => {
                 style={{
                   opacity: account === true ? "0.5" : "1",
                 }}
-                className=" cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
+                className=" cursor-pointer hover:brightness-75 w-[40px]  bg-center object-center    object-cover rounded-full "
                 src={pf}
                 alt="profile_picture"
                 srcSet=""

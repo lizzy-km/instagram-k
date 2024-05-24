@@ -4,20 +4,22 @@ import { getStorage, getDownloadURL, ref, listAll } from "firebase/storage";
 import { storage } from "../../firebase/firebase";
 
 const StoryCard = ({ translateX, data }) => {
-  const storyVideo = data?.vid_src?.stringValue;
-  const storyImg = data?.img_src?.stringValue;
+  const storyVideo = data?._document.data.value.mapValue.fields.vid_src?.stringValue;
+  const storyImg = data?._document.data.value.mapValue.fields.img_src?.stringValue;
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
-  const { UserData } = useSelector((state) => state.authSlice);
+
+  const { UserData,admin } = useSelector((state) => state.authSlice);
 
   const [storyImgs, setStoryImgs] = useState();
 
-  const user = UserData[0]?.filter(
-    (d) => d.UID.stringValue === data.STUID.stringValue
+  const user = UserData?.filter(
+    (d) => d?.UID?.stringValue === data.STUID?.stringValue
   )[0];
 
-  const userActivePf = user.profile_picture.arrayValue.values.filter(
+
+  const userActivePf = admin?.profile_picture.arrayValue.values.filter(
     (d) => d.mapValue.fields.isActive.booleanValue === true
   )[0];
 
@@ -29,10 +31,10 @@ const StoryCard = ({ translateX, data }) => {
   };
 
   useEffect(() => {
-    for (let i = 0; i < UserData[0].length; i++) {
+    for (let i = 0; i < admin.length; i++) {
       const storageRef = ref(
         storage,
-        `user_photo/${UserData[0][i].UID.stringValue}/profile_image/${userActivePf.mapValue.fields.PFID?.stringValue}`
+        `user_photo/${admin.UID.stringValue}/profile_image/${userActivePf?.mapValue.fields.PFID?.stringValue}`
       );
            async () => {
         const not = await listAll(storageRef);
@@ -98,7 +100,7 @@ const StoryCard = ({ translateX, data }) => {
           <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#0866ff] ">
             <img
               className=" z-[99] rounded-full object-cover w-full h-full "
-              src={url}
+              src={userActivePf.mapValue.fields.src.stringValue}
               alt=""
               srcSet=""
             />
