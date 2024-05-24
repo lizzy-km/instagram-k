@@ -42,7 +42,7 @@ const Story = () => {
 
   const otherStory =  Story?.filter(
     (d) =>
-      d._document.data.value.mapValue.fieldsSTUID?.stringValue !==
+      d._document.data.value.mapValue.fields.STUID?.stringValue !==
     admin?.UID?.stringValue
   );
 
