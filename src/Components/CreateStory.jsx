@@ -143,7 +143,8 @@ const STID=nick + "ST" + `${date}`
   
   
     function CreateNewStory () {
-       
+
+      UpdateData('story',name,storyData)
       uploadImage(imageFile, filePath)
       .then((url) => {
         if (url) {
@@ -151,10 +152,10 @@ const STID=nick + "ST" + `${date}`
           console.log('Image URL:', url);
           // <img src={url} alt="My Image" /> (example usage)
         } else {
-          console.error('Failed to upload image');
+          window.location.reload(true)
         }
       });
-        UpdateData('story',name,storyData)
+        
       }
   
     return (
