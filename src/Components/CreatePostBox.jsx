@@ -4,6 +4,7 @@ import { blurOn, setArea } from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
 
 const CreatePostBox = () => {
+
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState("https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34");
 
@@ -28,7 +29,7 @@ const CreatePostBox = () => {
   const dispatch = useDispatch();
   const [privacy, setPrivacy] = useState(false);
   const Create_post = ['Create_post']
-  const { blur } = useSelector((state) => state.animateSlice);
+  const { blur,isMobile } = useSelector((state) => state.animateSlice);
 
   useEffect(() => {
     blur === false
@@ -66,6 +67,8 @@ const CreatePostBox = () => {
       id="Create_post"
       style={{
         visibility: blur === true ? "visible" : "hidden",
+        width: isMobile ? '95%' :'30%'
+
       }}
       className=" text-[#d4d4d4] p-2 Create_post flex flex-col justify-between items-center rounded-md bg-[#18191a] w-[30%] h-[35%] overflow-y-auto max-h-[35%] "
     >

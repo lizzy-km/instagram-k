@@ -37,6 +37,7 @@ const addData = async (
   const UID = username.replace(/ /g, "_") + "Official";
   const shortName = nick;
   const nickName = "tyui";
+  const date = new Date()
 
   const userData = {
     user_name: name,
@@ -110,7 +111,7 @@ const addData = async (
   };
 
   const storyData = {
-    STID: shortName + "ST00",
+    STID: shortName + "ST"+ `${date.getTime()}` ,
     STUID: UID,
     img_src: "",
 

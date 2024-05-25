@@ -12,6 +12,7 @@ const initialState = {
   isMobile: false,
   isTablet: false,
   isDeskTop: false,
+  showStory:false,
 };
 
 const STORAGE_KEY = "Animate";
@@ -31,6 +32,9 @@ export const animateSlice = createSlice({
   reducers: {
     blurOn: (state, { payload }) => {
       state.blur = payload.blur;
+    },
+    setShowStory: (state, { payload }) => {
+      state.showStory = payload;
     },
     accountSettingOn: (state, { payload }) => {
       state.account = payload.account;
@@ -95,5 +99,7 @@ export const {
   isDeskTop,
   isMobile,
   isTablet,
+  setShowStory,
+  showStory
 } = animateSlice.actions;
 export default animateSlice.reducer;

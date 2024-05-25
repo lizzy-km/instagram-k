@@ -7,21 +7,23 @@ import OtherStoryCard from "./OtherStoryCard";
 import addData from "../../redux/services/Hooks/AddData";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase";
+import { setShowStory } from "../../redux/services/animateSlice";
 
 const Story = () => {
   const [plus, setPlus] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { UserData, Story,admin } = useSelector((state) => state.authSlice);
+  const dispatch = useDispatch();
+
 
   const email = 'hannipham@gmail.com'
   const username = 'Kaung Myat Soe'
 
   const createStory = () => {
     setPlus(!plus);
-    addData('story',email,username)
+    dispatch(setShowStory(true))
   };
 
-  const dispatch = useDispatch();
 
 
   const userData = UserData;
@@ -45,6 +47,7 @@ const Story = () => {
       d._document.data.value.mapValue.fields.STUID?.stringValue !==
     admin?.UID?.stringValue
   );
+
 
 
 
@@ -95,7 +98,7 @@ const Story = () => {
           style={{
             translate: -translateX,
           }}
-          className=" storyCreateCard   "
+          className=" storyCreateCard    "
         >
           <div className=" h-full flex flex-col justify-between items-center rounded-md ">
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
@@ -133,15 +136,12 @@ const Story = () => {
 
        {
         userStory &&
-          userStory?.map((arr) => {
-            return (
               <StoryCard
-                data={arr}
+                data={userStory}
                 translateX={translateX}
-                key={arr?.STID?.stringValue}
+                
               />
-            );
-          })
+          
           } 
 
           {

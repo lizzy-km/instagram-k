@@ -18,11 +18,12 @@ import {
   setTablet,
 } from "./redux/services/animateSlice";
 import CreatePostBox from "./Components/CreatePostBox";
+import CreateStory from "./Components/CreateStory";
 
 function App() {
   const isAuth = useSelector((state) => state.authSlice.isLogin);
 
-  const { width, height, blur, isTablet, isMobile, isDeskTop } = useSelector(
+  const { width, height, blur, isTablet, isMobile, isDeskTop,showStory } = useSelector(
     (state) => state.animateSlice
   );
 
@@ -64,12 +65,21 @@ function App() {
     <section className=" bg-[#18191a] overflow-hidden w-full flex flex-col justify-start items-center h-screen ">
       <section
         style={{
-          width: blur === true ? width : "0%",
-          height: blur === true ? height : "0%",
+          width: blur === true ? '100%' : "0%",
+          height: blur === true ? '100vh' : "0%",
         }}
-        className="  flex justify-center overflow-hidden items-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50   "
+        className= {`flex items-[${isMobile ? 'start':'center'}] py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}  
       >
         <CreatePostBox />
+      </section>
+      <section
+        style={{
+          width: showStory === true ? '100%' : "0%",
+          height: showStory === true ? '100vh' : "0%",
+        }}
+        className={`flex items-[${isMobile ? 'start':'center'}] py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}  
+      >
+        <CreateStory/>
       </section>
       <BrowserRouter>
         {isAuth === true && <NavBar />}
