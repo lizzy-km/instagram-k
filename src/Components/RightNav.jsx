@@ -150,7 +150,7 @@ const RightNav = () => {
                 style={{
                   opacity: account === true ? "0.5" : "1",
                 }}
-                className=" cursor-pointer hover:brightness-75 w-[40px]  bg-center object-center    object-cover rounded-full "
+                className=" cursor-pointer hover:brightness-75 w-full h-full  bg-center object-center    object-cover rounded-full "
                 src={pf}
                 alt="profile_picture"
                 srcSet=""

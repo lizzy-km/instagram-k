@@ -102,7 +102,7 @@ const Story = () => {
              
              {
               pf && <img
-              className=" cursor-pointer hover:scale-105 h-[100%] max-w-[140px]  bg-center object-center    object-cover rounded-t-md "
+              className=" cursor-pointer hover:scale-105 w-full h-[100%] max-w-[140px]  bg-center object-center    object-cover rounded-t-md "
               src={pf?.mapValue.fields.src.stringValue}
               alt="profile_picture"
               srcSet=""
