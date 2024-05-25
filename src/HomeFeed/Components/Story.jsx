@@ -37,7 +37,7 @@ const Story = () => {
   const userStory = Story?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.STUID?.stringValue ===
-    admin.UID?.stringValue
+    admin?.UID?.stringValue
   );
 
   const otherStory =  Story?.filter(

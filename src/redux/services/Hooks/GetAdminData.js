@@ -12,7 +12,7 @@ const GetAdminData = async (colName = "empty", uid) => {
     ?.map(({ data }) => data?.value?.mapValue?.fields);
 
   
-    localStorage.setItem("adminId", content[0].UID?.stringValue);
+    localStorage.setItem("adminId", content[0]?.UID?.stringValue);
 
   return content;
 };

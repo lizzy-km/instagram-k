@@ -32,7 +32,7 @@ const HomeFeed = () => {
   },[])
 
  
-  return (
+  if(admin?.UID?.stringValue) return (
     <div
       style={{
         width: isMobile

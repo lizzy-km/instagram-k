@@ -106,6 +106,7 @@ const RightNav = () => {
   };
 
   useEffect(() => {
+    localStorage.getItem('adminId') ? null: dispatch(setLogin(false))
     getData();
   }, []);
 
