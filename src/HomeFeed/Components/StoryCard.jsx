@@ -63,7 +63,7 @@ const StoryCard = ({ translateX, data }) => {
     }
   }, [isPlaying]);
 
-  return (
+  if(data[0]._document) return (
     <div
       style={{
         translate: -translateX,
