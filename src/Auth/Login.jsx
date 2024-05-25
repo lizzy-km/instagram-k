@@ -119,7 +119,6 @@ await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) 
 
             Promise.all(getAdmin).then((data) =>
               {  
-                console.log(data);
                 dispatch(setLogin(true))   
                       }
             ).catch((error) => console.log(error));

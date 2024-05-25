@@ -115,6 +115,9 @@ const RightNav = () => {
   )[0].mapValue.fields.src.stringValue;
 
 
+  const fullWidth = window.innerWidth
+
+
 
   useEffect(() => {}, []);
 
@@ -125,14 +128,16 @@ const RightNav = () => {
         justifyContent: isMobile ? "end" : isTablet ? "end" : "start",
         padding: isMobile ? "8px" : "0",
         alignItems: isDeskTop ? "center" : "end",
+        position: isMobile ? 'relative' : 'unset'
       }}
-      className=" h-full flex justify-end items-center "
+      className=" h-full z-[999999] flex justify-end items-center "
     >
       <div
         style={{
           width: isMobile ? "100%" : isTablet ? "100%" : "70%",
+          position: isMobile ? 'unset' : 'relative'
         }}
-        className=" relative flex-row-reverse flex justify-start gap-3 items-center w-[70%] h-full p-2 "
+        className="  flex-row-reverse flex justify-start gap-3 items-center w-[70%] h-full p-2 "
       >
         <div
           onClick={accountSetting}
@@ -209,25 +214,30 @@ const RightNav = () => {
           />
         </div>
 
-        <section className=" absolute w-full h-auto  top-[100%] py-3 rounded-md ">
+        <section style={{
+          left: isMobile &&  - fullWidth/2
+        }} className=" absolute w-full h-auto   top-[100%] py-3 rounded-md ">
+
           <div
             id="account"
             style={{
               visibility: account === true ? "visible" : "hidden",
-              height: account === true ? "400px" : "0",
+              height: account === true ? '90vh' : "0vh",
+              width: account === true ? isMobile === true ? fullWidth+'px' : '100%' : 0
+              
             }}
-            className=" Account flex w-full   bg-[#212121] rounded-md "
+            className= {`Account flex w-full   bg-[#212121] rounded-[${isMobile ? '0':'6'}px]`} 
           >
             <div className=" w-full h-full flex flex-col p-2 justify-start items-start gap-2 ">
-              <div className=" text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#333333] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center ">
+              <div className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#333333] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}>
                 <img
                   className=" hover:brightness-75  rounded-full object-cover h-full "
-                  src="https://i.pinimg.com/originals/70/d5/50/70d5505465ff94d11d911f2f8b64bcda.jpg"
+                  src={pf}
                   alt=""
                   srcSet=""
                 />
                 <p className="font-[500] text-[18px] tracking-wide">
-                  Kaung Myat Soe
+                  {admin.user_name.stringValue}
                 </p>
               </div>
               <Link
@@ -243,27 +253,32 @@ const RightNav = () => {
             id="noti"
             style={{
               visibility: noti === true ? "visible" : "hidden",
-              height: noti === true ? "90vh" : "0",
+              height: noti === true ? '90vh' : "0",
+              width: noti === true ? isMobile === true ? fullWidth+'px' : '100%' : 0
+              
             }}
-            className=" Noti flex w-full  bg-[#212121] rounded-md "
+            className= {`Noti flex w-full   bg-[#212121] rounded-[${isMobile ? '0':'6'}px]`} 
           ></div>
 
           <div
             id="messenger"
             style={{
               visibility: messenger === true ? "visible" : "hidden",
-              height: messenger === true ? "80vh" : "0",
+              height: messenger === true ? '90vh' : "0",
+              width: messenger === true ? isMobile === true ? fullWidth+'px' : '100%' : 0
+
             }}
-            className=" Messenger flex w-full  bg-[#212121] rounded-md "
+            className= {`Messenger flex w-full   bg-[#212121] rounded-[${isMobile ? '0':'6'}px]`} 
           ></div>
 
           <div
             id="menu"
             style={{
               visibility: menu === true ? "visible" : "hidden",
-              height: menu === true ? "70vh" : "0",
+              height: menu === true ? '90vh' : "0",
+              width: menu === true ? isMobile === true ? fullWidth+'px' : '100%' : 0
             }}
-            className=" Menu flex w-full  bg-[#212121] rounded-md "
+            className= {`Menu flex w-full   bg-[#212121] rounded-[${isMobile ? '0':'6'}px]`} 
           ></div>
         </section>
       </div>

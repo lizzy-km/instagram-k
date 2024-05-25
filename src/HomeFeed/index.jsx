@@ -31,7 +31,6 @@ const HomeFeed = () => {
 
   },[])
 
-console.log(admin);
  
   return (
     <div
