@@ -4,20 +4,16 @@ import { useSelector } from "react-redux";
 import { storage } from "../../firebase/firebase";
 
 const OtherStoryCard = ({ data, translateX }) => {
-  const storyVideo =
-    data?._document.data.value.mapValue.fields.vid_src?.stringValue;
-  const storyImg =
-    data?._document.data.value.mapValue.fields.img_src?.stringValue;
+
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
-  const { UserData,admin } = useSelector((state) => state.authSlice);
+  const { UserData, admin,Story } = useSelector((state) => state.authSlice);
+
+  const user =data[0]._document.data.value.mapValue.fields
 
 
-
-
-  const user = UserData.length > 0 && UserData?.filter((d) => d[0]?._document?.data.value.mapValue.fields.UID?.stringValue === data?._document?.data.value.mapValue.fields.STUID?.stringValue)[0][0]?._document?.data.value.mapValue.fields
-
+const userStory = Story.filter(d => d._document.data.value.mapValue.fields.STUID?.stringValue === user?.UID?.stringValue )
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -38,65 +34,59 @@ const OtherStoryCard = ({ data, translateX }) => {
     (d) => d.mapValue.fields.isActive.booleanValue === true
   )[0];
 
-
   const [storyImgs, setStoryImgs] = useState();
 
-  const [userProfile,setUserProfile] = useState()
+  const [userProfile, setUserProfile] = useState();
 
-// console.log(userActivePf);
+  // console.log(userActivePf);
   const imgUrl = async () => {
     const urls = await getDownloadURL(ref(storage, storyImgs));
-    setUserProfile(urls)
+    setUserProfile(urls);
   };
-
 
   const storageRef = ref(
     storage,
     `user_photo/${user?.UID?.stringValue}/${userActivePf?.mapValue.fields.PFID?.stringValue}`
   );
 
+  const list = async () => {
+    const not = await listAll(storageRef);
+
+    for (let ii = 0; ii < not?.items.length; ii++) {
+      setStoryImgs(not.items[ii]?.fullPath);
+    }
+  };
+
   useEffect(() => {
-    // for (let i = 0; i < admin.length; i++) {
-      
-
-       const list =    async  () => {
-        const not = await listAll(storageRef)
-
-        for (let ii = 0; ii < not?.items.length; ii++) {
-          setStoryImgs(not.items[ii]?.fullPath);
-
-        }
-      };
-      console.log(storyImgs);
-
-      list()
-      
-    // }
-    imgUrl();
+    list();
   }, []);
-  
 
-    return (
-      <div
-        style={{
-          translate: -translateX,
-        }}
-        className="  tracking-wider flex min-w-[140.6px] h-full bg-[#242526] rounded-md "
-      >
-        <div className=" relative flex flex-col justify-between items-start w-full h-full rounded-md ">
-          <div className="h-[100%] absolute  bg-center object-center    object-cover rounded-md ">
-            {storyImg?.length > 0 ? (
-              <img
+  useEffect(() => {
+    imgUrl();
+  }, [storyImgs]);
+
+  if(userStory[0]?._document) return (
+    <div
+      style={{
+        translate: -translateX,
+      }}
+      className="  tracking-wider flex min-w-[140.6px] h-full bg-[#242526] rounded-md "
+    >
+      <div className=" relative flex flex-col justify-between items-start w-full h-full rounded-md ">
+        <div className="h-[100%] absolute  bg-center object-center    object-cover rounded-md ">
+        {
+                userStory[0]._document.data.value.mapValue.fields.img_src.stringValue.length > 0 && <img
                 className=" cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-md "
-                src={storyImg}
-                alt="profile_picture"
+                src={userStory[0]._document.data.value.mapValue.fields.img_src.stringValue}
+                alt="story_picture"
                 srcSet=""
               />
-            ) : (
-              <video
+              }
+              {
+                userStory[0]._document.data.value.mapValue.fields.vid_src.stringValue.length > 0 &&  <video
                 className=" rounded-md cursor-pointer "
                 ref={videoRef}
-                src={storyVideo}
+                src={userStory[0]._document.data.value.mapValue.fields.vid_src.stringValue}
                 onClick={handlePlayPause}
                 onMouseEnter={() => {
                   videoRef.current.play();
@@ -107,38 +97,38 @@ const OtherStoryCard = ({ data, translateX }) => {
                   setIsPlaying(false);
                 }}
               ></video>
-            )}
-          </div>
+              }
+        </div>
 
-          <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  ">
-            <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#0866ff] ">
-              {user?.profile_picture?.arrayValue.values.map((d) => {
-                return (
-                  <>
-                    {d.mapValue.fields.isActive.booleanValue === true ? (
-                      <img
-                        className=" z-[99] rounded-full object-cover w-full h-full "
-                        src={userProfile}
-                        alt=""
-                        srcSet=""
-                      />
-                    ) : null}
-                  </>
-                );
-              })}
-            </div>
+        <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  ">
+          <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#0866ff] ">
+            {user?.profile_picture?.arrayValue.values.map((d) => {
+              return (
+                <>
+                  {d.mapValue.fields.isActive.booleanValue === true ? (
+                    <img
+                      className=" z-[99] rounded-full object-cover w-full h-full "
+                      src={userProfile}
+                      alt=""
+                      srcSet=""
+                    />
+                  ) : null}
+                </>
+              );
+            })}
           </div>
+        </div>
 
-          <div className=" rounded-b-md relative z-[9] w-full p-0 ">
-            <div className="  bg-img rounded-b-md    text-[#d1d1d1] font-[450]  ">
-              <p className=" p-2 flex w-full h-full backdrop-shadow ">
-                {user?.user_name?.stringValue}
-              </p>
-            </div>
+        <div className=" rounded-b-md relative z-[9] w-full p-0 ">
+          <div className="  bg-img rounded-b-md    text-[#d1d1d1] font-[450]  ">
+            <p className=" p-2 flex w-full h-full backdrop-shadow ">
+              {user?.user_name?.stringValue}
+            </p>
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 };
 
 export default OtherStoryCard;

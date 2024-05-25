@@ -108,14 +108,12 @@ await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) 
     loginState === false 
       ? await createUserWithEmailAndPassword(auth, email, password)
           .then(function (user) {
-            console.log("User registered successfully!", user);
             addData('users', email, name);
           })
           .catch(function (error) {
             console.log("Error registering user:", error);
           })
       : await signInWithEmailAndPassword(auth, email, password).finally(()=> localStorage.setItem('adminId',userId) ).then( function(user){
-            console.log("User Login successfully!", user)
             admin ? null : addData('users', email, name);
 
             const getAdmin = [GetAdminData("users", userId)];

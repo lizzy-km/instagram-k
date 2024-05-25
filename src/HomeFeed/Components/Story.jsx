@@ -37,9 +37,9 @@ const Story = () => {
       admin?.UID?.stringValue
   );
 
-  const otherStory = Story?.filter(
+  const otherStory = userData?.filter(
     (d) =>
-      d._document.data.value.mapValue.fields.STUID?.stringValue !==
+      d?.UID?.stringValue !==
       admin?.UID?.stringValue
   );
 
@@ -123,15 +123,18 @@ const Story = () => {
         {userStory && <StoryCard data={userStory} translateX={translateX} />}
 
         {otherStory?.length > 0 &&
-          otherStory?.map((arr) => {
-            return (
-              <OtherStoryCard
-                data={arr}
+        otherStory?.map(d => {
+          return(
+            <OtherStoryCard
+                data={d}
                 translateX={translateX}
-                key={arr?.STID?.stringValue}
+                key={d?.UID?.stringValue}
+                
               />
-            );
-          })}
+          )
+        })
+              
+           }
       </div>
     </div>
   );

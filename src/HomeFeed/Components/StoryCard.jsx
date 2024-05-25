@@ -40,26 +40,27 @@ const StoryCard = ({ translateX, data }) => {
     `user_photo/${admin.UID?.stringValue}/${userActivePf?.mapValue.fields.PFID?.stringValue}`
   );
 
+  const list =    async  () => {
+    const not = await listAll(storageRef)
+
+    for (let ii = 0; ii < not?.items.length; ii++) {
+      setStoryImgs(not.items[ii]?.fullPath);
+
+    }
+  };
+
   useEffect(() => {
-    // for (let i = 0; i < admin.length; i++) {
       
 
-       const list =    async  () => {
-        const not = await listAll(storageRef)
-
-        console.log('not');
-        for (let ii = 0; ii < not?.items.length; ii++) {
-          setStoryImgs(not.items[ii]?.fullPath);
-
-        }
-      };
-      console.log(storyImgs);
 
       list()
       
-    // }
-    imgUrl();
   }, []);
+
+  useEffect(()=> {
+    imgUrl();
+
+  },[storyImgs])
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
