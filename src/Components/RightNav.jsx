@@ -121,7 +121,7 @@ const RightNav = () => {
 
   useEffect(() => {}, []);
 
-  return (
+  if (admin?.user_name?.stringValue) return (
     <section
       style={{
         width: isMobile ? "100%" : isTablet ? "70%" : "30%",
