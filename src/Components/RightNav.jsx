@@ -78,7 +78,7 @@ const RightNav = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
-  const { UserData, Story } = useSelector((state) => state.authSlice);
+  const { UserData, Story,adminProfile } = useSelector((state) => state.authSlice);
 
   const { admin } = useSelector((state) => state.authSlice);
 
@@ -151,7 +151,7 @@ const RightNav = () => {
                   opacity: account === true ? "0.5" : "1",
                 }}
                 className=" cursor-pointer hover:brightness-75 w-full h-full  bg-center object-center    object-cover rounded-full "
-                src={pf}
+                src={adminProfile}
                 alt="profile_picture"
                 srcSet=""
               />
@@ -233,7 +233,7 @@ const RightNav = () => {
               <div className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#333333] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}>
                 <img
                   className=" hover:brightness-75  rounded-full object-cover h-full "
-                  src={pf}
+                  src={adminProfile}
                   alt=""
                   srcSet=""
                 />

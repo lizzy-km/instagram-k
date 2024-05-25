@@ -12,64 +12,52 @@ import { setShowStory } from "../../redux/services/animateSlice";
 const Story = () => {
   const [plus, setPlus] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const { UserData, Story,admin } = useSelector((state) => state.authSlice);
+  const { UserData, Story, admin, adminProfile } = useSelector(
+    (state) => state.authSlice
+  );
   const dispatch = useDispatch();
 
-
-  const email = 'hannipham@gmail.com'
-  const username = 'Kaung Myat Soe'
+  const email = "hannipham@gmail.com";
+  const username = "Kaung Myat Soe";
 
   const createStory = () => {
     setPlus(!plus);
-    dispatch(setShowStory(true))
+    dispatch(setShowStory(true));
   };
 
-
-
   const userData = UserData;
-
 
   const user = userData
     ?.map((d) => d)
     ?.filter((d) => d?.isLogin?.booleanValue === true)[0];
 
-
-  
-
   const userStory = Story?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.STUID?.stringValue ===
-    admin?.UID?.stringValue
+      admin?.UID?.stringValue
   );
 
-  const otherStory =  Story?.filter(
+  const otherStory = Story?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.STUID?.stringValue !==
-    admin?.UID?.stringValue
+      admin?.UID?.stringValue
   );
-
-
-
 
   const getData = async () => {
     const data = await getDocs(collection(firestore, "story"));
 
     const doc = data.docs;
 
-    
     dispatch(addStory(doc));
-
   };
 
   useEffect(() => {
     getData();
   }, []);
 
-
   const pf = admin?.profile_picture?.arrayValue.values.filter(
     (d) => d?.mapValue.fields.isActive.booleanValue === true
   )[0]; // Check this profile picture is currently use
-
 
   const [translateX, setTranslateX] = useState(0);
 
@@ -102,16 +90,14 @@ const Story = () => {
         >
           <div className=" h-full flex flex-col justify-between items-center rounded-md ">
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
-             
-             {
-              pf && <img
-              className=" cursor-pointer hover:scale-105 w-full h-[100%] max-w-[140px]  bg-center object-center    object-cover rounded-t-md "
-              src={pf?.mapValue.fields.src.stringValue}
-              alt="profile_picture"
-              srcSet=""
-            />
-             }
-              
+              {pf && (
+                <img
+                  className=" cursor-pointer hover:scale-105 w-full h-[100%] max-w-[140px]  bg-center object-center    object-cover rounded-t-md "
+                  src={adminProfile}
+                  alt="profile_picture"
+                  srcSet=""
+                />
+              )}
             </div>
 
             <div className=" z-n1  relative w-full h-[20%] flex rounded-b-md justify-center items-center ">
@@ -134,28 +120,18 @@ const Story = () => {
           </div>
         </div>
 
-       {
-        userStory &&
-              <StoryCard
-                data={userStory}
-                translateX={translateX}
-                
-              />
-          
-          } 
+        {userStory && <StoryCard data={userStory} translateX={translateX} />}
 
-          {
-             otherStory?.length > 0 &&
-             otherStory?.map((arr) => {
-               return (
-                 <OtherStoryCard
-                   data={arr}
-                   translateX={translateX}
-                   key={arr?.STID?.stringValue}
-                 />
-               );
-             })
-          } 
+        {otherStory?.length > 0 &&
+          otherStory?.map((arr) => {
+            return (
+              <OtherStoryCard
+                data={arr}
+                translateX={translateX}
+                key={arr?.STID?.stringValue}
+              />
+            );
+          })}
       </div>
     </div>
   );

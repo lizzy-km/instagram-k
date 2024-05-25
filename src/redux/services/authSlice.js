@@ -11,7 +11,8 @@ const initialState = {
   UserData:[],
   Post:[],
   Story:[],
-  admin:[]
+  admin:[],
+  adminProfile:[]
   // friend:[]
 };
 
@@ -63,11 +64,14 @@ export const authSlice = createSlice({
       state.admin = payload
       Cookies.set('adminData', JSON.stringify(state.admin));
 
+    },
+    addAdminProfile : (state, { payload }) => {
+      state.adminProfile = payload
     }
     
   },
 });
 
-export const { addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post,addStory,Story,addAdmin,admin } =
+export const { addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post,addStory,Story,addAdmin,admin,addAdminProfile,adminProfile } =
   authSlice.actions;
 export default authSlice.reducer;

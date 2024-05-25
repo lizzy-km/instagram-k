@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getStorage, getDownloadURL, ref, listAll } from "firebase/storage";
 import { storage } from "../../firebase/firebase";
+import { addAdminProfile } from "../../redux/services/authSlice";
 
 const StoryCard = ({ translateX, data }) => {
   const storyVideo = data
@@ -10,7 +11,7 @@ const StoryCard = ({ translateX, data }) => {
   const videoRef = useRef(null);
 
 
-  const { UserData,admin } = useSelector((state) => state.authSlice);
+  const { UserData,admin,adminProfile } = useSelector((state) => state.authSlice);
 
   const [storyImgs, setStoryImgs] = useState();
 
@@ -24,27 +25,39 @@ const StoryCard = ({ translateX, data }) => {
     (d) => d.mapValue.fields.isActive.booleanValue === true
   )[0];
 
-  const [url, setUrl] = useState();
+
+  const dispatch = useDispatch()
+
 
   const imgUrl = async () => {
     const urls = await getDownloadURL(ref(storage, storyImgs));
-    setUrl(urls);
+    dispatch(addAdminProfile(urls))
   };
 
+
+  const storageRef = ref(
+    storage,
+    `user_photo/${admin.UID?.stringValue}/${userActivePf?.mapValue.fields.PFID?.stringValue}`
+  );
+
   useEffect(() => {
-    for (let i = 0; i < admin.length; i++) {
-      const storageRef = ref(
-        storage,
-        `user_photo/${admin.UID.stringValue}/profile_image/${userActivePf?.mapValue.fields.PFID?.stringValue}`
-      );
-           async () => {
-        const not = await listAll(storageRef);
-        for (let ii = 0; ii < not.items.length; ii++) {
+    // for (let i = 0; i < admin.length; i++) {
+      
+
+       const list =    async  () => {
+        const not = await listAll(storageRef)
+
+        console.log('not');
+        for (let ii = 0; ii < not?.items.length; ii++) {
           setStoryImgs(not.items[ii]?.fullPath);
+
         }
       };
+      console.log(storyImgs);
+
+      list()
       
-    }
+    // }
     imgUrl();
   }, []);
 
@@ -111,7 +124,7 @@ const StoryCard = ({ translateX, data }) => {
           <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#0866ff] ">
             <img
               className=" z-[99] rounded-full object-cover w-full h-full "
-              src={userActivePf.mapValue.fields.src.stringValue}
+              src={adminProfile}
               alt=""
               srcSet=""
             />

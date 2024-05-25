@@ -1,5 +1,7 @@
+import { getDownloadURL, listAll, ref } from "firebase/storage";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { storage } from "../../firebase/firebase";
 
 const OtherStoryCard = ({ data, translateX }) => {
   const storyVideo =
@@ -9,7 +11,7 @@ const OtherStoryCard = ({ data, translateX }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
-  const { UserData } = useSelector((state) => state.authSlice);
+  const { UserData,admin } = useSelector((state) => state.authSlice);
 
 
 
@@ -32,6 +34,46 @@ const OtherStoryCard = ({ data, translateX }) => {
     }
   }, [isPlaying]);
 
+  const userActivePf = user?.profile_picture?.arrayValue.values.filter(
+    (d) => d.mapValue.fields.isActive.booleanValue === true
+  )[0];
+
+
+  const [storyImgs, setStoryImgs] = useState();
+
+  const [userProfile,setUserProfile] = useState()
+
+// console.log(userActivePf);
+  const imgUrl = async () => {
+    const urls = await getDownloadURL(ref(storage, storyImgs));
+    setUserProfile(urls)
+  };
+
+
+  const storageRef = ref(
+    storage,
+    `user_photo/${user?.UID?.stringValue}/${userActivePf?.mapValue.fields.PFID?.stringValue}`
+  );
+
+  useEffect(() => {
+    // for (let i = 0; i < admin.length; i++) {
+      
+
+       const list =    async  () => {
+        const not = await listAll(storageRef)
+
+        for (let ii = 0; ii < not?.items.length; ii++) {
+          setStoryImgs(not.items[ii]?.fullPath);
+
+        }
+      };
+      console.log(storyImgs);
+
+      list()
+      
+    // }
+    imgUrl();
+  }, []);
   
 
     return (
@@ -76,7 +118,7 @@ const OtherStoryCard = ({ data, translateX }) => {
                     {d.mapValue.fields.isActive.booleanValue === true ? (
                       <img
                         className=" z-[99] rounded-full object-cover w-full h-full "
-                        src={d?.mapValue.fields.src?.stringValue}
+                        src={userProfile}
                         alt=""
                         srcSet=""
                       />
