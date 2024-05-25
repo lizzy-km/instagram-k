@@ -55,6 +55,10 @@ function App() {
     ResponsiveFun()
   },[])
 
+  useEffect(()=> {
+    ResponsiveFun()
+  },[window.innerWidth])
+
 
 
   function DeleteRounded () {
@@ -67,8 +71,9 @@ function App() {
         style={{
           width: blur === true ? '100%' : "0%",
           height: blur === true ? '100vh' : "0%",
+          alignItems: isMobile ? 'start':'center'
         }}
-        className= {`flex items-[${isMobile ? 'start':'center'}] py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}  
+        className= {`flex i py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}  
       >
         <CreatePostBox />
       </section>
@@ -76,8 +81,10 @@ function App() {
         style={{
           width: showStory === true ? '100%' : "0%",
           height: showStory === true ? '100vh' : "0%",
+          alignItems: isMobile ? 'start':'center'
+
         }}
-        className={`flex items-[${isMobile ? 'start':'center'}] py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}  
+        className={`flex  py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}  
       >
         <CreateStory/>
       </section>

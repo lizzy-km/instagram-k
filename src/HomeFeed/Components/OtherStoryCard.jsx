@@ -10,7 +10,7 @@ const OtherStoryCard = ({ data, translateX }) => {
 
   const { UserData, admin,Story } = useSelector((state) => state.authSlice);
 
-  const user =data[0]._document.data.value.mapValue.fields
+  const user =data[0]?._document.data.value.mapValue.fields
 
 
 const userStory = Story.filter(d => d._document.data.value.mapValue.fields.STUID?.stringValue === user?.UID?.stringValue )

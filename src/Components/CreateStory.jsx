@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowStory, setArea } from "../redux/services/animateSlice";
+import { setShowStory, setArea, isTablet } from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
 import addData from "../redux/services/Hooks/AddData";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../firebase/firebase";
+import UpdateData from "../redux/services/Hooks/UpdateData";
 const CreateStory = () => {
     const [option, setOption] = useState("Public");
     const [icon, setIcon] = useState("https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34");
@@ -48,6 +51,7 @@ const CreateStory = () => {
     }, []);
   
     const [detail, setDetail] = useState("");
+    const [imgSrc,setImgSrc] = useState()
     const [inputHeight, setInputHeight] = useState(50);
   
     const handleKeyPress = (e) => {
@@ -63,21 +67,104 @@ const CreateStory = () => {
       }
     };
 
+
+
     const name = admin?.user_name?.stringValue
     const email = admin?.email?.stringValue
 
-    function CreateNewStory () {
-      addData('story',email,name)
+  const bio = "It's me " + name;
+  const UID = name?.replace(/ /g, "_") + "Official";
+
+
+  function getFirstChars() {
+    if (!name) return []; // Handle empty string case
+
+    const words = name?.split(" ");
+    const firstChars = [];
+    for (const word of words) {
+      firstChars.push(word[0]);
     }
+    return firstChars;
+  }
+
+
+  const firstCharacters = getFirstChars();
+
+  const nick = firstCharacters.length > 0 ? firstCharacters?.reduce((prev, curr) => prev + curr) :null
+
+  
+  const shortName = nick;
+  const nickName = "qwer";
+  const date = new Date().getUTCMilliseconds();
+
+
+const STID=nick + "ST" + `${date}`
+
+
+
+
+
+   
+
+
+    const uploadImage = async (imageFile, filePath) => {
+      try {
+        const storageRef = ref(storage, filePath); // Replace with your desired file path
+        const uploadTask = await uploadBytes(storageRef, imageFile);
+
+        console.log(uploadTask);
+    
+        // Monitor upload progress (optional)
+        uploadTask.on('state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+          },
+          (error) => {
+            console.error('Error uploading image:', error);
+          }
+        );
+    
+        // Get download URL after successful upload
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        console.log('Image uploaded successfully! URL:', downloadURL);
+        return downloadURL; // Or use the URL for other actions
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        return null; // Or handle the error differently
+      }
+    };
+    
+    // Example usage
+    const imageFile = imgSrc; // Assuming you have a file input element
+    const filePath = `user_story/${UID}/${STID}/${imageFile?.name}`; // Replace with your desired file path in Storage
+   
+    const storyData = {  "STID":nick + "ST" + `${date}`}
+  
+  
+    function CreateNewStory () {
+       
+      uploadImage(imageFile, filePath)
+      .then((url) => {
+        if (url) {
+          // Use the downloaded URL to display the image or perform other actions
+          console.log('Image URL:', url);
+          // <img src={url} alt="My Image" /> (example usage)
+        } else {
+          console.error('Failed to upload image');
+        }
+      });
+        UpdateData('story',name,storyData)
+      }
   
     return (
       <div
         id="Create_story"
         style={{
           visibility: showStory === true ? "visible" : "hidden",
-          width: isMobile ? '95%' :'30%'
+          width: isMobile ? '95%' : isTablet ? '90%':'70%'
         }}
-        className=" text-[#d4d4d4] p-2  flex flex-col justify-between items-center rounded-md bg-[#18191a]  h-[35%] overflow-y-auto max-h-[35%] "
+        className=" text-[#d4d4d4] p-2  flex flex-col justify-between items-center rounded-md bg-[#18191a]  h-[75%] overflow-y-auto max-h-[75%] "
       >
         <div
           style={{
@@ -167,31 +254,7 @@ const CreateStory = () => {
             </div>
           </div>
           <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
-            <div className=" relative h-auto flex flex-col gap-0 justify-start items-start w-full ">
-              <div
-                id="myInput"
-                onKeyDown={(e) => {
-                  setDetail(e.currentTarget.innerText);
-                }}
-                data-lexical-editor="true"
-                aria-valuetext={detail}
-                aria-placeholder="What's on your mind, Kaung?"
-                aria-label="What's on your mind, Kaung?"
-                contentEditable="true"
-                role="textbox"
-                spellCheck="true"
-                tabIndex="0"
-                className=" relative outline-none p-2 w-full h-auto min-h-[50px] cursor-text text-[24px] break-words whitespace-pre-wrap user-select-[text]  "
-              >
-                {detail?.length < 1 && (
-                  <div className=" absolute cursor-not-allowed opacity-55 user-select-none pointer-events-none ">
-                    What's on your mind, Kaung?
-                  </div>
-                )}
-  
-                
-              </div>
-            </div>
+            
   
             <div className=" self-end h-[75%] flex w-full bg-[#111111]  rounded  ">
               <div className="flex items-center justify-center w-full">
@@ -222,14 +285,21 @@ const CreateStory = () => {
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       Photo / Video{" "}
                     </p>
+                    <input  onChange={(e)=> setImgSrc(e.target.files[0])}  id="dropzone-file" type="file" className="" />
+
                   </div>
-                  <input id="dropzone-file" type="file" className="hidden" />
                 </label>
               </div>
             </div>
 
+            {
+              imgSrc && <div className=" flex justify-center items-center p-1 rounded " >
+                <img src={imgSrc} alt="" />
+              </div>
+            }
+
             <div className=" flex justify-end items-center w-full h-[50px] p-1 " >
-                  <div onClick={CreateNewStory} className=" rounded justify-center items-center bg-[#0866ff] px-4 py-1 " >
+                  <div onClick={CreateNewStory} className=" rounded justify-center items-center bg-[#0866ff] cursor-pointer px-4 py-1 " >
 Submit
                   </div>
             </div>

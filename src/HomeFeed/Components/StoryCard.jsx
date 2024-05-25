@@ -4,9 +4,8 @@ import { getStorage, getDownloadURL, ref, listAll } from "firebase/storage";
 import { storage } from "../../firebase/firebase";
 import { addAdminProfile } from "../../redux/services/authSlice";
 
-const StoryCard = ({ translateX, data }) => {
-  const storyVideo = data
-  const storyImg = data
+const StoryCard = ({ translateX }) => {
+ 
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
@@ -14,10 +13,10 @@ const StoryCard = ({ translateX, data }) => {
   const { UserData,admin,adminProfile } = useSelector((state) => state.authSlice);
 
   const [storyImgs, setStoryImgs] = useState();
+  const [storySrc,setStorySrc] = useState()
+  const [storyD,setStoryD] = useState()
 
-  const user = UserData?.filter(
-    (d) => d?.UID?.stringValue === data.STUID?.stringValue
-  )[0];
+ 
 
 
 
@@ -34,11 +33,31 @@ const StoryCard = ({ translateX, data }) => {
     dispatch(addAdminProfile(urls))
   };
 
+  const storyUrl = async () => {
+    const urls = await getDownloadURL(ref(storage, storySrc));
+    setStoryD(urls)
+  }
+
+
 
   const storageRef = ref(
     storage,
     `user_photo/${admin.UID?.stringValue}/${userActivePf?.mapValue.fields.PFID?.stringValue}`
   );
+
+  const storyeRef = ref(
+    storage,
+    `user_story/${admin.UID?.stringValue}/${admin.story.arrayValue.values[0].mapValue.fields?.STID?.stringValue}`
+  );
+
+  const storyList = async () => {
+    const not = await listAll(storyeRef)
+
+    for (let ii = 0; ii < not?.items.length; ii++) {
+      setStorySrc(not.items[ii]?.fullPath);
+
+    }
+  }
 
   const list =    async  () => {
     const not = await listAll(storageRef)
@@ -54,13 +73,14 @@ const StoryCard = ({ translateX, data }) => {
 
 
       list()
-      
+      storyList()
   }, []);
 
   useEffect(()=> {
     imgUrl();
+    storyUrl()
 
-  },[storyImgs])
+  },[storyImgs,storySrc])
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -77,7 +97,8 @@ const StoryCard = ({ translateX, data }) => {
     }
   }, [isPlaying]);
 
-  if(data[0]?._document) return (
+
+  if(storyD?.length > 0) return (
     <div
       style={{
         translate: -translateX,
@@ -89,18 +110,18 @@ const StoryCard = ({ translateX, data }) => {
           
               <>
               {
-                data[0]._document.data.value.mapValue.fields.img_src.stringValue.length > 0 && <img
+                storyD && <img
                 className=" cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-md "
-                src={data[0]._document.data.value.mapValue.fields.img_src.stringValue}
+                src={storyD}
                 alt="story_picture"
                 srcSet=""
               />
               }
               {
-                data[0]._document.data.value.mapValue.fields.vid_src.stringValue.length > 0 &&  <video
+                storyD  &&  <video
                 className=" rounded-md cursor-pointer "
                 ref={videoRef}
-                src={data[0]._document.data.value.mapValue.fields.vid_src.stringValue}
+                src={storyD}
                 onClick={handlePlayPause}
                 onMouseEnter={() => {
                   videoRef.current.play();

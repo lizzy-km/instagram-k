@@ -31,16 +31,12 @@ const Story = () => {
     ?.map((d) => d)
     ?.filter((d) => d?.isLogin?.booleanValue === true)[0];
 
-  const userStory = Story?.filter(
-    (d) =>
-      d._document.data.value.mapValue.fields.STUID?.stringValue ===
-      admin?.UID?.stringValue
+  const userStory = admin.story.arrayValue.values?.map(
+    (d) => d.mapValue.fields.STID?.stringValue.length 
   );
 
   const otherStory = userData?.filter(
-    (d) =>
-      d?.UID?.stringValue !==
-      admin?.UID?.stringValue
+    (d) => d?.UID?.stringValue !== admin?.UID?.stringValue
   );
 
   const getData = async () => {
@@ -62,8 +58,8 @@ const Story = () => {
   const [translateX, setTranslateX] = useState(0);
 
   const translateStoryCard = () => {
-    Story.length * 150 - 400 >= translateX
-      ? setTranslateX(translateX + (Story.length * 150) / 4)
+    (otherStory.length +1) * 150 - 650 >= translateX
+      ? setTranslateX(translateX + ((otherStory.length+1 )* 150) / 4)
       : setTranslateX(0);
   };
 
@@ -73,7 +69,7 @@ const Story = () => {
   return (
     <div className=" story  ">
       <div className=" story-holder  ">
-        {isDeskTop && Story?.length > 1 && (
+        {isDeskTop && otherStory?.length > 1 && (
           <div className=" nextStory   ">
             <div onClick={translateStoryCard} className=" moveStory ">
               <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
@@ -123,18 +119,15 @@ const Story = () => {
         {userStory && <StoryCard data={userStory} translateX={translateX} />}
 
         {otherStory?.length > 0 &&
-        otherStory?.map(d => {
-          return(
-            <OtherStoryCard
+          otherStory?.map((d) => {
+            return (
+              <OtherStoryCard
                 data={d}
                 translateX={translateX}
                 key={d?.UID?.stringValue}
-                
               />
-          )
-        })
-              
-           }
+            );
+          })}
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { firestore } from "../../../firebase/firebase";
-const addData = async (colName = "users", uemail = "", username = "") => {
+const addData = async (colName = "users", uemail = "", username = "",STID) => {
   function getFirstChars() {
     if (!username) return []; // Handle empty string case
 
@@ -38,7 +38,6 @@ const addData = async (colName = "users", uemail = "", username = "") => {
   const nickName = "tyui";
   const date = new Date().getUTCMilliseconds();
 
-  console.log(email);
 
   const userData = {
     user_name: name,
@@ -105,24 +104,19 @@ const addData = async (colName = "users", uemail = "", username = "") => {
   const collectionRef = collection(firestore, 'story');
   const postRef = collection(firestore, 'user_posts');
   const userRef = collection(firestore, '/users' , `/${UID}/data`);
-  const udRef = doc(firestore, 'users' ,`${UID}`);
+  const udRef = doc(firestore, 'users' ,`/${UID}/`);
 
   if (colName === "story"){
-  const userS =  await addDoc(collectionRef, storyData).catch((error) => console.log(error));
-  console.log(userS);
+   await addDoc(collectionRef, data).catch((error) => console.log(error));
 
 }
   if (colName === "user_posts"){
-   const userP = await addDoc(postRef, postData).catch((error) => console.log(error));
-   console.log(userP);
+    await addDoc(postRef, postData).catch((error) => console.log(error));
 
 }
   if (colName === "users"){
     
-     await setDoc(udRef, {id:UID}).catch((error) => console.log(error));
-     await addDoc(userRef, userData).catch((error) => console.log(error));
-     await addDoc(collectionRef, storyData).catch((error) => console.log(error));
-     await addDoc(postRef, postData).catch((error) => console.log(error));
+     await setDoc(udRef, userData).catch((error) => console.log(error));
 
 }
 
