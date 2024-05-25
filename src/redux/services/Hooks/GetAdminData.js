@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs } from "firebase/firestore";
 import { firestore } from "../../../firebase/firebase";
 import { useDispatch } from "react-redux";
 import { addAdmin } from "../authSlice";
@@ -12,8 +12,6 @@ const GetAdminData = async (colName = "empty", uid) => {
     ?.map(({ data }) => data?.value?.mapValue?.fields);
 
   
-    localStorage.setItem("adminId", content[0]?.UID?.stringValue);
-
   return content;
 };
 

@@ -1,17 +1,16 @@
 import {
+  CollectionReference,
+  Firestore,
   addDoc,
   collection,
   collectionGroup,
   doc,
   getDocs,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { firestore } from "../../../firebase/firebase";
-const addData = async (
-  colName = "users",
-  uemail = "",
-  username = ""
-) => {
+const addData = async (colName = "users", uemail = "", username = "") => {
   function getFirstChars() {
     if (!username) return []; // Handle empty string case
 
@@ -28,7 +27,7 @@ const addData = async (
   let nick;
 
   for (let i = 0; i < firstCharacters.length; i++) {
-    nick = firstCharacters.reduce((prev,curr) => prev + curr  )
+    nick = firstCharacters.reduce((prev, curr) => prev + curr);
   }
 
   const name = username;
@@ -37,7 +36,9 @@ const addData = async (
   const UID = username.replace(/ /g, "_") + "Official";
   const shortName = nick;
   const nickName = "tyui";
-  const date = new Date()
+  const date = new Date().getUTCMilliseconds();
+
+  console.log(email);
 
   const userData = {
     user_name: name,
@@ -47,59 +48,27 @@ const addData = async (
     bio: bio,
     profile_picture: [
       {
-        PFID: shortName + "PF00",
+        PFID: shortName + "PF"+date,
         src: "",
         isActive: true,
-      },
-      {
-        PFID: shortName + "PF01",
-        src: "",
-        isActive: false,
-      },
-      {
-        PFID: shortName + "PF02",
-        src: "",
-        isActive: false,
-      },
+      }
     ],
     cover_photo: [
       {
-        CVID: shortName + "CV00",
+        CVID: shortName + "CV"+date,
         src: "",
         isActive: true,
-      },
-      {
-        CVID: shortName + "CV01",
-        src: "",
-        isActive: false,
-      },
-      {
-        CVID: shortName + "CV02",
-        src: "",
-        isActive: false,
-      },
+      }
     ],
     story: [
       {
-        STID: shortName + "ST00",
-      },
-      {
-        STID: shortName + "ST01",
-      },
-      {
-        STID: shortName + "ST02",
-      },
+        STID: shortName + "ST"+date,
+      }
     ],
     post: [
       {
-        PID: shortName + "P00",
-      },
-      {
-        PID: shortName + "P01",
-      },
-      {
-        PID: shortName + "P02",
-      },
+        PID: shortName + "P"+date,
+      }
     ],
     friends: [
       {
@@ -111,7 +80,7 @@ const addData = async (
   };
 
   const storyData = {
-    STID: shortName + "ST"+ `${date.getTime()}` ,
+    STID: shortName + "ST" + `${date}`,
     STUID: UID,
     img_src: "",
 
@@ -121,12 +90,42 @@ const addData = async (
       "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FStory_Video.mp4?alt=media&token=b28f5198-3080-4168-9283-f85d5e083c20",
   };
 
+  const postData = {
+    PID: shortName + "P" + `${date}`,
+    PUID: UID,
+    img_src: [""],
+
+    isImg: false,
+
+    vid_src: [
+      "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FStory_Video.mp4?alt=media&token=b28f5198-3080-4168-9283-f85d5e083c20",
+    ],
+  };
   // Add a new document in collection "cities" with ID 'LA'
-  const collectionRef = collection(firestore,colName);
+  const collectionRef = collection(firestore, 'story');
+  const postRef = collection(firestore, 'user_posts');
+  const userRef = collection(firestore, '/users' , `/${UID}/data`);
+  const udRef = doc(firestore, 'users' ,`${UID}`);
 
-   await addDoc(collectionRef,storyData).catch((error)=>console.log(error))
+  if (colName === "story"){
+  const userS =  await addDoc(collectionRef, storyData).catch((error) => console.log(error));
+  console.log(userS);
 
-  // console.log(storyRef);
+}
+  if (colName === "user_posts"){
+   const userP = await addDoc(postRef, postData).catch((error) => console.log(error));
+   console.log(userP);
+
+}
+  if (colName === "users"){
+    
+     await setDoc(udRef, {id:UID}).catch((error) => console.log(error));
+     await addDoc(userRef, userData).catch((error) => console.log(error));
+     await addDoc(collectionRef, storyData).catch((error) => console.log(error));
+     await addDoc(postRef, postData).catch((error) => console.log(error));
+
+}
+
 };
 
 export default addData;

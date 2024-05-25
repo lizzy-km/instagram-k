@@ -24,8 +24,8 @@ const HomeFeed = () => {
 
   useEffect(()=> {
     Promise.all(getAdmin)
-              .then((data) =>
-                dispatch(addAdmin(data[0][0]))
+              .then((data) =>{
+                dispatch(addAdmin(data[0][0]))}
             )
               .catch((error) => console.log(error))
 

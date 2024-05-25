@@ -23,7 +23,7 @@ const Login = () => {
     IsErrorEmail: false,
     IsErrorPassword: true,
   });
-  const admin = {
+  const adminD = {
     email: "admin@gmail.com",
     password: "admin0000",
   };
@@ -34,7 +34,7 @@ const Login = () => {
     confrimPassword: "",
   });
 
-  const { UserData } = useSelector((state) => state.authSlice);
+  const { UserData,admin } = useSelector((state) => state.authSlice);
 
   const user = UserData[0]?.filter(
     (d) =>
@@ -103,19 +103,24 @@ await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) 
     // console.log(res);
     // console.log(not);
 
+    console.log(email);
 
-    loginState === false
+    loginState === false 
       ? await createUserWithEmailAndPassword(auth, email, password)
           .then(function (user) {
             console.log("User registered successfully!", user);
-            // addData(userId, email, name);
+            addData('users', email, name);
           })
           .catch(function (error) {
             console.log("Error registering user:", error);
           })
-      : await signInWithEmailAndPassword(auth, email, password).then( function(user){
+      : await signInWithEmailAndPassword(auth, email, password).finally(()=> localStorage.setItem('adminId',userId) ).then( function(user){
             console.log("User Login successfully!", user)
+            admin ? null : addData('users', email, name);
+
             const getAdmin = [GetAdminData("users", userId)];
+
+            
 
             Promise.all(getAdmin).then((data) =>
               {  
@@ -140,7 +145,7 @@ await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) 
 
     !userData.email || !userData.password
       ? alert("Please fill all the fields!")
-      : userData.email === admin.email && userData.password === admin.password
+      : userData.email === adminD.email && userData.password === adminD.password
       ? dispatch(setLogin(true))
       : dispatch(setLogin(false));
   };

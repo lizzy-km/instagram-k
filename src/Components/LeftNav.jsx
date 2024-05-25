@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import addData from "../redux/services/Hooks/AddData";
 
 const LeftNav = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
@@ -12,7 +13,7 @@ const LeftNav = () => {
       justifyContent:isMobile ? 'start' :'start',
       padding:isMobile ? '8px' :'0'
     }} className=" flex w-[30%] justify-start gap-2 items-center left_nav h-full ">
-      <NavLink
+      <NavLink onClick={()=> addData('users','lalisamanoban@gmail.com','Lalisa Manoban') }
         to={"/"}
         className=" cursor-pointer flex rounded-full justify-center items-center "
       >
