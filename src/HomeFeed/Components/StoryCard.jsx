@@ -8,7 +8,9 @@ const StoryCard = ({ translateX }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
-  const { UserData, admin, adminProfile } = useSelector(
+  const [count,setCount] = useState(0)
+
+  const { UserData, admin, adminProfile,hasNewStory } = useSelector(
     (state) => state.authSlice
   );
 
@@ -38,11 +40,22 @@ const StoryCard = ({ translateX }) => {
 
   useEffect(() => {
     storyList();
+    storyUrl();
+
   }, []);
 
   useEffect(() => {
+
+
     storyUrl();
-  }, [storySrc]);
+  }, [storySrc,count]);
+
+  useEffect(()=> {
+    storyList();
+    storyUrl();
+
+    setCount(count+1)
+  },[hasNewStory])
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);

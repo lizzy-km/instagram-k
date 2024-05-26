@@ -23,6 +23,7 @@ import GetAdminData from "./redux/services/Hooks/GetAdminData";
 import { addAdmin, addAdminProfile } from "./redux/services/authSlice";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { storage } from "./firebase/firebase";
+import Loading from "./Loading/Loading";
 
 function App() {
   const isAuth = useSelector((state) => state.authSlice.isLogin);
@@ -61,10 +62,9 @@ function App() {
     ResponsiveFun();
   }, [window.innerWidth]);
 
-  function DeleteRounded() {}
 
   const getAdmin = [GetAdminData()];
-  const { admin } = useSelector((state) => state.authSlice);
+  const { admin,hasNewStory } = useSelector((state) => state.authSlice);
 
 
   useEffect(() => {
@@ -75,6 +75,18 @@ function App() {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  useEffect(() => {
+    const getAdmin = [GetAdminData()];
+
+    Promise.all(getAdmin)
+      .then((data) => {
+        dispatch(addAdmin(data[0]));
+        getAdminProfileImage();
+      })
+      .catch((error) => console.log(error));
+
+  }, [hasNewStory]);
 
   async function getAdminProfileImage() {
 
@@ -106,7 +118,10 @@ function App() {
 
   return (
     <section className=" bg-[#18191a] overflow-hidden w-full flex flex-col justify-start items-center h-screen ">
-      <section
+    
+      <BrowserRouter>
+        {isAuth === true && <NavBar />}
+        <section
         style={{
           width: blur === true ? "100%" : "0%",
           height: blur === true ? "100vh" : "0%",
@@ -126,14 +141,14 @@ function App() {
       >
         <CreateStory />
       </section>
-      <BrowserRouter>
-        {isAuth === true && <NavBar />}
         {isAuth === true ? (
           <Routes>
+              
             <Route exact path="/*" element={<HomeFeed />} />
             <Route exact path="/game" element={<Game />} />
             <Route exact path="/watch" element={<Watch />} />
             <Route exact path="/group" element={<Group />} />
+            <Route exact path="/loading" element={<Loading />} />
 
             <Route path="/:user/" element={<UserProfile />} />
             <Route path="/profile/:username/" element={<OtherProfile />} />

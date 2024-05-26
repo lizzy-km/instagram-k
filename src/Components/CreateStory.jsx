@@ -15,6 +15,8 @@ import {
 } from "firebase/storage";
 import { storage } from "../firebase/firebase";
 import UpdateData from "../redux/services/Hooks/UpdateData";
+import { setHasNewStory, setNotHasNewStory } from "../redux/services/authSlice";
+import { useNavigate } from "react-router-dom";
 const CreateStory = () => {
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState(
@@ -124,7 +126,6 @@ const CreateStory = () => {
         .then((data) => {
           console.log(data);
           UpdateData("story", name, { STID: nick + "ST" + `${fileSize}` });
-
           getDownloadURL(data.ref).then((downloadURL) => {
             setImgUrlUp(downloadURL);
             console.log("File available at", downloadURL);
@@ -149,6 +150,20 @@ const CreateStory = () => {
       : console.log("file doesn't exist");
   };
 
+ const navigate = useNavigate()
+
+  const newStoryAdded = () => {
+    dispatch(setHasNewStory())
+    dispatch(setShowStory(false))
+
+    setTimeout(dispatch(setNotHasNewStory()),700)
+
+    navigate('/loading')
+
+    setImgUrlUp('')
+
+  }
+  
   return (
     <div
       id="Create_story"
@@ -247,7 +262,7 @@ const CreateStory = () => {
         </div>
         <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
           {!imfurlForUp ? (
-            <div className=" self-end h-[75%] flex w-full bg-[#111111]  rounded  ">
+            <div className=" cursor-pointer self-end h-[75%] flex w-full bg-[#111111]  rounded  ">
               <div className="flex items-center justify-center w-full">
                 <label
                   for="dropzone-file"
@@ -302,7 +317,7 @@ const CreateStory = () => {
 
           <div className=" flex justify-end items-center w-full h-[50px] p-1 ">
             <div
-              onClick={()=>window.location.reload(true)}
+              onClick={newStoryAdded}
               className=" rounded justify-center items-center bg-[#0866ff] cursor-pointer px-4 py-1 "
             >
               Submit
