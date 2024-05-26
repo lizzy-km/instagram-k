@@ -101,7 +101,7 @@ const CreateStory = () => {
 const STID=nick + "ST" + `${date}`
 
 
-
+const [imfurlForUp,setImgUrlUp] = useState()
 
 
    
@@ -112,7 +112,6 @@ const STID=nick + "ST" + `${date}`
         const storageRef = ref(storage, filePath); // Replace with your desired file path
         const uploadTask = await uploadBytes(storageRef, imageFile);
 
-        console.log(uploadTask);
     
         // Monitor upload progress (optional)
         uploadTask.on('state_changed',
@@ -126,7 +125,7 @@ const STID=nick + "ST" + `${date}`
         );
     
         // Get download URL after successful upload
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        
         console.log('Image uploaded successfully! URL:', downloadURL);
         return downloadURL; // Or use the URL for other actions
       } catch (error) {
@@ -141,22 +140,31 @@ const STID=nick + "ST" + `${date}`
    
     const storyData = {  "STID":nick + "ST" + `${date}`}
   
+    const getImg = async() => {
+      const downloadURL = await getDownloadURL(filePath);
+        setImgUrlUp(downloadURL)
+    }
   
     function CreateNewStory () {
 
-      UpdateData('story',name,storyData)
-      uploadImage(imageFile, filePath)
-      .then((url) => {
-        if (url) {
-          // Use the downloaded URL to display the image or perform other actions
-          console.log('Image URL:', url);
-          // <img src={url} alt="My Image" /> (example usage)
-        } else {
-          window.location.reload(true)
-        }
-      });
+    
         
       }
+
+      useEffect(()=> {
+        UpdateData('story',name,storyData)
+        uploadImage(imageFile, filePath)
+        .then((url) => {
+          if (url) {
+            // Use the downloaded URL to display the image or perform other actions
+            console.log('Image URL:', url);
+            // <img src={url} alt="My Image" /> (example usage)
+          } else {
+            // window.location.reload(true)
+            getImg()
+          }
+        });
+      },[imgSrc])
   
     return (
       <div
@@ -257,7 +265,8 @@ const STID=nick + "ST" + `${date}`
           <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
             
   
-            <div className=" self-end h-[75%] flex w-full bg-[#111111]  rounded  ">
+          {
+              !imfurlForUp ? <div className=" self-end h-[75%] flex w-full bg-[#111111]  rounded  ">
               <div className="flex items-center justify-center w-full">
                 <label
                   for="dropzone-file"
@@ -292,10 +301,9 @@ const STID=nick + "ST" + `${date}`
                 </label>
               </div>
             </div>
-
-            {
-              imgSrc && <div className=" flex justify-center items-center p-1 rounded " >
-                <img src={imgSrc} alt="" />
+:
+             <div className=" flex justify-center w-full h-full items-center p-1 rounded " >
+                <img className="  h-full object-cover " src={imfurlForUp} alt="" />
               </div>
             }
 

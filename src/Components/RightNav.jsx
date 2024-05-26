@@ -144,13 +144,13 @@ const RightNav = () => {
           onClick={accountSetting}
           className=" bg-[#212121] flex justify-between items-center w-auto h-full "
         >
-          <div className=" relative cursor-pointer flex w-[40px] h-[40px] rounded-full p-[3px] bg-[#333333] ">
+          <div className=" relative cursor-pointer flex  rounded-full  bg-[#333333] ">
             {!isLoading && (
               <img
                 style={{
                   opacity: account === true ? "0.5" : "1",
                 }}
-                className=" cursor-pointer hover:brightness-75 w-full h-full  bg-center object-center    object-cover rounded-full "
+                className=" cursor-pointer hover:brightness-75 w-[40px] h-[40px] p-[3px]  bg-center object-center    object-cover rounded-full "
                 src={adminProfile}
                 alt="profile_picture"
                 srcSet=""
@@ -232,12 +232,12 @@ const RightNav = () => {
             <div className=" w-full h-full flex flex-col p-2 justify-start items-start gap-2 ">
               <div className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#333333] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}>
                 <img
-                  className=" hover:brightness-75  rounded-full object-cover h-full "
+                  className=" hover:brightness-75  rounded-full object-cover w-[40px] h-[40px] p-[3px] "
                   src={adminProfile}
                   alt=""
                   srcSet=""
                 />
-                <p className="font-[500] text-[18px] tracking-wide">
+                <p className="font-[500] text-[16px] tracking-wide">
                   {admin.user_name.stringValue}
                 </p>
               </div>

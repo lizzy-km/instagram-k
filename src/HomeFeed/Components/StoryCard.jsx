@@ -143,9 +143,9 @@ const StoryCard = ({ translateX }) => {
         </div>
 
         <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  ">
-          <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#0866ff] ">
+          <div className=" cursor-pointer  flex rounded-full   bg-[#0866ff] ">
             <img
-              className=" z-[99] rounded-full object-cover w-full h-full "
+              className=" z-[99] rounded-full object-cover p-[3px] w-[40px] h-[40px] "
               src={adminProfile}
               alt=""
               srcSet=""
