@@ -12,6 +12,7 @@ import { addUserData, setLogin } from "../redux/services/authSlice";
 import axios from "axios";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
+import Cookies from "js-cookie";
 
 const RightNav = () => {
   const { account, noti, messenger, menu } = useSelector(
@@ -78,7 +79,7 @@ const RightNav = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
-  const { UserData, Story,adminProfile } = useSelector((state) => state.authSlice);
+  const {  adminProfile } = useSelector((state) => state.authSlice);
 
   const { admin } = useSelector((state) => state.authSlice);
 
@@ -95,10 +96,10 @@ const RightNav = () => {
 
     for (let i = 0; i < doc?.length; i++) {
       const User = await getDocs(
-        collection(firestore, "users", `${doc[i].id}/data`)
+        collection(firestore, "users")
       )
-
-      u.push(User.docs);
+        
+      u.push(User.docs[i]);
     }
     dispatch(addUserData(u));
 
@@ -111,9 +112,7 @@ const RightNav = () => {
   }, []);
 
 
-  const pf = admin?.profile_picture?.arrayValue.values?.filter(
-    (d) => d.mapValue.fields.isActive.booleanValue === true
-  )[0].mapValue.fields.src.stringValue;
+
 
 
   const fullWidth = window.innerWidth
@@ -223,8 +222,8 @@ const RightNav = () => {
             id="account"
             style={{
               visibility: account === true ? "visible" : "hidden",
-              height: account === true ? '90vh' : "0vh",
-              width: account === true ? isMobile === true ? fullWidth+'px' : '100%' : 0
+              height: account === true ? 'auto' : "0vh",
+              width: account === true ? isMobile === true ? fullWidth+'px' : '100%' : '1000%'
               
             }}
             className= {`Account flex w-full   bg-[#212121] rounded-[${isMobile ? '0':'6'}px]`} 
@@ -242,7 +241,11 @@ const RightNav = () => {
                 </p>
               </div>
               <Link
-                onClick={() => dispatch(setLogin(false))}
+                onClick={() =>{ dispatch(setLogin(false))
+                  localStorage.clear()
+                  Cookies.remove('adminData')
+
+                }}
                 className=" text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#333333] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center "
               >
                 <p className=" hover:text-red-600 ">Logout</p>

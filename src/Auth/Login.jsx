@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  useNavigate } from "react-router-dom";
-import {  setLogin } from "../redux/services/authSlice";
+import { useNavigate } from "react-router-dom";
+import { setLogin } from "../redux/services/authSlice";
 import { collection, doc, getDocs } from "firebase/firestore";
 
-import { app, firestore, storage,auth } from "../firebase/firebase";
+import { app, firestore, storage, auth } from "../firebase/firebase";
 import addData from "../redux/services/Hooks/AddData";
 import {
   createUserWithEmailAndPassword,
@@ -13,9 +13,7 @@ import {
 import GetAdminData from "../redux/services/Hooks/GetAdminData";
 
 const Login = () => {
-  const isAuth = useSelector((state) => state.authSlice.isLogin);
   const [loginState, setLoginState] = useState(true);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState({
     email: "incorrect email address*",
@@ -23,10 +21,7 @@ const Login = () => {
     IsErrorEmail: false,
     IsErrorPassword: true,
   });
-  const adminD = {
-    email: "admin@gmail.com",
-    password: "admin0000",
-  };
+
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -34,118 +29,49 @@ const Login = () => {
     confrimPassword: "",
   });
 
-  const { UserData,admin } = useSelector((state) => state.authSlice);
+  const { admin } = useSelector((state) => state.authSlice);
 
-  const user = UserData[0]?.filter(
-    (d) =>
-      d?.email?.stringValue === userData.email &&
-      d?.password?.stringValue === userData.password
-  )[0];
 
-  const [docId, setDocId] = useState("");
+  const name = userData.username;
+  const email = userData.email;
+  const password = userData.password;
 
-  const get = async () => {
-    const collectionRef = await getDocs(collection(firestore, "users"));
+  const userId = name.replace(/ /g, "_") + "Official";
 
-    for (let i = 0; i < collectionRef.docs.length; i++) {
-      if (
-        collectionRef?.docs[i]?._document.data.value.mapValue.fields.email
-          ?.stringValue === userData.email &&
-        collectionRef.docs[i]._document.data.value.mapValue.fields.password
-          ?.stringValue === userData.password
-      ) {
-        setDocId(collectionRef.docs[i].id);
-      }
-    }
-  };
-
-  useEffect(() => {
-    get();
-  }, []);
-
-  const dd = async () => {
+  const SignUp = async () => {
     await createUserWithEmailAndPassword(auth, email, password)
       .then(function (user) {
         console.log("User registered successfully!", user);
-        addData("users", user.user.email, name);
+        addData("users", email, name);
       })
       .catch(function (error) {
         console.log("Error registering user:", error);
       });
   };
 
+  const SignIn = async () => {
+    await signInWithEmailAndPassword(auth, email, password)
+      .finally(() => localStorage.setItem("adminId", userId))
+      .then(function (user) {
+        
+
+        const getAdmin = [GetAdminData("users", userId)];
+
+        Promise.all(getAdmin)
+          .then((data) => {
+            dispatch(setLogin(true));
+          })
+          .catch((error) => console.log(error));
+      })
+      .catch(function (error) {
+        console.log("Error Login user:", error);
+      });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // addData()
-    const name = userData.username;
-    const email = userData.email;
-    const password = userData.password;
-
-    const userId = name.replace(/ /g, "_") + "Official";
-
-await createUserWithEmailAndPassword(auth,email,password)  .then(function(user) {
-    console.log('User registered successfully!',user);
-  })
-  .catch(function(error) {
-    console.log('Error registering user:', error);
-  });
-    
-   
-
-    // const not = await listAll(storageRef)
-
-    const dataToUpdate = {
-      isLogin: true,
-    };
-
-    // const res = await updateDoc(collectionRef,dataToUpdate)
-    // console.log(res);
-    // console.log(not);
-
-    console.log(email);
-
-    loginState === false 
-      ? await createUserWithEmailAndPassword(auth, email, password)
-          .then(function (user) {
-            addData('users', email, name);
-          })
-          .catch(function (error) {
-            console.log("Error registering user:", error);
-          })
-      : await signInWithEmailAndPassword(auth, email, password).finally(()=> localStorage.setItem('adminId',userId) ).then( function(user){
-            admin ? null : addData('users', email, name);
-
-            const getAdmin = [GetAdminData("users", userId)];
-
-            
-
-            Promise.all(getAdmin).then((data) =>
-              {  
-                dispatch(setLogin(true))   
-                      }
-            ).catch((error) => console.log(error));
-            
-          }).catch(function (error) {
-            console.log("Error Login user:", error);
-          });
-
-        
-
-    setError({
-      ...error,
-      IsErrorEmail: userData.email !== admin.email ? true : false,
-    });
-    setError({
-      ...error,
-      IsErrorPassword: userData.password !== admin.password ? true : false,
-    });
-
-    !userData.email || !userData.password
-      ? alert("Please fill all the fields!")
-      : userData.email === adminD.email && userData.password === adminD.password
-      ? dispatch(setLogin(true))
-      : dispatch(setLogin(false));
+    loginState === false ? SignUp() : SignIn();
   };
 
   return (

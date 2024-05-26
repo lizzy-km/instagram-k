@@ -3,15 +3,14 @@ import { firestore } from "../../../firebase/firebase";
 import { useDispatch } from "react-redux";
 import { addAdmin } from "../authSlice";
 
-const GetAdminData = async (colName = "empty", uid) => {
-  const data = await getDocs(collectionGroup(firestore, colName, `/${uid}/`));
+const GetAdminData = async () => {
+
+    const uid = localStorage.getItem('adminId')
+  const data = await getDocs(collection(firestore, `/users/`));
 
   const content = data?.docs
-    ?.map((d) => d)
-    ?.map((d) => d._document)
-    ?.map(({ data }) => data?.value?.mapValue?.fields);
+    ?.filter((d) => d.id === uid)[0]._document.data.value.mapValue.fields
 
-  
   return content;
 };
 

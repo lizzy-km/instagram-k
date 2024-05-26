@@ -62,7 +62,6 @@ export const authSlice = createSlice({
     },
     addAdmin:(state, { payload })=>{
       state.admin = payload
-      Cookies.set('adminData', JSON.stringify(state.admin));
 
     },
     addAdminProfile : (state, { payload }) => {

@@ -35,8 +35,9 @@ const Story = () => {
     (d) => d.mapValue.fields.STID?.stringValue.length 
   );
 
+  console.log(userData);
   const otherStory = userData?.filter(
-    (d) => d?.UID?.stringValue !== admin?.UID?.stringValue
+    (d) => d?.story
   );
 
   const getData = async () => {
@@ -88,7 +89,7 @@ const Story = () => {
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
               {pf && (
                 <img
-                  className=" cursor-pointer hover:scale-105 w-full h-[100%] max-w-[140px]  bg-center object-center    object-cover rounded-t-md "
+                  className=" cursor-pointer hover:scale-105  h-[100%] w-[140px]  bg-center object-center    object-cover rounded-t-md "
                   src={adminProfile}
                   alt="profile_picture"
                   srcSet=""

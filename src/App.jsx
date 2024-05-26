@@ -19,24 +19,26 @@ import {
 } from "./redux/services/animateSlice";
 import CreatePostBox from "./Components/CreatePostBox";
 import CreateStory from "./Components/CreateStory";
+import GetAdminData from "./redux/services/Hooks/GetAdminData";
+import { addAdmin, addAdminProfile } from "./redux/services/authSlice";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { storage } from "./firebase/firebase";
 
 function App() {
   const isAuth = useSelector((state) => state.authSlice.isLogin);
 
-  const { width, height, blur, isTablet, isMobile, isDeskTop,showStory } = useSelector(
-    (state) => state.animateSlice
-  );
+  const { width, height, blur, isTablet, isMobile, isDeskTop, showStory } =
+    useSelector((state) => state.animateSlice);
 
   let ScreenSize = window.innerWidth;
 
   const dispatch = useDispatch();
 
   window.addEventListener("resize", () => {
-    ResponsiveFun()
-
+    ResponsiveFun();
   });
 
-  function  ResponsiveFun () { 
+  function ResponsiveFun() {
     ScreenSize = window.innerWidth;
 
     if (ScreenSize < 600) {
@@ -51,42 +53,78 @@ function App() {
     }
   }
 
-  useEffect(()=> {
-    ResponsiveFun()
-  },[])
+  useEffect(() => {
+    ResponsiveFun();
+  }, []);
 
-  useEffect(()=> {
-    ResponsiveFun()
-  },[window.innerWidth])
+  useEffect(() => {
+    ResponsiveFun();
+  }, [window.innerWidth]);
+
+  function DeleteRounded() {}
+
+  const getAdmin = [GetAdminData()];
+  const { admin } = useSelector((state) => state.authSlice);
 
 
+  useEffect(() => {
+    Promise.all(getAdmin)
+      .then((data) => {
+        dispatch(addAdmin(data[0]));
+        getAdminProfileImage();
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-  function DeleteRounded () {
+  async function getAdminProfileImage() {
+
+    const userActivePf = admin?.profile_picture.arrayValue.values.filter(
+      (d) => d.mapValue.fields.isActive.booleanValue === true
+    )[0];
+    const adminId = localStorage.getItem("adminId");
+
+    const adminImgs = [];
+    const storageRef = ref(
+      storage,
+      `user_photo/${adminId}/${userActivePf?.mapValue.fields.PFID?.stringValue}`
+    );
+
+    await listAll(storageRef).then((not) => {
+      for (let ii = 0; ii < not?.items.length; ii++) {
+        adminImgs.push(not.items[ii]?.fullPath);
+      }
+    });
+
+    await getDownloadURL(ref(storage, adminImgs[0])).then((data) =>
+      dispatch(addAdminProfile(data))
+    );
   }
 
+  useEffect(()=> {
+    getAdminProfileImage()
+  },[admin])
 
   return (
     <section className=" bg-[#18191a] overflow-hidden w-full flex flex-col justify-start items-center h-screen ">
       <section
         style={{
-          width: blur === true ? '100%' : "0%",
-          height: blur === true ? '100vh' : "0%",
-          alignItems: isMobile ? 'start':'center'
+          width: blur === true ? "100%" : "0%",
+          height: blur === true ? "100vh" : "0%",
+          alignItems: isMobile ? "start" : "center",
         }}
-        className= {`flex i py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}  
+        className={`flex i py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
       >
         <CreatePostBox />
       </section>
       <section
         style={{
-          width: showStory === true ? '100%' : "0%",
-          height: showStory === true ? '100vh' : "0%",
-          alignItems: isMobile ? 'start':'center'
-
+          width: showStory === true ? "100%" : "0%",
+          height: showStory === true ? "100vh" : "0%",
+          alignItems: isMobile ? "start" : "center",
         }}
-        className={`flex  py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}  
+        className={`flex  py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
       >
-        <CreateStory/>
+        <CreateStory />
       </section>
       <BrowserRouter>
         {isAuth === true && <NavBar />}

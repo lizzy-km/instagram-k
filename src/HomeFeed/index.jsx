@@ -18,20 +18,18 @@ const HomeFeed = () => {
     (state) => state.authSlice
   );
 
-  const userId = localStorage.getItem('adminId')
 
-  const getAdmin = [GetAdminData("users", userId)];
+
+  const getAdmin = [GetAdminData()];
 
   useEffect(()=> {
     Promise.all(getAdmin)
               .then((data) =>{
-                dispatch(addAdmin(data[0][0]))}
+                dispatch(addAdmin(data[0]))}
             )
               .catch((error) => console.log(error))
 
   },[])
-
- 
   if(admin?.UID?.stringValue) return (
     <div
       style={{
