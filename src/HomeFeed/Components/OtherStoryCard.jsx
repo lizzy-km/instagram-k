@@ -10,10 +10,12 @@ const OtherStoryCard = ({ data, translateX }) => {
 
   const { UserData, admin,Story } = useSelector((state) => state.authSlice);
 
-  const user =data[0]?._document.data.value.mapValue.fields
+  const user =data?._document.data.value.mapValue.fields
 
 
-const userStory = Story.filter(d => d._document.data.value.mapValue.fields.STUID?.stringValue === user?.UID?.stringValue )
+const userStory = user.story.arrayValue.values[0].mapValue.fields
+
+
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -37,6 +39,39 @@ const userStory = Story.filter(d => d._document.data.value.mapValue.fields.STUID
   const [storyImgs, setStoryImgs] = useState();
 
   const [userProfile, setUserProfile] = useState();
+
+
+  const [storyImg, setStoryImg] = useState();
+  const [storySrc, setStorySrc] = useState();
+  const [storyD, setStoryD] = useState();
+
+  const adminId = user?.UID?.stringValue;
+
+  const storyUrl = async () => {
+    const urls = await getDownloadURL(ref(storage, storySrc));
+    setStoryD(urls);
+  };
+
+  const storyeRef = ref(
+    storage,
+    `user_story/${adminId}/${user.story.arrayValue.values[0].mapValue.fields?.STID?.stringValue}`
+  );
+
+  const storyList = async () => {
+    const not = await listAll(storyeRef);
+
+    for (let ii = 0; ii < not?.items.length; ii++) {
+      setStorySrc(not.items[ii]?.fullPath);
+    }
+  };
+
+  useEffect(() => {
+    storyList();
+  }, []);
+
+  useEffect(() => {
+    storyUrl();
+  }, [storySrc]);
 
   // console.log(userActivePf);
   const imgUrl = async () => {
@@ -65,7 +100,7 @@ const userStory = Story.filter(d => d._document.data.value.mapValue.fields.STUID
     imgUrl();
   }, [storyImgs]);
 
-  if(userStory[0]?._document) return (
+  if(storyD) return (
     <div
       style={{
         translate: -translateX,
@@ -75,18 +110,18 @@ const userStory = Story.filter(d => d._document.data.value.mapValue.fields.STUID
       <div className=" relative flex flex-col justify-between items-start w-full h-full rounded-md ">
         <div className="h-[100%] absolute  bg-center object-center    object-cover rounded-md ">
         {
-                userStory[0]._document.data.value.mapValue.fields.img_src.stringValue.length > 0 && <img
+                storyD && <img
                 className=" cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-md "
-                src={userStory[0]._document.data.value.mapValue.fields.img_src.stringValue}
+                src={storyD}
                 alt="story_picture"
                 srcSet=""
               />
               }
               {
-                userStory[0]._document.data.value.mapValue.fields.vid_src.stringValue.length > 0 &&  <video
+                storyD &&  <video
                 className=" rounded-md cursor-pointer "
                 ref={videoRef}
-                src={userStory[0]._document.data.value.mapValue.fields.vid_src.stringValue}
+                src={storyD}
                 onClick={handlePlayPause}
                 onMouseEnter={() => {
                   videoRef.current.play();

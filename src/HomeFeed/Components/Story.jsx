@@ -32,12 +32,11 @@ const Story = () => {
     ?.filter((d) => d?.isLogin?.booleanValue === true)[0];
 
   const userStory = admin.story.arrayValue.values?.map(
-    (d) => d.mapValue.fields.STID?.stringValue.length 
+    (d) => d.mapValue.fields.STID?.stringValue.length
   );
 
-  console.log(userData);
   const otherStory = userData?.filter(
-    (d) => d?.story
+    (d) => d._document.data.value.mapValue.fields.story.arrayValue.values
   );
 
   const getData = async () => {
@@ -59,8 +58,8 @@ const Story = () => {
   const [translateX, setTranslateX] = useState(0);
 
   const translateStoryCard = () => {
-    (otherStory.length +1) * 150 - 650 >= translateX
-      ? setTranslateX(translateX + ((otherStory.length+1 )* 150) / 4)
+    otherStory.length * 150 - 300 >= translateX
+      ? setTranslateX(translateX + (otherStory.length * 150) / 4)
       : setTranslateX(0);
   };
 
@@ -72,7 +71,12 @@ const Story = () => {
       <div className=" story-holder  ">
         {isDeskTop && otherStory?.length > 1 && (
           <div className=" nextStory   ">
-            <div onClick={translateStoryCard} className=" moveStory ">
+            <div
+              onClick={translateStoryCard}
+              className={`rotate-[${
+                otherStory.length * 150 - 300 <= translateX ? "180" : "0"
+              }deg] moveStory`}
+            >
               <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
               <div className=" absolute bottom-[37%] left-[37%] rotate-[135deg] w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
             </div>

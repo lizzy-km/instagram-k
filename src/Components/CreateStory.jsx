@@ -253,7 +253,7 @@ const CreateStory = () => {
                   for="dropzone-file"
                   className="flex flex-col items-center justify-center w-[80%] h-[80%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
                 >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <div className="flex flex-col relative items-center justify-center pt-5 pb-6">
                     <svg
                       className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
                       aria-hidden="true"
@@ -279,7 +279,7 @@ const CreateStory = () => {
                       onChange={CreateNewStory}
                       id="dropzone-file"
                       type="file"
-                      className=""
+                      className=" absolute w-full opacity-0 h-full "
                     />
                   </div>
                 </label>
@@ -289,6 +289,11 @@ const CreateStory = () => {
             <div className=" flex justify-center w-full h-full items-center p-1 rounded ">
               <img
                 className="  h-full object-cover "
+                src={imfurlForUp}
+                alt=""
+              />
+               <video
+                className="  h-auto w-auto object-cover "
                 src={imfurlForUp}
                 alt=""
               />
