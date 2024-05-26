@@ -55,7 +55,7 @@ const StoryCard = ({ translateX }) => {
     storyUrl();
 
     setCount(count+1)
-  },[hasNewStory])
+  },[admin])
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);

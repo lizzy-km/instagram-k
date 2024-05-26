@@ -150,20 +150,22 @@ const CreateStory = () => {
       : console.log("file doesn't exist");
   };
 
- const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const newStoryAdded = () => {
-    dispatch(setHasNewStory())
-    dispatch(setShowStory(false))
+    dispatch(setHasNewStory());
+    dispatch(setShowStory(false));
 
-    setTimeout(dispatch(setNotHasNewStory()),700)
+    setTimeout(dispatch(setNotHasNewStory()), 2000);
 
-    navigate('/loading')
 
-    setImgUrlUp('')
 
-  }
-  
+    setTimeout(()=> navigate('/loading/'), 1000);
+
+
+    setImgUrlUp("");
+  };
+
   return (
     <div
       id="Create_story"
@@ -307,7 +309,7 @@ const CreateStory = () => {
                 src={imfurlForUp}
                 alt=""
               />
-               <video
+              <video
                 className="  h-auto w-auto object-cover "
                 src={imfurlForUp}
                 alt=""
