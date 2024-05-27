@@ -90,7 +90,7 @@ function App() {
 
   async function getAdminProfileImage() {
 
-    const userActivePf = admin?.profile_picture.arrayValue.values.filter(
+    const userActivePf = admin?.profile_picture?.arrayValue?.values.filter(
       (d) => d.mapValue.fields
     )[0];
     const adminId = localStorage.getItem("adminId");

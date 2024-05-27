@@ -28,11 +28,10 @@ const Story = () => {
   const userData = UserData;
 
   const user = userData
-    ?.map((d) => d)
-    ?.filter((d) => d?.isLogin?.booleanValue === true)[0];
+    ?.filter((d) => d?._document.data.value.mapValue.fields.story?.arrayValue.values[0]?.mapValue.fields.STID.stringValue?.length >0 )
 
   const userStory = admin.story.arrayValue.values?.map(
-    (d) => d.mapValue.fields.STID?.stringValue.length
+    (d) => d.mapValue.fields
   );
 
   const otherStory = userData?.filter(
@@ -57,9 +56,12 @@ const Story = () => {
 
   const [translateX, setTranslateX] = useState(0);
 
+  const otherHasStory = otherStory.filter(d => d._document.data.value.mapValue.fields.story.arrayValue.values[0]?.mapValue.fields.STID.stringValue?.length > 0 )
+  const storyCard = document.getElementById('story_id')
+  const storyWidth = storyCard?.clientWidth
   const translateStoryCard = () => {
-    otherStory.length * 150 - 300 >= translateX
-      ? setTranslateX(translateX + (otherStory.length * 150) / 4)
+    ((user.length+1) * 150) - storyWidth >= translateX
+      ? setTranslateX(translateX + (user?.length * 150) / (storyWidth/150).toFixed(0))
       : setTranslateX(0);
   };
 
@@ -67,14 +69,16 @@ const Story = () => {
     (state) => state.animateSlice
   );
   return (
-    <div className=" story  ">
-      <div className=" story-holder  ">
+    <div id='story_id' className=" story  ">
+     
+     
+      <div className=" story-holder   ">
         {isDeskTop && otherStory?.length > 1 && (
           <div className=" nextStory   ">
             <div
               onClick={translateStoryCard}
               className={`rotate-[${
-                otherStory.length * 150 - 280 <= translateX ? "180" : "0"
+                ((user.length+1) * 150) - storyWidth  <= translateX ? "180" : "0"
               }deg] moveStory`}
             >
               <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
