@@ -28,9 +28,9 @@ const ViewStory = () => {
   const userData = UserData;
 
   const user = userData?.filter(
-    (d) =>
-      d?._document.data.value.mapValue.fields.story?.arrayValue.values[0]
-        ?.mapValue.fields.STID.stringValue?.length > 0
+    (d) =>  d?._document.data.value.mapValue.fields?.story.arrayValue.values.length >0?
+      d?._document.data.value.mapValue.fields.story?.arrayValue?.values[0]
+        ?.mapValue.fields.STID?.stringValue?.length > 0 : false
   );
 
   const userStory = admin.story?.arrayValue.values?.map(
@@ -64,7 +64,7 @@ const ViewStory = () => {
   const otherHasStory = otherStory.filter(
     (d) =>
       d._document.data.value.mapValue.fields.story.arrayValue.values[0]
-        ?.mapValue.fields.STID.stringValue?.length > 0
+        ?.mapValue.fields.STID?.stringValue?.length > 0
   );
 
   const storyCard = document.getElementById("story_id");

@@ -1,20 +1,26 @@
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import {  useSelector } from "react-redux";
-import { storage } from "../../firebase/firebase";
+import { firestore, storage } from "../../firebase/firebase";
+import Icon from "@mdi/react";
+import { mdiDotsVertical, mdiTrashCanOutline } from "@mdi/js";
+import { deleteField, doc, updateDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const ViewStoryCard = ({ userData }) => {
-  const { storyId } = useSelector((state) => state.authSlice);
+  const { storyId,admin } = useSelector((state) => state.authSlice);
+
+  const navigate = useNavigate()
 
   const data = userData?.filter(
-    (d) =>
-      d?._document.data.value.mapValue.fields?.story?.arrayValue.values[0]
-        ?.mapValue.fields.STID.stringValue === storyId
+    (d) =>  d?._document.data.value.mapValue.fields?.story.arrayValue.values.length  ?
+      d?._document.data.value.mapValue.fields?.story?.arrayValue?.values[0]
+        ?.mapValue.fields.STID?.stringValue === storyId : false
   )[0]?._document.data.value.mapValue.fields;
 
   const UID = data?.UID.stringValue;
   const STID =
-    data?.story?.arrayValue.values[0]?.mapValue.fields?.STID.stringValue;
+    data?.story?.arrayValue.values[0]?.mapValue.fields?.STID?.stringValue;
   const UserName = data?.user_name?.stringValue;
   const PFID =
     data?.profile_picture?.arrayValue.values[0]?.mapValue.fields.PFID
@@ -74,10 +80,33 @@ const ViewStoryCard = ({ userData }) => {
     storyUrl();
   }, [storySrc]);
 
+  const [menu,setMenu] = useState(false)
+
+  const deleteStory = async () => {
+    setMenu(false)
+
+    const storyRef = doc(firestore,'users',`${UID}`)
+
+    await updateDoc(storyRef, {
+        story: 
+        deleteField()
+        
+    }).then(async(data)=>await updateDoc(storyRef, {
+        story: [
+            {
+                isImage:false
+            }
+        ]
+        
+        
+    }).then(()=>window.location.reload(true))).catch((error)=> console.log(error) )
+
+  }
+
   return (
     <div className="  h-full relative w-[45%] rounded-md flex justify-start items-start ">
       <div
-        className={` z-[99] rounded-t-md backdrop-brightness-[80px] bg-[#21212145] backdrop-blur  cursor-pointer flex w-[100%]  gap-3 p-2 `}
+        className={` z-[99] relative rounded-t-md backdrop-brightness-[80px] bg-[#21212145] backdrop-blur   flex w-[100%]  gap-3 p-2 `}
       >
         <div className=" flex justify-center items-center p-1 rounded-full bg-[#212121] ">
           <img
@@ -90,6 +119,18 @@ const ViewStoryCard = ({ userData }) => {
 
         <div className=" flex py-1 justify-start items-center ">
           <p className=" p-1 text-center w-full h-full "> {UserName} </p>
+        </div>
+        <div className=" p-2 w-[30%] cursor-pointer flex justify-end items-end absolute right-0 " >
+
+        <Icon onClick={()=>setMenu(!menu)} className=" cursor-pointer " path={mdiDotsVertical} size={1} />
+
+            <div onClick={deleteStory} style={{
+                display: menu ? 'flex' :'none'
+            }} className=" text-sm p-2 w-full gap-1 flex justify-start items-center top-10 right-2 backdrop-blur-sm bg-[#18181859] rounded absolute " >
+            <Icon path={mdiTrashCanOutline} size={0.7} /> <p>Delete story</p> 
+            </div>
+       
+
         </div>
       </div>
 

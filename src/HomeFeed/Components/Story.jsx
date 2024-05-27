@@ -24,9 +24,9 @@ const Story = () => {
   const userData = UserData;
 
   const user = userData?.filter(
-    (d) =>
+    (d) =>d?._document.data.value.mapValue.fields?.story.arrayValue.values.length >0?
       d?._document.data.value.mapValue.fields.story?.arrayValue.values[0]
-        ?.mapValue.fields.STID.stringValue?.length > 0
+        ?.mapValue.fields.STID?.stringValue?.length > 0 : false
   );
 
   const userStory = admin.story.arrayValue.values?.map(
@@ -61,7 +61,7 @@ const Story = () => {
   const otherHasStory = otherStory.filter(
     (d) =>
       d._document.data.value.mapValue.fields.story.arrayValue.values[0]
-        ?.mapValue.fields.STID.stringValue?.length > 0
+        ?.mapValue.fields.STID?.stringValue?.length > 0
   );
   const storyCard = document.getElementById("story_id");
   const storyWidth = storyCard?.clientWidth;
@@ -98,7 +98,7 @@ const Story = () => {
       <div className=" story-holder   ">
         {isDeskTop && otherStory?.length > 1 && (
           <>
-            { ((user.length-(storyWidth/140))+1).toFixed(0) > count&& (
+            { (((user.length+1)-(storyWidth/140))+1).toFixed(0) > count&& (
               <div className=" nextStory   ">
                 <div
                   onClick={() => translateStoryCard("next")}

@@ -8,8 +8,8 @@ const UserCard = ({ data }) => {
   const dispatch = useDispatch();
 
   const UID = data?.UID.stringValue;
-  const STID =
-    data?.story.arrayValue.values[0]?.mapValue.fields?.STID.stringValue;
+  const STID =  data?.story?.arrayValue?.values ? 
+    data?.story?.arrayValue?.values[0]?.mapValue.fields?.STID?.stringValue : []
   const UserName = data.user_name.stringValue;
   const PFID = data?.profile_picture.arrayValue.values[0]?.mapValue.fields.PFID.stringValue
 
