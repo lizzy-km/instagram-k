@@ -74,7 +74,7 @@ const Story = () => {
             <div
               onClick={translateStoryCard}
               className={`rotate-[${
-                otherStory.length * 150 - 300 <= translateX ? "180" : "0"
+                otherStory.length * 150 - 280 <= translateX ? "180" : "0"
               }deg] moveStory`}
             >
               <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>

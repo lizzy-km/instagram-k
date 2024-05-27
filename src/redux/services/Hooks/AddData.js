@@ -92,13 +92,10 @@ const addData = async (colName = "users", uemail = "", username = "",STID) => {
   const postData = {
     PID: shortName + "P" + `${date}`,
     PUID: UID,
-    img_src: [""],
 
     isImg: false,
 
-    vid_src: [
-      "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FStory_Video.mp4?alt=media&token=b28f5198-3080-4168-9283-f85d5e083c20",
-    ],
+    
   };
   // Add a new document in collection "cities" with ID 'LA'
   const collectionRef = collection(firestore, 'story');

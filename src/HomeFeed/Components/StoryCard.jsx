@@ -20,6 +20,8 @@ const StoryCard = ({ translateX }) => {
 
   const adminId = localStorage.getItem("adminId");
 
+  const isImage = admin.story.arrayValue.values[0].mapValue.fields?.isImage.booleanValue
+
   const storyUrl = async () => {
     const urls = await getDownloadURL(ref(storage, storySrc));
     setStoryD(urls);
@@ -83,7 +85,7 @@ const StoryCard = ({ translateX }) => {
         <div className=" relative bg-[#242526] flex flex-col justify-between items-start w-full h-full rounded-md ">
           <div className="h-[100%] bg-[#242526] absolute flex gap-1 justify-start items-center  bg-center object-center    object-cover rounded-md ">
             <>
-              {storyD && (
+              {isImage && (
                 <img
                   className=" cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-md "
                   src={storyD}
@@ -91,7 +93,7 @@ const StoryCard = ({ translateX }) => {
                   srcSet=""
                 />
               )}
-              {storyD && (
+              {!isImage && (
                 <video
                   className=" rounded-md cursor-pointer "
                   ref={videoRef}

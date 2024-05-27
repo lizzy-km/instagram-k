@@ -17,6 +17,7 @@ import { storage } from "../firebase/firebase";
 import UpdateData from "../redux/services/Hooks/UpdateData";
 import { setHasNewStory, setNotHasNewStory } from "../redux/services/authSlice";
 import { useNavigate } from "react-router-dom";
+import checkFileType from "../redux/services/Hooks/CheckFileType";
 const CreateStory = () => {
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState(
@@ -109,7 +110,9 @@ const CreateStory = () => {
 
   const imageFile = imgSrc; // Assuming you have a file input element
 
+
   const [imfurlForUp, setImgUrlUp] = useState();
+  const [isImage,setIsImage] = useState(true)
 
   const storyData = { STID: nick + "ST" + `${imgSrc?.size}` };
 
@@ -119,13 +122,19 @@ const CreateStory = () => {
     const metadata = {
       contentType: "image/jpeg",
     };
+    const fileType = checkFileType(file);
+
+    setIsImage( fileType === "image" ? true : false)
 
     const uploadTask =
       file &&
       (await uploadBytes(storageRef, file)
         .then((data) => {
           console.log(data);
-          UpdateData("story", name, { STID: nick + "ST" + `${fileSize}` });
+          UpdateData("story", name, {
+            STID: nick + "ST" + `${fileSize}`,
+            isImage: fileType === "image" ? true : false,
+          });
           getDownloadURL(data.ref).then((downloadURL) => {
             setImgUrlUp(downloadURL);
             console.log("File available at", downloadURL);
@@ -143,11 +152,13 @@ const CreateStory = () => {
 
     const filePath = `user_story/${UID}/${STID}/${file.name}`;
 
-    file?.name?.length > 0
+    const fileType = checkFileType(file);
+
+    fileType
       ? uploadStory(file, fileSize, STID, filePath).then((data) =>
           console.log(data)
         )
-      : console.log("file doesn't exist");
+      : alert("Your file type doesn't allow to post",fileType);
   };
 
   const navigate = useNavigate();
@@ -158,10 +169,7 @@ const CreateStory = () => {
 
     setTimeout(dispatch(setNotHasNewStory()), 2000);
 
-
-
-    setTimeout(()=> navigate('/loading/'), 1000);
-
+    setTimeout(() => navigate("/loading/"), 1000);
 
     setImgUrlUp("");
   };
@@ -304,16 +312,19 @@ const CreateStory = () => {
             </div>
           ) : (
             <div className=" flex justify-center w-full h-full items-center p-1 rounded ">
-              <img
+              {
+                isImage ? <img
                 className="  h-full object-cover "
                 src={imfurlForUp}
                 alt=""
-              />
+              /> :
               <video
                 className="  h-auto w-auto object-cover "
                 src={imfurlForUp}
                 alt=""
               />
+              }
+             
             </div>
           )}
 
