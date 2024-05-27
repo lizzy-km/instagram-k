@@ -13,6 +13,7 @@ const initialState = {
   isTablet: false,
   isDeskTop: false,
   showStory:false,
+  viewStory:false
 };
 
 const STORAGE_KEY = "Animate";
@@ -83,6 +84,9 @@ export const animateSlice = createSlice({
       state.isTablet = false;
       state.isDeskTop = true;
     },
+    setViewStory:(state,{payload})=>{
+      state.viewStory = payload
+    }
   },
 });
 
@@ -100,6 +104,8 @@ export const {
   isMobile,
   isTablet,
   setShowStory,
-  showStory
+  showStory,
+  viewStory,
+  setViewStory
 } = animateSlice.actions;
 export default animateSlice.reducer;

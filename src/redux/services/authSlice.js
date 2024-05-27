@@ -13,7 +13,9 @@ const initialState = {
   Story:[],
   admin:[],
   adminProfile:[],
-  hasNewStory:false
+  hasNewStory:false,
+  storyId:0,
+  userId:0
   // friend:[]
 };
 
@@ -78,10 +80,16 @@ export const authSlice = createSlice({
 
       setTimeout(setNotHasNewStory(),700)
     },
+    setStoryId:(state, { payload })=> {
+      state.storyId = payload
+    },
+    setUserId:(state, { payload })=> {
+      state.userId = payload
+    }
     
   },
 });
 
-export const { setNotHasNewStory, addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post,addStory,Story,addAdmin,admin,addAdminProfile,adminProfile,setHasNewStory,hasNewStory } =
+export const { userId,setUserId, storyId,setStoryId, setNotHasNewStory, addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post,addStory,Story,addAdmin,admin,addAdminProfile,adminProfile,setHasNewStory,hasNewStory } =
   authSlice.actions;
 export default authSlice.reducer;

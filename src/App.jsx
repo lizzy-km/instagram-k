@@ -29,7 +29,7 @@ import ViewStory from "./HomeFeed/Components/ViewStory";
 function App() {
   const isAuth = useSelector((state) => state.authSlice.isLogin);
 
-  const { width, height, blur, isTablet, isMobile, isDeskTop, showStory } =
+  const { width, height, blur, isTablet, isMobile, isDeskTop, showStory,viewStory } =
     useSelector((state) => state.animateSlice);
 
   let ScreenSize = window.innerWidth;
@@ -142,9 +142,11 @@ function App() {
       >
         <CreateStory />
       </section>
-      {/* <section className=' absolute flex justify-center items-center p-3 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] ' >
+      <section style={{
+        display: viewStory ? 'flex' : 'none'
+      }} className=' absolute flex justify-center items-center p-3 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] ' >
           <ViewStory/>
-      </section> */}
+      </section>
         {isAuth === true ? (
           <Routes>
               

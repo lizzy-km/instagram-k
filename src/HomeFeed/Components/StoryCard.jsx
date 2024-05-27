@@ -2,12 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getStorage, getDownloadURL, ref, listAll } from "firebase/storage";
 import { storage } from "../../firebase/firebase";
-import { addAdminProfile } from "../../redux/services/authSlice";
+import { addAdminProfile, setStoryId } from "../../redux/services/authSlice";
+import { setViewStory } from "../../redux/services/animateSlice";
 
 const StoryCard = ({ translateX }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
+  const dispatch = useDispatch()
   const [count,setCount] = useState(0)
 
   const { UserData, admin, adminProfile,hasNewStory } = useSelector(
@@ -21,6 +23,8 @@ const StoryCard = ({ translateX }) => {
   const adminId = localStorage.getItem("adminId");
 
   const isImage = admin.story?.arrayValue.values[0]?.mapValue.fields?.isImage?.booleanValue
+
+  const STID = admin.story.arrayValue.values[0].mapValue.fields?.STID?.stringValue
 
   const storyUrl = async () => {
     const urls = await getDownloadURL(ref(storage, storySrc));
@@ -76,7 +80,11 @@ const StoryCard = ({ translateX }) => {
 
   if (storyD?.length > 0)
     return (
-      <div
+      <div onClick={()=> {
+        dispatch(setViewStory(true),
+        dispatch(setStoryId(STID))
+      )
+      } }
         style={{
           translate: -translateX,
         }}

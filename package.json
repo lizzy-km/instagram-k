@@ -12,6 +12,7 @@
     "@clerk/clerk-react": "^4.30.7",
     "@iconsans/react": "^1.0.6",
     "@mdi/js": "^7.4.47",
+    "@mdi/react": "^1.6.1",
     "@reduxjs/toolkit": "^2.2.1",
     "axios": "^1.6.8",
     "firebase": "^10.12.1",

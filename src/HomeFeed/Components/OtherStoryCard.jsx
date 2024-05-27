@@ -1,7 +1,9 @@
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { storage } from "../../firebase/firebase";
+import { setViewStory } from "../../redux/services/animateSlice";
+import { setStoryId } from "../../redux/services/authSlice";
 
 const OtherStoryCard = ({ data, translateX }) => {
 
@@ -15,7 +17,7 @@ const OtherStoryCard = ({ data, translateX }) => {
 
 const userStory = user.story.arrayValue.values[0].mapValue.fields
 
-
+   const dispatch = useDispatch()
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -35,6 +37,8 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
   const userActivePf = user?.profile_picture?.arrayValue.values.filter(
     (d) => d.mapValue.fields
   )[0];
+
+  const STID = user.story.arrayValue.values[0].mapValue.fields?.STID?.stringValue
 
   const [storyImgs, setStoryImgs] = useState();
 
@@ -101,7 +105,10 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
   }, [storyImgs]);
 
   if(storyD) return (
-    <div
+    <div onClick={()=> {
+      dispatch(setViewStory(true)),
+      dispatch(setStoryId(STID))
+    }}
       style={{
         translate: -translateX,
       }}
