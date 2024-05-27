@@ -98,7 +98,7 @@ const ViewStory = () => {
         </div>
 
         <div className=" w-[100%] h-auto flex flex-col gap-2 ">
-          {userData?.map((d) => {
+          {user?.map((d) => {
             return (
               <UserCard
                 data={d?._document.data.value.mapValue.fields}
