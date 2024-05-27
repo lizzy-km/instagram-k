@@ -20,7 +20,7 @@ const StoryCard = ({ translateX }) => {
 
   const adminId = localStorage.getItem("adminId");
 
-  const isImage = admin.story.arrayValue.values[0].mapValue.fields?.isImage.booleanValue
+  const isImage = admin.story?.arrayValue.values[0]?.mapValue.fields?.isImage?.booleanValue
 
   const storyUrl = async () => {
     const urls = await getDownloadURL(ref(storage, storySrc));

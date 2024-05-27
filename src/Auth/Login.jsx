@@ -43,6 +43,7 @@ const Login = () => {
       .then(function (user) {
         console.log("User registered successfully!", user);
         addData("users", email, name);
+        setLoginState(true)
       })
       .catch(function (error) {
         console.log("Error registering user:", error);

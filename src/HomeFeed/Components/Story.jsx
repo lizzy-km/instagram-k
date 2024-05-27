@@ -52,7 +52,7 @@ const Story = () => {
   }, []);
 
   const pf = admin?.profile_picture?.arrayValue.values.filter(
-    (d) => d?.mapValue.fields.isActive.booleanValue === true
+    (d) => d?.mapValue.fields
   )[0]; // Check this profile picture is currently use
 
   const [translateX, setTranslateX] = useState(0);

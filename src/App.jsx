@@ -91,7 +91,7 @@ function App() {
   async function getAdminProfileImage() {
 
     const userActivePf = admin?.profile_picture.arrayValue.values.filter(
-      (d) => d.mapValue.fields.isActive.booleanValue === true
+      (d) => d.mapValue.fields
     )[0];
     const adminId = localStorage.getItem("adminId");
 
