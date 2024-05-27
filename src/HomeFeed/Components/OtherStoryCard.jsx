@@ -33,7 +33,7 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
   }, [isPlaying]);
 
   const userActivePf = user?.profile_picture?.arrayValue.values.filter(
-    (d) => d.mapValue.fields.isActive.booleanValue === true
+    (d) => d.mapValue.fields
   )[0];
 
   const [storyImgs, setStoryImgs] = useState();

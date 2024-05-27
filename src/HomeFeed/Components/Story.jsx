@@ -36,7 +36,7 @@ const Story = () => {
   );
 
   const otherStory = userData?.filter(
-    (d) => d._document.data.value.mapValue.fields.story.arrayValue.values
+    (d) => d._document.data.value.mapValue.fields.UID.stringValue !== admin.UID.stringValue
   );
 
   const getData = async () => {
