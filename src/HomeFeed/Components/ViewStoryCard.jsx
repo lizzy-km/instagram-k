@@ -41,7 +41,7 @@ const ViewStoryCard = ({ userData }) => {
 
   useEffect(() => {
     list();
-    setStoryD("");
+    storyId.length > 0 && setStoryD('')
   }, [storyId]);
 
   useEffect(() => {
