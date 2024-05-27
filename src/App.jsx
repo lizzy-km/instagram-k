@@ -24,6 +24,7 @@ import { addAdmin, addAdminProfile } from "./redux/services/authSlice";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { storage } from "./firebase/firebase";
 import Loading from "./Loading/Loading";
+import ViewStory from "./HomeFeed/Components/ViewStory";
 
 function App() {
   const isAuth = useSelector((state) => state.authSlice.isLogin);
@@ -141,6 +142,9 @@ function App() {
       >
         <CreateStory />
       </section>
+      {/* <section className=' absolute flex justify-center items-center p-3 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] ' >
+          <ViewStory/>
+      </section> */}
         {isAuth === true ? (
           <Routes>
               

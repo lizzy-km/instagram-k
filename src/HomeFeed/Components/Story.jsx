@@ -11,14 +11,10 @@ import { setShowStory } from "../../redux/services/animateSlice";
 
 const Story = () => {
   const [plus, setPlus] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const { UserData, Story, admin, adminProfile } = useSelector(
     (state) => state.authSlice
   );
   const dispatch = useDispatch();
-
-  const email = "hannipham@gmail.com";
-  const username = "Kaung Myat Soe";
 
   const createStory = () => {
     setPlus(!plus);
@@ -27,15 +23,20 @@ const Story = () => {
 
   const userData = UserData;
 
-  const user = userData
-    ?.filter((d) => d?._document.data.value.mapValue.fields.story?.arrayValue.values[0]?.mapValue.fields.STID.stringValue?.length >0 )
+  const user = userData?.filter(
+    (d) =>
+      d?._document.data.value.mapValue.fields.story?.arrayValue.values[0]
+        ?.mapValue.fields.STID.stringValue?.length > 0
+  );
 
   const userStory = admin.story.arrayValue.values?.map(
     (d) => d.mapValue.fields
   );
 
   const otherStory = userData?.filter(
-    (d) => d._document.data.value.mapValue.fields.UID.stringValue !== admin.UID.stringValue
+    (d) =>
+      d._document.data.value.mapValue.fields.UID.stringValue !==
+      admin.UID.stringValue
   );
 
   const getData = async () => {
@@ -55,36 +56,71 @@ const Story = () => {
   )[0]; // Check this profile picture is currently use
 
   const [translateX, setTranslateX] = useState(0);
+  const [count, setCount] = useState(0);
 
-  const otherHasStory = otherStory.filter(d => d._document.data.value.mapValue.fields.story.arrayValue.values[0]?.mapValue.fields.STID.stringValue?.length > 0 )
-  const storyCard = document.getElementById('story_id')
-  const storyWidth = storyCard?.clientWidth
-  const translateStoryCard = () => {
-    ((user.length+1) * 150) - storyWidth >= translateX
-      ? setTranslateX(translateX + (user?.length * 150) / (storyWidth/150).toFixed(0))
-      : setTranslateX(0);
+  const otherHasStory = otherStory.filter(
+    (d) =>
+      d._document.data.value.mapValue.fields.story.arrayValue.values[0]
+        ?.mapValue.fields.STID.stringValue?.length > 0
+  );
+  const storyCard = document.getElementById("story_id");
+  const storyWidth = storyCard?.clientWidth;
+
+  const translateStoryCard = (type) => {
+ type === "next"
+      ? (setTranslateX(
+          translateX + (140+(count*10))
+        ))
+      : 
+        setTranslateX(
+          translateX - (140+(count*10))
+        )
+
+    type === 'next' ? setCount(count+1) : setCount(count-1)
   };
 
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
   return (
-    <div id='story_id' className=" story  ">
-     
-     
+    <div id="story_id" className=" story  ">
+      <div className=" absolute hidden z-[99999] bg-slate-100 p-1 " >
+        {
+         ((user.length-(storyWidth/140))+1).toFixed(0) 
+        }
+        {
+         " <->"
+        }
+        {
+          count
+        }
+      </div>
       <div className=" story-holder   ">
         {isDeskTop && otherStory?.length > 1 && (
-          <div className=" nextStory   ">
-            <div
-              onClick={translateStoryCard}
-              className={`rotate-[${
-                ((user.length+1) * 150) - storyWidth  <= translateX ? "180" : "0"
-              }deg] moveStory`}
-            >
-              <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
-              <div className=" absolute bottom-[37%] left-[37%] rotate-[135deg] w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
-            </div>
-          </div>
+          <>
+            { ((user.length-(storyWidth/140))+1).toFixed(0) > count&& (
+              <div className=" nextStory   ">
+                <div
+                  onClick={() => translateStoryCard("next")}
+                  className={`rotate-[0deg] moveStory`}
+                >
+                  <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
+                  <div className=" absolute bottom-[37%] left-[37%] rotate-[135deg] w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
+                </div>
+              </div>
+            )}
+            {0 < count && (
+              <div className=" prevStory   ">
+                <div
+                  onClick={() => translateStoryCard("prev")}
+                  className={`rotate-[180deg] moveStory`}
+                >
+                  <div className=" absolute top-[37%] left-[37%] rotate-45 w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
+                  <div className=" absolute bottom-[37%] left-[37%] rotate-[135deg] w-[30%] h-[2px] bg-[#d4d4d4] rounded-full "></div>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         <div

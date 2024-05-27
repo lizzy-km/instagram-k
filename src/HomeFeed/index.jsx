@@ -43,6 +43,7 @@ const HomeFeed = () => {
       }}
       className=" relative h-screen flex  overflow-y-auto  pt-3 w-[40%] gap-3 flex-col justify-center items-center max-h-screen "
     >
+      
       <Story />
       <div
         style={{
