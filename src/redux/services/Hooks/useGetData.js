@@ -15,7 +15,6 @@ export default async function GetData(colName = "empty") {
     ?.map((d) => d._document)
     ?.map(({ data }) => data?.value?.mapValue?.fields);
 
-   console.log(content);
 
 
   return   content;

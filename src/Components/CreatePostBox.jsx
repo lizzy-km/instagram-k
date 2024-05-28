@@ -162,7 +162,7 @@ const CreatePostBox = () => {
 
   const newStoryAdded = () => {
     dispatch(setHasNewStory());
-    dispatch(setShowStory(false));
+    dispatch(blurOn({blur:false}));
 
     setTimeout(dispatch(setNotHasNewStory()), 2000);
 

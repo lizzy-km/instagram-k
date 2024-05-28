@@ -7,9 +7,11 @@ const PostCard = ({ name, data }) => {
   const [storyImgs, setStoryImgs] = useState();
   const [postImgs, setPostImgs] = useState();
   const [postUrl, setPostUrl] = useState();
-  const [count,setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
-  const { userAvatar,admin } = useSelector((state) => state.authSlice);
+  const { userAvatar, UserData, admin } = useSelector(
+    (state) => state.authSlice
+  );
 
   const imgUrl = async (type) => {
     const urls = await getDownloadURL(
@@ -70,22 +72,20 @@ const PostCard = ({ name, data }) => {
     imgUrl("profile");
   }, [storyImgs]);
 
+  useEffect(() => {
+    imgUrl("post");
+    imgUrl("profile");
+  }, [count]);
 
   useEffect(() => {
-
-
-    imgUrl("post");
-    imgUrl("profile");
-  }, [storyImgs,count]);
-
-  useEffect(()=> {
     list("post");
     list("profile");
+
     imgUrl("post");
     imgUrl("profile");
 
-    setCount(count+1)
-  },[admin])
+    setCount(count + 1);
+  }, [admin, UserData]);
 
   if (hasPostD)
     return (
