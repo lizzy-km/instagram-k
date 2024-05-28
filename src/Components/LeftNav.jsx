@@ -13,7 +13,7 @@ const LeftNav = () => {
       padding:isMobile ? '8px' :'0'
     }} className=" flex w-[30%] justify-start gap-2 items-center left_nav h-full ">
       <NavLink 
-        to={"/"}
+        to={"/loading"}
         className=" cursor-pointer flex rounded-full justify-center items-center "
       >
         <img
