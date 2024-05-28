@@ -138,19 +138,21 @@ const ViewStoryCard = ({ userData }) => {
         <div className=" flex py-1 justify-start items-center ">
           <p className=" p-1 text-center w-full h-full "> {UserName} </p>
         </div>
-        <div className=" p-2 w-[30%] cursor-pointer flex justify-end items-end absolute right-0 ">
-          <Icon
+        <div className=" p-2 w-[30%] cursor-pointer gap-3 flex justify-end items-center absolute right-0 ">
+        {
+            admin?.UID?.stringValue === UID &&<Icon
             onClick={() => setMenu(!menu)}
             className=" cursor-pointer "
             path={mdiDotsVertical}
             size={1}
           />
+        }  
           {!isDeskTop && (
             <div
               onClick={() => {
                 dispatch(setViewStory(false)), dispatch(setStoryId(0));
               }}
-              className=" cursor-pointer bg-[#33333352] rounded-full p-1 "
+              className=" cursor-pointer  rounded-full p-1 "
             >
               <Icon path={mdiWindowClose} size={1} />
             </div>
@@ -161,9 +163,9 @@ const ViewStoryCard = ({ userData }) => {
             style={{
               display: menu ? "flex" : "none",
             }}
-            className=" text-sm p-2 w-full gap-1 flex justify-start items-center top-10 right-2 backdrop-blur-sm bg-[#18181859] rounded absolute "
+            className=" text-sm p-2  w-auto gap-1 flex justify-start items-center top-10 right-[55%] backdrop-blur-sm bg-[#18181859] rounded absolute "
           >
-            <Icon path={mdiTrashCanOutline} size={0.7} /> <p>Delete story</p>
+            <Icon path={mdiTrashCanOutline} size={0.6} /> 
           </div>
         </div>
       </div>

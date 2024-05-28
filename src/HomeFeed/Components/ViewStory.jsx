@@ -33,14 +33,14 @@ const ViewStory = () => {
         ?.mapValue.fields.STID?.stringValue?.length > 0 : false
   );
 
-  const userStory = admin.story?.arrayValue.values?.map(
+  const userStory = admin?.story?.arrayValue.values?.map(
     (d) => d.mapValue.fields
   );
 
   const otherStory = userData?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.UID.stringValue !==
-      admin.UID.stringValue
+      admin?.UID.stringValue
   );
 
   const getData = async () => {

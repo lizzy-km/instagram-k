@@ -9,7 +9,7 @@ const GetAdminData = async () => {
   const data = await getDocs(collection(firestore, `/users/`));
 
   const content = data?.docs
-    ?.filter((d) => d.id === uid)[0]._document.data.value.mapValue.fields
+    ?.filter((d) => d.id === uid)[0]?._document.data.value.mapValue.fields
 
   return content;
 };
