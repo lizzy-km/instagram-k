@@ -1,12 +1,29 @@
+import { blurOn, setArea } from "../redux/services/animateSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { blurOn, setArea } from "../redux/services/animateSlice";
+import {
+  setShowStory,
+  
+  isTablet,
+} from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
-
+import addData from "../redux/services/Hooks/AddData";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { storage } from "../firebase/firebase";
+import UpdateData from "../redux/services/Hooks/UpdateData";
+import { setHasNewStory, setNotHasNewStory } from "../redux/services/authSlice";
+import { useNavigate } from "react-router-dom";
+import checkFileType from "../redux/services/Hooks/CheckFileType";
 const CreatePostBox = () => {
-
   const [option, setOption] = useState("Public");
-  const [icon, setIcon] = useState("https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34");
+  const [icon, setIcon] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34"
+  );
 
   const privacyData = [
     {
@@ -28,8 +45,11 @@ const CreatePostBox = () => {
 
   const dispatch = useDispatch();
   const [privacy, setPrivacy] = useState(false);
-  const Create_post = ['Create_post']
-  const { blur,isMobile } = useSelector((state) => state.animateSlice);
+  const Create_post = ["Create_post"];
+  const { blur, isMobile } = useSelector((state) => state.animateSlice);
+  const { admin } = useSelector((state) => state.authSlice);
+
+
 
   useEffect(() => {
     blur === false
@@ -47,6 +67,7 @@ const CreatePostBox = () => {
   }, []);
 
   const [detail, setDetail] = useState("");
+  const [imgSrc, setImgSrc] = useState();
   const [inputHeight, setInputHeight] = useState(50);
 
   const handleKeyPress = (e) => {
@@ -62,13 +83,99 @@ const CreatePostBox = () => {
     }
   };
 
+  const name = admin?.user_name?.stringValue;
+  const email = admin?.email?.stringValue;
+
+  const bio = "It's me " + name;
+  const UID = name?.replace(/ /g, "_") + "Official";
+
+  function getFirstChars() {
+    if (!name) return []; // Handle empty string case
+
+    const words = name?.split(" ");
+    const firstChars = [];
+    for (const word of words) {
+      firstChars.push(word[0]);
+    }
+    return firstChars;
+  }
+
+  const firstCharacters = getFirstChars();
+
+  const nick =
+    firstCharacters.length > 0
+      ? firstCharacters?.reduce((prev, curr) => prev + curr)
+      : null;
+
+
+
+
+  const [imfurlForUp, setImgUrlUp] = useState();
+  const [isImage, setIsImage] = useState(true);
+
+
+  const uploadStory = async (file, fileSize, STID, filePath) => {
+    const storageRef = file && ref(storage, filePath); // Replace with your desired file path
+
+    
+    const fileType = checkFileType(file);
+
+    setIsImage(fileType === "image" ? true : false);
+
+    const uploadTask =
+      file &&
+      (await uploadBytes(storageRef, file)
+        .then((data) => {
+          console.log(data);
+          UpdateData("user_posts", name, {
+            PID: nick + "P" + `${fileSize}`,
+            isImage: fileType === "image" ? true : false,
+            caption:detail?.length > 0 ? detail :false
+          });
+          getDownloadURL(data.ref).then((downloadURL) => {
+            setImgUrlUp(downloadURL);
+            console.log("File available at", downloadURL);
+          });
+        })
+        .catch((error) => console.log(error)));
+  };
+
+  const CreateNewStory = async (e) => {
+    const file = e.target.files[0];
+
+    const fileSize = e.target.files[0]?.size;
+
+    const STID = nick + "P" + `${fileSize}`;
+
+    const filePath = `user_post/${UID}/${STID}/${file.name}`;
+
+    const fileType = checkFileType(file);
+
+    fileType
+      ? uploadStory(file, fileSize, STID, filePath).then((data) =>
+          console.log(data)
+        )
+      : alert("Your file type doesn't allow to post", fileType);
+  };
+
+  const navigate = useNavigate();
+
+  const newStoryAdded = () => {
+    dispatch(setHasNewStory());
+    dispatch(setShowStory(false));
+
+    setTimeout(dispatch(setNotHasNewStory()), 2000);
+
+    setTimeout(() => navigate("/loading/"), 1000);
+
+    setImgUrlUp("");
+  };
   return (
     <div
       id="Create_post"
       style={{
         visibility: blur === true ? "visible" : "hidden",
-        width: isMobile ? '95%' :'70%'
-
+        width: isMobile ? "95%" : "70%",
       }}
       className=" text-[#d4d4d4] p-2 Create_post flex flex-col justify-between items-center rounded-md bg-[#18191a]  h-[75%] overflow-y-auto max-h-[75%] "
     >
@@ -181,45 +288,76 @@ const CreatePostBox = () => {
                   What's on your mind, Kaung?
                 </div>
               )}
-
-              
             </div>
           </div>
 
-          <div className=" self-end h-[75%] flex w-full bg-[#111111]  rounded  ">
-            <div className="flex items-center justify-center w-full">
-              <label
-                for="dropzone-file"
-                className="flex flex-col items-center justify-center w-[80%] h-[80%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
-              >
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <svg
-                    className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 16"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+          <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
+          {!imfurlForUp ? (
+            <div className=" cursor-pointer self-end h-[75%] flex w-full bg-[#111111]  rounded  ">
+              <div className="flex items-center justify-center w-full">
+                <label
+                  for="dropzone-file"
+                  className="flex flex-col items-center justify-center w-[80%] h-[80%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
+                >
+                  <div className="flex flex-col relative items-center justify-center pt-5 pb-6">
+                    <svg
+                      className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 16"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                      />
+                    </svg>
+                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span className="font-semibold">Click to upload</span>
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Photo / Video{" "}
+                    </p>
+                    <input
+                      onChange={CreateNewStory}
+                      id="dropzone-file"
+                      type="file"
+                      className=" absolute w-full opacity-0 h-full "
                     />
-                  </svg>
-                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">Click to upload</span> or
-                    drag and drop
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Photo / Video{" "}
-                  </p>
-                </div>
-                <input id="dropzone-file" type="file" className="hidden" />
-              </label>
+                  </div>
+                </label>
+              </div>
+            </div>
+          ) : (
+            <div className=" flex justify-center w-full h-full items-center p-1 rounded ">
+              {
+                isImage ? <img
+                className="  h-full object-cover "
+                src={imfurlForUp}
+                alt=""
+              /> :
+              <video
+                className="  h-auto w-auto object-cover "
+                src={imfurlForUp}
+                alt=""
+              />
+              }
+             
+            </div>
+          )}
+
+          <div className=" flex justify-end items-center w-full h-[50px] p-1 ">
+            <div
+              onClick={newStoryAdded}
+              className=" rounded justify-center items-center bg-[#0866ff] cursor-pointer px-4 py-1 "
+            >
+              Submit
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

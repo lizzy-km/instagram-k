@@ -6,13 +6,18 @@ const PostCard = ({name,data}) => {
 
     const [userProfile,setUserProfile] = useState()
     const [storyImgs, setStoryImgs] = useState();
+    const [postImgs,setPostImgs] = useState()
+    const [postUrl,setPostUrl] = useState()
     const { userAvatar } = useSelector(
         (state) => state.authSlice
       );
 
-  const imgUrl = async () => {
-    const urls = await getDownloadURL(ref(storage, storyImgs));
-    setUserProfile(urls);
+      console.log(postUrl);
+
+
+  const imgUrl = async (type) => {
+    const urls = await getDownloadURL(ref(storage, type === 'profile' ? storyImgs : type ==='post'? postImgs:null ));
+   type === 'profile' ?  setUserProfile(urls) : type ==='post'? setPostUrl(urls) :null
   };
 
   const storageRef = ref(
@@ -20,23 +25,32 @@ const PostCard = ({name,data}) => {
     `user_photo/${data?.UID?.stringValue}/${data?.profile_picture.arrayValue.values[0]?.mapValue.fields.PFID?.stringValue}`
   );
 
-  const list = async () => {
-    const not = await listAll(storageRef);
+  const postRef = ref(
+    storage,
+    `user_post/${data?.UID?.stringValue}/${data?.post.arrayValue.values[0]?.mapValue.fields.PID?.stringValue}`
+  );
+
+  const list = async (type) => {
+    const not = await listAll( type =='profile'? storageRef: type=== 'post'? postRef :null);
 
     for (let ii = 0; ii < not?.items.length; ii++) {
-      setStoryImgs(not.items[ii]?.fullPath);
+     type === 'profile' ?  setStoryImgs(not.items[ii]?.fullPath) : type === 'post' ? setPostImgs(not.items[ii]?.fullPath) :null
     }
   };
 
   useEffect(() => {
-    list();
+    list('post');
+    list('profile');
+
   }, []);
 
   useEffect(() => {
-    imgUrl();
+    imgUrl('post');
+    imgUrl('profile');
+
   }, [storyImgs]);
 
-
+console.log(data);
   return (
     <section  className=' flex flex-col p-2 gap-2 rounded-md bg-[#212121] w-full ' >  
             <div className=' w-full h-[50px] p-1 flex justify-between items-center ' >
@@ -53,6 +67,14 @@ const PostCard = ({name,data}) => {
                 </div>
               </div>
             </div>
+
+            <p className=' p-1 ' >
+                {
+                    data?.post.arrayValue.values[0]?.mapValue.fields.caption?.stringValue
+                }
+            </p>
+
+            <img className=' w-full '  src={postUrl} alt="" srcset="" />
           </section>
   )
 }

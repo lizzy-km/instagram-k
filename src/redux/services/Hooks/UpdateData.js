@@ -10,7 +10,7 @@ import {
     updateDoc,
   } from "firebase/firestore";
   import { firestore } from "../../../firebase/firebase";
-const UpdateData = async(colName='story',username='',storyData) => {
+const UpdateData = async(colName='story',username='',Data) => {
     function getFirstChars() {
         if (!username) return []; // Handle empty string case
     
@@ -46,18 +46,23 @@ const UpdateData = async(colName='story',username='',storyData) => {
       const userRef = doc(firestore, '/users' , `/${UID}/`);
       const udRef = doc(firestore, 'users' ,`${UID}`);
     
-      if (colName === "user_posts"){
-        await addDoc(postRef, postData).catch((error) => console.log(error));
+      if (colName === "user_posts") await updateDoc(userRef, {
+            "post":[
+                Data
+            ]
+        }).catch((error) => console.log(error));
     
-    }
+    
+    if (colName === "story") await updateDoc(userRef, {
+            "story" :[
+              Data
+              ]
+                  
+           }).then((data)=>console.log(data)).catch((error) => console.log(error)); 
+    
      
         
-         await updateDoc(userRef, {
-          "story" :[
-            storyData
-            ]
-                
-         }).then((data)=>console.log(data)).catch((error) => console.log(error));
+      
     
     
 }
