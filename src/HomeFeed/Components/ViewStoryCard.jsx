@@ -163,6 +163,7 @@ const ViewStoryCard = ({ userData }) => {
               onClick={deleteStory}
               style={{
                 display: menu ? "flex" : "none",
+                right: isMobile ? '55%' :'10px'
               }}
               className=" text-sm p-2  w-auto gap-1 flex justify-start items-center top-10 right-[55%] backdrop-blur-sm bg-[#18181859] rounded absolute "
             >
