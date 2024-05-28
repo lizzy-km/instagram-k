@@ -66,14 +66,16 @@ const Story = () => {
   const storyCard = document.getElementById("story_id");
   const storyWidth = storyCard?.clientWidth;
 
+  
+
   const translateStoryCard = (type) => {
  type === "next"
       ? (setTranslateX(
-          translateX + (140+(count*10))
+          translateX + 157
         ))
       : 
         setTranslateX(
-          translateX - (140+(count*10))
+          translateX - 157
         )
 
     type === 'next' ? setCount(count+1) : setCount(count-1)
@@ -84,9 +86,9 @@ const Story = () => {
   );
   return (
     <div id="story_id" className=" story  ">
-      <div className=" absolute hidden z-[99999] bg-slate-100 p-1 " >
+      <div  className=" absolute hidden top-0  z-[99999] text-black bg-slate-100 p-1 " >
         {
-         ((user.length-(storyWidth/140))+1).toFixed(0) 
+         translateX
         }
         {
          " <->"
@@ -94,11 +96,17 @@ const Story = () => {
         {
           count
         }
+       {  " <->"}
+        {
+          storyWidth
+        }
       </div>
-      <div className=" story-holder   ">
+      <div style={{
+        overflowX: isMobile ? 'scroll' :'hidden'
+      }} className=" story-holder   ">
         {isDeskTop && otherStory?.length > 1 && (
           <>
-            { (((user.length+1)-(storyWidth/140))+1).toFixed(0) > count&& (
+            { (((user.length+1)-(storyWidth/157))).toFixed(0) > count&& (
               <div className=" nextStory   ">
                 <div
                   onClick={() => translateStoryCard("next")}
@@ -133,7 +141,7 @@ const Story = () => {
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
               {pf && (
                 <img
-                  className=" cursor-pointer hover:scale-105  h-[100%] w-[140px]  bg-center object-center    object-cover rounded-t-md "
+                  className=" cursor-pointer hover:scale-105  h-[100%] w-[145px]  bg-center object-center    object-cover rounded-t-md "
                   src={adminProfile}
                   alt="profile_picture"
                   srcSet=""

@@ -88,7 +88,7 @@ const StoryCard = ({ translateX }) => {
         style={{
           translate: -translateX,
         }}
-        className="  tracking-wider flex min-w-[140.6px] h-full bg-[#242526] rounded-md "
+        className="  tracking-wider flex min-w-[145px] h-full bg-[#242526] rounded-md "
       >
         <div className=" relative bg-[#242526] flex flex-col justify-between items-start w-full h-full rounded-md ">
           <div className="h-[100%] bg-[#242526] absolute flex gap-1 justify-start items-center  bg-center object-center    object-cover rounded-md ">
