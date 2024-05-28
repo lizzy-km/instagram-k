@@ -6,6 +6,9 @@ const PostCard = ({name,data}) => {
 
     const [userProfile,setUserProfile] = useState()
     const [storyImgs, setStoryImgs] = useState();
+    const { userAvatar } = useSelector(
+        (state) => state.authSlice
+      );
 
   const imgUrl = async () => {
     const urls = await getDownloadURL(ref(storage, storyImgs));
@@ -14,7 +17,7 @@ const PostCard = ({name,data}) => {
 
   const storageRef = ref(
     storage,
-    `user_photo/${data?.UID?.stringValue}/${data?.profile_picture.arrayValue.values[0].mapValue.fields.PFID?.stringValue}`
+    `user_photo/${data?.UID?.stringValue}/${data?.profile_picture.arrayValue.values[0]?.mapValue.fields.PFID?.stringValue}`
   );
 
   const list = async () => {
@@ -39,7 +42,7 @@ const PostCard = ({name,data}) => {
             <div className=' w-full h-[50px] p-1 flex justify-between items-center ' >
               <div className=' w-auto h-fulll flex justify-start items-start ' >
                 <div className=' rounded-full  bg-[#333333] ' >
-                    <img className=' w-[40px] p-1 h-[40px] rounded-full object-cover cursor-pointer ' src={userProfile} alt="" srcset="" />
+                    <img className=' w-[40px] p-1 h-[40px] rounded-full object-cover cursor-pointer ' src={userProfile?.length > 0 ? userProfile :userAvatar} alt="" srcset="" />
                 </div>
                 <div className=' cursor-pointer px-2 py-1 w-auto justify-start items-start text-sm h-full ' >
                     <p>

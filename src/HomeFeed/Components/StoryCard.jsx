@@ -12,7 +12,7 @@ const StoryCard = ({ translateX }) => {
   const dispatch = useDispatch()
   const [count,setCount] = useState(0)
 
-  const { UserData, admin, adminProfile,hasNewStory } = useSelector(
+  const { UserData, admin, adminProfile,hasNewStory,userAvatar } = useSelector(
     (state) => state.authSlice
   );
 
@@ -96,7 +96,7 @@ const StoryCard = ({ translateX }) => {
               {isImage && (
                 <img
                   className=" cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-md "
-                  src={storyD}
+                  src={storyD?.length > 0 ? storyD:userAvatar}
                   alt="story_picture"
                   srcSet=""
                 />

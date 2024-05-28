@@ -12,7 +12,7 @@ const CreatePost = () => {
     (state) => state.animateSlice
   );
 
-  const { adminProfile } = useSelector(
+  const { adminProfile,userAvatar } = useSelector(
     (state) => state.authSlice
   );
 
@@ -24,7 +24,7 @@ const CreatePost = () => {
             <div className=" flex cursor-pointer  rounded-full  bg-[#333333] ">
               <img
                 className=" hover:brightness-75 rounded-full object-cover w-[40px] h-[40px] p-[3px]"
-                src={adminProfile}
+                src={adminProfile?.length > 0 ? adminProfile:userAvatar}
                 alt=""
                 srcSet=""
               />

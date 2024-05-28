@@ -10,7 +10,7 @@ const OtherStoryCard = ({ data, translateX }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
-  const { UserData, admin,Story } = useSelector((state) => state.authSlice);
+  const { userAvatar } = useSelector((state) => state.authSlice);
 
   const user =data?._document.data.value.mapValue.fields
 
@@ -119,7 +119,7 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
         {
                 storyD && <img
                 className=" cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-md "
-                src={storyD}
+                src={storyD?.length > 0 ? storyD:userAvatar}
                 alt="story_picture"
                 srcSet=""
               />

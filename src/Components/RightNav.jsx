@@ -81,7 +81,7 @@ const RightNav = () => {
   );
   const { adminProfile } = useSelector((state) => state.authSlice);
 
-  const { admin } = useSelector((state) => state.authSlice);
+  const { admin,userAvatar } = useSelector((state) => state.authSlice);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -145,7 +145,7 @@ const RightNav = () => {
                     opacity: account === true ? "0.5" : "1",
                   }}
                   className=" cursor-pointer hover:brightness-75 w-[40px] h-[40px] p-[3px]  bg-center object-center    object-cover rounded-full "
-                  src={adminProfile}
+                  src={adminProfile?.length > 0 ? adminProfile:userAvatar}
                   alt="profile_picture"
                   srcSet=""
                 />
@@ -237,8 +237,7 @@ const RightNav = () => {
                 >
                   <img
                     className=" hover:brightness-75  rounded-full object-cover w-[40px] h-[40px] p-[3px] "
-                    src={adminProfile}
-                    alt=""
+                    src={adminProfile?.length > 0 ? adminProfile:userAvatar}                    alt=""
                     srcSet=""
                   />
                   <p className="font-[500] text-[16px] tracking-wide">

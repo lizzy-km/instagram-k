@@ -15,7 +15,8 @@ const initialState = {
   adminProfile:[],
   hasNewStory:false,
   storyId:0,
-  userId:0
+  userId:0,
+  userAvatar:'https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2Fe8d7d05f392d9c2cf0285ce928fb9f4a.jpeg?alt=media&token=43dffced-a38e-40cf-9387-6a7071e40baa'
   // friend:[]
 };
 

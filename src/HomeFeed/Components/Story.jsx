@@ -11,7 +11,7 @@ import { setShowStory } from "../../redux/services/animateSlice";
 
 const Story = () => {
   const [plus, setPlus] = useState(false);
-  const { UserData, Story, admin, adminProfile } = useSelector(
+  const { UserData, Story, admin, adminProfile,userAvatar } = useSelector(
     (state) => state.authSlice
   );
   const dispatch = useDispatch();
@@ -142,7 +142,7 @@ const Story = () => {
               {pf && (
                 <img
                   className=" cursor-pointer hover:scale-105  h-[100%] w-[145px]  bg-center object-center    object-cover rounded-t-md "
-                  src={adminProfile}
+                  src={adminProfile?.length > 0 ? adminProfile:userAvatar}
                   alt="profile_picture"
                   srcSet=""
                 />
