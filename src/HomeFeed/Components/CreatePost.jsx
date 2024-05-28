@@ -12,10 +12,19 @@ const CreatePost = () => {
     (state) => state.animateSlice
   );
 
-  const { adminProfile,userAvatar } = useSelector(
+  const { adminProfile,userAvatar,admin } = useSelector(
     (state) => state.authSlice
   );
-
+  function getFirstWord(text) {
+    if (!text) return ""; // Handle empty string case
+  
+    const words = text.split(' ');
+    return words[0] || ""; // Return first word or empty string if no words found
+  }
+  
+  // Example usage
+  const text = admin?.user_name?.stringValue;
+  const firstWord = getFirstWord(text);
   return (
     <>
       <div className=" tracking-wider  flex w-full my-2 p-2 min-h-[60px] bg-[#242526] rounded-md  ">
@@ -32,7 +41,7 @@ const CreatePost = () => {
             <div className=" flex justify-start items-center w-[93%] rounded-full bg-[#333333] h-[40px] ">
               <input
                 onClick={() => createPost()}
-                placeholder="What's on your mind, Kaung?"
+                placeholder={`What's on your mind, ${firstWord}?`}
                 className=" outline-none bg-transparent px-4 text-[#d4d4d4] w-full rounded-full h-[40px] "
                 type="text"
                 name=""
