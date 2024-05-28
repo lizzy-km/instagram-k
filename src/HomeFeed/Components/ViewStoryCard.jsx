@@ -1,11 +1,13 @@
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { firestore, storage } from "../../firebase/firebase";
 import Icon from "@mdi/react";
-import { mdiDotsVertical, mdiTrashCanOutline } from "@mdi/js";
+import { mdiDotsVertical, mdiTrashCanOutline, mdiWindowClose } from "@mdi/js";
 import { deleteField, doc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { setViewStory } from "../../redux/services/animateSlice";
+import { setStoryId } from "../../redux/services/authSlice";
 
 const ViewStoryCard = ({ userData }) => {
   const { storyId, admin } = useSelector((state) => state.authSlice);
@@ -50,7 +52,6 @@ const ViewStoryCard = ({ userData }) => {
     list();
     storyId?.length > 0 && setStoryD("");
   }, [storyId]);
-
 
   useEffect(() => {
     list();
@@ -110,8 +111,18 @@ const ViewStoryCard = ({ userData }) => {
       .catch((error) => console.log(error));
   };
 
+  const dispatch = useDispatch();
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
+
   return (
-    <div className="  h-full relative w-[45%] rounded-md flex justify-start items-start ">
+    <div
+      style={{
+        width: isDeskTop ? "45%" : "100%",
+      }}
+      className="  z-[9999] h-full relative  rounded-md flex justify-start items-start "
+    >
       <div
         className={` z-[99] relative rounded-t-md backdrop-brightness-[80px] bg-[#21212145] backdrop-blur   flex w-[100%]  gap-3 p-2 `}
       >
@@ -134,6 +145,16 @@ const ViewStoryCard = ({ userData }) => {
             path={mdiDotsVertical}
             size={1}
           />
+          {!isDeskTop && (
+            <div
+              onClick={() => {
+                dispatch(setViewStory(false)), dispatch(setStoryId(0));
+              }}
+              className=" cursor-pointer bg-[#33333352] rounded-full p-1 "
+            >
+              <Icon path={mdiWindowClose} size={1} />
+            </div>
+          )}
 
           <div
             onClick={deleteStory}

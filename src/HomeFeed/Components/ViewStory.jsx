@@ -83,33 +83,40 @@ const ViewStory = () => {
   return (
     <div className=" flex justify-start items-center p-2 w-full h-full ">
 
-      <div className=" w-[25%] justify-start items-start h-full flex flex-col gap-2 ">
-        <div className=" w-full h-[65px] flex justify-between p-2 items-center ">
-          <div
-            onClick={() =>{ dispatch(setViewStory(false)),
-                dispatch(setStoryId(0))
-             }}
-            className=" cursor-pointer bg-[#333333] rounded-full p-1 "
-          >
-            <Icon path={mdiWindowClose} size={1} />
-          </div>
-
-          <p className=" text-2xl font-medium tracking-wider ">Stories</p>
-        </div>
-
-        <div className=" w-[100%] h-auto flex flex-col gap-2 ">
-          {user?.map((d) => {
-            return (
-              <UserCard
-                data={d?._document.data.value.mapValue.fields}
-                key={d._document.data.value.mapValue.fields.UID.stringValue}
-              />
-            );
-          })}
-        </div>
+{
+    isDeskTop &&  <div className="  justify-start items-start h-full flex flex-col gap-2 ">
+    <div className=" w-full h-[65px] flex justify-between p-2 items-center ">
+      <div
+        onClick={() =>{ dispatch(setViewStory(false)),
+            dispatch(setStoryId(0))
+         }}
+        className=" cursor-pointer bg-[#333333] rounded-full p-1 "
+      >
+        <Icon path={mdiWindowClose} size={1} />
       </div>
 
-      <div className=" flex justify-center items-center w-[60%] h-full p-2 backdrop-brightness-50 backdrop-blur " >
+      <p className=" text-2xl font-medium tracking-wider ">Stories</p>
+    </div>
+
+   {
+    !isMobile && <div className=" w-[100%] h-auto flex flex-col gap-2 ">
+    {user?.map((d) => {
+      return (
+        <UserCard
+          data={d?._document.data.value.mapValue.fields}
+          key={d._document.data.value.mapValue.fields.UID.stringValue}
+        />
+      );
+    })}
+  </div>
+   } 
+  </div>
+}
+     
+
+      <div style={{
+        width: isDeskTop ? '60%' : '100%'
+      }} className=" flex justify-center items-center  h-full p-2 backdrop-brightness-50 backdrop-blur " >
           <ViewStoryCard userData={userData} />
       </div>
 

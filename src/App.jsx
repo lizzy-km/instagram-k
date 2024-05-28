@@ -138,7 +138,7 @@ function App() {
           height: showStory === true ? "100vh" : "0%",
           alignItems: isMobile ? "start" : "center",
         }}
-        className={`flex  py-3 overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+        className={`flex  py-10 overflow-hidden justify-center z-[9999999] absolute top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
       >
         <CreateStory />
       </section>

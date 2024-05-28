@@ -117,6 +117,8 @@ const RightNav = () => {
 
   const fullWidth = window.innerWidth
 
+  console.log(fullWidth);
+
 
 
   useEffect(() => {}, []);
@@ -130,7 +132,7 @@ const RightNav = () => {
         alignItems: isDeskTop ? "center" : "end",
         position: isMobile ? 'relative' : 'unset'
       }}
-      className=" h-full z-[999999] flex justify-end items-center "
+      className=" h-full z-[99] flex justify-end items-center "
     >
       <div
         style={{
@@ -223,7 +225,7 @@ const RightNav = () => {
             style={{
               visibility: account === true ? "visible" : "hidden",
               height: account === true ? 'auto' : "0vh",
-              width: account === true ? isMobile === true ? fullWidth+'px' : '100%' : '1000%'
+              width: account === true ? isMobile  ? fullWidth+'px' : '100%' : '100%'
               
             }}
             className= {`Account flex w-full   bg-[#212121] rounded-[${isMobile ? '0':'6'}px]`} 
@@ -285,6 +287,7 @@ const RightNav = () => {
             className= {`Menu flex w-full   bg-[#212121] rounded-[${isMobile ? '0':'6'}px]`} 
           ></div>
         </section>
+
       </div>
     </section>
   );
