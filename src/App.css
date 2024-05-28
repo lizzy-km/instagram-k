@@ -73,7 +73,7 @@
   @apply flex justify-center items-center h-full px-2 absolute right-[-1%] z-[999];
 }
 .prevStory {
-  @apply flex justify-center items-center h-full px-2 absolute left-[1%] z-[998999];
+  @apply flex justify-center items-center h-full px-2 absolute left-[1%] z-[999];
 }
 .moveStory {
   @apply cursor-pointer relative flex justify-center items-center w-[35px] h-[35px] rounded-full bg-[#333333];
