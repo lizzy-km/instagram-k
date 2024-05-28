@@ -34,7 +34,7 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
     }
   }, [isPlaying]);
 
-  const userActivePf = user?.profile_picture?.arrayValue.values.filter(
+  const userActivePf = user?.profile_picture?.arrayValue.values?.filter(
     (d) => d.mapValue.fields
   )[0];
 
