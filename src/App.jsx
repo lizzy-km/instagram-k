@@ -118,7 +118,7 @@ function App() {
   },[admin])
 
   return (
-    <section className=" bg-[#18191a] overflow-hidden w-full flex flex-col justify-start items-center h-screen ">
+    <section className=" bg-main relative overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen ">
     
       <BrowserRouter>
         {isAuth === true && <NavBar />}
@@ -147,7 +147,9 @@ function App() {
       }} className=' absolute flex justify-center items-center p-3 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] ' >
           <ViewStory/>
       </section>
-        {isAuth === true ? (
+
+      <section className=" w-full  absolute  h-auto overflow-hidden  pt-[85px]  backdrop-blur-md bg-[#21212199] items-start flex justify-center " >
+      {isAuth === true ? (
           <Routes>
               
             <Route exact path="/*" element={<HomeFeed />} />
@@ -164,6 +166,8 @@ function App() {
             <Route exact path="/*" element={<Login />} />
           </Routes>
         )}
+      </section>
+    
       </BrowserRouter>
     </section>
   );

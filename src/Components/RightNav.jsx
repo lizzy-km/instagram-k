@@ -136,7 +136,7 @@ const RightNav = () => {
         >
           <div
             onClick={accountSetting}
-            className=" bg-[#212121] flex justify-between items-center w-auto h-full "
+            className=" bg-[#21212171] rounded-full flex justify-between items-center w-auto h-full "
           >
             <div className=" relative cursor-pointer flex  rounded-full  bg-[#333333] ">
               {!isLoading && (
@@ -151,7 +151,7 @@ const RightNav = () => {
                 />
               )}
 
-              <div className=" bg-[#333333] cursor-pointer rounded-full absolute bottom-0 right-0 z-[99]  ">
+              <div className=" backdrop-blur bg-[#3333334b] cursor-pointer rounded-full absolute bottom-0 right-0 z-[99]  ">
                 <img
                   style={{
                     rotate: account === true ? "180deg" : "0deg",
@@ -168,7 +168,7 @@ const RightNav = () => {
 
           <div
             onClick={notification}
-            className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] bg-[#333333] "
+            className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
           >
             <img
               style={{
@@ -182,7 +182,7 @@ const RightNav = () => {
           </div>
           <div
             onClick={messengerShow}
-            className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[3px] bg-[#333333] "
+            className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[3px] backdrop-blur-md bg-[#33333347] "
           >
             <img
               style={{
@@ -196,7 +196,7 @@ const RightNav = () => {
           </div>
           <div
             onClick={menuShow}
-            className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] bg-[#333333] "
+            className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
           >
             <img
               style={{
@@ -227,13 +227,13 @@ const RightNav = () => {
                       : "100%"
                     : "100%",
               }}
-              className={`Account flex w-full   bg-[#212121] rounded-[${
-                isMobile ? "0" : "6"
+              className={`Account flex w-full  backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
+                isMobile ? "0" : "8"
               }px]`}
             >
               <div className=" w-full h-full flex flex-col p-2 justify-start items-start gap-2 ">
                 <div
-                  className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#333333] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}
+                  className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#3333336d] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}
                 >
                   <img
                     className=" hover:brightness-75  rounded-full object-cover w-[40px] h-[40px] p-[3px] "
@@ -250,7 +250,7 @@ const RightNav = () => {
                     localStorage.clear();
                     Cookies.remove("adminData");
                   }}
-                  className=" text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#333333] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center "
+                  className=" text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#33333364] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center "
                 >
                   <p className=" hover:text-red-600 ">Logout</p>
                 </Link>
@@ -269,7 +269,7 @@ const RightNav = () => {
                       : "100%"
                     : 0,
               }}
-              className={`Noti flex w-full   bg-[#212121] rounded-[${
+              className={`Noti flex w-full   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
                 isMobile ? "0" : "6"
               }px]`}
             ></div>
@@ -286,7 +286,7 @@ const RightNav = () => {
                       : "100%"
                     : 0,
               }}
-              className={`Messenger flex w-full   bg-[#212121] rounded-[${
+              className={`Messenger flex w-full   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
                 isMobile ? "0" : "6"
               }px]`}
             ></div>
@@ -303,7 +303,7 @@ const RightNav = () => {
                       : "100%"
                     : 0,
               }}
-              className={`Menu flex w-full   bg-[#212121] rounded-[${
+              className={`Menu flex w-full   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
                 isMobile ? "0" : "6"
               }px]`}
             ></div>

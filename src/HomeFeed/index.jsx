@@ -41,7 +41,7 @@ const HomeFeed = () => {
           ? "40%"
           : "100%",
       }}
-      className=" relative h-screen flex  overflow-y-auto  pt-3 w-[40%] gap-3 flex-col justify-center items-center max-h-screen "
+      className=" relative h-auto flex  bg-transparent    p-0 w-[40%] gap-3 flex-col justify-start items-start  "
     >
       
       <Story />
@@ -55,10 +55,14 @@ const HomeFeed = () => {
             ? "100%"
             : "100%",
         }}
-        className=" absolute w-full top-[270px] flex flex-col gap-6 "
+        className="  w-full h-auto top-[270px] flex flex-col gap-6 "
       >
         <CreatePost />
         <Post />
+
+        <div className=" w-full h-[200px] " >
+
+        </div>
       </div>
     </div>
   );
