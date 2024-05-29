@@ -18,7 +18,7 @@ const LeftNav = () => {
       >
         <img
           className=" h-[40px] w-[40px] object-cover "
-          src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FLogo.svg?alt=media&token=0dca3291-3542-46ff-9d82-d0a8e2efc119"
+          src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FLogo.svg?alt=media&token=e93a02de-9b36-48e1-a74c-cd7af8dea71a"
           alt=""
         />
       </NavLink>

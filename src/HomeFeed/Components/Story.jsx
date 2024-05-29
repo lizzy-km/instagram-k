@@ -156,7 +156,7 @@ const Story = () => {
                   style={{
                     rotate: plus === true ? "180deg" : "0deg",
                   }}
-                  className=" cursor-pointer flex justify-center items-center relative rounded-full w-full h-full bg-[#0866ff] "
+                  className=" cursor-pointer flex justify-center items-center relative rounded-full w-full h-full bg-[#ca3e47] "
                 >
                   <div className=" w-[50%] rounded-full h-[2px] bg-slate-200 "></div>
                   <div className=" absolute w-[2px] rounded-full h-[50%] bg-slate-200 "></div>

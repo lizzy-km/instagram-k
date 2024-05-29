@@ -112,13 +112,13 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
       style={{
         translate: -translateX,
       }}
-      className="  tracking-wider flex min-w-[145px] h-full bg-[#242526] rounded-md "
+      className="  tracking-wider flex min-w-[145px] h-full bg-[#525252] rounded-md "
     >
       <div className=" relative flex flex-col justify-between items-start w-full h-full rounded-md ">
         <div className="h-[100%] absolute  bg-center object-center    object-cover rounded-md ">
         {
                 storyD && <img
-                className=" cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] h-[100%]  bg-center object-center    object-cover rounded-md "
+                className=" cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-[100%] h-[100%]  bg-center object-center    object-cover rounded-md "
                 src={storyD?.length > 0 ? storyD:userAvatar}
                 alt="story_picture"
                 srcSet=""
@@ -143,7 +143,7 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
         </div>
 
         <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  ">
-          <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#0866ff] ">
+          <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#CA3E47] ">
             {user?.profile_picture?.arrayValue.values.map((d) => {
               return (
                 <>

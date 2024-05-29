@@ -2,6 +2,7 @@ import { getDownloadURL, listAll, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { storage } from "../../firebase/firebase";
+import { NavLink } from "react-router-dom";
 const PostCard = ({ name, data }) => {
   const [userProfile, setUserProfile] = useState();
   const [storyImgs, setStoryImgs] = useState();
@@ -9,7 +10,7 @@ const PostCard = ({ name, data }) => {
   const [postUrl, setPostUrl] = useState();
   const [count, setCount] = useState(0);
 
-  const { userAvatar, UserData, admin } = useSelector(
+  const { userAvatar, UserData, admin,hasNewStory } = useSelector(
     (state) => state.authSlice
   );
 
@@ -73,11 +74,6 @@ const PostCard = ({ name, data }) => {
   }, [storyImgs]);
 
   useEffect(() => {
-    imgUrl("post");
-    imgUrl("profile");
-  }, [count]);
-
-  useEffect(() => {
     list("post");
     list("profile");
 
@@ -85,11 +81,13 @@ const PostCard = ({ name, data }) => {
     imgUrl("profile");
 
     setCount(count + 1);
-  }, [admin, UserData]);
+  }, [hasNewStory, UserData,admin,storyImgs,postImgs]);
+
+  const UID = data.UID.stringValue
 
   if (hasPostD)
     return (
-      <section className=" flex flex-col p-2 gap-2 rounded-md bg-[#212121] w-full ">
+      <section className=" flex flex-col p-2 gap-2 rounded-md bg-[#242526] w-full ">
         <div className=" w-full h-[50px] p-1 flex justify-between items-center ">
           <div className=" w-auto h-fulll flex justify-start items-start ">
             <div className=" rounded-full  bg-[#333333] ">
@@ -100,9 +98,9 @@ const PostCard = ({ name, data }) => {
                 srcset=""
               />
             </div>
-            <div className=" cursor-pointer px-2 py-1 w-auto justify-start items-start text-sm h-full ">
+            <NavLink to={`/${UID}`} className=" cursor-pointer px-2 py-1 w-auto justify-start items-start text-sm h-full ">
               <p>{name}</p>
-            </div>
+            </NavLink>
           </div>
         </div>
 

@@ -50,7 +50,7 @@
 }
 
 .btn-primary {
-  @apply bg-blue-500 hover:bg-blue-700;
+  @apply bg-[#ca3e47] hover:bg-[#ca3e47];
 }
 
 .btn-secondary {
