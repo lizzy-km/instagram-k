@@ -148,7 +148,7 @@ function App() {
           <ViewStory/>
       </section>
 
-      <section className=" w-full  absolute  h-auto overflow-hidden  pt-[85px]  backdrop-blur-md bg-[#21212199] items-start flex justify-center " >
+      <section className=" w-full  absolute  h-auto overflow-hidden  pt-[100px]  backdrop-blur-md bg-[#21212199] items-start flex justify-center " >
       {isAuth === true ? (
           <Routes>
               
