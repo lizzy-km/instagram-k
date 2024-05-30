@@ -13,11 +13,15 @@ import axios from "axios";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 import Cookies from "js-cookie";
+import Icon from "@mdi/react";
+import { mdiArrowDown, mdiChevronDown, mdiChevronUp } from "@mdi/js";
 
 const RightNav = () => {
   const { account, noti, messenger, menu } = useSelector(
     (state) => state.animateSlice
   );
+
+  const [menuOn, setMenuOn] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -81,7 +85,7 @@ const RightNav = () => {
   );
   const { adminProfile } = useSelector((state) => state.authSlice);
 
-  const { admin,userAvatar } = useSelector((state) => state.authSlice);
+  const { admin, userAvatar } = useSelector((state) => state.authSlice);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -119,33 +123,37 @@ const RightNav = () => {
     return (
       <section
         style={{
-          width: isMobile ? "100%" : isTablet ? "70%" : "30%",
+          width: isMobile ? "50px" : isTablet ? "70%" : "30%",
           justifyContent: isMobile ? "end" : isTablet ? "end" : "end",
-          padding: isMobile ? "8px" : "0",
+          padding: isMobile ? "0px" : "0",
           alignItems: isDeskTop ? "end" : "end",
           position: isMobile ? "relative" : "unset",
         }}
-        className=" h-full z-[99] p-2   flex justify-end items-end "
+        className={`h-full z-[99]  ${isMobile ? 'flex-col':'flex'} justify-end items-end `}
       >
         <div
           style={{
-            width: isMobile ? "100%" : isTablet ? "100%" : "70%",
+            width: isMobile ? "auto" : isTablet ? "100%" : "70%",
             position: isMobile ? "unset" : "relative",
           }}
-          className="  flex-row-reverse rounded-lg flex justify-evenly backdrop-blur bg-[#2121217c] gap-3 items-center w-[70%] h-full p-2 "
+          className={` transition-all ${isMobile ? 'flex-col':' flex flex-row-reverse'}  ${
+            isMobile ? "rounded-r-xl" : "rounded-lg"
+          }  ${isMobile ? 'justify-evenly':'justify-center'}   backdrop-blur bg-[#2121217c] gap-3 items-center w-${
+            isMobile ? "auto" : "[70%]"
+          } h-${menuOn && isMobile ? "auto" : "[60px]"} py-2 `}
         >
           <div
             onClick={accountSetting}
-            className=" bg-[#21212171] rounded-full flex justify-between items-center w-auto h-full "
+            className=" bg-[#21212171] rounded-full flex justify-between items-center w-auto h-auto "
           >
-            <div className=" relative cursor-pointer flex  rounded-full  bg-[#333333] ">
+            <div className=" relative cursor-pointer  w-auto h-[100%] flex  rounded-full  bg-[#333333] ">
               {!isLoading && (
                 <img
                   style={{
                     opacity: account === true ? "0.5" : "1",
                   }}
                   className=" cursor-pointer hover:brightness-75 w-[40px] h-[40px] p-[3px]  bg-center object-center    object-cover rounded-full "
-                  src={adminProfile?.length > 0 ? adminProfile:userAvatar}
+                  src={adminProfile?.length > 0 ? adminProfile : userAvatar}
                   alt="profile_picture"
                   srcSet=""
                 />
@@ -166,54 +174,63 @@ const RightNav = () => {
             </div>
           </div>
 
-          <div
-            onClick={notification}
-            className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
+          <section
+            className={` ${!menuOn && isMobile && "hidden"} flex-${
+              isMobile ? "col" : "row"
+            }   lg flex justify-evenly  gap-3 items-center w-${
+              isMobile ? "auto" : "[70%]"
+            } h-auto py-1 `}
           >
-            <img
-              style={{
-                opacity: noti === true ? "0.5" : "1",
-              }}
-              className=" cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
-              src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FNoti.svg?alt=media&token=1df0d59a-57be-43c4-8c62-fbf48aa8846e"
-              alt="profile_picture"
-              srcSet=""
-            />
-          </div>
-          <div
-            onClick={messengerShow}
-            className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[3px] backdrop-blur-md bg-[#33333347] "
-          >
-            <img
-              style={{
-                opacity: messenger === true ? "0.5" : "1",
-              }}
-              className=" cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
-              src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FMessenger.svg?alt=media&token=7f30cf84-cc33-4056-a28b-3741bb2aa9c2"
-              alt="profile_picture"
-              srcSet=""
-            />
-          </div>
-          <div
-            onClick={menuShow}
-            className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
-          >
-            <img
-              style={{
-                opacity: menu === true ? "0.5" : "1",
-              }}
-              className=" cursor-pointer hover:brightness-75 h-full   bg-center object-center    object-cover  "
-              src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FMenu.svg?alt=media&token=065ece43-6480-486b-98e7-333c1be28381"
-              alt="profile_picture"
-              srcSet=""
-            />
-          </div>
+            {" "}
+            <div
+              onClick={notification}
+              className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
+            >
+              <img
+                style={{
+                  opacity: noti === true ? "0.5" : "1",
+                }}
+                className=" cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
+                src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FNoti.svg?alt=media&token=1df0d59a-57be-43c4-8c62-fbf48aa8846e"
+                alt="profile_picture"
+                srcSet=""
+              />
+            </div>
+            <div
+              onClick={messengerShow}
+              className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[3px] backdrop-blur-md bg-[#33333347] "
+            >
+              <img
+                style={{
+                  opacity: messenger === true ? "0.5" : "1",
+                }}
+                className=" cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
+                src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FMessenger.svg?alt=media&token=7f30cf84-cc33-4056-a28b-3741bb2aa9c2"
+                alt="profile_picture"
+                srcSet=""
+              />
+            </div>
+            <div
+              onClick={menuShow}
+              className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
+            >
+              <img
+                style={{
+                  opacity: menu === true ? "0.5" : "1",
+                }}
+                className=" cursor-pointer hover:brightness-75 h-full   bg-center object-center    object-cover  "
+                src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FMenu.svg?alt=media&token=065ece43-6480-486b-98e7-333c1be28381"
+                alt="profile_picture"
+                srcSet=""
+              />
+            </div>
+          </section>
 
           <section
             style={{
-              left: isMobile && -fullWidth / 2,
+              right: isMobile && "0%",
             }}
-            className=" absolute w-full h-auto   top-[100%] py-3 rounded-md "
+            className=" absolute w-full h-auto    top-[100%] py-0 rounded-md "
           >
             <div
               id="account"
@@ -227,9 +244,9 @@ const RightNav = () => {
                       : "100%"
                     : "100%",
               }}
-              className={`Account flex w-full  backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
-                isMobile ? "0" : "8"
-              }px]`}
+              className={`Account flex w-full  backdrop-blur-lg backdrop-brightness-50   bg-[#212121] rounded-${
+                isMobile ? "0" : "md"
+              }`}
             >
               <div className=" w-full h-full flex flex-col p-2 justify-start items-start gap-2 ">
                 <div
@@ -237,7 +254,8 @@ const RightNav = () => {
                 >
                   <img
                     className=" hover:brightness-75  rounded-full object-cover w-[40px] h-[40px] p-[3px] "
-                    src={adminProfile?.length > 0 ? adminProfile:userAvatar}                    alt=""
+                    src={adminProfile?.length > 0 ? adminProfile : userAvatar}
+                    alt=""
                     srcSet=""
                   />
                   <p className="font-[500] text-[16px] tracking-wide">
@@ -308,6 +326,13 @@ const RightNav = () => {
               }px]`}
             ></div>
           </section>
+
+          <div
+            onClick={() => setMenuOn(!menuOn)}
+            className= {`p-[1px] rounded-full backdrop-blur ${!isMobile && 'hidden'}  bg-[#3333335a] absolute  ${menuOn ? 'bottom-[-5%]': ' bottom-[-15%] ' } `}
+          >
+            <Icon path={menuOn ? mdiChevronUp : mdiChevronDown} size={0.7} />
+          </div>
         </div>
       </section>
     );

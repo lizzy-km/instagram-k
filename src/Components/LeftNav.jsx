@@ -9,9 +9,9 @@ const LeftNav = () => {
   return (
     <section style={{
       width:isMobile ? '100%' : isTablet ? '30%' :'30%',
-      justifyContent:isMobile ? 'start' :'start',
+      justifyContent:isMobile ? 'space-between' :'start',
       padding:isMobile ? '8px' :'0'
-    }} className=" flex w-[30%] justify-start gap-2 items-center left_nav h-full ">
+    }} className=" flex w-[30%]  gap-2 items-center left_nav h-full ">
       <NavLink 
         to={"/loading"}
         className=" cursor-pointer flex rounded-full justify-center items-center "

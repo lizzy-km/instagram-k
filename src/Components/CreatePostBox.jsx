@@ -127,11 +127,7 @@ const CreatePostBox = () => {
       (await uploadBytes(storageRef, file)
         .then((data) => {
           console.log(data);
-          UpdateData("user_posts", name, {
-            PID: nick + "P" + `${fileSize}`,
-            isImage: fileType === "image" ? true : false,
-            caption:detail?.length > 0 ? detail :false
-          });
+        
           getDownloadURL(data.ref).then((downloadURL) => {
             setImgUrlUp(downloadURL);
             console.log("File available at", downloadURL);
@@ -139,6 +135,9 @@ const CreatePostBox = () => {
         })
         .catch((error) => console.log(error)));
   };
+
+  const [fileSizes,setFileSize] = useState()
+  const [fileTypes,setFileType] = useState()
 
   const CreateNewStory = async (e) => {
     const file = e.target.files[0];
@@ -151,6 +150,10 @@ const CreatePostBox = () => {
 
     const fileType = checkFileType(file);
 
+    setFileType(fileType)
+
+    fileType ? setFileSize(fileSize) : null
+
     fileType
       ? uploadStory(file, fileSize, STID, filePath).then((data) =>
           console.log(data)
@@ -161,6 +164,11 @@ const CreatePostBox = () => {
   const navigate = useNavigate();
 
   const newStoryAdded = () => {
+    UpdateData("user_posts", name, {
+      PID: nick + "P" + `${fileSizes}`,
+      isImage: fileTypes === "image" ? true : false,
+      caption:detail?.length > 0 ? detail :false
+    });
     dispatch(setHasNewStory());
     dispatch(blurOn({blur:false}));
 
@@ -273,21 +281,16 @@ const CreatePostBox = () => {
               onKeyDown={(e) => {
                 setDetail(e.currentTarget.innerText);
               }}
+              aria-placeholder="What's on your mind, Kaung?"
               data-lexical-editor="true"
               aria-valuetext={detail}
-              aria-placeholder="What's on your mind, Kaung?"
-              aria-label="What's on your mind, Kaung?"
               contentEditable="true"
               role="textbox"
               spellCheck="true"
               tabIndex="0"
               className=" relative outline-none p-2 w-full h-auto min-h-[50px] cursor-text text-[24px] break-words whitespace-pre-wrap user-select-[text]  "
             >
-              {detail?.length < 1 && (
-                <div className=" absolute cursor-not-allowed opacity-55 user-select-none pointer-events-none ">
-                  What's on your mind, Kaung?
-                </div>
-              )}
+             
             </div>
           </div>
 

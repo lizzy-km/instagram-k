@@ -143,6 +143,9 @@ const CreateStory = () => {
         .catch((error) => console.log(error)));
   };
 
+  const [fileSizes,setFileSize] = useState()
+  const [fileTypes,setFileType] = useState()
+
   const CreateNewStory = async (e) => {
     const file = e.target.files[0];
 
@@ -154,6 +157,10 @@ const CreateStory = () => {
 
     const fileType = checkFileType(file);
 
+    setFileType(fileType)
+
+    fileType ? setFileSize(fileSize) : null
+
     fileType
       ? uploadStory(file, fileSize, STID, filePath).then((data) =>
           console.log(data)
@@ -163,7 +170,14 @@ const CreateStory = () => {
 
   const navigate = useNavigate();
 
+  
+
   const newStoryAdded = () => {
+
+    UpdateData("story", name, {
+      STID: nick + "ST" + `${fileSizes}`,
+      isImage: fileTypes === "image" ? true : false,
+    });
     dispatch(setHasNewStory());
     dispatch(setShowStory(false));
 
