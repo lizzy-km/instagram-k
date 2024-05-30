@@ -70,6 +70,8 @@ const CreatePostBox = () => {
   const [imgSrc, setImgSrc] = useState();
   const [inputHeight, setInputHeight] = useState(50);
 
+
+
   const handleKeyPress = (e) => {
     if (e.keyCode === 13) {
       event.preventDefault();
@@ -79,7 +81,7 @@ const CreatePostBox = () => {
     }
     if (e.keyCode === 8 && inputHeight > 50) {
       // Check for Enter key
-      //   setInputHeight(inputHeight / 2);
+        setInputHeight(inputHeight / 2);
     }
   };
 
@@ -177,7 +179,10 @@ const CreatePostBox = () => {
     setTimeout(() => navigate("/loading/"), 1000);
 
     setImgUrlUp("");
+
+    window.location.reload(true)
   };
+
   return (
     <div
       id="Create_post"
@@ -278,10 +283,9 @@ const CreatePostBox = () => {
           <div className=" relative h-auto flex flex-col gap-0 justify-start items-start w-full ">
             <div
               id="myInput"
-              onKeyDown={(e) => {
-                setDetail(e.currentTarget.innerText);
-              }}
+              onKeyDown={(e)=>  e.keyCode === 13 ? setDetail(detail + " " + " \n "):setDetail(e.currentTarget.innerText) }
               aria-placeholder="What's on your mind, Kaung?"
+              
               data-lexical-editor="true"
               aria-valuetext={detail}
               contentEditable="true"

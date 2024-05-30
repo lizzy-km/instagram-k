@@ -106,12 +106,12 @@ const PostCard = ({ name, data }) => {
           </div>
         </div>
 
-        <p className=" p-3 ">
+        <pre className=" p-3 ">
           {
             data?.post.arrayValue.values[0]?.mapValue.fields.caption
               ?.stringValue
           }
-        </p>
+        </pre>
 
         <img className=" w-full " src={postUrl} alt="" srcset="" />
 
