@@ -24,7 +24,7 @@ const NavBar = () => {
     <>
       <header style={{
         
-      }} className= {` ${isMobile ? ' flex-col ' :' flex ' } justify-between items-center fixed z-[9999]   py-2   w-full p-${isMobile ? '0':'2'}`} >
+      }} className= {` ${isMobile ? ' flex flex-row-reverse ' :' flex ' } justify-between items-center fixed z-[9999]   py-2   w-full p-${isMobile ? '0':'2'}`} >
         <LeftNav/>
       {
         isDeskTop && <MidNAv/>

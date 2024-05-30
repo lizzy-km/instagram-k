@@ -7,7 +7,7 @@ import {
   notiOn,
 } from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addUserData, setLogin } from "../redux/services/authSlice";
 import axios from "axios";
 import { collection, getDocs } from "firebase/firestore";
@@ -20,6 +20,12 @@ const RightNav = () => {
   const { account, noti, messenger, menu } = useSelector(
     (state) => state.animateSlice
   );
+
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
+
+  const navigate = useNavigate()
 
   const [MenuOn, setMenuOn] = useState(false);
 
@@ -57,19 +63,25 @@ const RightNav = () => {
   };
 
   const notification = () => {
+   isMobile ? navigate('/notification'):
+
     dispatch(
       notiOn({
         noti: !noti,
       })
     );
+
   };
 
   const messengerShow = () => {
+    isMobile ? navigate('/message') :
+
     dispatch(
       messengerOn({
         messenger: !messenger,
       })
     );
+    
   };
 
   const menuShow = () => {
@@ -80,9 +92,7 @@ const RightNav = () => {
     );
   };
 
-  const { isTablet, isMobile, isDeskTop } = useSelector(
-    (state) => state.animateSlice
-  );
+
   const { adminProfile } = useSelector((state) => state.authSlice);
 
   const { admin, userAvatar } = useSelector((state) => state.authSlice);
@@ -127,10 +137,10 @@ const RightNav = () => {
           justifyContent: isMobile ? "end" : isTablet ? "end" : "end",
           padding: isMobile ? "0px" : "0",
           alignItems: isDeskTop ? "end" : "end",
-          position: isMobile ? "relative" : "unset",
+          position: isMobile ? "absolute" : "unset",
         }}
         className={`h-full z-[99]  ${
-          isMobile ? "flex-col" : "flex"
+          isMobile ? "flex-col left-0 top-3 " : "flex"
         } justify-end items-end `}
       >
         <div

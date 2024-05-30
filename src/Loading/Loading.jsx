@@ -28,7 +28,7 @@ const Loading = () => {
     },[])
 
   return (
-    <div>
+    <div className=' w-full h-screen ' >
       
     </div>
   )

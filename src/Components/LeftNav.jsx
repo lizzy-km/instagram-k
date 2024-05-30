@@ -9,7 +9,7 @@ const LeftNav = () => {
   return (
     <section style={{
       width:isMobile ? '100%' : isTablet ? '30%' :'30%',
-      justifyContent:isMobile ? 'space-between' :'start',
+      justifyContent:isMobile ? 'end' :'start',
       padding:isMobile ? '8px' :'0'
     }} className=" flex w-[30%]  gap-2 items-center left_nav h-full ">
       <NavLink 
