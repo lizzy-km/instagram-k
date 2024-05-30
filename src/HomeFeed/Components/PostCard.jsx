@@ -217,12 +217,14 @@ const PostCard = ({ name, data }) => {
           {
             saved ?  <div
             onClick={() => postAction("unsaved_posts", false)}
-            className=" flex p-1 items-center cursor-pointer rounded-full "
+            className=" flex p-2 items-center cursor-pointer rounded-full "
           >
             <Icon path={mdiBookmark} size={1} />
-          </div> :  <div
+          </div> :  
+          
+          <div
             onClick={() => postAction("saved_posts", true)}
-            className=" flex p-1 items-center cursor-pointer rounded-full "
+            className=" flex p-2  items-center cursor-pointer rounded-full "
           >
             <Icon path={mdiBookmarkOutline} size={1} />
           </div>
