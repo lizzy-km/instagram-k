@@ -21,7 +21,7 @@ const RightNav = () => {
     (state) => state.animateSlice
   );
 
-  const [menuOn, setMenuOn] = useState(false);
+  const [MenuOn, setMenuOn] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -129,22 +129,26 @@ const RightNav = () => {
           alignItems: isDeskTop ? "end" : "end",
           position: isMobile ? "relative" : "unset",
         }}
-        className={`h-full z-[99]  ${isMobile ? 'flex-col':'flex'} justify-end items-end `}
+        className={`h-full z-[99]  ${
+          isMobile ? "flex-col" : "flex"
+        } justify-end items-end `}
       >
         <div
           style={{
             width: isMobile ? "auto" : isTablet ? "100%" : "70%",
             position: isMobile ? "unset" : "relative",
           }}
-          className={` transition-all ${isMobile ? 'flex-col':' flex flex-row-reverse'}  ${
-            isMobile ? "rounded-r-xl" : "rounded-lg"
-          }  ${isMobile ? 'justify-evenly':'justify-center'}   backdrop-blur bg-[#2121217c] gap-3 items-center w-${
+          className={` transition-all ${
+            isMobile ? "flex-col" : " flex flex-row-reverse"
+          }  ${isMobile ? "rounded-r-xl" : "rounded-lg"}  ${
+            isMobile ? "justify-evenly" : "justify-center"
+          }   backdrop-blur bg-[#2121217c] gap-3 items-center w-${
             isMobile ? "auto" : "[70%]"
-          } h-${menuOn && isMobile ? "auto" : "[60px]"} py-2 `}
+          } h-${MenuOn && isMobile ? "auto" : "[60px]"} py-2 `}
         >
           <div
             onClick={accountSetting}
-            className=" bg-[#21212171] rounded-full flex justify-between items-center w-auto h-auto "
+            className="  rounded-full flex justify-between items-center w-auto h-auto "
           >
             <div className=" relative cursor-pointer  w-auto h-[100%] flex  rounded-full  bg-[#333333] ">
               {!isLoading && (
@@ -175,7 +179,7 @@ const RightNav = () => {
           </div>
 
           <section
-            className={` ${!menuOn && isMobile && "hidden"} flex-${
+            className={` ${!MenuOn && isMobile && "hidden"} flex-${
               isMobile ? "col" : "row"
             }   lg flex justify-evenly  gap-3 items-center w-${
               isMobile ? "auto" : "[70%]"
@@ -328,10 +332,14 @@ const RightNav = () => {
           </section>
 
           <div
-            onClick={() => setMenuOn(!menuOn)}
-            className= {`p-[1px] rounded-full backdrop-blur ${!isMobile && 'hidden'}  bg-[#3333335a] absolute  ${menuOn ? 'bottom-[-5%]': ' bottom-[-15%] ' } `}
+            onClick={() => setMenuOn(!MenuOn)}
+            className={`p-[1px] rounded-full backdrop-blur ${
+              !isMobile && "hidden"
+            } left-[25%]  bg-[#3333335a] absolute  ${
+              MenuOn ? "bottom-[-5%]" : " bottom-[-15%] "
+            } `}
           >
-            <Icon path={menuOn ? mdiChevronUp : mdiChevronDown} size={0.7} />
+            <Icon path={MenuOn ? mdiChevronUp : mdiChevronDown} size={0.7} />
           </div>
         </div>
       </section>
