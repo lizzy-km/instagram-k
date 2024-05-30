@@ -8,7 +8,7 @@ import {
 } from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
 import { Link, useNavigate } from "react-router-dom";
-import { addUserData, setLogin } from "../redux/services/authSlice";
+import { addAdmin, addUserData, setLogin } from "../redux/services/authSlice";
 import axios from "axios";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
@@ -287,8 +287,14 @@ const RightNav = () => {
                 <Link
                   onClick={() => {
                     dispatch(setLogin(false));
+                    dispatch(addAdmin([]))
+                    dispatch(addUserData([]))
+
+                    window.location.reload(true)
+
                     localStorage.clear();
                     Cookies.remove("adminData");
+
                   }}
                   className=" text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#33333364] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center "
                 >
