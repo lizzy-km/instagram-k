@@ -11,7 +11,7 @@ const LeftNav = () => {
       width:isMobile ? '100%' : isTablet ? '30%' :'30%',
       justifyContent:isMobile ? 'end' :'start',
       padding:isMobile ? '8px' :'0'
-    }} className=" flex w-[30%]  gap-2 items-center left_nav h-full ">
+    }} className= {` ${isMobile && 'flex-row-reverse'} flex w-[30%]  gap-2 items-center left_nav h-full`} >
       <NavLink 
         to={"/loading"}
         className=" cursor-pointer flex rounded-full justify-center items-center "
@@ -26,7 +26,7 @@ const LeftNav = () => {
       <div className=" bg-[#2d2d2d] outline-1 outline- px-1 flex h-[40px] w-[40px] rounded-full justify-start items-center ">
         <img
           className=" cursor-pointer px-2 "
-          src="/src/Components/assets/Search.svg"
+          src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FSearch.svg?alt=media&token=0cc98ba7-3d8f-4f48-ad1c-5aa326bd3201"
           alt=""
         />
 
