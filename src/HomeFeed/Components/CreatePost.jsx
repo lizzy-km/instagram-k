@@ -27,7 +27,7 @@ const CreatePost = () => {
   const firstWord = getFirstWord(text);
   return (
     <>
-      <div className=" tracking-wider  flex w-full my-2 p-2 min-h-[60px] bg-[#242526] rounded-md  ">
+      <div className=" tracking-wider  flex w-full my-2 p-3 min-h-[60px] bg-[#242526] rounded-md  ">
         <div className=" px-2 flex rounded-md justify-between flex-col items-center w-full h-full ">
           <div className=" flex justify-between items-center w-full h-full   ">
             <div className=" flex cursor-pointer  rounded-full  bg-[#333333] ">

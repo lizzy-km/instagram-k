@@ -85,7 +85,7 @@ const Story = () => {
     (state) => state.animateSlice
   );
   return (
-    <div id="story_id" className=" story px-2  ">
+    <div id="story_id" className=" story px-2 rounded-lg  ">
       <div  className=" absolute hidden top-0  z-[99999] text-black bg-slate-100 p-1 " >
         {
          translateX
@@ -103,7 +103,7 @@ const Story = () => {
       </div>
       <div style={{
         overflowX: isMobile ? 'scroll' :'hidden'
-      }} className=" story-holder   ">
+      }} className=" story-holder rounded-lg  ">
         {isDeskTop && otherStory?.length > 1 && (
           <>
             { (((user.length+1)-(storyWidth/157))).toFixed(0) > count&& (

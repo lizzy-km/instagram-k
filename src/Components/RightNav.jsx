@@ -120,19 +120,19 @@ const RightNav = () => {
       <section
         style={{
           width: isMobile ? "100%" : isTablet ? "70%" : "30%",
-          justifyContent: isMobile ? "end" : isTablet ? "end" : "start",
+          justifyContent: isMobile ? "end" : isTablet ? "end" : "end",
           padding: isMobile ? "8px" : "0",
-          alignItems: isDeskTop ? "center" : "end",
+          alignItems: isDeskTop ? "end" : "end",
           position: isMobile ? "relative" : "unset",
         }}
-        className=" h-full z-[99] flex justify-end items-center "
+        className=" h-full z-[99] p-2   flex justify-end items-end "
       >
         <div
           style={{
             width: isMobile ? "100%" : isTablet ? "100%" : "70%",
             position: isMobile ? "unset" : "relative",
           }}
-          className="  flex-row-reverse flex justify-start gap-3 items-center w-[70%] h-full p-2 "
+          className="  flex-row-reverse rounded-lg flex justify-evenly backdrop-blur bg-[#2121217c] gap-3 items-center w-[70%] h-full p-2 "
         >
           <div
             onClick={accountSetting}
