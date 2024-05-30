@@ -129,8 +129,8 @@ function App() {
           width: blur === true ? "100%" : "0%",
           height: blur === true ? "100vh" : "0%",
           alignItems: isMobile ? "start" : "center",
-        }}
-        className={`flex i py-[5rem] overflow-hidden justify-center z-[9999999] absolute bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+        }} 
+        className={`flex i py-[5rem] overflow-hidden justify-center z-[9999999]   fixed bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
       >
         <CreatePostBox />
       </section>
@@ -140,13 +140,13 @@ function App() {
           height: showStory === true ? "100vh" : "0%",
           alignItems: isMobile ? "start" : "center",
         }}
-        className={`flex  py-10 overflow-hidden justify-center z-[9999999] absolute top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+        className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
       >
         <CreateStory />
       </section>
       <section style={{
         display: viewStory ? 'flex' : 'none'
-      }} className=' absolute flex justify-center items-center p-3 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] ' >
+      }} className=' fixed flex justify-center items-center p-3 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] ' >
           <ViewStory/>
       </section>
 

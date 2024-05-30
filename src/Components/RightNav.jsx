@@ -156,7 +156,10 @@ const RightNav = () => {
             isMobile ? "auto" : "[70%]"
           } h-${MenuOn && isMobile ? "auto" : "[60px]"} py-2 `}
         >
-          <div
+          <div 
+          aria-label="Account Setting"
+          aria-describedby="Account Setting"
+          aria-description="Account Setting"
             onClick={accountSetting}
             className="  rounded-full flex justify-between items-center w-auto h-auto "
           >
@@ -197,6 +200,9 @@ const RightNav = () => {
           >
             {" "}
             <div
+            aria-label="Notification"
+            aria-describedby="Notification"
+            aria-description="Notification"
               onClick={notification}
               className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
             >
@@ -211,6 +217,9 @@ const RightNav = () => {
               />
             </div>
             <div
+             aria-label="Messenger"
+             aria-describedby="Messenger"
+             aria-description="Messenger"
               onClick={messengerShow}
               className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[3px] backdrop-blur-md bg-[#33333347] "
             >
@@ -225,6 +234,9 @@ const RightNav = () => {
               />
             </div>
             <div
+            aria-label="Menu"
+            aria-describedby="Menu"
+            aria-description="Menu"
               onClick={menuShow}
               className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
             >
