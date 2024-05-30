@@ -1,18 +1,24 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { addAdmin } from "../redux/services/authSlice";
 
 const LeftNav = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
+  const dispatch = useDispatch()
   return (
     <section style={{
       width:isMobile ? '100%' : isTablet ? '30%' :'30%',
       justifyContent:isMobile ? 'end' :'start',
       padding:isMobile ? '8px' :'0'
     }} className= {` ${isMobile && 'flex-row-reverse'} flex w-[30%]  gap-2 items-center left_nav h-full`} >
-      <NavLink 
+      <NavLink onClick={()=> {
+        dispatch(addAdmin([]))
+      dispatch(addUserData([]))
+
+      } }
         to={"/loading"}
         className=" cursor-pointer flex rounded-full justify-center items-center "
       >

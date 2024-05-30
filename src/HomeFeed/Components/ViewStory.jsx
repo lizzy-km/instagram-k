@@ -40,7 +40,7 @@ const ViewStory = () => {
   const otherStory = userData?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.UID.stringValue !==
-      admin?.UID.stringValue
+      admin?.UID?.stringValue
   );
 
   const getData = async () => {

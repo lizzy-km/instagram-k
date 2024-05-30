@@ -17,7 +17,6 @@ body {
 
 *{
     scrollbar-width: none;
-    transition: all .3s;
 }
 
 ::-webkit-scrollbar {

@@ -60,19 +60,13 @@ const addData = async (colName = "users", uemail = "", username = "",STID) => {
       }
     ],
     story: [
-      {
-        STID: shortName + "ST"+date,
-      }
+     
     ],
     post: [
-      {
-        PID: shortName + "P"+date,
-      }
+    
     ],
     friends: [
-      {
-        FID: "dev.lizzy",
-      },
+     
     ],
     email: email,
     password: "Lizzy-020",
