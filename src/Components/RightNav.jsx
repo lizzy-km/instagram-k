@@ -25,7 +25,7 @@ const RightNav = () => {
     (state) => state.animateSlice
   );
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [MenuOn, setMenuOn] = useState(false);
 
@@ -63,25 +63,23 @@ const RightNav = () => {
   };
 
   const notification = () => {
-   isMobile ? navigate('/notification'):
-
-    dispatch(
-      notiOn({
-        noti: !noti,
-      })
-    );
-
+    isMobile
+      ? navigate("/notification")
+      : dispatch(
+          notiOn({
+            noti: !noti,
+          })
+        );
   };
 
   const messengerShow = () => {
-    isMobile ? navigate('/message') :
-
-    dispatch(
-      messengerOn({
-        messenger: !messenger,
-      })
-    );
-    
+    isMobile
+      ? navigate("/message")
+      : dispatch(
+          messengerOn({
+            messenger: !messenger,
+          })
+        );
   };
 
   const menuShow = () => {
@@ -91,7 +89,6 @@ const RightNav = () => {
       })
     );
   };
-
 
   const { adminProfile } = useSelector((state) => state.authSlice);
 
@@ -145,21 +142,21 @@ const RightNav = () => {
       >
         <div
           style={{
-            width: isMobile ? "auto" : isTablet ? "100%" : "70%",
+            width: isMobile ? "auto" : isTablet ? "100%" : "60%",
             position: isMobile ? "unset" : "relative",
           }}
           className={` transition-all ${
             isMobile ? "flex-col" : " flex flex-row-reverse"
           }  ${isMobile ? "rounded-r-xl" : "rounded-lg"}  ${
-            isMobile ? "justify-evenly" : "justify-center"
-          }   backdrop-blur bg-[#2121217c] gap-3 items-center w-${
-            isMobile ? "auto" : "[70%]"
-          } h-${MenuOn && isMobile ? "auto" : "[60px]"} py-2 `}
+            isMobile ? "justify-evenly" : "justify-between px-3 "
+          }   backdrop-blur bg-[#2121217c] gap-3 items-center 
+           h-${MenuOn && isMobile ? "auto" : "[60px]"} py-2 items-center `}
+           
         >
-          <div 
-          aria-label="Account Setting"
-          aria-describedby="Account Setting"
-          aria-description="Account Setting"
+          <div
+            aria-label="Account Setting"
+            aria-describedby="Account Setting"
+            aria-description="Account Setting"
             onClick={accountSetting}
             className="  rounded-full flex justify-between items-center w-auto h-auto "
           >
@@ -194,15 +191,14 @@ const RightNav = () => {
           <section
             className={` ${!MenuOn && isMobile && "hidden"} flex-${
               isMobile ? "col" : "row"
-            }   lg flex justify-evenly  gap-3 items-center w-${
-              isMobile ? "auto" : "[70%]"
+            }   lg flex justify-evenly  gap-3 items-center w-[80%]
             } h-auto py-1 `}
           >
             {" "}
             <div
-            aria-label="Notification"
-            aria-describedby="Notification"
-            aria-description="Notification"
+              aria-label="Notification"
+              aria-describedby="Notification"
+              aria-description="Notification"
               onClick={notification}
               className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
             >
@@ -217,9 +213,9 @@ const RightNav = () => {
               />
             </div>
             <div
-             aria-label="Messenger"
-             aria-describedby="Messenger"
-             aria-description="Messenger"
+              aria-label="Messenger"
+              aria-describedby="Messenger"
+              aria-description="Messenger"
               onClick={messengerShow}
               className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[3px] backdrop-blur-md bg-[#33333347] "
             >
@@ -234,9 +230,9 @@ const RightNav = () => {
               />
             </div>
             <div
-            aria-label="Menu"
-            aria-describedby="Menu"
-            aria-description="Menu"
+              aria-label="Menu"
+              aria-describedby="Menu"
+              aria-description="Menu"
               onClick={menuShow}
               className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
             >
@@ -256,7 +252,7 @@ const RightNav = () => {
             style={{
               right: isMobile && "0%",
             }}
-            className=" absolute w-full h-auto    top-[100%] py-0 rounded-md "
+            className=" absolute w-full h-auto left-0    top-[100%] py-0 rounded-md "
           >
             <div
               id="account"
