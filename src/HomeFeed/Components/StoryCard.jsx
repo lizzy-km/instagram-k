@@ -88,7 +88,7 @@ const StoryCard = ({ translateX }) => {
         style={{
           translate: -translateX,
         }}
-        className="   tracking-wider flex min-w-[145px] h-full bg-[#242526] rounded-md "
+        className="   transition-all tracking-wider flex min-w-[145px] h-full bg-[#242526] rounded-md "
       >
         <div className=" relative scale-100 bg-[#242526] max-h-full flex flex-col justify-between items-start w-full h-full rounded-md ">
           <div className="h-[100%] scale-100  max-h-full bg-[#242526] absolute flex gap-1 justify-start items-center  bg-center object-center    object-cover rounded-md ">
@@ -124,7 +124,7 @@ const StoryCard = ({ translateX }) => {
             <div className=" cursor-pointer  flex rounded-full   bg-[#CA3E47] ">
               <img
                 className=" z-[99] rounded-full object-cover p-[3px] w-[40px] h-[40px] "
-                src={adminProfile}
+                src={adminProfile.length > 0 ? adminProfile : userAvatar}
                 alt=""
                 srcSet=""
               />

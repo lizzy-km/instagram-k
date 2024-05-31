@@ -84,7 +84,7 @@ const CreateStory = () => {
   const email = admin?.email?.stringValue;
 
   const bio = "It's me " + name;
-  const UID = name?.replace(/ /g, "_") + "Official";
+  const UID = admin?.UID?.stringValue;
 
   function getFirstChars() {
     if (!name) return []; // Handle empty string case
@@ -174,7 +174,7 @@ const CreateStory = () => {
 
   const newStoryAdded = () => {
 
-    UpdateData("story", name, {
+    UpdateData("story",UID, name, {
       STID: nick + "ST" + `${fileSizes}`,
       isImage: fileTypes === "image" ? true : false,
     });

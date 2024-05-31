@@ -13,11 +13,16 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../../../firebase/firebase";
 import { set } from "firebase/database";
-const UpdateData = async (colName = "story", username = "", Data) => {
+const UpdateData = async (
+  colName = "story",
+  UID = "",
+  name = "",
+  Data = {}
+) => {
   function getFirstChars() {
-    if (!username) return []; // Handle empty string case
+    if (!name) return []; // Handle empty string case
 
-    const words = username.split(" ");
+    const words = name?.split(" ");
     const firstChars = [];
     for (const word of words) {
       firstChars.push(word[0]);
@@ -33,13 +38,7 @@ const UpdateData = async (colName = "story", username = "", Data) => {
     nick = firstCharacters.reduce((prev, curr) => prev + curr);
   }
 
-  const name = username;
-  const email = "uemail";
-  const bio = "It's me " + name;
-  const UID = username.replace(/ /g, "_") + "Official";
-  const shortName = nick;
-  const nickName = "tyui";
-  const date = new Date().getUTCMilliseconds();
+ 
 
   // Add a new document in collection "cities" with ID 'LA'
   const collectionRef = collection(firestore, "story");
@@ -52,7 +51,7 @@ const UpdateData = async (colName = "story", username = "", Data) => {
       post: arrayUnion(Data),
     }).catch((error) => console.log(error));
 
-  if (colName === "liked_posts" )
+  if (colName === "liked_posts")
     await updateDoc(userRef, {
       liked_post: arrayUnion(Data),
     }).catch((error) => console.log(error));
@@ -64,7 +63,7 @@ const UpdateData = async (colName = "story", username = "", Data) => {
 
   if (colName === "shared_posts")
     await updateDoc(userRef, {
-      shared_post: arrayUnion(Data),
+      shared_posts: arrayUnion(Data),
     }).catch((error) => console.log(error));
 
   if (colName === "unshared_posts")

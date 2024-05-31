@@ -11,57 +11,62 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import GetAdminData from "../redux/services/Hooks/GetAdminData";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
   const [loginState, setLoginState] = useState(true);
   const dispatch = useDispatch();
-  const [error, setError] = useState({
-    email: "incorrect email address*",
-    password: "incorrect password*",
-    IsErrorEmail: false,
-    IsErrorPassword: true,
-  });
 
-  const [userData, setUserData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    confrimPassword: "",
-  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+
 
   const { admin } = useSelector((state) => state.authSlice);
 
+  // const name = userData.username;
+  // const email = userData.email;
+  // const password = userData.password;
 
-  const name = userData.username;
-  const email = userData.email;
-  const password = userData.password;
+  // const userId = name.replace(/ /g, "_") + "Official";
 
-  const userId = name.replace(/ /g, "_") + "Official";
+  const SignUp = async (data) => {
 
-  const SignUp = async () => {
+    const user_name = data.user_name
+    const name = data.name
+    const email = data.email
+    const password = data.password
+
+
     await createUserWithEmailAndPassword(auth, email, password)
       .then(function (user) {
         console.log("User registered successfully!", user);
-        addData("users", email, name);
-        setLoginState(true)
+        addData("users", email, user_name,name);
+        setLoginState(true);
       })
       .catch(function (error) {
         console.log("Error registering user:", error);
       });
   };
 
-  const SignIn = async () => {
+  const SignIn = async (data) => {
+    const user_name = data.user_name
+    const name = data.name
+    const email = data.email
+    const password = data.password
     await signInWithEmailAndPassword(auth, email, password)
-      .finally(() => localStorage.setItem("adminId", userId))
+      .finally(() => localStorage.setItem("adminId", user_name))
       .then(function (user) {
-        
-
-        const getAdmin = [GetAdminData("users", userId)];
+        const getAdmin = [GetAdminData("users", user_name)];
 
         Promise.all(getAdmin)
-          .then((data) => {
-            dispatch(setLogin(true));
-          })
+          .then((data) => 
+            dispatch(setLogin(true))
+          )
           .catch((error) => console.log(error));
       })
       .catch(function (error) {
@@ -69,10 +74,9 @@ const Login = () => {
       });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const onSubmit = async (data) => {
 
-    loginState === false ? SignUp() : SignIn();
+    loginState === false ? SignUp(data) : SignIn(data);
   };
 
   return (
@@ -84,7 +88,10 @@ const Login = () => {
               ? "Sign up with Facebook"
               : "Login with Facebook"}
           </h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+
+       
+
             <div className="mb-6">
               <label
                 htmlFor="username"
@@ -93,15 +100,30 @@ const Login = () => {
                 Username
               </label>
               <input
-                value={userData.username}
-                onChange={(e) =>
-                  setUserData({ ...userData, username: e.target.value })
-                }
+                {...register("user_name", { required: true })}
                 type="text"
                 id="username"
                 className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
               />
+              {errors.user_name && <span className=" flex p-2  italic text-red-600 ">{errors.user_name.message}</span>}
+            </div>
+
+            <div className="mb-6">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-300 mb-2"
+              >
+                Name
+              </label>
+              <input
+                {...register("name", { required: true })}
+                type="text"
+                id="name"
+                className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                required
+              />
+              {errors.name && <span className=" flex p-2  italic text-red-600 ">{errors.name.message}</span>}
             </div>
 
             <div className="mb-6">
@@ -111,23 +133,18 @@ const Login = () => {
               >
                 Email
               </label>
-              {error.IsErrorEmail === true && (
-                <span className=" flex p-2  italic text-red-600 ">
-                  {" "}
-                  {error?.email}{" "}
-                </span>
-              )}
+             
 
               <input
-                value={userData.email}
-                onChange={(e) =>
-                  setUserData({ ...userData, email: e.target.value })
-                }
+              {...register("email", { required: true })}
+                
                 type="email"
                 id="email"
                 className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
               />
+                            {errors.email && <span className=" flex p-2  italic text-red-600 ">{errors.email.message}</span>}
+
             </div>
             <div className="mb-6">
               <label
@@ -136,81 +153,59 @@ const Login = () => {
               >
                 Password
               </label>
-              {error.IsErrorPassword === true && (
-                <span className=" flex p-2  italic text-red-600 ">
-                  {" "}
-                  {error?.password}{" "}
-                </span>
-              )}
+             
 
               <input
-                value={userData.password}
-                onChange={(e) =>
-                  setUserData({ ...userData, password: e.target.value })
-                }
+              {...register("password", { required: true })}
+                
                 type="password"
                 id="password"
                 className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
               />
+                            {errors.password && <span className=" flex p-2  italic text-red-600 ">{errors.password.message}</span>}
+
             </div>
-            {loginState === false && (
-              <div className="mb-6">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-300 mb-2"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  value={userData.confrimPassword}
-                  onChange={(e) =>
-                    setUserData({
-                      ...userData,
-                      confrimPassword: e.target.value,
-                    })
-                  }
-                  type="password"
-                  id="confrimPassword"
-                  className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  required
-                />
-              </div>
-            )}
+          
 
             <div className="flex items-center justify-between mb-4"></div>
 
             <button
-              type="submit"
+            type="subnit"
               className="w-full px-3 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               {loginState === false
                 ? "Signup with Facebook"
                 : "Login with Facebook"}
             </button>
-          </form>
-          <div className="text-center flex justify-center mt-4">
+
+            <div className="text-center flex justify-center mt-4">
             <span className="text-sm text-gray-200">
               {!loginState
                 ? "Already have an account?"
                 : "You don't have any account?"}
             </span>
+
             {loginState === true ? (
-              <div
+              <button
                 onClick={() => setLoginState(false)}
                 className="text-sm cursor-pointer text-blue-600 hover:underline ml-1"
               >
                 Sign up
-              </div>
+              </button>
             ) : (
-              <div
+              <button
+
                 onClick={() => setLoginState(true)}
                 className="text-sm cursor-pointer text-blue-600 hover:underline ml-1"
               >
                 Login
-              </div>
+              </button>
             )}
           </div>
+          </form>
+
+        
         </div>
       </div>
     </div>

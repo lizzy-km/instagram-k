@@ -28,7 +28,7 @@ const ViewStory = () => {
   const userData = UserData;
 
   const user = userData?.filter(
-    (d) =>  d?._document.data.value.mapValue.fields?.story.arrayValue.values.length >0?
+    (d) =>  d?._document.data.value.mapValue.fields?.story?.arrayValue.values?.length >0?
       d?._document.data.value.mapValue.fields.story?.arrayValue?.values[0]
         ?.mapValue.fields.STID?.stringValue?.length > 0 : false
   );
@@ -39,14 +39,14 @@ const ViewStory = () => {
 
   const otherStory = userData?.filter(
     (d) =>
-      d._document.data.value.mapValue.fields.UID.stringValue !==
+      d._document.data.value.mapValue.fields?.UID?.stringValue !==
       admin?.UID?.stringValue
   );
 
   const getData = async () => {
     const data = await getDocs(collection(firestore, "story"));
 
-    const doc = data.docs;
+    const doc = data?.docs;
 
     dispatch(addStory(doc));
   };
@@ -55,17 +55,17 @@ const ViewStory = () => {
     getData();
   }, []);
 
-  const pf = admin?.profile_picture?.arrayValue.values.filter(
+  const pf = admin?.profile_picture?.arrayValue.values?.filter(
     (d) => d?.mapValue.fields
   )[0]; // Check this profile picture is currently use
 
   const [translateX, setTranslateX] = useState(0);
 
-  const otherHasStory = otherStory.filter(
-    (d) =>
-      d._document.data.value.mapValue.fields.story.arrayValue.values[0]
-        ?.mapValue.fields.STID?.stringValue?.length > 0
-  );
+//   const otherHasStory = otherStory?.filter(
+//     (d) =>
+//       d._document.data.value.mapValue.fields?.story?.arrayValue?.values[0]
+//         ?.mapValue.fields?.STID?.stringValue?.length > 0
+//   );
 
   const storyCard = document.getElementById("story_id");
   const storyWidth = storyCard?.clientWidth;

@@ -10,11 +10,11 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { firestore } from "../../../firebase/firebase";
-const addData = async (colName = "users", uemail = "", username = "",STID) => {
+const addData = async (colName = "users", uemail = "", username = "",name) => {
   function getFirstChars() {
-    if (!username) return []; // Handle empty string case
+    if (!name) return []; // Handle empty string case
 
-    const words = username.split(" ");
+    const words = name.split(" ");
     const firstChars = [];
     for (const word of words) {
       firstChars.push(word[0]);
@@ -30,10 +30,9 @@ const addData = async (colName = "users", uemail = "", username = "",STID) => {
     nick = firstCharacters.reduce((prev, curr) => prev + curr);
   }
 
-  const name = username;
   const email = uemail;
   const bio = "It's me " + name;
-  const UID = username.replace(/ /g, "_") + "Official";
+  // const UID = username.replace(/ /g, "_") + "Official";
   const shortName = nick;
   const nickName = "tyui";
   const date = new Date().getUTCMilliseconds();
@@ -41,7 +40,7 @@ const addData = async (colName = "users", uemail = "", username = "",STID) => {
 
   const userData = {
     user_name: name,
-    UID: UID,
+    UID: username,
     isLogin: false,
     nick_name: nickName,
     bio: bio,
@@ -74,7 +73,7 @@ const addData = async (colName = "users", uemail = "", username = "",STID) => {
 
   const storyData = {
     STID: shortName + "ST" + `${date}`,
-    STUID: UID,
+    STUID: username,
     img_src: "",
 
     isImg: false,
@@ -85,7 +84,7 @@ const addData = async (colName = "users", uemail = "", username = "",STID) => {
 
   const postData = {
     PID: shortName + "P" + `${date}`,
-    PUID: UID,
+    PUID: username,
 
     isImg: false,
 
@@ -94,8 +93,8 @@ const addData = async (colName = "users", uemail = "", username = "",STID) => {
   // Add a new document in collection "cities" with ID 'LA'
   const collectionRef = collection(firestore, 'story');
   const postRef = collection(firestore, 'user_posts');
-  const userRef = collection(firestore, '/users' , `/${UID}/data`);
-  const udRef = doc(firestore, 'users' ,`/${UID}/`);
+  const userRef = collection(firestore, '/users' , `/${username}/data`);
+  const udRef = doc(firestore, 'users' ,`/${username}/`);
 
   if (colName === "story"){
    await addDoc(collectionRef, data).catch((error) => console.log(error));

@@ -89,7 +89,7 @@ const CreatePostBox = () => {
   const email = admin?.email?.stringValue;
 
   const bio = "It's me " + name;
-  const UID = name?.replace(/ /g, "_") + "Official";
+  const UID = admin?.UID?.stringValue;
 
   function getFirstChars() {
     if (!name) return []; // Handle empty string case
@@ -166,21 +166,24 @@ const CreatePostBox = () => {
   const navigate = useNavigate();
 
   const newStoryAdded = () => {
-    UpdateData("user_posts", name, {
+
+    UpdateData("user_posts",UID, name, {
       PID: nick + "P" + `${fileSizes}`,
       isImage: fileTypes === "image" ? true : false,
       caption:detail?.length > 0 ? detail :false
-    });
-    dispatch(setHasNewStory());
-    dispatch(blurOn({blur:false}));
+    }).then((data)=> {
+      console.log(data);
+      dispatch(setHasNewStory());
+      dispatch(blurOn({blur:false}));
+  
+      setTimeout(dispatch(setNotHasNewStory()), 2000);
+  
+      setTimeout(() => navigate("/loading/"), 1000);
+  
+      setImgUrlUp("");
+    }).catch((error)=>console.log(error))
+   
 
-    setTimeout(dispatch(setNotHasNewStory()), 2000);
-
-    setTimeout(() => navigate("/loading/"), 1000);
-
-    setImgUrlUp("");
-
-    window.location.reload(true)
   };
 
   return (

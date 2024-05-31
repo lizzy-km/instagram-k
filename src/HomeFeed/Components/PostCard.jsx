@@ -5,7 +5,7 @@ import { storage } from "../../firebase/firebase";
 import { NavLink, useNavigate } from "react-router-dom";
 import Icon from "@mdi/react";
 import {
-    mdiBookmark,
+  mdiBookmark,
   mdiBookmarkOutline,
   mdiChatOutline,
   mdiHeart,
@@ -15,15 +15,6 @@ import {
 } from "@mdi/js";
 import UpdateData from "../../redux/services/Hooks/UpdateData";
 const PostCard = ({ name, data }) => {
-  const [userProfile, setUserProfile] = useState();
-  const [storyImgs, setStoryImgs] = useState();
-  const [postImgs, setPostImgs] = useState();
-  const [postUrl, setPostUrl] = useState();
-  const [count, setCount] = useState(0);
-  const [liked, setLiked] = useState(false);
-  const [shared, setShared] = useState(false);
-  const [saved, setSaved] = useState(false);
-
   const navigate = useNavigate();
 
   const { userAvatar, UserData, admin, hasNewStory } = useSelector(
@@ -34,119 +25,146 @@ const PostCard = ({ name, data }) => {
 
   const hasPostD = data?.post?.arrayValue?.values?.length > 0;
 
-  const PID = hasPostD
-    ? data?.post?.arrayValue?.values[0]?.mapValue?.fields?.PID?.stringValue
-    : "0";
+  const post = hasPostD ? data?.post?.arrayValue?.values : [];
 
-  const user_name = admin?.user_name.stringValue;
 
-  const postAction = (type, value) => {
-    const upData =
-      type === "liked_posts" || type === "unliked_posts"
-        ? {
-            LPID: PID,
-          }
-        : type === "shared_posts" || type === "unshared_posts"
-        ? {
-            SHPID: PID,
-          }
-        : type === "saved_posts" || type === "unsaved_posts"
-        ? {
-            SPID: PID,
-          }
-        : {};
+  return post.map((d) => {
+    const [userProfile, setUserProfile] = useState();
+    const [storyImgs, setStoryImgs] = useState();
+    const [postImgs, setPostImgs] = useState();
+    const [postUrl, setPostUrl] = useState();
+    const [count, setCount] = useState(0);
+    const [liked, setLiked] = useState(false);
+    const [shared, setShared] = useState(false);
+    const [saved, setSaved] = useState(false);
 
-    UpdateData(type, user_name, upData);
+    const UID = data.UID.stringValue;
 
-    if (type === "liked_posts" || type === "unliked_posts") setLiked(value);
-    if (type === "shared_posts" || type === "unshared_posts") setShared(value);
-    if (type === "saved_posts" || type === "unsaved_posts") setSaved(value);
-  };
+    const POID = hasPostD ? data.UID.stringValue : "0";
 
-  const imgUrl = async (type) => {
-    const urls = await getDownloadURL(
-      ref(
-        storage,
-        type === "profile" ? storyImgs : type === "post" ? postImgs : null
-      )
-    );
-    type === "profile"
-      ? setUserProfile(urls)
-      : type === "post"
-      ? setPostUrl(urls)
-      : null;
-  };
+    const PID = hasPostD ? d?.mapValue?.fields?.PID?.stringValue : "0";
 
-  const storageRef = ref(
-    storage,
-    `user_photo/${data?.UID?.stringValue}/${
-      hasPf &&
-      data?.profile_picture?.arrayValue?.values[0]?.mapValue?.fields?.PFID
-        ?.stringValue
-    }`
-  );
+    const user_name = admin?.user_name.stringValue;
+    const USID = admin?.UID.stringValue;
 
-  const postRef = ref(
-    storage,
-    `user_post/${data?.UID?.stringValue}/${
-      hasPostD &&
-      data?.post?.arrayValue?.values[0]?.mapValue?.fields?.PID?.stringValue
-    }`
-  );
+    const postAction = (type, value) => {
+      const upData =
+        type === "liked_posts" || type === "unliked_posts"
+          ? {
+              LPID: PID,
+              POID: POID,
+            }
+          : type === "shared_posts" || type === "unshared_posts"
+          ? {
+              SHPID: PID,
+              POID: POID,
+            }
+          : type === "saved_posts" || type === "unsaved_posts"
+          ? {
+              SPID: PID,
+              POID: POID,
+            }
+          : {};
 
-  const list = async (type) => {
-    const not = await listAll(
-      type == "profile" ? storageRef : type === "post" ? postRef : null
-    );
+      UpdateData(type, USID, user_name, upData);
 
-    for (let ii = 0; ii < not?.items.length; ii++) {
+      if (type === "liked_posts" || type === "unliked_posts") setLiked(value);
+      if (type === "shared_posts" || type === "unshared_posts")
+        setShared(value);
+      if (type === "saved_posts" || type === "unsaved_posts") setSaved(value);
+    };
+
+    const imgUrl = async (type) => {
+      const urls = await getDownloadURL(
+        ref(
+          storage,
+          type === "profile" ? storyImgs : type === "post" ? postImgs : null
+        )
+      );
       type === "profile"
-        ? setStoryImgs(not.items[ii]?.fullPath)
+        ? setUserProfile(urls)
         : type === "post"
-        ? setPostImgs(not.items[ii]?.fullPath)
+        ? setPostUrl(urls)
         : null;
-    }
-  };
+    };
 
-  useEffect(() => {
-    list("post");
-    list("profile");
+    const storageRef = ref(
+      storage,
+      `user_photo/${data?.UID?.stringValue}/${
+        hasPf &&
+        data?.profile_picture?.arrayValue?.values[0]?.mapValue?.fields?.PFID
+          ?.stringValue
+      }`
+    );
 
-    for (let i = 0; i < admin?.liked_post?.arrayValue?.values?.length; i++) {
-      const likedPost = admin?.liked_post?.arrayValue?.values[i];
+    const postRef = ref(
+      storage,
+      `user_post/${data?.UID?.stringValue}/${
+        hasPostD && d?.mapValue?.fields?.PID?.stringValue
+      }`
+    );
 
-      likedPost?.mapValue.fields.LPID?.stringValue === PID && setLiked(true);
-    }
-    for (let i = 0; i < admin?.shared_posts?.arrayValue?.values?.length; i++) {
+    const list = async (type) => {
+      const not = await listAll(
+        type == "profile" ? storageRef : type === "post" ? postRef : null
+      );
+
+      for (let ii = 0; ii < not?.items.length; ii++) {
+        type === "profile"
+          ? setStoryImgs(not.items[ii]?.fullPath)
+          : type === "post"
+          ? setPostImgs(not.items[ii]?.fullPath)
+          : null;
+      }
+    };
+
+    useEffect(() => {
+      list("post");
+      list("profile");
+
+
+      for (let i = 0; i < admin?.liked_post?.arrayValue?.values?.length; i++) {
+        const likedPost = admin?.liked_post?.arrayValue?.values[i];
+
+        likedPost?.mapValue.fields.LPID?.stringValue === PID && setLiked(true);
+      }
+
+     
+      for (
+        let i = 0;
+        i < admin?.shared_posts?.arrayValue?.values?.length;
+        i++
+      ) {
         const shared_post = admin?.shared_posts?.arrayValue?.values[i];
-  
-        shared_post?.mapValue.fields.SHPID?.stringValue === PID && setShared(true);
+
+        shared_post?.mapValue.fields.SHPID?.stringValue === PID &&
+          setShared(true);
+
       }
       for (let i = 0; i < admin?.saved_posts?.arrayValue?.values?.length; i++) {
         const saved_post = admin?.saved_posts?.arrayValue?.values[i];
-  
+
         saved_post?.mapValue.fields.SPID?.stringValue === PID && setSaved(true);
+
+        
       }
-  }, []);
+    }, []);
 
-  useEffect(() => {
-    imgUrl("post");
-    imgUrl("profile");
-  }, [storyImgs]);
+    useEffect(() => {
+      imgUrl("post");
+      imgUrl("profile");
+    }, [storyImgs]);
 
-  useEffect(() => {
-    list("post");
-    list("profile");
+    useEffect(() => {
+      list("post");
+      list("profile");
 
-    imgUrl("post");
-    imgUrl("profile");
+      imgUrl("post");
+      imgUrl("profile");
 
-    setCount(count + 1);
-  }, [hasNewStory, UserData, admin, storyImgs, postImgs]);
+      setCount(count + 1);
+    }, [hasNewStory, UserData, admin, storyImgs, postImgs]);
 
-  const UID = data.UID.stringValue;
-
-  if (hasPostD)
     return (
       <section className=" flex flex-col py-2  gap-2 rounded-md bg-[#242526] w-full ">
         <div className=" w-full h-[50px] p-3 flex justify-between items-center ">
@@ -198,42 +216,42 @@ const PostCard = ({ name, data }) => {
             <div className=" flex p-1 items-center cursor-pointer rounded-full ">
               <Icon path={mdiChatOutline} size={1} />
             </div>
-                {
-                    shared ?   <div
-                    onClick={() => postAction("unshared_posts", false)}
-                    className=" flex p-1 items-center cursor-pointer rounded-full "
-                  >
-                    <Icon path={mdiShare} size={1} />
-                  </div> :   <div
-              onClick={() => postAction("shared_posts", true)}
-              className=" flex p-1 items-center cursor-pointer rounded-full "
+            {shared ? (
+              <div
+                onClick={() => postAction("unshared_posts", false)}
+                className=" flex p-1 items-center cursor-pointer rounded-full "
+              >
+                <Icon path={mdiShare} size={1} />
+              </div>
+            ) : (
+              <div
+                onClick={() => postAction("shared_posts", true)}
+                className=" flex p-1 items-center cursor-pointer rounded-full "
+              >
+                <Icon path={mdiShareOutline} size={1} />
+              </div>
+            )}
+          </div>
+
+          {saved ? (
+            <div
+              onClick={() => postAction("unsaved_posts", false)}
+              className=" flex p-2 items-center cursor-pointer rounded-full "
             >
-              <Icon path={mdiShareOutline} size={1} />
+              <Icon path={mdiBookmark} size={1} />
             </div>
-                }
-          
-          </div>
-
-          {
-            saved ?  <div
-            onClick={() => postAction("unsaved_posts", false)}
-            className=" flex p-2 items-center cursor-pointer rounded-full "
-          >
-            <Icon path={mdiBookmark} size={1} />
-          </div> :  
-          
-          <div
-            onClick={() => postAction("saved_posts", true)}
-            className=" flex p-2  items-center cursor-pointer rounded-full "
-          >
-            <Icon path={mdiBookmarkOutline} size={1} />
-          </div>
-          }
-
-         
+          ) : (
+            <div
+              onClick={() => postAction("saved_posts", true)}
+              className=" flex p-2  items-center cursor-pointer rounded-full "
+            >
+              <Icon path={mdiBookmarkOutline} size={1} />
+            </div>
+          )}
         </div>
       </section>
     );
+  });
 };
 
 export default PostCard;

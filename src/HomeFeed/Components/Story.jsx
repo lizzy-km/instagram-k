@@ -24,7 +24,7 @@ const Story = () => {
   const userData = UserData;
 
   const user = userData?.filter(
-    (d) =>d?._document.data.value.mapValue.fields?.story.arrayValue.values.length >0?
+    (d) =>d?._document.data.value.mapValue.fields?.story.arrayValue.values?.length >0?
       d?._document.data.value.mapValue.fields.story?.arrayValue.values[0]
         ?.mapValue.fields.STID?.stringValue?.length > 0 : false
   );
@@ -51,7 +51,7 @@ const Story = () => {
     getData();
   }, []);
 
-  const pf = admin?.profile_picture?.arrayValue.values.filter(
+  const pf = admin?.profile_picture?.arrayValue.values?.filter(
     (d) => d?.mapValue.fields
   )[0]; // Check this profile picture is currently use
 
@@ -135,7 +135,7 @@ const Story = () => {
           style={{
             translate: -translateX,
           }}
-          className=" storyCreateCard    "
+          className=" storyCreateCard  transition-all   "
         >
           <div className=" h-full flex flex-col justify-between items-center rounded-md ">
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
