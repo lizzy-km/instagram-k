@@ -17,6 +17,7 @@ import {
   mdiShareOutline,
 } from "@mdi/js";
 import UpdateData from "../../redux/services/Hooks/UpdateData";
+import ImageCard from "./ImageCard";
 const PostCard = ({ name, data }) => {
   const navigate = useNavigate();
 
@@ -39,7 +40,7 @@ const PostCard = ({ name, data }) => {
     const [liked, setLiked] = useState(false);
     const [shared, setShared] = useState(false);
     const [saved, setSaved] = useState(false);
-    const [loading,setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
 
     const UID = data.UID.stringValue;
 
@@ -77,7 +78,7 @@ const PostCard = ({ name, data }) => {
       if (type === "saved_posts" || type === "unsaved_posts") setSaved(value);
     };
 
-    const postUrlGen = async (path) => {
+    async function postUrlGen(path) {
       let u = [];
 
       path?.map(
@@ -85,10 +86,10 @@ const PostCard = ({ name, data }) => {
           await getDownloadURL(ref(storage, d.fullPath)).then((data) => {
             u?.push(data);
             setPostUrl(u);
-           postUrl?.length > 0 && setLoading(false)
+            setLoading(false);
           })
       );
-    };
+    }
 
     const imgUrl = async (path) => {
       const urls = await getDownloadURL(ref(storage, path));
@@ -156,8 +157,6 @@ const PostCard = ({ name, data }) => {
       setCount(count + 1);
     }, [hasNewStory, UserData, admin, storyImgs, postImgs]);
 
-    
-
     const { isTablet, isMobile, isDeskTop } = useSelector(
       (state) => state.animateSlice
     );
@@ -183,171 +182,152 @@ const PostCard = ({ name, data }) => {
       }
     };
 
-  if(!loading)  return (
-      <section className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-start   py-4    w-full ">
-        <div className=" flex w-full h-auto rounded-t-md justify-between  ">
-          <div className="  w-full  flex-col relative   rounded-tl-md h-auto min-h-[50px]  flex justify-between items-end ">
-            <div className=" absolute bottom-2 left-0 w-full px-2  h-[45px]   flex justify-between items-center ">
-              <div className=" w-auto h-full  gap-2    flex justify-center items-center ">
-                <NavLink
-                  to={`/${UID}`}
-                  className=" rounded- relative w-[40px]  h-[40px] justify-center items-center  bg-[#ca3e4796] "
-                >
-                  <div className=" -z-10 rotate-[10deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                  <div className=" -z-10 rotate-[20deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                  <div className=" -z-10 rotate-[40deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                  <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                  <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+    if (!loading)
+      return (
+        <section className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-start   py-4    w-full ">
+          <div className=" flex w-full h-auto rounded-t-md justify-between  ">
+            <div className="  w-full  flex-col relative   rounded-tl-md h-auto min-h-[50px]  flex justify-between items-end ">
+              <div className=" absolute bottom-2 left-0 w-full px-2  h-[45px]   flex justify-between items-center ">
+                <div className=" w-auto h-full  gap-2    flex justify-center items-center ">
+                  <NavLink
+                    to={`/${UID}`}
+                    className=" rounded- relative w-[40px]  h-[40px] justify-center items-center  bg-[#ca3e4796] "
+                  >
+                    <div className=" -z-10 rotate-[10deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                    <div className=" -z-10 rotate-[20deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                    <div className=" -z-10 rotate-[40deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                    <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                    <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
 
-                  <img
-                    className=" w-full   h-full rounded-full object-cover cursor-pointer "
-                    src={userProfile?.length > 0 ? userProfile : userAvatar}
-                    alt=""
-                    srcset=""
-                  />
-                </NavLink>
-                <NavLink
-                  to={`/${UID}`}
-                  className=" cursor-pointer rounded-br px-2  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-base  "
-                >
-                  <p>{name}</p>
-                </NavLink>
+                    <img
+                      className=" w-full   h-full rounded-full object-cover cursor-pointer "
+                      src={userProfile?.length > 0 ? userProfile : userAvatar}
+                      alt=""
+                      srcset=""
+                    />
+                  </NavLink>
+                  <NavLink
+                    to={`/${UID}`}
+                    className=" cursor-pointer rounded-br px-2  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-base  "
+                  >
+                    <p>{name}</p>
+                  </NavLink>
+                </div>
+              </div>
+
+              <div className=" absolute right-0 bottom-2 w-[40px] bg-[#3333332f] h-[40px] flex justify-center items-center rounded  cursor-pointer ">
+                <Icon path={mdiDotsHorizontal} size={1} />
               </div>
             </div>
-
-            <div className=" absolute right-0 bottom-2 w-[40px] bg-[#3333332f] h-[40px] flex justify-center items-center rounded  cursor-pointer ">
-              <Icon path={mdiDotsHorizontal} size={1} />
-            </div>
           </div>
-        </div>
 
-        {postUrl?.length > 1 && !isMobile && (
-          <div className=" absolute flex justify-between top-[50%] z-10 w-full ">
-             <div
-             style={{
-                opacity: countC > 0 ? '1' : '0'
-             }}
+          {postUrl?.length > 1 && !isMobile && (
+            <div className=" absolute flex justify-between top-[50%] z-10 w-full ">
+              <div
+                style={{
+                  opacity: countC > 0 ? "1" : "0",
+                }}
                 onClick={() => prev()}
                 className=" cursor-pointer self-start  p-1  bg-[#33333399] backdrop-blur rounded-full "
               >
                 <Icon path={mdiChevronLeft} size={1} />
               </div>
-            
-           
 
-
-             <div style={{
-                opacity: countC < postUrl?.length-1 ? '1' : '0'
-             }}
-                
-                    onClick={() => next()}
-                    className=" cursor-pointer self-end  p-1 bg-[#33333399] backdrop-blur rounded-full "
-                  >
-                    <Icon path={mdiChevronRight} size={1} />
-                  </div>
-                
-         
-          </div>
-        )}
+              <div
+                style={{
+                  opacity: countC < postUrl?.length - 1 ? "1" : "0",
+                }}
+                onClick={() => next()}
+                className=" cursor-pointer self-end  p-1 bg-[#33333399] backdrop-blur rounded-full "
+              >
+                <Icon path={mdiChevronRight} size={1} />
+              </div>
+            </div>
+          )}
 
           <div
             style={{
               overflowX: isMobile ? "scroll" : "hidden",
-              height:ih>0 ? ih+'px' :'500px'
+              height:isMobile ? '67vh' : '77vh'
             }}
-            className=" flex relative    bg-[#3333334f]   rounded-md snap-x  snap-mandatory overflow-y-hidden  w-full gap-1 "
+            className=" flex relative h-[680px]    bg-[#3333334f]   rounded-md snap-x  snap-mandatory   w-full  "
           >
             <div
               style={{
                 left: translateX + "px",
               }}
-              className=" flex absolute  h-auto w-full  justify-start  rounded-md     "
+              className=" flex absolute  w-full h-full   justify-start  rounded-md     "
             >
               {postUrl?.map((d) => {
-                return (
-                  <img
-                    key={d}
-                    id="imgW"
-                    className="  bg-[#242526] min-h-[500px]   snap-center transition-all w-full object-cover object-top rounded-md "
-                    src={d}
-                    alt=""
-                    srcset=""
-                  />
-                );
+                return <ImageCard key={d} data={d} />;
               })}
             </div>
-          </div> 
-  
-        
+          </div>
 
-      
-        <div className=" flex flex-col w-full justify-between items-center py-2  ">
-          <div className=" flex w-full justify-between items-center  ">
-            <div className=" flex gap-3 items-center  ">
-              {liked ? (
-                <div
-                  onClick={() => postAction("unliked_posts", false)}
-                  className=" text-[#CA3E47] flex p-1 items-center cursor-pointer rounded-full "
-                >
-                  <Icon path={mdiHeart} size={1} />
-                </div>
-              ) : (
-                <div
-                  onClick={() => postAction("liked_posts", true)}
-                  className=" flex p-1 items-center cursor-pointer rounded-full "
-                >
-                  <Icon path={mdiHeartOutline} size={1} />
-                </div>
-              )}
+          <div className=" flex flex-col w-full justify-between items-center py-2  ">
+            <div className=" flex w-full justify-between items-center  ">
+              <div className=" flex gap-3 items-center  ">
+                {liked ? (
+                  <div
+                    onClick={() => postAction("unliked_posts", false)}
+                    className=" text-[#CA3E47] flex p-1 items-center cursor-pointer rounded-full "
+                  >
+                    <Icon path={mdiHeart} size={1} />
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => postAction("liked_posts", true)}
+                    className=" flex p-1 items-center cursor-pointer rounded-full "
+                  >
+                    <Icon path={mdiHeartOutline} size={1} />
+                  </div>
+                )}
 
-              <div className=" flex p-1 items-center cursor-pointer rounded-full ">
-                <Icon path={mdiChatOutline} size={1} />
+                {shared ? (
+                  <div
+                    onClick={() => postAction("unshared_posts", false)}
+                    className=" flex p-1 items-center cursor-pointer rounded-full "
+                  >
+                    <Icon path={mdiShare} size={1} />
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => postAction("shared_posts", true)}
+                    className=" flex p-1 items-center cursor-pointer rounded-full "
+                  >
+                    <Icon path={mdiShareOutline} size={1} />
+                  </div>
+                )}
               </div>
-              {shared ? (
+
+              {saved ? (
                 <div
-                  onClick={() => postAction("unshared_posts", false)}
-                  className=" flex p-1 items-center cursor-pointer rounded-full "
+                  onClick={() => postAction("unsaved_posts", false)}
+                  className=" flex p-2 items-center cursor-pointer rounded-full "
                 >
-                  <Icon path={mdiShare} size={1} />
+                  <Icon path={mdiBookmark} size={1} />
                 </div>
               ) : (
                 <div
-                  onClick={() => postAction("shared_posts", true)}
-                  className=" flex p-1 items-center cursor-pointer rounded-full "
+                  onClick={() => postAction("saved_posts", true)}
+                  className=" flex p-2  items-center cursor-pointer rounded-full "
                 >
-                  <Icon path={mdiShareOutline} size={1} />
+                  <Icon path={mdiBookmarkOutline} size={1} />
                 </div>
               )}
             </div>
-
-            {saved ? (
-              <div
-                onClick={() => postAction("unsaved_posts", false)}
-                className=" flex p-2 items-center cursor-pointer rounded-full "
-              >
-                <Icon path={mdiBookmark} size={1} />
-              </div>
-            ) : (
-              <div
-                onClick={() => postAction("saved_posts", true)}
-                className=" flex p-2  items-center cursor-pointer rounded-full "
-              >
-                <Icon path={mdiBookmarkOutline} size={1} />
-              </div>
-            )}
           </div>
-        </div>
-        {data?.post.arrayValue.values[0]?.mapValue.fields.caption
-          ?.stringValue && (
-          <pre className="  border-l-[1.5px] border-[#d4d4d4ce] px-2 py-2 text-sm  max-w-[80%] text-wrap tracking-wide  w-[80%]  h-auto ">
-            {
-              data?.post.arrayValue.values[0]?.mapValue.fields.caption
-                ?.stringValue
-            }
-          </pre>
-        )}
-      </section>
-    );
+          {data?.post.arrayValue.values[0]?.mapValue.fields.caption
+            ?.stringValue && (
+            <pre className="  border-l-[1.5px] border-[#d4d4d4ce] px-2 py-2 text-sm  max-w-[80%] text-wrap tracking-wide  w-[80%]  h-auto ">
+              {
+                data?.post.arrayValue.values[0]?.mapValue.fields.caption
+                  ?.stringValue
+              }
+            </pre>
+          )}
+        </section>
+      );
   });
 };
 

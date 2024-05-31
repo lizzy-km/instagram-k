@@ -9,9 +9,16 @@ const Post = () => {
     (state) => state.authSlice
   );
 
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
+
+
   if (UserData.length > 0)
     return (
-      <div className="flex flex-col gap-8 w-[100%]  p-2 my-2 h-auto  rounded-md">
+      <div style={{
+        width: isMobile ? '100%' : '80%'
+      }} className="flex flex-col gap-8 w-[70%] self-center  p-2 my-2 h-auto  rounded-md">
         {UserData?.map((d) => {
           const name =
             d?._document.data.value.mapValue.fields?.user_name.stringValue;
