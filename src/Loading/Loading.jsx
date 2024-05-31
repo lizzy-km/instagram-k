@@ -38,7 +38,7 @@ const Loading = () => {
       Promise.all(getAdmin)
         .then((data) => {
           dispatch(addAdmin(data[0]));
-          setTimeout(()=> navigate('/'),100)
+          setTimeout(()=> navigate('/'),400)
         })
         .catch((error) => console.log(error));
     }, []);

@@ -8,6 +8,8 @@ import {
   mdiBookmark,
   mdiBookmarkOutline,
   mdiChatOutline,
+  mdiDotsHorizontal,
+  mdiDotsVertical,
   mdiHeart,
   mdiHeartOutline,
   mdiShare,
@@ -26,7 +28,6 @@ const PostCard = ({ name, data }) => {
   const hasPostD = data?.post?.arrayValue?.values?.length > 0;
 
   const post = hasPostD ? data?.post?.arrayValue?.values : [];
-
 
   return post.map((d) => {
     const [userProfile, setUserProfile] = useState();
@@ -122,14 +123,12 @@ const PostCard = ({ name, data }) => {
       list("post");
       list("profile");
 
-
       for (let i = 0; i < admin?.liked_post?.arrayValue?.values?.length; i++) {
         const likedPost = admin?.liked_post?.arrayValue?.values[i];
 
         likedPost?.mapValue.fields.LPID?.stringValue === PID && setLiked(true);
       }
 
-     
       for (
         let i = 0;
         i < admin?.shared_posts?.arrayValue?.values?.length;
@@ -139,14 +138,11 @@ const PostCard = ({ name, data }) => {
 
         shared_post?.mapValue.fields.SHPID?.stringValue === PID &&
           setShared(true);
-
       }
       for (let i = 0; i < admin?.saved_posts?.arrayValue?.values?.length; i++) {
         const saved_post = admin?.saved_posts?.arrayValue?.values[i];
 
         saved_post?.mapValue.fields.SPID?.stringValue === PID && setSaved(true);
-
-        
       }
     }, []);
 
@@ -165,90 +161,121 @@ const PostCard = ({ name, data }) => {
       setCount(count + 1);
     }, [hasNewStory, UserData, admin, storyImgs, postImgs]);
 
+    const bgImgEl = document.getElementById("bgImgLeft");
+    const parentWidth = bgImgEl?.parentElement.clientWidth;
+    const parentHeight = bgImgEl?.parentElement.clientHeight;
+
+    const bgImgElR = document.getElementById("bgImgRight");
+    const parentWidthR = bgImgElR?.parentElement.clientWidth;
+    const parentHeightR = bgImgElR?.parentElement.clientHeight;
+
     return (
-      <section className=" flex flex-col py-2  gap-2 rounded-md bg-[#242526] w-full ">
-        <div className=" w-full h-[50px] p-3 flex justify-between items-center ">
-          <div className=" w-auto h-fulll py-2 flex justify-start items-start ">
-            <NavLink to={`/${UID}`} className=" rounded-full  bg-[#333333] ">
-              <img
-                className=" w-[40px] p-1 h-[40px] rounded-full object-cover cursor-pointer "
-                src={userProfile?.length > 0 ? userProfile : userAvatar}
-                alt=""
-                srcset=""
-              />
-            </NavLink>
-            <NavLink
-              to={`/${UID}`}
-              className=" cursor-pointer px-2 py-1 w-auto justify-start items-start text-sm h-full "
-            >
-              <p>{name}</p>
-            </NavLink>
+      <section className=" flex flex-col justify-start items-start   py-3    w-full ">
+        <div className=" flex w-full h-auto rounded-t-md justify-between  ">
+          <div className="  w-full  flex-col relative   rounded-tl-md h-auto min-h-[50px]  flex justify-between items-end ">
+            <div className=" absolute bottom-2 left-0 w-[full] px-2  h-[50px] pb-2  flex justify-between items-center ">
+              <div className=" w-auto h-full  gap-2   rounded-r  flex justify-end items-end ">
+                <NavLink
+                  to={`/${UID}`}
+                  className=" rounded- relative  bg-[#ca3e4796] "
+                >
+                  <div className=" -z-10 rotate-[10deg] bg-[#ca3e4796] w-full h-full absolute "></div>
+                  <div className=" -z-10 rotate-[20deg] bg-[#ca3e4796] w-full h-full absolute "></div>
+                  <div className=" -z-10 rotate-[40deg] bg-[#ca3e4796] w-full h-full absolute "></div>
+                  <div className=" -z-10 rotate-[60deg] bg-[#ca3e4796] w-full h-full absolute "></div>
+                  <div className=" -z-10 rotate-[80deg] bg-[#ca3e4796] w-full h-full absolute "></div>
+
+
+
+
+
+                  <img
+                    className=" w-[40px]    h-[40px] rounded-full object-cover cursor-pointer "
+                    src={userProfile?.length > 0 ? userProfile : userAvatar}
+                    alt=""
+                    srcset=""
+                  />
+                </NavLink>
+                <NavLink
+                  to={`/${UID}`}
+                  className=" cursor-pointer rounded-br px-2  h-full min-w-[100px]  w-auto flex justify-start items-start text-base  "
+                >
+                  <p>{name}</p>
+                </NavLink>
+              </div>
+            </div>
+
+            <div className=" absolute right-0 bottom-2 w-[40px] bg-[#2121215a] h-[40px] flex justify-center items-center rounded  cursor-pointer ">
+              <Icon path={mdiDotsVertical} size={1} />
+            </div>
           </div>
         </div>
 
-        <pre className=" p-3 ">
+        <img className=" w-full " src={postUrl} alt="" srcset="" />
+
+        <div className=" flex flex-col w-full justify-between items-center py-2  ">
+          <div className=" flex w-full justify-between items-center  ">
+            <div className=" flex gap-3 items-center  ">
+              {liked ? (
+                <div
+                  onClick={() => postAction("unliked_posts", false)}
+                  className=" text-[#CA3E47] flex p-1 items-center cursor-pointer rounded-full "
+                >
+                  <Icon path={mdiHeart} size={1} />
+                </div>
+              ) : (
+                <div
+                  onClick={() => postAction("liked_posts", true)}
+                  className=" flex p-1 items-center cursor-pointer rounded-full "
+                >
+                  <Icon path={mdiHeartOutline} size={1} />
+                </div>
+              )}
+
+              <div className=" flex p-1 items-center cursor-pointer rounded-full ">
+                <Icon path={mdiChatOutline} size={1} />
+              </div>
+              {shared ? (
+                <div
+                  onClick={() => postAction("unshared_posts", false)}
+                  className=" flex p-1 items-center cursor-pointer rounded-full "
+                >
+                  <Icon path={mdiShare} size={1} />
+                </div>
+              ) : (
+                <div
+                  onClick={() => postAction("shared_posts", true)}
+                  className=" flex p-1 items-center cursor-pointer rounded-full "
+                >
+                  <Icon path={mdiShareOutline} size={1} />
+                </div>
+              )}
+            </div>
+
+            {saved ? (
+              <div
+                onClick={() => postAction("unsaved_posts", false)}
+                className=" flex p-2 items-center cursor-pointer rounded-full "
+              >
+                <Icon path={mdiBookmark} size={1} />
+              </div>
+            ) : (
+              <div
+                onClick={() => postAction("saved_posts", true)}
+                className=" flex p-2  items-center cursor-pointer rounded-full "
+              >
+                <Icon path={mdiBookmarkOutline} size={1} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        <pre className="  border-l-[1.5px] border-[#d4d4d4ce] px-2  max-w-[80%] text-wrap tracking-wide  w-[80%]  h-auto ">
           {
             data?.post.arrayValue.values[0]?.mapValue.fields.caption
               ?.stringValue
           }
         </pre>
-
-        <img className=" w-full " src={postUrl} alt="" srcset="" />
-
-        <div className=" flex justify-between items-center py-2 px-3 ">
-          <div className=" flex gap-3 items-center  ">
-            {liked ? (
-              <div
-                onClick={() => postAction("unliked_posts", false)}
-                className=" text-[#CA3E47] flex p-1 items-center cursor-pointer rounded-full "
-              >
-                <Icon path={mdiHeart} size={1} />
-              </div>
-            ) : (
-              <div
-                onClick={() => postAction("liked_posts", true)}
-                className=" flex p-1 items-center cursor-pointer rounded-full "
-              >
-                <Icon path={mdiHeartOutline} size={1} />
-              </div>
-            )}
-
-            <div className=" flex p-1 items-center cursor-pointer rounded-full ">
-              <Icon path={mdiChatOutline} size={1} />
-            </div>
-            {shared ? (
-              <div
-                onClick={() => postAction("unshared_posts", false)}
-                className=" flex p-1 items-center cursor-pointer rounded-full "
-              >
-                <Icon path={mdiShare} size={1} />
-              </div>
-            ) : (
-              <div
-                onClick={() => postAction("shared_posts", true)}
-                className=" flex p-1 items-center cursor-pointer rounded-full "
-              >
-                <Icon path={mdiShareOutline} size={1} />
-              </div>
-            )}
-          </div>
-
-          {saved ? (
-            <div
-              onClick={() => postAction("unsaved_posts", false)}
-              className=" flex p-2 items-center cursor-pointer rounded-full "
-            >
-              <Icon path={mdiBookmark} size={1} />
-            </div>
-          ) : (
-            <div
-              onClick={() => postAction("saved_posts", true)}
-              className=" flex p-2  items-center cursor-pointer rounded-full "
-            >
-              <Icon path={mdiBookmarkOutline} size={1} />
-            </div>
-          )}
-        </div>
       </section>
     );
   });

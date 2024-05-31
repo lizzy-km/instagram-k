@@ -118,7 +118,7 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
         <div className="h-[100%] absolute  bg-center object-center    object-cover rounded-md ">
         {
                 storyD && <img
-                className=" cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-[100%] h-[100%]  bg-center object-center    object-cover rounded-md "
+                className=" transition-all  cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-[100%] h-[100%]  bg-center object-center    object-cover rounded-md "
                 src={storyD?.length > 0 ? storyD:userAvatar}
                 alt="story_picture"
                 srcSet=""

@@ -141,7 +141,7 @@ const Story = () => {
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
               {pf && (
                 <img
-                  className=" cursor-pointer hover:scale-105  h-[100%] w-[145px]  bg-center object-center    object-cover rounded-t-md "
+                  className=" transition-all  cursor-pointer hover:scale-105  h-[100%] w-[145px]  bg-center object-center    object-cover rounded-t-md "
                   src={adminProfile?.length > 0 ? adminProfile:userAvatar}
                   alt="profile_picture"
                   srcSet=""

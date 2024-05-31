@@ -11,7 +11,7 @@ const Post = () => {
 
   if (UserData.length > 0)
     return (
-      <div className="flex flex-col gap-4 w-full p-2 my-2 h-auto  rounded-md">
+      <div className="flex flex-col gap-8 w-full p-2 my-2 h-auto  rounded-md">
         {UserData?.map((d) => {
           const name =
             d?._document.data.value.mapValue.fields?.user_name.stringValue;

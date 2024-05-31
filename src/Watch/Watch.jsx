@@ -8,7 +8,6 @@ const Watch = () => {
   const navigate = useNavigate()
 
     useEffect(()=> {
-        setTimeout(()=> navigate('/'),700)
 
     },[])
   return (
