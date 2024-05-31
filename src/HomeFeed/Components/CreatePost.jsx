@@ -29,7 +29,7 @@ const CreatePost = () => {
     <>
       <div className=" tracking-wider  flex w-full my-2 p-3 min-h-[60px] bg-[#242526] rounded-md  ">
         <div className=" px-2 flex rounded-md justify-between flex-col items-center w-full h-full ">
-          <div className=" flex justify-between items-center w-full h-full   ">
+          <div className=" flex justify-between gap-2 items-center w-full h-full   ">
             <div className=" flex cursor-pointer  rounded-full  bg-[#333333] ">
               <img
                 className=" hover:brightness-75 rounded-full object-cover w-[40px] h-[40px] p-[3px]"

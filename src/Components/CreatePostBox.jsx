@@ -1,11 +1,7 @@
 import { blurOn, setArea } from "../redux/services/animateSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setShowStory,
-  
-  isTablet,
-} from "../redux/services/animateSlice";
+import { setShowStory, isTablet } from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
 import addData from "../redux/services/Hooks/AddData";
 import {
@@ -19,6 +15,7 @@ import UpdateData from "../redux/services/Hooks/UpdateData";
 import { setHasNewStory, setNotHasNewStory } from "../redux/services/authSlice";
 import { useNavigate } from "react-router-dom";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
+import { FactorId } from "firebase/auth";
 const CreatePostBox = () => {
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState(
@@ -49,8 +46,6 @@ const CreatePostBox = () => {
   const { blur, isMobile } = useSelector((state) => state.animateSlice);
   const { admin } = useSelector((state) => state.authSlice);
 
-
-
   useEffect(() => {
     blur === false
       ? useChangeChildrenVisibility(Create_post, "hidden")
@@ -70,8 +65,6 @@ const CreatePostBox = () => {
   const [imgSrc, setImgSrc] = useState();
   const [inputHeight, setInputHeight] = useState(50);
 
-
-
   const handleKeyPress = (e) => {
     if (e.keyCode === 13) {
       event.preventDefault();
@@ -81,7 +74,7 @@ const CreatePostBox = () => {
     }
     if (e.keyCode === 8 && inputHeight > 50) {
       // Check for Enter key
-        setInputHeight(inputHeight / 2);
+      setInputHeight(inputHeight / 2);
     }
   };
 
@@ -109,17 +102,17 @@ const CreatePostBox = () => {
       ? firstCharacters?.reduce((prev, curr) => prev + curr)
       : null;
 
-
-
-
-  const [imfurlForUp, setImgUrlUp] = useState();
+  const [imfurlForUp, setImgUrlUp] = useState([]);
   const [isImage, setIsImage] = useState(true);
+
+
+  const totalSize = imfurlForUp.length > 0 ? imfurlForUp?.reduce((prev,curr)=> prev.fileSize + curr.fileSize) : 0
+
 
 
   const uploadStory = async (file, fileSize, STID, filePath) => {
     const storageRef = file && ref(storage, filePath); // Replace with your desired file path
 
-    
     const fileType = checkFileType(file);
 
     setIsImage(fileType === "image" ? true : false);
@@ -129,32 +122,45 @@ const CreatePostBox = () => {
       (await uploadBytes(storageRef, file)
         .then((data) => {
           console.log(data);
-        
+
           getDownloadURL(data.ref).then((downloadURL) => {
-            setImgUrlUp(downloadURL);
+            setImgUrlUp([
+              ...imfurlForUp,
+              { downloadURL: downloadURL, fileSize: fileSize },
+            ]);
             console.log("File available at", downloadURL);
+
+           
           });
         })
         .catch((error) => console.log(error)));
   };
 
-  const [fileSizes,setFileSize] = useState()
-  const [fileTypes,setFileType] = useState()
+  const [fileSizes, setFileSize] = useState();
+  const [fileTypes, setFileType] = useState();
+  const [FID,setFID] = useState(0)
+
+  useEffect(()=> {
+    const id = Math.round(Math.random() * 100000000)
+    setFID(id)
+  },[blur])
+
+
 
   const CreateNewStory = async (e) => {
     const file = e.target.files[0];
 
     const fileSize = e.target.files[0]?.size;
 
-    const STID = nick + "P" + `${fileSize}`;
+    const STID = nick + "P" + `${FID}`;
 
     const filePath = `user_post/${UID}/${STID}/${file.name}`;
 
     const fileType = checkFileType(file);
 
-    setFileType(fileType)
+    setFileType(fileType);
 
-    fileType ? setFileSize(fileSize) : null
+    fileType ? setFileSize(fileSize) : null;
 
     fileType
       ? uploadStory(file, fileSize, STID, filePath).then((data) =>
@@ -167,24 +173,26 @@ const CreatePostBox = () => {
 
   const newStoryAdded = () => {
 
-    UpdateData("user_posts",UID, name, {
-      PID: nick + "P" + `${fileSizes}`,
+    UpdateData("user_posts", UID, name, {
+      PID: nick + "P" + `${FID}`,
       isImage: fileTypes === "image" ? true : false,
-      caption:detail?.length > 0 ? detail :false
-    }).then((data)=> {
-      console.log(data);
-      dispatch(setHasNewStory());
-      dispatch(blurOn({blur:false}));
-  
-      setTimeout(dispatch(setNotHasNewStory()), 2000);
-  
-      setTimeout(() => navigate("/loading/"), 1000);
-  
-      setImgUrlUp("");
-    }).catch((error)=>console.log(error))
-   
+      caption: detail?.length > 0 ? detail : false,
+    })
+      .then((data) => {
+        console.log(data);
+        dispatch(setHasNewStory());
+        dispatch(blurOn({ blur: false }));
 
+        setTimeout(dispatch(setNotHasNewStory()), 2000);
+
+        setTimeout(() => navigate("/loading/"), 1000);
+
+        setImgUrlUp("");
+      })
+      .catch((error) => console.log(error));
   };
+
+  console.log(imfurlForUp);
 
   return (
     <div
@@ -286,9 +294,12 @@ const CreatePostBox = () => {
           <div className=" relative h-auto flex flex-col gap-0 justify-start items-start w-full ">
             <div
               id="myInput"
-              onKeyDown={(e)=>  e.keyCode === 13 ? setDetail(detail + " " + " \n "):setDetail(e.currentTarget.innerText) }
+              onKeyDown={(e) =>
+                e.keyCode === 13
+                  ? setDetail(detail + " " + " \n ")
+                  : setDetail(e.currentTarget.innerText)
+              }
               aria-placeholder="What's on your mind, Kaung?"
-              
               data-lexical-editor="true"
               aria-valuetext={detail}
               contentEditable="true"
@@ -296,78 +307,75 @@ const CreatePostBox = () => {
               spellCheck="true"
               tabIndex="0"
               className=" relative outline-none p-2 w-full h-auto min-h-[50px] cursor-text text-[24px] break-words whitespace-pre-wrap user-select-[text]  "
-            >
-             
-            </div>
+            ></div>
           </div>
 
           <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
-          {!imfurlForUp ? (
-            <div className=" cursor-pointer self-end h-[75%] flex w-full bg-[#111111]  rounded  ">
-              <div className="flex items-center justify-center w-full">
-                <label
-                  for="dropzone-file"
-                  className="flex flex-col items-center justify-center w-[80%] h-[80%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
-                >
-                  <div className="flex flex-col relative items-center justify-center pt-5 pb-6">
-                    <svg
-                      className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 16"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+            {imfurlForUp.length < 11 && (
+              <div className=" cursor-pointer  h-[20%] flex w-[20%] bg-[#111111]  rounded  ">
+                <div className="flex items-center justify-center w-full">
+                  <label
+                    for="dropzone-file"
+                    className="flex flex-col items-center justify-center w-[80%] h-[80%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
+                  >
+                    <div className="flex flex-col relative items-center justify-center pt-5 pb-6">
+                      <svg
+                        className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 16"
+                      >
+                        <path
+                          stroke="currentColor"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                        />
+                      </svg>
+                      <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                        <span className="font-semibold">Click to upload</span>
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Photo / Video{" "}
+                      </p>
+                      <input
+                        onChange={CreateNewStory}
+                        id="dropzone-file"
+                        type="file"
+                        className=" absolute w-full opacity-0 h-full "
                       />
-                    </svg>
-                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                      <span className="font-semibold">Click to upload</span>
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Photo / Video{" "}
-                    </p>
-                    <input
-                      onChange={CreateNewStory}
-                      id="dropzone-file"
-                      type="file"
-                      className=" absolute w-full opacity-0 h-full "
-                    />
-                  </div>
-                </label>
+                    </div>
+                  </label>
+                </div>
               </div>
-            </div>
-          ) : (
-            <div className=" flex justify-center w-full h-full items-center p-1 rounded ">
-              {
-                isImage ? <img
-                className="  h-full object-cover "
-                src={imfurlForUp}
-                alt=""
-              /> :
-              <video
-                className="  h-auto w-auto object-cover "
-                src={imfurlForUp}
-                alt=""
-              />
-              }
-             
-            </div>
-          )}
-
+            )}
+            {imfurlForUp?.length > 0 &&
+              imfurlForUp.map((d) => {
+                return (
+                  <div className=" flex justify-center w-full flex-col  flex-wrap-reverse h-full items-center p-1 rounded ">
+                    {isImage ? (
+                      <img className="  h-full object-cover " src={d.downloadURL} alt="" />
+                    ) : (
+                      <video
+                        className="  h-auto w-auto object-cover "
+                        src={d.downloadURL}
+                        alt=""
+                      />
+                    )}
+                  </div>
+                );
+              })}
+          </div>
           <div className=" flex justify-end items-center w-full h-[50px] p-1 ">
             <div
               onClick={newStoryAdded}
               className=" rounded justify-center items-center bg-[#0866ff] cursor-pointer px-4 py-1 "
             >
-              Submit
+              Post
             </div>
           </div>
-        </div>
         </div>
       </div>
     </div>

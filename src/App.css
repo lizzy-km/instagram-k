@@ -41,7 +41,8 @@
 }
 
 .bg-main {
-  background: linear-gradient(71deg, #5686C0 0%, #4B1E6E 4.69%, #5686C0 29.53%, #B4BCCA 43.95%, #C8C9E4 58.19%, #5686C0 69.81%, #4B1E6E 93.87%, #5686C0 100%);
+  background-color: #333333;
+  /* background: linear-gradient(71deg, #5686C0 0%, #4B1E6E 4.69%, #5686C0 29.53%, #B4BCCA 43.95%, #C8C9E4 58.19%, #5686C0 69.81%, #4B1E6E 93.87%, #5686C0 100%); */
 }
 
 ::-webkit-resizer {

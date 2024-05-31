@@ -45,7 +45,7 @@ const HomeFeed = () => {
     >
       
       <Story />
-      
+
       <div
         style={{
           width: isMobile
@@ -56,7 +56,7 @@ const HomeFeed = () => {
             ? "100%"
             : "100%",
         }}
-        className="  w-full h-auto top-[270px] px-2 flex flex-col gap-6 "
+        className="  w-[full] h-auto top-[270px] px-2 flex flex-col gap-6 "
       >
         <CreatePost />
         <Post />

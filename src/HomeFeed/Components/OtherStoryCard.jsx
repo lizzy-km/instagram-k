@@ -15,7 +15,6 @@ const OtherStoryCard = ({ data, translateX }) => {
   const user =data?._document.data.value.mapValue.fields
 
 
-const userStory = user.story.arrayValue.values[0].mapValue.fields
 
    const dispatch = useDispatch()
 
@@ -38,7 +37,7 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
     (d) => d.mapValue.fields
   )[0];
 
-  const STID = user.story.arrayValue.values[0].mapValue.fields?.STID?.stringValue
+  const STID =  user.story?.arrayValue?.values?.length ? user.story?.arrayValue?.values[0]?.mapValue.fields?.STID?.stringValue : '0'
 
   const [storyImgs, setStoryImgs] = useState();
 
@@ -58,7 +57,7 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
 
   const storyeRef = ref(
     storage,
-    `user_story/${adminId}/${user.story.arrayValue.values[0].mapValue.fields?.STID?.stringValue}`
+    `user_story/${adminId}/${STID}`
   );
 
   const storyList = async () => {

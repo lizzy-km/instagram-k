@@ -58,11 +58,7 @@ const Story = () => {
   const [translateX, setTranslateX] = useState(0);
   const [count, setCount] = useState(0);
 
-  const otherHasStory = otherStory.filter(
-    (d) =>
-      d._document.data.value.mapValue.fields.story.arrayValue.values[0]
-        ?.mapValue.fields.STID?.stringValue?.length > 0
-  );
+ 
   const storyCard = document.getElementById("story_id");
   const storyWidth = storyCard?.clientWidth;
 

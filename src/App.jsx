@@ -120,7 +120,7 @@ function App() {
   },[admin])
 
   return (
-    <section className=" bg-main relative overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen ">
+    <section className=" bg-main relative snap-mandatory overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen ">
     
       <BrowserRouter>
         {isAuth === true && <NavBar />}
@@ -150,7 +150,7 @@ function App() {
           <ViewStory/>
       </section>
 
-      <section className=" w-full  absolute  h-auto overflow-hidden  pt-[100px]  backdrop-blur-md bg-[#21212199] items-start flex justify-center " >
+      <section className=" w-full snap-center  absolute  h-auto overflow-hidden  pt-[100px]  backdrop-blur-md bg-[#21212199] items-start flex justify-center " >
       {isAuth === true ? (
           <Routes>
               

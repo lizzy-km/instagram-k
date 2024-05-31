@@ -8,8 +8,9 @@ import {
   mdiBookmark,
   mdiBookmarkOutline,
   mdiChatOutline,
+  mdiChevronLeft,
+  mdiChevronRight,
   mdiDotsHorizontal,
-  mdiDotsVertical,
   mdiHeart,
   mdiHeartOutline,
   mdiShare,
@@ -32,12 +33,13 @@ const PostCard = ({ name, data }) => {
   return post.map((d) => {
     const [userProfile, setUserProfile] = useState();
     const [storyImgs, setStoryImgs] = useState();
-    const [postImgs, setPostImgs] = useState();
-    const [postUrl, setPostUrl] = useState();
+    const [postImgs, setPostImgs] = useState([]);
+    const [postUrl, setPostUrl] = useState([]);
     const [count, setCount] = useState(0);
     const [liked, setLiked] = useState(false);
     const [shared, setShared] = useState(false);
     const [saved, setSaved] = useState(false);
+    const [loading,setLoading] = useState(true)
 
     const UID = data.UID.stringValue;
 
@@ -75,18 +77,23 @@ const PostCard = ({ name, data }) => {
       if (type === "saved_posts" || type === "unsaved_posts") setSaved(value);
     };
 
-    const imgUrl = async (type) => {
-      const urls = await getDownloadURL(
-        ref(
-          storage,
-          type === "profile" ? storyImgs : type === "post" ? postImgs : null
-        )
+    const postUrlGen = async (path) => {
+      let u = [];
+
+      path?.map(
+        async (d) =>
+          await getDownloadURL(ref(storage, d.fullPath)).then((data) => {
+            u?.push(data);
+            setPostUrl(u);
+           postUrl?.length > 0 && setLoading(false)
+          })
       );
-      type === "profile"
-        ? setUserProfile(urls)
-        : type === "post"
-        ? setPostUrl(urls)
-        : null;
+    };
+
+    const imgUrl = async (path) => {
+      const urls = await getDownloadURL(ref(storage, path));
+
+      setUserProfile(urls);
     };
 
     const storageRef = ref(
@@ -105,23 +112,19 @@ const PostCard = ({ name, data }) => {
       }`
     );
 
-    const list = async (type) => {
-      const not = await listAll(
-        type == "profile" ? storageRef : type === "post" ? postRef : null
-      );
+    const list = async () => {
+      const not = await listAll(storageRef).then((data) => {
+        imgUrl(data?.items[0]?.fullPath);
+      });
+    };
 
-      for (let ii = 0; ii < not?.items.length; ii++) {
-        type === "profile"
-          ? setStoryImgs(not.items[ii]?.fullPath)
-          : type === "post"
-          ? setPostImgs(not.items[ii]?.fullPath)
-          : null;
-      }
+    const postList = async () => {
+      await listAll(postRef).then((data) => postUrlGen(data.items));
     };
 
     useEffect(() => {
-      list("post");
-      list("profile");
+      list();
+      postList();
 
       for (let i = 0; i < admin?.liked_post?.arrayValue?.values?.length; i++) {
         const likedPost = admin?.liked_post?.arrayValue?.values[i];
@@ -147,50 +150,57 @@ const PostCard = ({ name, data }) => {
     }, []);
 
     useEffect(() => {
-      imgUrl("post");
-      imgUrl("profile");
-    }, [storyImgs]);
-
-    useEffect(() => {
-      list("post");
-      list("profile");
-
-      imgUrl("post");
-      imgUrl("profile");
+      list();
+      postList();
 
       setCount(count + 1);
     }, [hasNewStory, UserData, admin, storyImgs, postImgs]);
 
-    const bgImgEl = document.getElementById("bgImgLeft");
-    const parentWidth = bgImgEl?.parentElement.clientWidth;
-    const parentHeight = bgImgEl?.parentElement.clientHeight;
+    
 
-    const bgImgElR = document.getElementById("bgImgRight");
-    const parentWidthR = bgImgElR?.parentElement.clientWidth;
-    const parentHeightR = bgImgElR?.parentElement.clientHeight;
+    const { isTablet, isMobile, isDeskTop } = useSelector(
+      (state) => state.animateSlice
+    );
 
-    return (
-      <section className=" flex flex-col justify-start items-start   py-3    w-full ">
+    const [translateX, setTranslateX] = useState(0);
+    const [countC, setCountC] = useState(0);
+
+    const imgW = document.getElementById("imgW");
+    const iw = imgW?.clientWidth;
+    const ih = imgW?.offsetHeight;
+
+    const next = () => {
+      if (countC < postUrl.length - 1) {
+        setTranslateX(translateX - iw);
+        setCountC(countC + 1);
+      }
+    };
+
+    const prev = () => {
+      if (countC > 0) {
+        setTranslateX(translateX + iw);
+        setCountC(countC - 1);
+      }
+    };
+
+  if(!loading)  return (
+      <section className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-start   py-4    w-full ">
         <div className=" flex w-full h-auto rounded-t-md justify-between  ">
           <div className="  w-full  flex-col relative   rounded-tl-md h-auto min-h-[50px]  flex justify-between items-end ">
-            <div className=" absolute bottom-2 left-0 w-[full] px-2  h-[50px] pb-2  flex justify-between items-center ">
-              <div className=" w-auto h-full  gap-2   rounded-r  flex justify-end items-end ">
+            <div className=" absolute bottom-2 left-0 w-full px-2  h-[45px]   flex justify-between items-center ">
+              <div className=" w-auto h-full  gap-2    flex justify-center items-center ">
                 <NavLink
                   to={`/${UID}`}
-                  className=" rounded- relative  bg-[#ca3e4796] "
+                  className=" rounded- relative w-[40px]  h-[40px] justify-center items-center  bg-[#ca3e4796] "
                 >
-                  <div className=" -z-10 rotate-[10deg] bg-[#ca3e4796] w-full h-full absolute "></div>
-                  <div className=" -z-10 rotate-[20deg] bg-[#ca3e4796] w-full h-full absolute "></div>
-                  <div className=" -z-10 rotate-[40deg] bg-[#ca3e4796] w-full h-full absolute "></div>
-                  <div className=" -z-10 rotate-[60deg] bg-[#ca3e4796] w-full h-full absolute "></div>
-                  <div className=" -z-10 rotate-[80deg] bg-[#ca3e4796] w-full h-full absolute "></div>
-
-
-
-
+                  <div className=" -z-10 rotate-[10deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                  <div className=" -z-10 rotate-[20deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                  <div className=" -z-10 rotate-[40deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                  <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                  <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
 
                   <img
-                    className=" w-[40px]    h-[40px] rounded-full object-cover cursor-pointer "
+                    className=" w-full   h-full rounded-full object-cover cursor-pointer "
                     src={userProfile?.length > 0 ? userProfile : userAvatar}
                     alt=""
                     srcset=""
@@ -198,21 +208,79 @@ const PostCard = ({ name, data }) => {
                 </NavLink>
                 <NavLink
                   to={`/${UID}`}
-                  className=" cursor-pointer rounded-br px-2  h-full min-w-[100px]  w-auto flex justify-start items-start text-base  "
+                  className=" cursor-pointer rounded-br px-2  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-base  "
                 >
                   <p>{name}</p>
                 </NavLink>
               </div>
             </div>
 
-            <div className=" absolute right-0 bottom-2 w-[40px] bg-[#2121215a] h-[40px] flex justify-center items-center rounded  cursor-pointer ">
-              <Icon path={mdiDotsVertical} size={1} />
+            <div className=" absolute right-0 bottom-2 w-[40px] bg-[#3333332f] h-[40px] flex justify-center items-center rounded  cursor-pointer ">
+              <Icon path={mdiDotsHorizontal} size={1} />
             </div>
           </div>
         </div>
 
-        <img className=" w-full " src={postUrl} alt="" srcset="" />
+        {postUrl?.length > 1 && !isMobile && (
+          <div className=" absolute flex justify-between top-[50%] z-10 w-full ">
+             <div
+             style={{
+                opacity: countC > 0 ? '1' : '0'
+             }}
+                onClick={() => prev()}
+                className=" cursor-pointer self-start  p-1  bg-[#33333399] backdrop-blur rounded-full "
+              >
+                <Icon path={mdiChevronLeft} size={1} />
+              </div>
+            
+           
 
+
+             <div style={{
+                opacity: countC < postUrl?.length-1 ? '1' : '0'
+             }}
+                
+                    onClick={() => next()}
+                    className=" cursor-pointer self-end  p-1 bg-[#33333399] backdrop-blur rounded-full "
+                  >
+                    <Icon path={mdiChevronRight} size={1} />
+                  </div>
+                
+         
+          </div>
+        )}
+
+          <div
+            style={{
+              overflowX: isMobile ? "scroll" : "hidden",
+              height:ih>0 ? ih+'px' :'500px'
+            }}
+            className=" flex relative    bg-[#3333334f]   rounded-md snap-x  snap-mandatory overflow-y-hidden  w-full gap-1 "
+          >
+            <div
+              style={{
+                left: translateX + "px",
+              }}
+              className=" flex absolute  h-auto w-full  justify-start  rounded-md     "
+            >
+              {postUrl?.map((d) => {
+                return (
+                  <img
+                    key={d}
+                    id="imgW"
+                    className="  bg-[#242526] min-h-[500px]   snap-center transition-all w-full object-cover object-top rounded-md "
+                    src={d}
+                    alt=""
+                    srcset=""
+                  />
+                );
+              })}
+            </div>
+          </div> 
+  
+        
+
+      
         <div className=" flex flex-col w-full justify-between items-center py-2  ">
           <div className=" flex w-full justify-between items-center  ">
             <div className=" flex gap-3 items-center  ">
@@ -269,13 +337,15 @@ const PostCard = ({ name, data }) => {
             )}
           </div>
         </div>
-
-        <pre className="  border-l-[1.5px] border-[#d4d4d4ce] px-2  max-w-[80%] text-wrap tracking-wide  w-[80%]  h-auto ">
-          {
-            data?.post.arrayValue.values[0]?.mapValue.fields.caption
-              ?.stringValue
-          }
-        </pre>
+        {data?.post.arrayValue.values[0]?.mapValue.fields.caption
+          ?.stringValue && (
+          <pre className="  border-l-[1.5px] border-[#d4d4d4ce] px-2 py-2 text-sm  max-w-[80%] text-wrap tracking-wide  w-[80%]  h-auto ">
+            {
+              data?.post.arrayValue.values[0]?.mapValue.fields.caption
+                ?.stringValue
+            }
+          </pre>
+        )}
       </section>
     );
   });
