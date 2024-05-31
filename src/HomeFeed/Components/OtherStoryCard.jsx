@@ -150,7 +150,7 @@ const userStory = user.story.arrayValue.values[0].mapValue.fields
                   {d.mapValue.fields.isActive.booleanValue === true ? (
                     <img
                       className=" z-[99] rounded-full object-cover w-full h-full "
-                      src={userProfile}
+                      src={userProfile?.length > 0 ? userProfile : userAvatar}
                       alt=""
                       srcSet=""
                     />
