@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const ImageCard = ({ data }) => {
   const [height, setHeight] = useState(0);
@@ -32,12 +33,19 @@ const ImageCard = ({ data }) => {
     .catch((error) => {
       console.error("Error:", error);
     });
+
+    const { isTablet, isMobile, isDeskTop } = useSelector(
+        (state) => state.animateSlice
+      );
   return (
     <img
       src={imageUrl}
       key={data}
       id="imgW"
-      className=" cursor-pointer  bg-[#242526]  snap-center transition-all  w-full object-cover object-top  "
+      style={{
+        width: isMobile ? '100%' :'100%'
+      }}
+      className=" cursor-pointer  bg-[#242526]   snap-center transition-all   object-cover object-top  "
       alt=""
       srcset=""
     />

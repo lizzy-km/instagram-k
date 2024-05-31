@@ -79,16 +79,15 @@ const PostCard = ({ name, data }) => {
     };
 
     async function postUrlGen(path) {
-      let u = [];
-
-      path?.map(
-        async (d) =>
-          await getDownloadURL(ref(storage, d.fullPath)).then((data) => {
-            u?.push(data);
-            setPostUrl(u);
-            setLoading(false);
-          })
+        let u =[]
+       path?.map(async (d) => 
+        await getDownloadURL(ref(storage, d.fullPath)).then((data) =>
+       {   setLoading(false)
+        u.push(data)
+       setPostUrl([...postUrl,u])}
+        )
       );
+      
     }
 
     const imgUrl = async (path) => {
@@ -169,17 +168,13 @@ const PostCard = ({ name, data }) => {
     const ih = imgW?.offsetHeight;
 
     const next = () => {
-      if (countC < postUrl.length - 1) {
-        setTranslateX(translateX - iw);
-        setCountC(countC + 1);
-      }
+      setTranslateX(translateX - iw);
+      setCountC(countC + 1);
     };
 
     const prev = () => {
-      if (countC > 0) {
-        setTranslateX(translateX + iw);
-        setCountC(countC - 1);
-      }
+      setTranslateX(translateX + iw);
+      setCountC(countC - 1);
     };
 
     if (!loading)
@@ -221,13 +216,13 @@ const PostCard = ({ name, data }) => {
             </div>
           </div>
 
-          {postUrl?.length > 1 && !isMobile && (
-            <div className=" absolute flex justify-between top-[50%] z-10 w-full ">
+          {postUrl[0]?.length > 1 && (
+            <div className=" absolute flex justify-between top-[50%] self-center z-10 w-[95%] ">
               <div
                 style={{
                   opacity: countC > 0 ? "1" : "0",
                 }}
-                onClick={() => prev()}
+                onClick={() => countC > 0 ?prev():null}
                 className=" cursor-pointer self-start  p-1  bg-[#33333399] backdrop-blur rounded-full "
               >
                 <Icon path={mdiChevronLeft} size={1} />
@@ -235,9 +230,9 @@ const PostCard = ({ name, data }) => {
 
               <div
                 style={{
-                  opacity: countC < postUrl?.length - 1 ? "1" : "0",
+                  opacity: countC < postUrl[0]?.length - 1 ? "1" : "0",
                 }}
-                onClick={() => next()}
+                onClick={() => countC < postUrl[0]?.length - 1 ? next() : null}
                 className=" cursor-pointer self-end  p-1 bg-[#33333399] backdrop-blur rounded-full "
               >
                 <Icon path={mdiChevronRight} size={1} />
@@ -247,18 +242,18 @@ const PostCard = ({ name, data }) => {
 
           <div
             style={{
-              overflowX: isMobile ? "scroll" : "hidden",
-              height:isMobile ? '67vh' : '77vh'
+              overflowX: "hidden",
+              height: isMobile ? "67vh" : "77vh",
             }}
-            className=" flex relative h-[680px]    bg-[#3333334f]   rounded-md snap-x  snap-mandatory   w-full  "
+            className=" flex relative     bg-[#3333334f]   rounded-md snap-x  snap-mandatory   w-full  "
           >
             <div
               style={{
                 left: translateX + "px",
               }}
-              className=" flex absolute  w-full h-full   justify-start  rounded-md     "
+              className=" flex absolute  w-full h-full    justify-start  rounded-md     "
             >
-              {postUrl?.map((d) => {
+              {postUrl[0]?.map((d) => {
                 return <ImageCard key={d} data={d} />;
               })}
             </div>
