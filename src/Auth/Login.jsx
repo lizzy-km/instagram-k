@@ -206,26 +206,30 @@ const Login = () => {
 
             <div className="flex items-center justify-between mb-4"></div>
 
-            {
-              isUserExist &&loginState === false &&   <div
-             
-              className="w-full px-3 py-2 cursor-not-allowed rounded-lg flex justify-center items-center bg-blue-900 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-             <p>
-              Signup
-             </p>
-            </div>
-            }
+           
+
+           
+
 
             {
-               !isUserExist &&   <button
-               type="subnit"
-               className="w-full px-3 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-             >
-               {loginState === false
-                 ? "Signup "
-                 : "Login "}
-             </button>
+              loginState ? <button
+              type="submit"
+              className="w-full px-3 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              {"Login "}
+            </button> : isUserExist ? <div
+             
+             className="w-full px-3 py-2 cursor-not-allowed rounded-lg flex justify-center items-center bg-blue-900 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+           >
+            <p>
+             Signup
+            </p>
+           </div> : <button
+              type="submit"
+              className="w-full px-3 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              {"SignUp "}
+            </button>
             }
 
           

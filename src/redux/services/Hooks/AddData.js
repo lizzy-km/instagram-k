@@ -64,6 +64,11 @@ const addData = async (colName = "users", uemail = "", username = "",name) => {
     post: [
     
     ],
+    likes:[],
+    liked_post:[],
+    shares:[],
+    shared_posts:[],
+    saved_posts:[],
     friends: [
      
     ],
