@@ -293,19 +293,36 @@ const CreatePostBox = () => {
                   ? setDetail(detail + " " + " \n ")
                   : setDetail(e.currentTarget.innerText)
               }
-              aria-placeholder="What's on your mind, Kaung?"
+              aria-placeholder="What's on your mind?"
               data-lexical-editor="true"
               aria-valuetext={detail}
               contentEditable="true"
               role="textbox"
               spellCheck="true"
               tabIndex="0"
-              className=" relative outline-none p-2 w-full h-auto min-h-[50px] cursor-text text-[24px] break-words whitespace-pre-wrap user-select-[text]  "
+              className=" border-l-2 bg-[#33333375] border-[#d4d4d4b9] rounded-r relative outline-none p-2 w-full h-auto min-h-[50px] cursor-text text-[24px] break-words whitespace-pre-wrap user-select-[text]  "
             ></div>
           </div>
 
-          <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
-            {imfurlForUp.length < 11 && (
+          <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-wrap outline-none p-0 justify-start items-center w-full ">
+          
+            {imfurlForUp?.length > 0 &&
+              imfurlForUp.reverse().map((d) => {
+                return (
+                  <div className=" flex  justify-center w-[20%] flex-col  flex-wrap-reverse h-auto items-center p-1 rounded ">
+                    {isImage ? (
+                      <img className=" rounded  h-[70%] object-cover " src={d.downloadURL} alt="" />
+                    ) : (
+                      <video
+                        className="  h-auto w-auto object-cover "
+                        src={d.downloadURL}
+                        alt=""
+                      />
+                    )}
+                  </div>
+                );
+              })}
+                {imfurlForUp.length < 11 && (
               <div className=" cursor-pointer justify-center items-center  h-auto p-2 flex w-[20%] bg-[#111111]  rounded-lg  ">
                 <div className="flex cursor-pointer items-center justify-center w-full">
                   <label
@@ -345,22 +362,6 @@ const CreatePostBox = () => {
                 </div>
               </div>
             )}
-            {imfurlForUp?.length > 0 &&
-              imfurlForUp.reverse().map((d) => {
-                return (
-                  <div className=" flex justify-center w-full flex-col  flex-wrap-reverse h-full items-center p-1 rounded ">
-                    {isImage ? (
-                      <img className="  h-full object-cover " src={d.downloadURL} alt="" />
-                    ) : (
-                      <video
-                        className="  h-auto w-auto object-cover "
-                        src={d.downloadURL}
-                        alt=""
-                      />
-                    )}
-                  </div>
-                );
-              })}
           </div>
           <div className=" flex justify-end items-center w-full h-[50px] p-1 ">
             <div
