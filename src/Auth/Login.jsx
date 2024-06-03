@@ -107,24 +107,28 @@ const Login = () => {
                 required
               />
               {errors.user_name && <span className=" flex p-2  italic text-red-600 ">{errors.user_name.message}</span>}
-            </div>
+            </div>  
+            
+            {
+                  !loginState &&  <div className="mb-6">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-300 mb-2"
+                  >
+                    Name
+                  </label>
+                  <input
+                    {...register("name", { required: true })}
+                    type="text"
+                    id="name"
+                    className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    required
+                  />
+                  {errors.name && <span className=" flex p-2  italic text-red-600 ">{errors.name.message}</span>}
+                </div>
+            }
 
-            <div className="mb-6">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-300 mb-2"
-              >
-                Name
-              </label>
-              <input
-                {...register("name", { required: true })}
-                type="text"
-                id="name"
-                className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                required
-              />
-              {errors.name && <span className=" flex p-2  italic text-red-600 ">{errors.name.message}</span>}
-            </div>
+           
 
             <div className="mb-6">
               <label

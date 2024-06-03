@@ -7,7 +7,7 @@ import {
   notiOn,
 } from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { addAdmin, addUserData, setLogin } from "../redux/services/authSlice";
 import axios from "axios";
 import { collection, getDocs } from "firebase/firestore";
@@ -271,7 +271,7 @@ const RightNav = () => {
               }`}
             >
               <div className=" w-full h-full flex flex-col p-2 justify-start items-start gap-2 ">
-                <div
+                <NavLink to={`/${admin.UID.stringValue}`}
                   className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#3333336d] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}
                 >
                   <img
@@ -283,7 +283,7 @@ const RightNav = () => {
                   <p className="font-[500] text-[16px] tracking-wide">
                     {admin.user_name.stringValue}
                   </p>
-                </div>
+                </NavLink>
                 <Link
                   onClick={() => {
                     dispatch(setLogin(false));

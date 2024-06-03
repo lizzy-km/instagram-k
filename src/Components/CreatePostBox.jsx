@@ -44,7 +44,7 @@ const CreatePostBox = () => {
   const [privacy, setPrivacy] = useState(false);
   const Create_post = ["Create_post"];
   const { blur, isMobile } = useSelector((state) => state.animateSlice);
-  const { admin } = useSelector((state) => state.authSlice);
+  const { admin,adminProfile,userAvatar } = useSelector((state) => state.authSlice);
 
   useEffect(() => {
     blur === false
@@ -192,7 +192,6 @@ const CreatePostBox = () => {
       .catch((error) => console.log(error));
   };
 
-  console.log(imfurlForUp);
 
   return (
     <div
@@ -216,13 +215,13 @@ const CreatePostBox = () => {
               <div className=" cursor-pointer relative flex w-[50px]  h-[100%] justify-center items-center  rounded-full ">
                 <img
                   className=" hover:brightness-75  rounded-full object-cover w-full h-full "
-                  src="https://i.pinimg.com/originals/70/d5/50/70d5505465ff94d11d911f2f8b64bcda.jpg"
+                  src={adminProfile.length > 0 ? adminProfile : userAvatar}
                   alt=""
                   srcSet=""
                 />
               </div>
               <div className=" relative px-2  w-[80%] font-[600] flex flex-col tracking-wide text-[15px] justify-start items-start ">
-                <p>Kaung Myat Soe</p>
+                <p>{name}</p>
                 <div
                   onClick={() => setPrivacy(!privacy)}
                   className="  cursor-pointer hover:brightness-[120%] flex justify-center gap-1 items-center p-1 rounded w-auto h-[25px] bg-[#212121] "
@@ -312,15 +311,15 @@ const CreatePostBox = () => {
 
           <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
             {imfurlForUp.length < 11 && (
-              <div className=" cursor-pointer  h-[20%] flex w-[20%] bg-[#111111]  rounded  ">
-                <div className="flex items-center justify-center w-full">
+              <div className=" cursor-pointer justify-center items-center  h-auto p-2 flex w-[20%] bg-[#111111]  rounded-lg  ">
+                <div className="flex cursor-pointer items-center justify-center w-full">
                   <label
                     for="dropzone-file"
-                    className="flex flex-col items-center justify-center w-[80%] h-[80%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
+                    className="flex flex-col items-center  justify-center w-[100%] h-[100%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
                   >
-                    <div className="flex flex-col relative items-center justify-center pt-5 pb-6">
+                    <div className="flex flex-col cursor-pointer relative items-center justify-center p-2 ">
                       <svg
-                        className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                        className="w-[20%] h-auto p-1 cursor-pointer text-gray-500 dark:text-gray-400"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -334,17 +333,17 @@ const CreatePostBox = () => {
                           d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
                         />
                       </svg>
-                      <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                      <p className="p-2 text-sm cursor-pointer text-gray-500 dark:text-gray-400">
                         <span className="font-semibold">Click to upload</span>
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs cursor-pointer text-gray-500 dark:text-gray-400">
                         Photo / Video{" "}
                       </p>
                       <input
                         onChange={CreateNewStory}
                         id="dropzone-file"
                         type="file"
-                        className=" absolute w-full opacity-0 h-full "
+                        className=" absolute cursor-pointer w-full opacity-0 h-full "
                       />
                     </div>
                   </label>
@@ -352,7 +351,7 @@ const CreatePostBox = () => {
               </div>
             )}
             {imfurlForUp?.length > 0 &&
-              imfurlForUp.map((d) => {
+              imfurlForUp.reverse().map((d) => {
                 return (
                   <div className=" flex justify-center w-full flex-col  flex-wrap-reverse h-full items-center p-1 rounded ">
                     {isImage ? (

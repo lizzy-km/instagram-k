@@ -41,7 +41,7 @@ const HomeFeed = () => {
           ? "40%"
           : "100%",
       }}
-      className=" relative h-auto flex  bg-transparent    p-0 w-[40%] gap-3 flex-col justify-start items-start  "
+      className=" relative h-auto flex  bg-transparent mt-[80px]    p-0 w-[40%] gap-3 flex-col justify-start items-start  "
     >
       
       <Story />

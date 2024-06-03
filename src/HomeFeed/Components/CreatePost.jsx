@@ -28,8 +28,8 @@ const CreatePost = () => {
   return (
     <>
       <div style={{
-        width: isMobile ? '100%' : '80%'
-      }} className=" tracking-wider self-center  flex w-[80%] my-2 p-3 min-h-[60px] bg-[#242526] rounded-md  ">
+        width: isMobile ? '100%' : '100%'
+      }} className=" tracking-wider self-center justify-center items-center  flex w-[80%] py-2 p-3 min-h-[80px] bg-[#242526] rounded-md  ">
         <div className=" px-2 flex rounded-md justify-between flex-col items-center w-full h-full ">
           <div className=" flex justify-between gap-2 items-center w-full h-full   ">
             <div className=" flex cursor-pointer  rounded-full  bg-[#333333] ">

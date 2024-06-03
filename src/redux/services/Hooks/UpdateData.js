@@ -16,61 +16,82 @@ import { set } from "firebase/database";
 const UpdateData = async (
   colName = "story",
   UID = "",
-  name = "",
-  Data = {}
+  USID = "",
+  Data = {},
+  Datal = {}
 ) => {
-  function getFirstChars() {
-    if (!name) return []; // Handle empty string case
+  //   function getFirstChars() {
+  //     if (!name) return []; // Handle empty string case
 
-    const words = name?.split(" ");
-    const firstChars = [];
-    for (const word of words) {
-      firstChars.push(word[0]);
-    }
-    return firstChars;
-  }
+  //     const words = name?.split(" ");
+  //     const firstChars = [];
+  //     for (const word of words) {
+  //       firstChars.push(word[0]);
+  //     }
+  //     return firstChars;
+  //   }
 
-  const firstCharacters = getFirstChars();
+  //   const firstCharacters = getFirstChars();
 
-  let nick;
+  //   let nick;
 
-  for (let i = 0; i < firstCharacters.length; i++) {
-    nick = firstCharacters.reduce((prev, curr) => prev + curr);
-  }
+  //   for (let i = 0; i < firstCharacters.length; i++) {
+  //     nick = firstCharacters.reduce((prev, curr) => prev + curr);
+  //   }
 
- 
 
-  // Add a new document in collection "cities" with ID 'LA'
+
   const collectionRef = collection(firestore, "story");
   const postRef = collection(firestore, "user_posts");
   const userRef = doc(firestore, "/users", `/${UID}/`);
-  const udRef = doc(firestore, "users", `${UID}`);
+  const udRef = doc(firestore, "/users", `/${USID}`);
 
   if (colName === "user_posts")
     await updateDoc(userRef, {
       post: arrayUnion(Data),
     }).catch((error) => console.log(error));
 
-  if (colName === "liked_posts")
+  if (colName === "liked_posts") {
     await updateDoc(userRef, {
       liked_post: arrayUnion(Data),
     }).catch((error) => console.log(error));
 
-  if (colName === "unliked_posts")
+    await updateDoc(udRef, {
+      likes: arrayUnion(Datal),
+    }).catch((error) => console.log(error));
+  }
+
+  if (colName === "unliked_posts"){
     await updateDoc(userRef, {
       liked_post: arrayRemove(Data),
     }).catch((error) => console.log(error));
 
-  if (colName === "shared_posts")
+    await updateDoc(udRef, {
+        likes: arrayRemove(Datal),
+      }).catch((error) => console.log(error));
+
+}
+  if (colName === "shared_posts"){
+
     await updateDoc(userRef, {
       shared_posts: arrayUnion(Data),
     }).catch((error) => console.log(error));
 
-  if (colName === "unshared_posts")
+    await updateDoc(udRef, {
+        shares: arrayUnion(Datal),
+      }).catch((error) => console.log(error));
+
+
+}
+  if (colName === "unshared_posts"){
     await updateDoc(userRef, {
       shared_posts: arrayRemove(Data),
     }).catch((error) => console.log(error));
 
+    await updateDoc(udRef, {
+        shares: arrayRemove(Datal),
+      }).catch((error) => console.log(error));
+}
   if (colName === "saved_posts")
     await updateDoc(userRef, {
       saved_posts: arrayUnion(Data),

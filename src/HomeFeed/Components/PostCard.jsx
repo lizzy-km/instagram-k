@@ -41,6 +41,7 @@ const PostCard = ({ name, data }) => {
     const [shared, setShared] = useState(false);
     const [saved, setSaved] = useState(false);
     const [loading, setLoading] = useState(true);
+    
 
     const UID = data.UID.stringValue;
 
@@ -50,6 +51,18 @@ const PostCard = ({ name, data }) => {
 
     const user_name = admin?.user_name.stringValue;
     const USID = admin?.UID.stringValue;
+
+    const likes = data?.likes ? data.likes?.arrayValue.values?.filter(d => d.mapValue.fields.PID.stringValue === PID) : 0
+    const shares =  data?.shares ? data.shares?.arrayValue?.values?.filter(d => d.mapValue.fields.PID.stringValue === PID) : 0
+
+
+    useEffect(()=>{
+        console.log(likes)
+        console.log(shares)
+    },[])
+
+    const [likeC, setLikeC] = useState(likes?.length)
+    const [shareC,setShareC] = useState(shares?.length)
 
     const postAction = (type, value) => {
       const upData =
@@ -70,11 +83,23 @@ const PostCard = ({ name, data }) => {
             }
           : {};
 
-      UpdateData(type, USID, user_name, upData);
+          const upUData = {
+            UID:USID,
+            user_name:user_name,
+            PID:PID
+          }
 
-      if (type === "liked_posts" || type === "unliked_posts") setLiked(value);
-      if (type === "shared_posts" || type === "unshared_posts")
-        setShared(value);
+      UpdateData(type, USID, UID, upData,upUData);
+
+      if (type === "liked_posts" || type === "unliked_posts"){ 
+        setLiked(value)
+        setLikeC(likeC +1)
+
+      }
+      if (type === "shared_posts" || type === "unshared_posts"){
+        setShared(value)
+        setShareC(shareC+1)
+    }
       if (type === "saved_posts" || type === "unsaved_posts") setSaved(value);
     };
 
@@ -264,33 +289,50 @@ const PostCard = ({ name, data }) => {
               <div className=" flex gap-3 items-center  ">
                 {liked ? (
                   <div
-                    onClick={() => postAction("unliked_posts", false)}
-                    className=" text-[#CA3E47] flex p-1 items-center cursor-pointer rounded-full "
+                    
+                    className=" text-[#CA3E47] flex p-1 gap-1 items-center cursor-pointer rounded-full "
                   >
-                    <Icon path={mdiHeart} size={1} />
+                    <Icon onClick={() => postAction("unliked_posts", false)} path={mdiHeart} size={1} />  {
+                        likes !== 0 && <span className=" text-sm " > {likeC} {
+                            likeC > 1 ? 'likes' : 'like'
+                        }  </span>
+                    }
                   </div>
                 ) : (
                   <div
-                    onClick={() => postAction("liked_posts", true)}
+                    
                     className=" flex p-1 items-center cursor-pointer rounded-full "
                   >
-                    <Icon path={mdiHeartOutline} size={1} />
+                    <Icon onClick={() => postAction("liked_posts", true)} path={mdiHeartOutline} size={1} /> {
+                        likes !== 0 && <span className=" text-sm " > {likeC} {
+                            likeC > 1 ? 'likes' : 'like'
+                        }  </span>
+                    }
                   </div>
                 )}
 
                 {shared ? (
                   <div
-                    onClick={() => postAction("unshared_posts", false)}
-                    className=" flex p-1 items-center cursor-pointer rounded-full "
+                   
+                    className=" flex p-1 items-center gap-1 cursor-pointer rounded-full "
                   >
-                    <Icon path={mdiShare} size={1} />
+                    <Icon  onClick={() => postAction("unshared_posts", false)} path={mdiShare} size={1} />
+                    {
+                        shares !== 0 && <span className=" text-sm " > {shareC} {
+                            shareC > 1 ? 'shares' : 'share'
+                        }  </span>
+                    }
                   </div>
                 ) : (
                   <div
                     onClick={() => postAction("shared_posts", true)}
                     className=" flex p-1 items-center cursor-pointer rounded-full "
                   >
-                    <Icon path={mdiShareOutline} size={1} />
+                    <Icon onClick={() => postAction("shared_posts", true)} path={mdiShareOutline} size={1} />  {
+                        shares !== 0 && <span className=" text-sm " > {shareC} {
+                            shareC > 1 ? 'shares' : 'share'
+                        }  </span>
+                    }
                   </div>
                 )}
               </div>
