@@ -17,14 +17,11 @@ const Login = () => {
   const [loginState, setLoginState] = useState(true);
   const dispatch = useDispatch();
 
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-
 
   const { admin } = useSelector((state) => state.authSlice);
 
@@ -33,50 +30,69 @@ const Login = () => {
   // const password = userData.password;
 
   // const userId = name.replace(/ /g, "_") + "Official";
+  const [userId, setUserId] = useState([]);
+
+  const [isUserExist, setIsUserExist] = useState(false);
 
   const SignUp = async (data) => {
+    const user_name = data.user_name;
+    const name = data.name;
+    const email = data.email;
+    const password = data.password;
 
-    const user_name = data.user_name
-    const name = data.name
-    const email = data.email
-    const password = data.password
+  
 
 
     await createUserWithEmailAndPassword(auth, email, password)
-      .then(function (user) {
-        console.log("User registered successfully!", user);
-        addData("users", email, user_name,name);
-        setLoginState(true);
-      })
-      .catch(function (error) {
-        console.log("Error registering user:", error);
-      });
+          .then(function (user) {
+            console.log("User registered successfully!", user);
+            addData("users", email, user_name, name);
+            setLoginState(true);
+          })
+          .catch(function (error) {
+            console.log("Error registering user:");
+          })
+     
   };
 
   const SignIn = async (data) => {
-    const user_name = data.user_name
-    const name = data.name
-    const email = data.email
-    const password = data.password
+    const user_name = data.user_name;
+    const name = data.name;
+    const email = data.email;
+    const password = data.password;
     await signInWithEmailAndPassword(auth, email, password)
       .finally(() => localStorage.setItem("adminId", user_name))
       .then(function (user) {
         const getAdmin = [GetAdminData("users", user_name)];
 
         Promise.all(getAdmin)
-          .then((data) => 
-            dispatch(setLogin(true))
-          )
-          .catch((error) => console.log(error));
+          .then((data) => dispatch(setLogin(true)))
+          .catch((error) => console.log("error"));
       })
       .catch(function (error) {
-        console.log("Error Login user:", error);
+        console.log("Error Login user:");
       });
   };
 
-  const onSubmit = async (data) => {
 
-    loginState === false ? SignUp(data) : SignIn(data);
+
+  const [value, setValue] = useState('');
+
+  const handleChange =async (event) => {
+
+    const newValue = event.target.value.replace(/\s/g, '');
+    setValue(newValue);
+
+    await getDocs(collection(firestore, `/users/`)).then((data) => {
+      const hasUser = data.docs.filter((d) => d.id === newValue);
+
+      hasUser.length > 0 ? setIsUserExist(true) : setIsUserExist(false);
+    });
+  };
+
+  const onSubmit = async (data) => {
+   
+    (loginState === false ) ? SignUp(data) : SignIn(data) 
   };
 
   return (
@@ -89,9 +105,6 @@ const Login = () => {
               : "Login with Facebook"}
           </h1>
           <form onSubmit={handleSubmit(onSubmit)}>
-
-       
-
             <div className="mb-6">
               <label
                 htmlFor="username"
@@ -101,34 +114,52 @@ const Login = () => {
               </label>
               <input
                 {...register("user_name", { required: true })}
+                value={value}
+                onChange={handleChange}
                 type="text"
                 id="username"
                 className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
               />
-              {errors.user_name && <span className=" flex p-2  italic text-red-600 ">{errors.user_name.message}</span>}
-            </div>  
-            
-            {
-                  !loginState &&  <div className="mb-6">
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-300 mb-2"
-                  >
-                    Name
-                  </label>
-                  <input
-                    {...register("name", { required: true })}
-                    type="text"
-                    id="name"
-                    className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    required
-                  />
-                  {errors.name && <span className=" flex p-2  italic text-red-600 ">{errors.name.message}</span>}
-                </div>
-            }
+              {errors.user_name && (
+                <span className=" flex p-2  italic text-red-600 ">
+                  {errors.user_name.message}
+                </span>
+              )}
 
-           
+              {
+              !loginState  &&
+                <span className=" flex p-2  italic text-red-600 ">
+                 { 
+                 isUserExist && " user name already exist!"
+                 }
+                 
+                </span>
+              }
+            </div>
+
+            {!loginState && (
+              <div className="mb-6">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
+                  Name
+                </label>
+                <input
+                  {...register("name", { required: true })}
+                  type="text"
+                  id="name"
+                  className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  required
+                />
+                {errors.name && (
+                  <span className=" flex p-2  italic text-red-600 ">
+                    {errors.name.message}
+                  </span>
+                )}
+              </div>
+            )}
 
             <div className="mb-6">
               <label
@@ -137,18 +168,19 @@ const Login = () => {
               >
                 Email
               </label>
-             
 
               <input
-              {...register("email", { required: true })}
-                
+                {...register("email", { required: true })}
                 type="email"
                 id="email"
                 className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
               />
-                            {errors.email && <span className=" flex p-2  italic text-red-600 ">{errors.email.message}</span>}
-
+              {errors.email && (
+                <span className=" flex p-2  italic text-red-600 ">
+                  {errors.email.message}
+                </span>
+              )}
             </div>
             <div className="mb-6">
               <label
@@ -157,59 +189,71 @@ const Login = () => {
               >
                 Password
               </label>
-             
 
               <input
-              {...register("password", { required: true })}
-                
+                {...register("password", { required: true })}
                 type="password"
                 id="password"
                 className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
               />
-                            {errors.password && <span className=" flex p-2  italic text-red-600 ">{errors.password.message}</span>}
-
+              {errors.password && (
+                <span className=" flex p-2  italic text-red-600 ">
+                  {errors.password.message}
+                </span>
+              )}
             </div>
-          
 
             <div className="flex items-center justify-between mb-4"></div>
 
-            <button
-            type="subnit"
-              className="w-full px-3 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            {
+              isUserExist &&loginState === false &&   <div
+             
+              className="w-full px-3 py-2 cursor-not-allowed rounded-lg flex justify-center items-center bg-blue-900 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              {loginState === false
-                ? "Signup with Facebook"
-                : "Login with Facebook"}
-            </button>
+             <p>
+              Signup
+             </p>
+            </div>
+            }
+
+            {
+               !isUserExist &&   <button
+               type="subnit"
+               className="w-full px-3 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+             >
+               {loginState === false
+                 ? "Signup "
+                 : "Login "}
+             </button>
+            }
+
+          
 
             <div className="text-center flex justify-center mt-4">
-            <span className="text-sm text-gray-200">
-              {!loginState
-                ? "Already have an account?"
-                : "You don't have any account?"}
-            </span>
+              <span className="text-sm text-gray-200">
+                {!loginState
+                  ? "Already have an account?"
+                  : "You don't have any account?"}
+              </span>
 
-            {loginState === true ? (
-              <button
-                onClick={() => setLoginState(false)}
-                className="text-sm cursor-pointer text-blue-600 hover:underline ml-1"
-              >
-                Sign up
-              </button>
-            ) : (
-              <button
-
-                onClick={() => setLoginState(true)}
-                className="text-sm cursor-pointer text-blue-600 hover:underline ml-1"
-              >
-                Login
-              </button>
-            )}
-          </div>
+              {loginState === true ? (
+                <button
+                  onClick={() => setLoginState(false)}
+                  className="text-sm cursor-pointer text-blue-600 hover:underline ml-1"
+                >
+                  Sign up
+                </button>
+              ) :  (
+                <button
+                  onClick={() => setLoginState(true)}
+                  className="text-sm cursor-pointer text-blue-600 hover:underline ml-1"
+                >
+                  Login
+                </button>
+              )}
+            </div>
           </form>
-
-        
         </div>
       </div>
     </div>

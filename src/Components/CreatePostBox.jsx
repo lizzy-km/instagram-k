@@ -177,17 +177,12 @@ const CreatePostBox = () => {
       PID: nick + "P" + `${FID}`,
       isImage: fileTypes === "image" ? true : false,
       caption: detail?.length > 0 ? detail : false,
-    })
+    },{UID:UID})
       .then((data) => {
-        console.log(data);
-        dispatch(setHasNewStory());
         dispatch(blurOn({ blur: false }));
+          window.location.reload(true)
 
-        setTimeout(dispatch(setNotHasNewStory()), 2000);
 
-        setTimeout(() => navigate("/loading/"), 1000);
-
-        setImgUrlUp("");
       })
       .catch((error) => console.log(error));
   };

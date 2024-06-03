@@ -131,10 +131,10 @@ const CreateStory = () => {
       (await uploadBytes(storageRef, file)
         .then((data) => {
           console.log(data);
-          UpdateData("story", name, {
+          UpdateData("story",UID, name, {
             STID: nick + "ST" + `${fileSize}`,
             isImage: fileType === "image" ? true : false,
-          });
+          },{});
           getDownloadURL(data.ref).then((downloadURL) => {
             setImgUrlUp(downloadURL);
             console.log("File available at", downloadURL);
@@ -174,18 +174,19 @@ const CreateStory = () => {
 
   const newStoryAdded = () => {
 
-    UpdateData("story",UID, name, {
-      STID: nick + "ST" + `${fileSizes}`,
-      isImage: fileTypes === "image" ? true : false,
-    });
-    dispatch(setHasNewStory());
-    dispatch(setShowStory(false));
 
-    setTimeout(dispatch(setNotHasNewStory()), 2000);
+   const Data ={
+    STID: nick + "ST" + `${fileSizes}`,
+    isImage: fileTypes === "image" ? true : false,
+  }
 
-    setTimeout(() => navigate("/loading/"), 1000);
+  const Datal = {
+    STID: nick + "ST" + `${fileSizes}`,
+    isImage: fileTypes === "image" ? true : false,
+  }
 
-    setImgUrlUp("");
+    UpdateData("story",UID, 'USID',Data ,Datal).then(window.location.reload(true))
+    
   };
 
   return (

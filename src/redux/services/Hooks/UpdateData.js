@@ -39,7 +39,7 @@ const UpdateData = async (
   //     nick = firstCharacters.reduce((prev, curr) => prev + curr);
   //   }
 
-
+console.log(UID,USID);
 
   const collectionRef = collection(firestore, "story");
   const postRef = collection(firestore, "user_posts");
@@ -92,22 +92,22 @@ const UpdateData = async (
         shares: arrayRemove(Datal),
       }).catch((error) => console.log(error));
 }
-  if (colName === "saved_posts")
+  if (colName === "saved_posts"){
     await updateDoc(userRef, {
       saved_posts: arrayUnion(Data),
     }).catch((error) => console.log(error));
-
-  if (colName === "unsaved_posts")
+}
+  if (colName === "unsaved_posts"){
     await updateDoc(userRef, {
       saved_posts: arrayRemove(Data),
     }).catch((error) => console.log(error));
-
-  if (colName === "story")
+}
+  if (colName === "story"){
     await updateDoc(userRef, {
       story: [Data],
     })
       .then((data) => console.log(data))
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error));}
 };
 
 export default UpdateData;
