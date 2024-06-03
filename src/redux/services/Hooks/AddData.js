@@ -34,7 +34,7 @@ const addData = async (colName = "users", uemail = "", username = "",name) => {
   const bio = "It's me " + name;
   // const UID = username.replace(/ /g, "_") + "Official";
   const shortName = nick;
-  const nickName = "tyui";
+  const nickName = "qwer";
   const date = new Date().getUTCMilliseconds();
 
 
