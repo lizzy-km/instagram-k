@@ -56,10 +56,7 @@ const PostCard = ({ name, data }) => {
     const shares =  data?.shares ? data.shares?.arrayValue?.values?.filter(d => d.mapValue.fields.PID.stringValue === PID) : 0
 
 
-    useEffect(()=>{
-        console.log(likes)
-        console.log(shares)
-    },[])
+  
 
     const [likeC, setLikeC] = useState(likes?.length)
     const [shareC,setShareC] = useState(shares?.length)
@@ -91,14 +88,16 @@ const PostCard = ({ name, data }) => {
 
       UpdateData(type, USID, UID, upData,upUData);
 
+
+
       if (type === "liked_posts" || type === "unliked_posts"){ 
         setLiked(value)
-        setLikeC(likeC +1)
+       type === "liked_posts"? setLikeC(likeC +1) :setLikeC(likeC -1)
 
       }
       if (type === "shared_posts" || type === "unshared_posts"){
         setShared(value)
-        setShareC(shareC+1)
+       type === 'shared_posts'?setShareC(shareC+1): setShareC(shareC - 1)
     }
       if (type === "saved_posts" || type === "unsaved_posts") setSaved(value);
     };
@@ -293,7 +292,7 @@ const PostCard = ({ name, data }) => {
                     className=" text-[#CA3E47] flex p-1 gap-1 items-center cursor-pointer rounded-full "
                   >
                     <Icon onClick={() => postAction("unliked_posts", false)} path={mdiHeart} size={1} />  {
-                        likes !== 0 && <span className=" text-sm " > {likeC} {
+                        likeC !== 0 && <span className=" text-sm " > {likeC} {
                             likeC > 1 ? 'likes' : 'like'
                         }  </span>
                     }
@@ -304,7 +303,7 @@ const PostCard = ({ name, data }) => {
                     className=" flex p-1 items-center cursor-pointer rounded-full "
                   >
                     <Icon onClick={() => postAction("liked_posts", true)} path={mdiHeartOutline} size={1} /> {
-                        likes !== 0 && <span className=" text-sm " > {likeC} {
+                        likeC !== 0 && <span className=" text-sm " > {likeC} {
                             likeC > 1 ? 'likes' : 'like'
                         }  </span>
                     }
@@ -318,7 +317,7 @@ const PostCard = ({ name, data }) => {
                   >
                     <Icon  onClick={() => postAction("unshared_posts", false)} path={mdiShare} size={1} />
                     {
-                        shares !== 0 && <span className=" text-sm " > {shareC} {
+                        shareC !== 0 && <span className=" text-sm " > {shareC} {
                             shareC > 1 ? 'shares' : 'share'
                         }  </span>
                     }
@@ -329,7 +328,7 @@ const PostCard = ({ name, data }) => {
                     className=" flex p-1 items-center cursor-pointer rounded-full "
                   >
                     <Icon onClick={() => postAction("shared_posts", true)} path={mdiShareOutline} size={1} />  {
-                        shares !== 0 && <span className=" text-sm " > {shareC} {
+                        shareC !== 0 && <span className=" text-sm " > {shareC} {
                             shareC > 1 ? 'shares' : 'share'
                         }  </span>
                     }
