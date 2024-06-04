@@ -154,8 +154,8 @@ const Story = () => {
                   }}
                   className=" cursor-pointer flex justify-center items-center relative rounded-full w-full h-full bg-[#ca3e47] "
                 >
-                  <div className=" w-[50%] rounded-full h-[2px] bg-slate-200 "></div>
-                  <div className=" absolute w-[2px] rounded-full h-[50%] bg-slate-200 "></div>
+                  <div className=" w-[50%] rounded-full h-[2px] bg-[#d4d4d4] "></div>
+                  <div className=" absolute w-[2px] rounded-full h-[50%] bg-[#d4d4d4]"></div>
                 </div>
               </div>
               <div className=" flex justify-center items-center pt-4 text-[0.8rem] font-[600] w-full tracking-wide  ">

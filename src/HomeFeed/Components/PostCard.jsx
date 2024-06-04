@@ -1,13 +1,15 @@
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { storage } from "../../firebase/firebase";
 import { NavLink, useNavigate } from "react-router-dom";
 import Icon from "@mdi/react";
+import classes from "./CarouselCard.module.css";
+import { Carousel, IconButton } from "@material-tailwind/react";
+
 import {
   mdiBookmark,
   mdiBookmarkOutline,
-  mdiChatOutline,
   mdiChevronLeft,
   mdiChevronRight,
   mdiDotsHorizontal,
@@ -18,8 +20,11 @@ import {
 } from "@mdi/js";
 import UpdateData from "../../redux/services/Hooks/UpdateData";
 import ImageCard from "./ImageCard";
+
 const PostCard = ({ name, data }) => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const { userAvatar, UserData, admin, hasNewStory } = useSelector(
     (state) => state.authSlice
@@ -63,7 +68,9 @@ const PostCard = ({ name, data }) => {
       : 0;
 
     const [likeC, setLikeC] = useState(likes?.length > 0 ? likes?.length : 0);
-    const [shareC, setShareC] = useState(shares?.length > 0 ? shares?.length : 0);
+    const [shareC, setShareC] = useState(
+      shares?.length > 0 ? shares?.length : 0
+    );
 
     const postAction = (type, value) => {
       const upData =
@@ -185,26 +192,12 @@ const PostCard = ({ name, data }) => {
       (state) => state.animateSlice
     );
 
-    const [translateX, setTranslateX] = useState(0);
-    const [countC, setCountC] = useState(0);
-
-    const imgW = document.getElementById("imgW");
-    const iw = imgW?.clientWidth;
-    const ih = imgW?.offsetHeight;
-
-    const next = () => {
-      setTranslateX(translateX - iw);
-      setCountC(countC + 1);
-    };
-
-    const prev = () => {
-      setTranslateX(translateX + iw);
-      setCountC(countC - 1);
-    };
-
     if (!loading)
       return (
-        <section className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-start   py-4    w-full ">
+        <section
+          id="mw"
+          className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-start   py-4    w-full "
+        >
           <div className=" flex w-full h-auto rounded-t-md justify-between  ">
             <div className="  w-full  flex-col relative   rounded-tl-md h-auto min-h-[50px]  flex justify-between items-end ">
               <div className=" absolute bottom-2 left-0 w-full px-2  h-[45px]   flex justify-between items-center ">
@@ -241,50 +234,42 @@ const PostCard = ({ name, data }) => {
             </div>
           </div>
 
-          {postUrl[0]?.length > 1 && (
-            <div className=" absolute flex justify-between top-[50%] self-center z-10 w-[95%] ">
-              <div
-                style={{
-                  opacity: countC > 0 ? "1" : "0",
-                }}
-                onClick={() => (countC > 0 ? prev() : null)}
-                className=" cursor-pointer self-start  p-1  bg-[#33333399] backdrop-blur rounded-full "
-              >
-                <Icon path={mdiChevronLeft} size={1} />
-              </div>
-
-              <div
-                style={{
-                  opacity: countC < postUrl[0]?.length - 1 ? "1" : "0",
-                }}
-                onClick={() =>
-                  countC < postUrl[0]?.length - 1 ? next() : null
-                }
-                className=" cursor-pointer self-end  p-1 bg-[#33333399] backdrop-blur rounded-full "
-              >
-                <Icon path={mdiChevronRight} size={1} />
-              </div>
-            </div>
-          )}
-
-          <div
-            style={{
-              overflowX: "hidden",
-              height: isMobile ? "67vh" : "77vh",
-            }}
-            className=" flex relative     bg-[#3333334f]   rounded-md snap-x  snap-mandatory   w-full  "
-          >
-            <div
-              style={{
-                left: translateX + "px",
-              }}
-              className=" flex absolute  w-full h-full    justify-start  rounded-md     "
+          {postUrl[0].length > 1 ? (
+            <Carousel
+              prevArrow={({ handlePrev }) => (
+                <IconButton
+                  variant="text"
+                  color="white"
+                  size="sm"
+                  onClick={handlePrev}
+                  className="!absolute bg-[#3333337a] rounded-full top-2/4 left-1 -translate-y-2/4"
+                >
+                  <Icon path={mdiChevronLeft} size={1} />
+                </IconButton>
+              )}
+              nextArrow={({ handleNext }) => (
+                <IconButton
+                  variant="text"
+                  color="white"
+                  size="sm"
+                  onClick={handleNext}
+                  className="!absolute bg-[#3333337a] rounded-full top-2/4 !right-1 -translate-y-2/4"
+                >
+                  <Icon path={mdiChevronRight} size={1} />
+                </IconButton>
+              )}
+              transition={{ duration: 0 }}
+              className="rounded-xl"
             >
               {postUrl[0]?.map((d) => {
                 return <ImageCard key={d} data={d} />;
               })}
-            </div>
-          </div>
+            </Carousel>
+          ) : (
+            postUrl[0]?.map((d) => {
+              return <ImageCard key={d} data={d} />;
+            })
+          )}
 
           <div className=" flex flex-col w-full justify-between items-center py-2  ">
             <div className=" flex w-full justify-between items-center  ">

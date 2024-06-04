@@ -21,7 +21,8 @@ const initialState = {
   AdminData:[],
   Post:[],
   sharePost:[],
-  savePost:[]
+  savePost:[],
+  imageList : []
   // friend:[]
 };
 
@@ -91,11 +92,14 @@ export const authSlice = createSlice({
     },
     setUserId:(state, { payload })=> {
       state.userId = payload
+    },
+    setImageList : (state, { payload }) => {
+      state.imageList = [...state.imageList,payload]
     }
     
   },
 });
 
-export const { userId,setUserId, storyId,setStoryId, setNotHasNewStory, addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post,addStory,Story,addAdmin,admin,addAdminProfile,adminProfile,setHasNewStory,hasNewStory } =
+export const { imageList,setImageList, userId,setUserId, storyId,setStoryId, setNotHasNewStory, addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post,addStory,Story,addAdmin,admin,addAdminProfile,adminProfile,setHasNewStory,hasNewStory } =
   authSlice.actions;
 export default authSlice.reducer;
