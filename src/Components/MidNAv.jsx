@@ -1,9 +1,18 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 
 const MidNAv = () => {
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
   return (
-    <section className="  backdrop-blur-md bg-[#2121217c] rounded-lg h-[60px] flex justify-center items-center w-[40%] ">
+    <section
+    style={{
+      width: isMobile ? '90%' : isTablet ?  '60%' : '40%'
+    }}
+     className="  backdrop-blur-md bg-[#2121217c] rounded-lg h-[60px] flex justify-center items-center  ">
       <div className=" flex w-[80%] h-full  justify-between items-center ">
       <NavLink to={"/"} className=" relative py-1 w-[25%] h-full">
           <div className=" out_line absolute bottom-0  rounded-t-lg z-[99] w-full h-1 " />

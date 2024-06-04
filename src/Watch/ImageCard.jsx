@@ -13,13 +13,13 @@ const ImageCard = ({d}) => {
     <div className=" w-auto h-full  gap-2    flex justify-start p-2 items-center ">
         <NavLink
           to={`/${d.UID}`}
-          className=" rounded- relative w-[40px]  h-[40px] justify-center items-center  bg-[#ca3e4796] "
+          className=" rounded- relative w-[30px]  h-[30px] justify-center items-center  bg-[#ca3e4796] "
         >
-          <div className=" -z-10 rotate-[10deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-          <div className=" -z-10 rotate-[20deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-          <div className=" -z-10 rotate-[40deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-          <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-          <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+          <div className=" -z-10 rotate-[10deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
+          <div className=" -z-10 rotate-[20deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
+          <div className=" -z-10 rotate-[40deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
+          <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
+          <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
 
           <img
             className=" w-full   h-full rounded-full object-cover cursor-pointer "
@@ -30,7 +30,7 @@ const ImageCard = ({d}) => {
         </NavLink>
         <NavLink
           to={`/${d.UID}`}
-          className=" cursor-pointer rounded-br px-2 object-cover  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-base  "
+          className=" cursor-pointer rounded-br px-2 object-cover  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-sm  "
         >
           <p>{d.name}</p>
         </NavLink>

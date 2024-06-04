@@ -9,6 +9,8 @@ import NavBar from "./Components/NavBar";
 import Group from "./Group/Group";
 import Game from "./Game/Game";
 import Watch from "./Watch/Watch";
+import MidNAv from "./Components/MidNAv";
+
 import { useEffect } from "react";
 import {
   blurOn,
@@ -173,7 +175,12 @@ function App() {
           </Routes>
         )}
       </section>
-    
+      {
+        !isDeskTop &&  <section className=" fixed bottom-3 flex w-full h-auto justify-center items-center  " >
+        <MidNAv/>
+      </section>
+      }
+         
       </BrowserRouter>
     </section>
   );
