@@ -7,8 +7,8 @@ const ImageCard = ({d}) => {
         (state) => state.authSlice
       );
   return (
-    <div className=" w-[250px] flex flex-col justify-start items-start  rounded-lg " >
-    <img className=" h-full w-auto rounded-lg " src={d.url} alt="" srcset="" />
+    <div className=" w-[250px] h-auto p-2 flex flex-col gap-3 justify-start items-start  rounded-lg " >
+    <img className=" w-[250px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
 
     <div className=" w-auto h-full  gap-2    flex justify-start p-2 items-center ">
         <NavLink
@@ -30,7 +30,7 @@ const ImageCard = ({d}) => {
         </NavLink>
         <NavLink
           to={`/${d.UID}`}
-          className=" cursor-pointer rounded-br px-2  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-base  "
+          className=" cursor-pointer rounded-br px-2 object-cover  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-base  "
         >
           <p>{d.name}</p>
         </NavLink>

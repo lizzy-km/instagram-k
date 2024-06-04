@@ -94,7 +94,9 @@ export const authSlice = createSlice({
       state.userId = payload
     },
     setImageList : (state, { payload }) => {
-      state.imageList = [...state.imageList,payload]
+   
+        state.imageList = [...state.imageList,payload]
+      
     }
     
   },
