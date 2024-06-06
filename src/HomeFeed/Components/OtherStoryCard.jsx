@@ -10,7 +10,7 @@ const OtherStoryCard = ({ data, translateX }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
-  const { userAvatar } = useSelector((state) => state.authSlice);
+  const { userAvatar } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const user =data?._document.data.value.mapValue.fields
 
@@ -147,7 +147,7 @@ const OtherStoryCard = ({ data, translateX }) => {
               return (
                 <>
                   {d.mapValue.fields.isActive.booleanValue === true ? (
-                    <img
+                    <img key={d.mapValue.fields.PFID.stringValue}
                       className=" z-[99] rounded-full object-cover w-full h-full "
                       src={userProfile?.length > 0 ? userProfile : userAvatar}
                       alt=""

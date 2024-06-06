@@ -31,7 +31,7 @@ import Messenger from "./Messenger/Messenger";
 import Noti from "./Noti/Noti";
 
 function App() {
-  const isAuth = useSelector((state) => state.authSlice.isLogin);
+  const isAuth = useSelector((deserializedState) => deserializedState.authSlice.isLogin);
 
   const { width, height, blur, isTablet, isMobile, isDeskTop, showStory,viewStory } =
     useSelector((state) => state.animateSlice);
@@ -69,7 +69,7 @@ function App() {
 
 
   const getAdmin = [GetAdminData()];
-  const { admin,hasNewStory } = useSelector((state) => state.authSlice);
+  const { admin,hasNewStory } = useSelector((deserializedState) => deserializedState.authSlice);
 
 
   useEffect(() => {
@@ -121,6 +121,8 @@ function App() {
     getAdminProfileImage()
   },[admin])
 
+  
+
   return (
     <section className=" bg-main relative snap-mandatory overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen ">
     
@@ -158,7 +160,7 @@ function App() {
               
             <Route exact path="/*" element={<HomeFeed />} />
             <Route exact path="/game" element={<Game />} />
-            <Route exact path="/watch" element={<Watch />} />
+            <Route exact path="/gallery" element={<Watch />} />
             <Route exact path="/group" element={<Group />} />
             <Route exact path="/loading" element={<Loading />} />
             <Route exact path="/message" element={<Messenger />} />

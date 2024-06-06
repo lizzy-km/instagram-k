@@ -5,7 +5,7 @@ import { storage } from "../../firebase/firebase";
 import { NavLink, useNavigate } from "react-router-dom";
 import Icon from "@mdi/react";
 import classes from "./CarouselCard.module.css";
-import { Carousel, IconButton } from "@material-tailwind/react";
+import { Carousel } from "flowbite-react";
 
 import {
   mdiBookmark,
@@ -27,7 +27,7 @@ const PostCard = ({ name, data }) => {
   const dispatch = useDispatch();
 
   const { userAvatar, UserData, admin, hasNewStory } = useSelector(
-    (state) => state.authSlice
+    (deserializedState) => deserializedState.authSlice
   );
 
   const hasPf = data?.profile_picture?.arrayValue?.values?.length > 0;
@@ -204,13 +204,13 @@ const PostCard = ({ name, data }) => {
                 <div className=" w-auto h-full  gap-2    flex justify-center items-center ">
                   <NavLink
                     to={`/${UID}`}
-                    className=" rounded- relative w-[40px]  h-[40px] justify-center items-center  bg-[#ca3e4796] "
+                    className=" rounded- relative w-[40px]  h-[40px] justify-center items-center   "
                   >
-                    <div className=" -z-10 rotate-[10deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                    <div className=" -z-10 rotate-[20deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                    <div className=" -z-10 rotate-[40deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                    <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                    <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                    <div className=" -z-10 rotate-[0deg] rounded-sm  left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                    <div className=" -z-10 rotate-[20deg] rounded-sm left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                    <div className=" -z-10 rotate-[40deg] left-[1px] rounded-sm top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                    <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] rounded-sm bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
+                    <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] rounded-sm bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
 
                     <img
                       className=" w-full   h-full rounded-full object-cover cursor-pointer "
@@ -235,39 +235,14 @@ const PostCard = ({ name, data }) => {
           </div>
 
           {postUrl[0].length > 1 ? (
-            <Carousel
-              prevArrow={({ handlePrev }) => (
-                <IconButton
-                  variant="text"
-                  color="white"
-                  size="sm"
-                  onClick={handlePrev}
-                  className="!absolute bg-[#3333337a] rounded-full top-2/4 left-1 -translate-y-2/4"
-                >
-                  <Icon path={mdiChevronLeft} size={1} />
-                </IconButton>
-              )}
-              nextArrow={({ handleNext }) => (
-                <IconButton
-                  variant="text"
-                  color="white"
-                  size="sm"
-                  onClick={handleNext}
-                  className="!absolute bg-[#3333337a] rounded-full top-2/4 !right-1 -translate-y-2/4"
-                >
-                  <Icon path={mdiChevronRight} size={1} />
-                </IconButton>
-              )}
-              transition={{ duration: 0 }}
-              className="rounded-xl"
-            >
+            <Carousel slide={false}>
               {postUrl[0]?.map((d) => {
-                return <ImageCard key={d} data={d} />;
+                return <ImageCard key={d+1134} data={d} />;
               })}
             </Carousel>
           ) : (
             postUrl[0]?.map((d) => {
-              return <ImageCard key={d} data={d} />;
+              return <ImageCard key={d+124} data={d} />;
             })
           )}
 

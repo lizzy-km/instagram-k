@@ -12,7 +12,7 @@ import { setShowStory } from "../../redux/services/animateSlice";
 const Story = () => {
   const [plus, setPlus] = useState(false);
   const { UserData, Story, admin, adminProfile,userAvatar } = useSelector(
-    (state) => state.authSlice
+    (deserializedState) => deserializedState.authSlice
   );
   const dispatch = useDispatch();
 

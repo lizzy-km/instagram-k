@@ -13,7 +13,7 @@ const UserCard = ({ data }) => {
   const UserName = data.user_name.stringValue;
   const PFID = data?.profile_picture.arrayValue.values[0]?.mapValue.fields.PFID.stringValue
 
-  const { storyId, userId } = useSelector((state) => state.authSlice);
+  const { storyId, userId } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const [imgPath,setImgPath] = useState("")
   const [profileUrl,setProfileUrl] = useState()

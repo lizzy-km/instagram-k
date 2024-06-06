@@ -4,7 +4,7 @@ import DataCard from './DataCard';
 
 const GetData = () => {
   const { admin, adminProfile, UserData, imageList, userAvatar } = useSelector(
-    (state) => state.authSlice
+    (deserializedState) => deserializedState.authSlice
   );
   return (
     <div>

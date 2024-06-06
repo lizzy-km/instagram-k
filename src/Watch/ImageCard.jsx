@@ -4,22 +4,25 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 const ImageCard = ({d}) => {
     const { userAvatar } = useSelector(
-        (state) => state.authSlice
+        (deserializedState) => deserializedState.authSlice
       );
   return (
-    <div className=" w-[250px] h-auto p-2 flex flex-col gap-3 justify-start items-start  rounded-lg " >
-    <img className=" w-[250px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
+    <div className=" cursor-pointer relative w-[200px] h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
+    <img className=" w-[200px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
 
-    <div className=" w-auto h-full  gap-2    flex justify-start p-2 items-center ">
+    <div className=" w-full h-auto bg-[#21212157] backdrop-blur  gap-0 absolute left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start ">
         <NavLink
           to={`/${d.UID}`}
-          className=" rounded- relative w-[30px]  h-[30px] justify-center items-center  bg-[#ca3e4796] "
+          className="  relative   rounded-sm w-[26px]  h-[26px] justify-center items-center   "
         >
-          <div className=" -z-10 rotate-[10deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
-          <div className=" -z-10 rotate-[20deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
-          <div className=" -z-10 rotate-[40deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
-          <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
-          <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] bg-[#ca3e4796] w-[28px] h-[28px] absolute "></div>
+          <div className=" -z-10 rotate-[0deg] rounded-sm   bg-[#ca3e4796] w-[26px] h-[26px] absolute "></div>
+          <div className=" -z-10 rotate-[20deg] rounded-sm   bg-[#ca3e4796] w-[26px] h-[26px] absolute "></div>
+          <div className=" -z-10 rotate-[40deg] rounded-sm   bg-[#ca3e4796] w-[26px] h-[26px] absolute "></div>
+          <div className=" -z-10 rotate-[60deg] rounded-sm   bg-[#ca3e4796] w-[26px] h-[26px] absolute "></div>
+          <div className=" -z-10 rotate-[80deg] rounded-sm   bg-[#ca3e4796] w-[26px] h-[26px] absolute "></div>
+
+
+
 
           <img
             className=" w-full   h-full rounded-full object-cover cursor-pointer "
@@ -30,7 +33,7 @@ const ImageCard = ({d}) => {
         </NavLink>
         <NavLink
           to={`/${d.UID}`}
-          className=" cursor-pointer rounded-br px-2 object-cover  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-sm  "
+          className=" cursor-pointer rounded-br px-2 object-cover  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-[12px]  "
         >
           <p>{d.name}</p>
         </NavLink>

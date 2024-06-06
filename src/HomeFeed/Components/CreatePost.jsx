@@ -13,7 +13,7 @@ const CreatePost = () => {
   );
 
   const { adminProfile,userAvatar,admin } = useSelector(
-    (state) => state.authSlice
+    (deserializedState) => deserializedState.authSlice
   );
   function getFirstWord(text) {
     if (!text) return ""; // Handle empty string case

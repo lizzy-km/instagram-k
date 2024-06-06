@@ -6,7 +6,7 @@ import PostCard from "./PostCard";
 
 const Post = () => {
   const { admin, adminProfile, UserData } = useSelector(
-    (state) => state.authSlice
+    (deserializedState) => deserializedState.authSlice
   );
 
   const { isTablet, isMobile, isDeskTop } = useSelector(

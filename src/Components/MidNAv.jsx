@@ -1,6 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Icon from "@mdi/react";
+import { mdiImageMultiple } from "@mdi/js";
 
 
 const MidNAv = () => {
@@ -27,16 +29,11 @@ const MidNAv = () => {
           </div>
         </NavLink>
 
-        <NavLink to={"/watch"} className=" relative py-1 w-[25%] h-full">
+        <NavLink to={"/gallery"} className=" relative py-1 w-[25%] h-full">
           <div className=" out_line absolute bottom-0  rounded-t-lg z-[99] w-full h-1 " />
 
           <div className="transition-colors rounded-md py-0 justify-center items-center cursor-pointer hover:bg-slate-600 flex h-full ">
-            <img
-              className=" w-[24px] h-[24px] "
-              src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FWatch.svg?alt=media&token=8ab953e9-2623-4463-b19f-2c8a6c6485b1"
-              alt=""
-              srcSet=""
-            />
+          <Icon path={mdiImageMultiple} size={1} />
           </div>
         </NavLink>
         <NavLink to={"/group"} className=" relative py-1 w-[25%] h-full">

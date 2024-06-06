@@ -22,7 +22,7 @@ const RightNav = () => {
   );
 
   const { isTablet, isMobile, isDeskTop } = useSelector(
-    (state) => state.animateSlice
+    (deserializedState) => deserializedState.animateSlice
   );
 
   const navigate = useNavigate();
@@ -90,9 +90,9 @@ const RightNav = () => {
     );
   };
 
-  const { adminProfile } = useSelector((state) => state.authSlice);
+  const { adminProfile } = useSelector((deserializedState) => deserializedState.authSlice);
 
-  const { admin, userAvatar } = useSelector((state) => state.authSlice);
+  const { admin, userAvatar } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const [isLoading, setIsLoading] = useState(false);
 

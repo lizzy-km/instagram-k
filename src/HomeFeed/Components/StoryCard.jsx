@@ -13,7 +13,7 @@ const StoryCard = ({ translateX }) => {
   const [count,setCount] = useState(0)
 
   const { UserData, admin, adminProfile,hasNewStory,userAvatar } = useSelector(
-    (state) => state.authSlice
+    (deserializedState) => deserializedState.authSlice
   );
 
   const [storyImgs, setStoryImgs] = useState();

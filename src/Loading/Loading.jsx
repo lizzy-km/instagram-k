@@ -15,7 +15,7 @@ const Loading = () => {
   const dispatch = useDispatch();
 
   const getAdmin = [GetAdminData()];
-  const { admin, hasNewStory } = useSelector((state) => state.authSlice);
+  const { admin, hasNewStory } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const getData = async () => {
     const data = await getDocs(collection(firestore, "users"));

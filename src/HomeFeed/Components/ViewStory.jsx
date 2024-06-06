@@ -16,7 +16,7 @@ import ViewStoryCard from "./ViewStoryCard";
 const ViewStory = () => {
   const [plus, setPlus] = useState(false);
   const { UserData, Story, admin, adminProfile } = useSelector(
-    (state) => state.authSlice
+    (deserializedState) => deserializedState.authSlice
   );
   const dispatch = useDispatch();
 

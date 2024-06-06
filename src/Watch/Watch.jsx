@@ -8,18 +8,18 @@ const Watch = () => {
   const navigate = useNavigate();
 
   const { admin, adminProfile, UserData, imageList, userAvatar } = useSelector(
-    (state) => state.authSlice
+    (deserializedState) => deserializedState.authSlice
   );
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
   const width = document.getElementById("mainWidth");
   const [mainWidth, setMainWidth] = useState(width?.clientWidth);
-  const cardWidth = 250;
+  const cardWidth = 200;
 
   const deskWidth = mainWidth / cardWidth;
 
-  const deskCount = deskWidth > 0 ? deskWidth : 5
+  const deskCount = deskWidth > 0 ? deskWidth : 6
 
   const totalCardRow = isDeskTop
     ? deskCount
@@ -37,10 +37,11 @@ const Watch = () => {
     setMainWidth(width?.clientWidth);
   });
 
+ 
+
   useEffect(() => {
     for (let i = 0; i < totalCardRow?.toFixed(0); i++) {
-      newArray?.push([imageList.slice(i * cardPerCol, cardPerCol * (i + 1))]);
-
+      newArray?.push([imageList.slice(i * cardPerCol, cardPerCol * (i +1))]);
       setRealData(newArray);
     }
   }, [imageList, UserData]);
@@ -48,12 +49,12 @@ const Watch = () => {
   return (
     <div
       id="mainWidth"
-      className=" relative pt-[100px]  h-auto flex  min-h-screen       w-[75%] p-2   justify-center items-center  "
+      className=" relative pt-[100px]  h-auto flex  min-h-screen     w-[65%] p-2   justify-center items-center  "
     >
-      <div className=" flex w-auto justify-center  rounded-lg  items-center">
+      <div className=" flex w-auto justify-center  gap-3 rounded-lg  items-center">
         {realData.reverse()?.map((d,index) => {
           return (
-            <div key={index} className="  place-self-start justify-center   w-full flex flex-wrap gap-[30px] ">
+            <div key={index} className="  place-self-start justify-center   w-full flex flex-wrap gap-[40px] ">
               {d?.length > 0 &&
                 d[0]?.map((dd) => {
                   return <ImageCard key={dd.url} d={dd} />;

@@ -10,7 +10,7 @@ const DataCard = ({ name, data }) => {
   const dispatch = useDispatch();
 
   const { userAvatar, UserData, admin, hasNewStory } = useSelector(
-    (state) => state.authSlice
+    (deserializedState) => deserializedState.authSlice
   );
 
   const hasPf = data?.profile_picture?.arrayValue?.values?.length > 0;
@@ -27,7 +27,7 @@ const DataCard = ({ name, data }) => {
     const [count, setCount] = useState(0);
     const UID = data.UID.stringValue;
 
-    
+
     async function postUrlGen(path) {
       let u = [];
       path?.map(

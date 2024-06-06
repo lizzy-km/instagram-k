@@ -10,7 +10,7 @@ import { setViewStory } from "../../redux/services/animateSlice";
 import { setStoryId } from "../../redux/services/authSlice";
 
 const ViewStoryCard = ({ userData }) => {
-  const { storyId, admin } = useSelector((state) => state.authSlice);
+  const { storyId, admin } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const navigate = useNavigate();
 
@@ -39,6 +39,8 @@ const ViewStoryCard = ({ userData }) => {
   };
 
   const storageRef = ref(storage, `user_photo/${UID}/${PFID}`);
+
+
 
   const list = async () => {
     const not = await listAll(storageRef);

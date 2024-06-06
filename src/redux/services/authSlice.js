@@ -28,12 +28,18 @@ const initialState = {
 
 const STORAGE_KEY = 'Auth';
 
+// Serialize the state
+const serializedState = JSON.stringify(initialState);
+
+// Deserialize the state
+const deserializedState = JSON.parse(serializedState);
+
 //____________________________________________________storedItems_____________________Null_____//
 const storedItems = Cookies.get(STORAGE_KEY) ? JSON.parse(Cookies.get(STORAGE_KEY)) : null;
 
 if (storedItems) {
 
-  initialState.isLogin = storedItems;
+  deserializedState.isLogin = storedItems;
   
 
 }
@@ -41,61 +47,62 @@ if (storedItems) {
 export const authSlice = createSlice({
   name: "authSlice",
   initialState,
+  deserializedState,
   reducers: {
-    addUser: (state, { payload }) => {
-      (state.user = payload.user), (state.token = payload.token);
-      Cookies.set(STORAGE_KEY, JSON.stringify(state.user));
-      Cookies.set("token", JSON.stringify(state.token));
+    addUser: (deserializedState, { payload }) => {
+      (deserializedState.user = payload.user), (deserializedState.token = payload.token);
+      Cookies.set(STORAGE_KEY, JSON.stringify(deserializedState.user));
+      Cookies.set("token", JSON.stringify(deserializedState.token));
     },
-    addViewImage: (state, { payload }) => {
-      state.viewImage = payload;
+    addViewImage: (deserializedState, { payload }) => {
+      deserializedState.viewImage = payload;
     },
-    addStoryImage: (state, { payload }) => {
-      state.viewStoryImage = payload;
+    addStoryImage: (deserializedState, { payload }) => {
+      deserializedState.viewStoryImage = payload;
     },
-    setLogin: (state,{payload})=> {
-      state.isLogin = payload
-      Cookies.set(STORAGE_KEY, JSON.stringify(state.isLogin));
+    setLogin: (deserializedState,{payload})=> {
+      deserializedState.isLogin = payload
+      Cookies.set(STORAGE_KEY, JSON.stringify(deserializedState.isLogin));
 
     },
-    addElement: (state, { payload }) => {
-      state.element = payload;
+    addElement: (deserializedState, { payload }) => {
+      deserializedState.element = payload;
     },
-    addUserData: (state, { payload }) => {
-      state.UserData = payload;
+    addUserData: (deserializedState, { payload }) => {
+      deserializedState.UserData = payload;
     },
-    addPost: (state, { payload }) => {
-      state.Post = payload;
+    addPost: (deserializedState, { payload }) => {
+      deserializedState.Post = payload;
     },
-    addStory: (state, { payload }) => {
-      state.Story = payload;
+    addStory: (deserializedState, { payload }) => {
+      deserializedState.Story = payload;
     },
-    addAdmin:(state, { payload })=>{
-      state.admin = payload
+    addAdmin:(deserializedState, { payload })=>{
+      deserializedState.admin = payload
 
     },
-    addAdminProfile : (state, { payload }) => {
-      state.adminProfile = payload
+    addAdminProfile : (deserializedState, { payload }) => {
+      deserializedState.adminProfile = payload
     },
     
-    setNotHasNewStory: (state, { payload })=> {
-      state.hasNewStory = false
+    setNotHasNewStory: (deserializedState, { payload })=> {
+      deserializedState.hasNewStory = false
 
     },
-    setHasNewStory: (state, { payload })=> {
-      state.hasNewStory = true
+    setHasNewStory: (deserializedState, { payload })=> {
+      deserializedState.hasNewStory = true
 
       setTimeout(setNotHasNewStory(),700)
     },
-    setStoryId:(state, { payload })=> {
-      state.storyId = payload
+    setStoryId:(deserializedState, { payload })=> {
+      deserializedState.storyId = payload
     },
-    setUserId:(state, { payload })=> {
-      state.userId = payload
+    setUserId:(deserializedState, { payload })=> {
+      deserializedState.userId = payload
     },
-    setImageList : (state, { payload }) => {
+    setImageList : (deserializedState, { payload }) => {
    
-        state.imageList = [...state.imageList,payload]
+        deserializedState.imageList = [...deserializedState.imageList,payload]
       
     }
     

@@ -23,7 +23,7 @@ const CreateStory = () => {
   const [icon, setIcon] = useState(
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34"
   );
-  const { admin } = useSelector((state) => state.authSlice);
+  const { admin } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const privacyData = [
     {
@@ -162,8 +162,8 @@ const CreateStory = () => {
     fileType ? setFileSize(fileSize) : null
 
     fileType
-      ? uploadStory(file, fileSize, STID, filePath).then((data) =>
-          console.log(data)
+      ? uploadStory(file, fileSize, STID, filePath).then((data) =>data
+          // console.log(data)
         )
       : alert("Your file type doesn't allow to post",fileType);
   };

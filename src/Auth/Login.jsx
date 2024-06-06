@@ -23,7 +23,7 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const { admin } = useSelector((state) => state.authSlice);
+  const { admin } = useSelector((deserializedState) => deserializedState.authSlice);
 
   // const name = userData.username;
   // const email = userData.email;
