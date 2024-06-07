@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
-const ImageCard = ({ data }) => {
+const ImageCard = ({ data,UID,PID }) => {
+
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [full, setFull] = useState(false);
@@ -38,7 +40,8 @@ const ImageCard = ({ data }) => {
         (state) => state.animateSlice
       );
   return (
-    <img
+    <NavLink to={`/${UID}/post_detail/${PID}`} >
+      <img
       src={imageUrl}
       key={data}
       id="imgW"
@@ -49,6 +52,8 @@ const ImageCard = ({ data }) => {
       alt=""
       srcset=""
     />
+    </NavLink>
+    
   );
 };
 

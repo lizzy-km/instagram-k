@@ -12,6 +12,7 @@ import {
   mdiBookmarkOutline,
   mdiChevronLeft,
   mdiChevronRight,
+  mdiContentCopy,
   mdiDotsHorizontal,
   mdiHeart,
   mdiHeartOutline,
@@ -192,6 +193,30 @@ const PostCard = ({ name, data }) => {
       (state) => state.animateSlice
     );
 
+    const[postMenu,setPostMenu] = useState(false)
+
+    const link = `localhost:5173/${UID}/post_detail/${PID}`
+
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = async () => {
+    const a = document.getElementById('linkToCopy')
+    const baseURI = a?.baseURI
+    try {
+      await navigator.clipboard.writeText(`${baseURI}${UID}/post_detail/${PID}`);
+      setCopied(true);
+    } catch (error) {
+      console.error('Failed to copy link:', error);
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
+    return () => clearTimeout(timeout);
+  }, [copied]);
+    
+
+
     if (!loading)
       return (
         <section
@@ -228,21 +253,33 @@ const PostCard = ({ name, data }) => {
                 </div>
               </div>
 
-              <div className=" absolute right-0 bottom-2 w-[40px] bg-[#3333332f] h-[40px] flex justify-center items-center rounded  cursor-pointer ">
+              <div onClick={()=>setPostMenu(!postMenu)} className=" transition-transform absolute right-0 bottom-2 w-[40px] bg-[#3333332f] h-[40px] flex justify-center items-center rounded  cursor-pointer ">
                 <Icon path={mdiDotsHorizontal} size={1} />
               </div>
+              <section style={{
+                visibility: postMenu ? 'visible' :'collapse'
+              }} className=" transition-transform text-sm tracking-wide flex flex-col gap-2 p-1 rounded-md bg-[#31313157] backdrop-blur absolute right-2 top-12 min-w-[25%] min-h-[40px] " >
+                    <div onClick={copyToClipboard } className="flex gap-1 cursor-pointer hover:bg-[#24252657] p-2 rounded-md  justify-center items-center" >
+                    <Icon path={mdiContentCopy} size={0.8} />
+                    <a id="linkToCopy"  href={link} ></a>
+                    <p>{copied ? 'Copied!' : 'Copy Link'}</p>
+                    </div>
+                   
+
+              </section>
             </div>
           </div>
 
           {postUrl[0].length > 1 ? (
             <Carousel slide={false}>
               {postUrl[0]?.map((d) => {
-                return <ImageCard key={d+1134} data={d} />;
+                
+                return <ImageCard UID={UID} PID={PID} key={d+1134} data={d} />;
               })}
             </Carousel>
           ) : (
             postUrl[0]?.map((d) => {
-              return <ImageCard key={d+124} data={d} />;
+              return <ImageCard UID={UID} PID={PID}  key={d+124} data={d} />;
             })
           )}
 

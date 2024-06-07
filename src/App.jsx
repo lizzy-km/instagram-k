@@ -29,6 +29,7 @@ import Loading from "./Loading/Loading";
 import ViewStory from "./HomeFeed/Components/ViewStory";
 import Messenger from "./Messenger/Messenger";
 import Noti from "./Noti/Noti";
+import PostDetail from "./PostDetail/PostDetail";
 
 function App() {
   const isAuth = useSelector((deserializedState) => deserializedState.authSlice.isLogin);
@@ -170,6 +171,7 @@ function App() {
 
             <Route path="/:user/" element={<UserProfile />} />
             <Route path="/profile/:username/" element={<OtherProfile />} />
+            <Route path="/:uid/post_detail/:pid" element={<PostDetail />} />
           </Routes>
         ) : (
           <Routes>

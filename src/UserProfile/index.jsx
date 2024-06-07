@@ -22,7 +22,9 @@ const UserProfile = () => {
   return (
     <section className=" flex flex-col relative top-0  bg-[#121212] w-full   h-screen max-h-screen overflow-y-auto overflow-x-hidden ">
 
-        <section className=" h-[78%] w-full absolute bg-[#242526]  "></section>
+        <section className=" h-[78%] w-full absolute bg-[#242526]  ">
+          
+        </section>
 
         <section className="w-full p-3 absolute top-[78%] items-center  justify-center  flex gap-2  ">
           <div className=" w-[60%]  flex gap-2  ">
