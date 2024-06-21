@@ -228,6 +228,7 @@ const PostCard = ({ name, data }) => {
               <div className=" absolute bottom-2 left-0 w-full px-2  h-[45px]   flex justify-between items-center ">
                 <div className=" w-auto h-full  gap-2    flex justify-center items-center ">
                   <NavLink
+                  onClick={()=> localStorage.setItem('userProfile',userProfile) }
                     to={`/${UID}`}
                     className=" rounded- relative w-[40px]  h-[40px] justify-center items-center   "
                   >

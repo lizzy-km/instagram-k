@@ -25,6 +25,8 @@ const CreatePost = () => {
   // Example usage
   const text = admin?.user_name?.stringValue;
   const firstWord = getFirstWord(text);
+
+
   return (
     <>
       <div style={{
