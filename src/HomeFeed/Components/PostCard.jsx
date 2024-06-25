@@ -221,7 +221,7 @@ const PostCard = ({ name, data }) => {
       return (
         <section
           id="mw"
-          className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-start   py-4    w-full "
+          className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-center   py-4    w-full "
         >
           <div className=" flex w-full h-auto rounded-t-md justify-between  ">
             <div className="  w-full  flex-col relative   rounded-tl-md h-auto min-h-[50px]  flex justify-between items-end ">
@@ -272,7 +272,7 @@ const PostCard = ({ name, data }) => {
           </div>
 
           {postUrl[0].length > 1 ? (
-            <Carousel slide={false}>
+            <Carousel slideInterval={0} slide={false}>
               {postUrl[0]?.map((d) => {
                 
                 return <ImageCard UID={UID} PID={PID} key={d+1134} data={d} />;
@@ -370,7 +370,7 @@ const PostCard = ({ name, data }) => {
           </div>
           {data?.post.arrayValue.values[0]?.mapValue.fields.caption
             ?.stringValue && (
-            <pre className="  border-l-[1.5px] border-[#d4d4d4ce] px-2 py-2 text-sm  max-w-[80%] text-wrap tracking-wide  w-[80%]  h-auto ">
+            <pre className="  border-l-[1.5px] border-[#d4d4d4ce] px-2 py-2 text-sm  max-w-[80%] text-wrap tracking-wide self-start  w-[80%]  h-auto ">
               {
                 data?.post.arrayValue.values[0]?.mapValue.fields.caption
                   ?.stringValue

@@ -20,7 +20,7 @@ const UserProfile = () => {
 
   const userProfile = localStorage.getItem('userProfile')
 
-  console.log(user);
+  console.log(6+6-6 );
 
 
   return (

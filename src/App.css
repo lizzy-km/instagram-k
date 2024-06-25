@@ -18,6 +18,11 @@
   background: rgba(0, 0, 0, 0.35);
 }
 
+.bg-white\/30 {
+  background-color: #212121b8 !important;
+  backdrop-filter:blur(4px)
+}
+
 .bg-img {
   background-image: linear-gradient(
     180deg,

@@ -40,7 +40,7 @@ const ImageCard = ({ data,UID,PID }) => {
         (state) => state.animateSlice
       );
   return (
-    <NavLink to={`/${UID}/post_detail/${PID}`} >
+    <NavLink className=" w-full " to={`/${UID}/post_detail/${PID}`} >
       <img
       src={imageUrl}
       key={data}
