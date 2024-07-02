@@ -22,8 +22,7 @@ const LeftNav = () => {
       padding:isMobile ? '8px' :'0'
     }} className= {` ${isMobile && 'flex-row-reverse'} flex w-[30%]  gap-2 items-center left_nav h-full`} >
       <NavLink onDoubleClick={()=> {
-        dispatch(addAdmin([]))
-      dispatch(addUserData([]))
+        window.location.reload(true)
 
       } }
         to={"/"}

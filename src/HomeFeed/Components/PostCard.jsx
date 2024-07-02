@@ -215,9 +215,10 @@ const PostCard = ({ name, data }) => {
     return () => clearTimeout(timeout);
   }, [copied]);
     
+   const caption = data?.post.arrayValue.values.find( d => d.mapValue.fields.PID.stringValue === PID )?.mapValue.fields.caption.stringValue
 
+  //  console.log(caption)
 
-    if (!loading)
       return (
         <section
           id="mw"
@@ -271,7 +272,7 @@ const PostCard = ({ name, data }) => {
             </div>
           </div>
 
-          {postUrl[0].length > 1 ? (
+          { !loading&& postUrl[0].length > 1 ? (
             <Carousel slideInterval={0} slide={false}>
               {postUrl[0]?.map((d) => {
                 
@@ -368,12 +369,10 @@ const PostCard = ({ name, data }) => {
               )}
             </div>
           </div>
-          {data?.post.arrayValue.values[0]?.mapValue.fields.caption
-            ?.stringValue && (
+          {caption && (
             <pre className="  border-l-[1.5px] border-[#d4d4d4ce] px-2 py-2 text-sm  max-w-[80%] text-wrap tracking-wide self-start  w-[80%]  h-auto ">
               {
-                data?.post.arrayValue.values[0]?.mapValue.fields.caption
-                  ?.stringValue
+                caption
               }
             </pre>
           )}

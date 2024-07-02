@@ -44,7 +44,9 @@ const CreatePostBox = () => {
   const [privacy, setPrivacy] = useState(false);
   const Create_post = ["Create_post"];
   const { blur, isMobile } = useSelector((state) => state.animateSlice);
-  const { admin,adminProfile,userAvatar } = useSelector((state) => state.authSlice);
+  const { admin, adminProfile, userAvatar } = useSelector(
+    (state) => state.authSlice
+  );
 
   useEffect(() => {
     blur === false
@@ -105,10 +107,10 @@ const CreatePostBox = () => {
   const [imfurlForUp, setImgUrlUp] = useState([]);
   const [isImage, setIsImage] = useState(true);
 
-
-  const totalSize = imfurlForUp.length > 0 ? imfurlForUp?.reduce((prev,curr)=> prev.fileSize + curr.fileSize) : 0
-
-
+  const totalSize =
+    imfurlForUp.length > 0
+      ? imfurlForUp?.reduce((prev, curr) => prev.fileSize + curr.fileSize)
+      : 0;
 
   const uploadStory = async (file, fileSize, STID, filePath) => {
     const storageRef = file && ref(storage, filePath); // Replace with your desired file path
@@ -129,8 +131,6 @@ const CreatePostBox = () => {
               { downloadURL: downloadURL, fileSize: fileSize },
             ]);
             console.log("File available at", downloadURL);
-
-           
           });
         })
         .catch((error) => console.log(error)));
@@ -138,14 +138,12 @@ const CreatePostBox = () => {
 
   const [fileSizes, setFileSize] = useState();
   const [fileTypes, setFileType] = useState();
-  const [FID,setFID] = useState(0)
+  const [FID, setFID] = useState(0);
 
-  useEffect(()=> {
-    const id = Math.round(Math.random() * 100000000)
-    setFID(id)
-  },[blur])
-
-
+  useEffect(() => {
+    const id = Math.round(Math.random() * 100000000);
+    setFID(id);
+  }, [blur]);
 
   const CreateNewStory = async (e) => {
     const file = e.target.files[0];
@@ -172,21 +170,23 @@ const CreatePostBox = () => {
   const navigate = useNavigate();
 
   const newStoryAdded = () => {
-
-    UpdateData("user_posts", UID, name, {
-      PID: nick + "P" + `${FID}`,
-      isImage: fileTypes === "image" ? true : false,
-      caption: detail?.length > 0 ? detail : false,
-    },{UID:UID})
+    UpdateData(
+      "user_posts",
+      UID,
+      name,
+      {
+        PID: nick + "P" + `${FID}`,
+        isImage: fileTypes === "image" ? true : false,
+        caption: detail?.length > 0 ? detail : false,
+      },
+      { UID: UID }
+    )
       .then((data) => {
         dispatch(blurOn({ blur: false }));
-          window.location.reload(true)
-
-
+        window.location.reload(true);
       })
       .catch((error) => console.log(error));
   };
-
 
   return (
     <div
@@ -286,32 +286,38 @@ const CreatePostBox = () => {
         </div>
         <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
           <div className=" relative h-auto flex flex-col gap-0 justify-start items-start w-full ">
-            <div
+            <textarea
               id="myInput"
-              onKeyDown={(e) =>
-                e.keyCode === 13
-                  ? setDetail(detail + " " + " \n ")
-                  : setDetail(e.currentTarget.innerText)
-              }
-              aria-placeholder="What's on your mind?"
-              data-lexical-editor="true"
-              aria-valuetext={detail}
-              contentEditable="true"
-              role="textbox"
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  setDetail((prevDetail) => prevDetail + " \n ");
+                } else {
+                  setDetail(e.target.value);
+                }
+              }}
+              onChange={(e)=> {
+                setDetail(e.target.value) 
+
+              }}
+              placeholder="What's on your mind?"
+              value={detail}
+              className="border-l-2 bg-[#33333375] border-[#d4d4d4b9] rounded-r relative outline-none p-2 w-full min-h-[50px] cursor-text text-[24px] break-words whitespace-pre-wrap user-select-[text]"
               spellCheck="true"
-              tabIndex="0"
-              className=" border-l-2 bg-[#33333375] border-[#d4d4d4b9] rounded-r relative outline-none p-2 w-full h-auto min-h-[50px] cursor-text text-[24px] break-words whitespace-pre-wrap user-select-[text]  "
-            ></div>
+              autoFocus
+            />
           </div>
 
           <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-wrap outline-none p-0 justify-start items-center w-full ">
-          
             {imfurlForUp?.length > 0 &&
               imfurlForUp.reverse().map((d) => {
                 return (
                   <div className=" flex  justify-center w-[20%] flex-col  flex-wrap-reverse h-auto items-center p-1 rounded ">
                     {isImage ? (
-                      <img className=" rounded  h-[70%] object-cover " src={d.downloadURL} alt="" />
+                      <img
+                        className=" rounded  h-[70%] object-cover "
+                        src={d.downloadURL}
+                        alt=""
+                      />
                     ) : (
                       <video
                         className="  h-auto w-auto object-cover "
@@ -322,7 +328,7 @@ const CreatePostBox = () => {
                   </div>
                 );
               })}
-                {imfurlForUp.length < 11 && (
+            {imfurlForUp.length < 11 && (
               <div className=" cursor-pointer justify-center items-center  h-auto p-2 flex w-[20%] bg-[#111111]  rounded-lg  ">
                 <div className="flex cursor-pointer items-center justify-center w-full">
                   <label
