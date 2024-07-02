@@ -193,7 +193,7 @@ const CreatePostBox = () => {
       id="Create_post"
       style={{
         visibility: blur === true ? "visible" : "hidden",
-        width: isMobile ? "95%" : "70%",
+        width: !isDeskTop ? "95%" : "70%",
       }}
       className=" text-[#d4d4d4] p-2 Create_post flex flex-col justify-between items-center rounded-md bg-[#18191a]  h-[75%] overflow-y-auto max-h-[75%] "
     >
