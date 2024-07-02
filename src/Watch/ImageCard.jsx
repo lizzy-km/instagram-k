@@ -18,7 +18,7 @@ const ImageCard = ({d}) => {
     }}
      className=" relative cursor-pointer  w-[200px] h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
     <img style={{ 
-      width: isMobile ? '100%' :'200px'
+      width: isMobile ? '100%' :'220px'
     }} onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" w-[200px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
 
     <div onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)}  style={{

@@ -43,7 +43,7 @@ const CreatePostBox = () => {
   const dispatch = useDispatch();
   const [privacy, setPrivacy] = useState(false);
   const Create_post = ["Create_post"];
-  const { blur, isMobile } = useSelector((state) => state.animateSlice);
+  const { blur, isMobile,isDeskTop } = useSelector((state) => state.animateSlice);
   const { admin, adminProfile, userAvatar } = useSelector(
     (state) => state.authSlice
   );
