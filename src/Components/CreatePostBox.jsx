@@ -284,7 +284,7 @@ const CreatePostBox = () => {
             <div className=" absolute rotate-45  w-[45%] h-[2px] rounded-full bg-[#e4e6ebb5] "></div>
           </div>
         </div>
-        <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
+        <div className=" relative flex h-[75%] overflow-y-auto min-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
           <div className=" relative h-auto flex flex-col gap-0 justify-start items-start w-full ">
             <textarea
               id="myInput"
@@ -329,7 +329,7 @@ const CreatePostBox = () => {
                 );
               })}
             {imfurlForUp.length < 11 && (
-              <div className=" cursor-pointer justify-center items-center  h-auto p-2 flex w-[20%] bg-[#111111]  rounded-lg  ">
+              <div className=" cursor-pointer justify-center items-center  h-auto p-2 flex w-[50%] bg-[#111111]  rounded-lg  ">
                 <div className="flex cursor-pointer items-center justify-center w-full">
                   <label
                     for="dropzone-file"

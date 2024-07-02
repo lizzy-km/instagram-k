@@ -6,14 +6,20 @@ const ImageCard = ({d}) => {
     const { userAvatar } = useSelector(
         (deserializedState) => deserializedState.authSlice
       );
+      const { isTablet, isMobile, isDeskTop } = useSelector(
+        (state) => state.animateSlice
+      );
       const [isShow,setIsShow] = useState(false)
   return (
     <div
     style={{
-      top:0
+      top:0,
+      width: isMobile ? '90%' :'200px'
     }}
      className=" relative cursor-pointer  w-[200px] h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
-    <img onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" w-[200px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
+    <img style={{ 
+      width: isMobile ? '100%' :'200px'
+    }} onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" w-[200px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
 
     <div onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)}  style={{
           visibility: isShow ? 'visible' : 'hidden'
