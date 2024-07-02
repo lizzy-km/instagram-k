@@ -55,7 +55,7 @@ const Watch = () => {
       <div className=" flex w-auto justify-center  gap-3 rounded-lg  items-center">
         {realData.reverse()?.map((d,index) => {
           return (
-            <div key={index} className="  place-self-start justify-center   w-full flex flex-wrap gap-[40px] ">
+            <div key={index} className="  place-self-start justify-center   w-full flex flex-wrap gap-[16px] ">
               {d?.length > 0 &&
                 d[0]?.map((dd) => {
                   return <ImageCard key={dd.url} d={dd} />;

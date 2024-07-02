@@ -15,7 +15,7 @@ const ImageCard = ({d}) => {
      className=" relative cursor-pointer  w-[200px] h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
     <img onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" w-[200px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
 
-    <div  style={{
+    <div onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)}  style={{
           visibility: isShow ? 'visible' : 'hidden'
         }} className="  w-full h-auto bg-[#21212157] backdrop-blur  gap-0 absolute left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start ">
         <NavLink
