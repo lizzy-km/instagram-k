@@ -97,6 +97,7 @@ const Login = () => {
         .then((data) => {
           setIsLoading(false);
           toast.success("Login successful");
+          window.location.reload(true)
         })
         .catch((error) => console.log(error));
   
