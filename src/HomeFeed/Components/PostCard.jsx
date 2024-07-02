@@ -273,7 +273,7 @@ const PostCard = ({ name, data }) => {
           </div>
 
           { !loading&& postUrl[0].length > 1 ? (
-            <Carousel slideInterval={0} slide={false}>
+            <Carousel loop={false} slideInterval={0} slide={false}>
               {postUrl[0]?.map((d) => {
                 
                 return <ImageCard UID={UID} PID={PID} key={d+1134} data={d} />;

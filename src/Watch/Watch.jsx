@@ -49,8 +49,11 @@ const Watch = () => {
 
   return (
     <div
+    style={{
+      paddingTop:realData?.length > 5 ? '100px' : '50px'
+    }}
       id="mainWidth"
-      className=" relative pt-[1px]  h-auto flex  min-h-screen     w-[99%] p-2   justify-center items-center  "
+      className=" relative pt-[100px]  h-auto flex  min-h-screen     w-[99%] p-2   justify-center items-center  "
     >
       <div className=" flex w-auto justify-center  gap-3 rounded-lg  items-center">
         {realData.reverse()?.map((d,index) => {

@@ -16,9 +16,10 @@ const UserProfile = () => {
     (state) => state.animateSlice
   );
 
-  const user = UserData?.filter(d => d.id=== UID?.user)[0]?._document.data.value.mapValue.fields
+  const user = UserData?.find(d => d.id=== UID?.user)?._document.data.value.mapValue.fields
 
   const userProfile = localStorage.getItem('userProfile')
+
 
 
   const bg = 'https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2F328652225_477950631031057_4570664772778110705_n%20(2).jpg?alt=media&token=ada5ce90-591d-47a6-88cb-07e80e9117d7'
@@ -38,7 +39,7 @@ const UserProfile = () => {
                 <div className=' w-full h-auto absolute bottom-[1%] left-0 flex justify-start items-center ' >
 
                   <div className=' cursor-pointer p-1 bg-[#333333] rounded-full w-[150px] h-[150px] ' >
-                  <img className=" rounded-full h-[100%] w-full  object-cover " src={userProfile?.length > 0? userProfile : userAvatar} alt="" srcset="" />
+                  <img className=" rounded-full h-[100%] w-full  object-cover " src={userProfile?.length > 10? userProfile : userAvatar} alt="" srcset="" />
                   </div>
 
                   <p className=" px-2 text-[2.2rem] flex w-auto tracking-wide gap-2 font-medium " >
