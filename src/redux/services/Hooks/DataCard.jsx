@@ -9,7 +9,7 @@ const DataCard = ({ name, data }) => {
 
   const dispatch = useDispatch();
 
-  const { userAvatar, UserData, admin, hasNewStory } = useSelector(
+  const { userAvatar, UserData, admin, hasNewStory, imageList } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -20,6 +20,7 @@ const DataCard = ({ name, data }) => {
   const post = hasPostD ? data?.post?.arrayValue?.values : [];
 
   return post.map((d) => {
+
     const [userProfile, setUserProfile] = useState();
     const [storyImgs, setStoryImgs] = useState();
     const [postImgs, setPostImgs] = useState([null]);
@@ -27,17 +28,16 @@ const DataCard = ({ name, data }) => {
     const [count, setCount] = useState(0);
     const UID = data.UID.stringValue;
 
-
     async function postUrlGen(path) {
-      let u = [];
-      path?.map(
+      let u =[]
+       path?.map(
         async (d) =>
           await getDownloadURL(ref(storage, d.fullPath)).then((data) => {
-            u?.push(data);
-
+            u.push(data !== u ? data : null)
+            
             dispatch(
               setImageList({
-                url: u.reverse(),
+                url: u,
                 name: name,
                 userProfile: userProfile,
                 UID: UID,
@@ -45,6 +45,10 @@ const DataCard = ({ name, data }) => {
             );
           })
       );
+
+      
+
+     
     }
 
     const imgUrl = async (path) => {
@@ -83,12 +87,7 @@ const DataCard = ({ name, data }) => {
       postList();
     }, []);
 
-    useEffect(() => {
-      list();
-      postList();
-
-      setCount(count + 1);
-    }, [hasNewStory, UserData, admin, storyImgs, postImgs]);
+  
 
     return <></>;
   });

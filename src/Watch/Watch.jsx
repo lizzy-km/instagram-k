@@ -19,7 +19,7 @@ const Watch = () => {
 
   const deskWidth = mainWidth / cardWidth;
 
-  const deskCount = deskWidth > 0 ? deskWidth : 6
+  const deskCount = deskWidth > 0 ? deskWidth : 9
 
   const totalCardRow = isDeskTop
     ? deskCount
@@ -29,6 +29,7 @@ const Watch = () => {
 
   const cardPerCol = imageList?.length / totalCardRow;
   let newArray = [];
+
 
   const [realData, setRealData] = useState([]);
 
@@ -49,7 +50,7 @@ const Watch = () => {
   return (
     <div
       id="mainWidth"
-      className=" relative pt-[100px]  h-auto flex  min-h-screen     w-[65%] p-2   justify-center items-center  "
+      className=" relative pt-[1px]  h-auto flex  min-h-screen     w-[99%] p-2   justify-center items-center  "
     >
       <div className=" flex w-auto justify-center  gap-3 rounded-lg  items-center">
         {realData.reverse()?.map((d,index) => {

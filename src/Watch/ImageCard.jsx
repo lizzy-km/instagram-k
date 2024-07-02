@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -6,12 +6,20 @@ const ImageCard = ({d}) => {
     const { userAvatar } = useSelector(
         (deserializedState) => deserializedState.authSlice
       );
+      const [isShow,setIsShow] = useState(false)
   return (
-    <div className=" cursor-pointer relative w-[200px] h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
-    <img className=" w-[200px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
+    <div
+    style={{
+      top:0
+    }}
+     className=" relative cursor-pointer  w-[200px] h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
+    <img onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" w-[200px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
 
-    <div className=" w-full h-auto bg-[#21212157] backdrop-blur  gap-0 absolute left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start ">
+    <div  style={{
+          visibility: isShow ? 'visible' : 'hidden'
+        }} className="  w-full h-auto bg-[#21212157] backdrop-blur  gap-0 absolute left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start ">
         <NavLink
+       
           to={`/${d.UID}`}
           className="  relative   rounded-sm w-[26px]  h-[26px] justify-center items-center   "
         >
