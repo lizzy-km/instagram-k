@@ -13,7 +13,8 @@ const initialState = {
   isTablet: false,
   isDeskTop: false,
   showStory:false,
-  viewStory:false
+  viewStory:false,
+  addProfile:false
 };
 
 const STORAGE_KEY = "Animate";
@@ -36,6 +37,9 @@ export const animateSlice = createSlice({
     },
     setShowStory: (state, { payload }) => {
       state.showStory = payload;
+    },
+    setAddProfile: (state, { payload }) => {
+      state.addProfile = payload;
     },
     accountSettingOn: (state, { payload }) => {
       state.account = payload.account;
@@ -106,6 +110,8 @@ export const {
   setShowStory,
   showStory,
   viewStory,
-  setViewStory
+  setViewStory,
+  setAddProfile,
+  addProfile
 } = animateSlice.actions;
 export default animateSlice.reducer;

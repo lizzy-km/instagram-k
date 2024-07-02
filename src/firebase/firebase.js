@@ -1,13 +1,16 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-const arr = 'AIzaSyBIUKGA_wTZ57l2mjLpKVgD3WyQT6XCBXs'
+import { getAuth } from "firebase/auth";
+
+
+
+
 const firebaseConfig = {
-  apiKey: arr ,
+  apiKey: "AIzaSyBIUKGA_wTZ57l2mjLpKVgD3WyQT6XCBXs",
   authDomain: "look-vince.firebaseapp.com",
   databaseURL: "https://look-vince-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "look-vince",
@@ -18,9 +21,14 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+
+
+// Initialize Firebase Authentication and get a reference to the service
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const firestore = getFirestore(app);
+const auth = getAuth(app);
+
 const storage = getStorage(app);
 const analytics = getAnalytics(app);
 

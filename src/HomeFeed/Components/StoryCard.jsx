@@ -4,6 +4,7 @@ import { getStorage, getDownloadURL, ref, listAll } from "firebase/storage";
 import { storage } from "../../firebase/firebase";
 import { addAdminProfile, setStoryId } from "../../redux/services/authSlice";
 import { setViewStory } from "../../redux/services/animateSlice";
+import { NavLink } from "react-router-dom";
 
 const StoryCard = ({ translateX }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -121,14 +122,14 @@ const StoryCard = ({ translateX }) => {
           </div>
 
           <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  ">
-            <div className=" cursor-pointer  flex rounded-full   bg-[#CA3E47] ">
+            <NavLink  to={`/${adminId}`} onClick={()=> localStorage.setItem('userProfile',adminProfile) } className=" cursor-pointer  flex rounded-full   bg-[#CA3E47] ">
               <img
                 className=" z-[99] rounded-full object-cover p-[3px] w-[40px] h-[40px] "
                 src={adminProfile.length > 0 ? adminProfile : userAvatar}
                 alt=""
                 srcSet=""
               />
-            </div>
+            </NavLink>
           </div>
 
           <div className=" rounded-b-md relative z-[9] w-full p-0 ">

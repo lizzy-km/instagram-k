@@ -1,25 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { addAdmin } from "../redux/services/authSlice";
+import { auth } from "../firebase/firebase";
 
 const LeftNav = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
   const dispatch = useDispatch()
+  const user = auth?.currentUser?.uid
+
+ useEffect(()=> { 
+  user && localStorage.setItem("adminId", user);
+
+ },[])
   return (
     <section style={{
       width:isMobile ? '100%' : isTablet ? '30%' :'30%',
       justifyContent:isMobile ? 'end' :'start',
       padding:isMobile ? '8px' :'0'
     }} className= {` ${isMobile && 'flex-row-reverse'} flex w-[30%]  gap-2 items-center left_nav h-full`} >
-      <NavLink onClick={()=> {
+      <NavLink onDoubleClick={()=> {
         dispatch(addAdmin([]))
       dispatch(addUserData([]))
 
       } }
-        to={"/loading"}
+        to={"/"}
         className=" cursor-pointer flex rounded-full justify-center items-center "
       >
         <img

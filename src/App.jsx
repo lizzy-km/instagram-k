@@ -10,6 +10,7 @@ import Group from "./Group/Group";
 import Game from "./Game/Game";
 import Watch from "./Watch/Watch";
 import MidNAv from "./Components/MidNAv";
+import "react-toastify/ReactToastify.min.css"
 
 import { useEffect } from "react";
 import {
@@ -30,11 +31,13 @@ import ViewStory from "./HomeFeed/Components/ViewStory";
 import Messenger from "./Messenger/Messenger";
 import Noti from "./Noti/Noti";
 import PostDetail from "./PostDetail/PostDetail";
+import { Bounce, ToastContainer } from "react-toastify";
+import AddProfileBox from "./Components/AddProfileBox";
 
 function App() {
   const isAuth = useSelector((deserializedState) => deserializedState.authSlice.isLogin);
 
-  const { width, height, blur, isTablet, isMobile, isDeskTop, showStory,viewStory } =
+  const { width, height, blur, isTablet, isMobile, isDeskTop, showStory,viewStory,addProfile } =
     useSelector((state) => state.animateSlice);
 
   let ScreenSize = window.innerWidth;
@@ -126,6 +129,11 @@ function App() {
 
   return (
     <section className=" bg-main relative snap-mandatory overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen ">
+
+<div className=" absolute right-0 max-h-[70px] h-[70px] top-0 " >
+     <ToastContainer autoClose={1000}
+/>
+</div>
     
       <BrowserRouter>
         {isAuth === true && <NavBar />}
@@ -148,6 +156,16 @@ function App() {
         className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
       >
         <CreateStory />
+      </section>
+      <section
+        style={{
+          width: addProfile === true ? "100%" : "0%",
+          height: addProfile === true ? "100vh" : "0%",
+          alignItems: isMobile ? "start" : "center",
+        }}
+        className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+      >
+        <AddProfileBox />
       </section>
       <section style={{
         display: viewStory ? 'flex' : 'none'

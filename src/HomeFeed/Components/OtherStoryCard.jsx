@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { storage } from "../../firebase/firebase";
 import { setViewStory } from "../../redux/services/animateSlice";
 import { setStoryId } from "../../redux/services/authSlice";
+import { NavLink } from "react-router-dom";
 
 const OtherStoryCard = ({ data, translateX }) => {
 
@@ -13,6 +14,8 @@ const OtherStoryCard = ({ data, translateX }) => {
   const { userAvatar } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const user =data?._document.data.value.mapValue.fields
+
+  const UID = user?.UID?.stringValue
 
 
 
@@ -104,17 +107,17 @@ const OtherStoryCard = ({ data, translateX }) => {
   }, [storyImgs]);
 
   if(storyD) return (
-    <div onClick={()=> {
-      dispatch(setViewStory(true)),
-      dispatch(setStoryId(STID))
-    }}
+    <div 
       style={{
         translate: -translateX,
       }}
       className=" transition-all tracking-wider flex min-w-[145px] h-full bg-[#525252] rounded-md "
     >
       <div className=" relative flex flex-col justify-between items-start w-full h-full rounded-md ">
-        <div className="h-[100%] absolute  bg-center object-center    object-cover rounded-md ">
+        <div onClick={()=> {
+      dispatch(setViewStory(true)),
+      dispatch(setStoryId(STID))
+    }} className="h-[100%] absolute  bg-center object-center    object-cover rounded-md ">
         {
                 storyD && <img
                 className=" transition-all  cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-[100%] h-[100%]  bg-center object-center    object-cover rounded-md "
@@ -142,7 +145,7 @@ const OtherStoryCard = ({ data, translateX }) => {
         </div>
 
         <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  ">
-          <div className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#CA3E47] ">
+          <NavLink to={`/${UID}`} onClick={()=> localStorage.setItem('userProfile',userProfile) } className=" cursor-pointer  flex rounded-full w-[40px] h-[40px] p-[3px] bg-[#CA3E47] ">
             {user?.profile_picture?.arrayValue.values.map((d) => {
               return (
                 <>
@@ -157,7 +160,7 @@ const OtherStoryCard = ({ data, translateX }) => {
                 </>
               );
             })}
-          </div>
+          </NavLink>
         </div>
 
         <div className=" rounded-b-md relative z-[9] w-full p-0 ">
