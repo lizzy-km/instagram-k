@@ -94,7 +94,7 @@ const UserProfile = () => {
         </div>
       </section>
 
-      <section
+      {/* <section
         style={{
           flexDirection: !isDeskTop ? "column" : "row",
         }}
@@ -125,7 +125,7 @@ const UserProfile = () => {
             <CreatePost />
           </div>
         </div>
-      </section>
+      </section> */}
     </section>
   );
 };

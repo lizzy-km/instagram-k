@@ -12,6 +12,7 @@ const GetAdminData = async () => {
     ?.filter((d) => d.id === uid)[0]?._document.data.value.mapValue.fields
 
   return content;
+  
 };
 
 export default GetAdminData;

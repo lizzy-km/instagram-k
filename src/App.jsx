@@ -99,7 +99,7 @@ function App() {
 
   async function getAdminProfileImage() {
 
-    const userActivePf = admin?.profile_picture?.arrayValue?.values.filter(
+    const userActivePf = admin?.profile?.arrayValue?.values.filter(
       (d) => d.mapValue.fields
     )[0];
     const adminId = localStorage.getItem("adminId");
@@ -116,8 +116,9 @@ function App() {
       }
     });
 
-    await getDownloadURL(ref(storage, adminImgs[0])).then((data) =>
-      dispatch(addAdminProfile(data))
+    await getDownloadURL(ref(storage, adminImgs[0])).then((data) =>{
+      
+      dispatch(addAdminProfile(data))}
     );
   }
 
@@ -198,7 +199,7 @@ function App() {
         )}
       </section>
       {
-        !isDeskTop &&  <section className=" fixed bottom-3 flex w-full h-auto justify-center items-center  " >
+        !isDeskTop && isAuth &&  <section className=" fixed bottom-3 flex w-full h-auto justify-center items-center  " >
         <MidNAv/>
       </section>
       }

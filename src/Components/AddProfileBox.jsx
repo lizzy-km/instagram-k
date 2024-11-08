@@ -23,7 +23,7 @@ const AddProfileBox = () => {
   const [icon, setIcon] = useState(
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34"
   );
-  const { admin,userAvatar } = useSelector((deserializedState) => deserializedState.authSlice);
+  const { admin,userAvatar,adminProfile } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const privacyData = [
     {
@@ -86,6 +86,8 @@ const AddProfileBox = () => {
   const bio = "It's me " + name;
   const UID = admin?.UID?.stringValue;
 
+  
+
   function getFirstChars() {
     if (!name) return []; // Handle empty string case
 
@@ -114,9 +116,9 @@ const AddProfileBox = () => {
   const [imfurlForUp, setImgUrlUp] = useState();
   const [isImage,setIsImage] = useState(true)
 
-  const storyData = { STID: nick + "ST" + `${imgSrc?.size}` };
+  const profileData = { PFID: nick + "PF" + `${imgSrc?.size}` };
 
-  const uploadStory = async (file, fileSize, STID, filePath) => {
+  const uploadStory = async (file, fileSize, PFID, filePath) => {
     const storageRef = file && ref(storage, filePath); // Replace with your desired file path
 
     const metadata = {
@@ -131,8 +133,8 @@ const AddProfileBox = () => {
       (await uploadBytes(storageRef, file)
         .then((data) => {
           console.log(data);
-          UpdateData("story",UID, name, {
-            STID: nick + "ST" + `${fileSize}`,
+          UpdateData("profile",UID, name, {
+            PFID: nick + "PF" + `${fileSize}`,
             isImage: fileType === "image" ? true : false,
           },{});
           getDownloadURL(data.ref).then((downloadURL) => {
@@ -151,9 +153,9 @@ const AddProfileBox = () => {
 
     const fileSize = e.target.files[0]?.size;
 
-    const STID = nick + "ST" + `${fileSize}`;
+    const PFID = nick + "PF" + `${fileSize}`;
 
-    const filePath = `user_story/${UID}/${STID}/${file.name}`;
+    const filePath = `user_photo/${UID}/${PFID}/${file.name}`;
 
     const fileType = checkFileType(file);
 
@@ -162,7 +164,7 @@ const AddProfileBox = () => {
     fileType ? setFileSize(fileSize) : null
 
     fileType
-      ? uploadStory(file, fileSize, STID, filePath).then((data) =>data
+      ? uploadStory(file, fileSize, PFID, filePath).then((data) =>data
           // console.log(data)
         )
       : alert("Your file type doesn't allow to post",fileType);
@@ -176,16 +178,16 @@ const AddProfileBox = () => {
 
 
    const Data ={
-    STID: nick + "ST" + `${fileSizes}`,
+    PFID: nick + "PF" + `${fileSizes}`,
     isImage: fileTypes === "image" ? true : false,
   }
 
   const Datal = {
-    STID: nick + "ST" + `${fileSizes}`,
+    PFID: nick + "PF" + `${fileSizes}`,
     isImage: fileTypes === "image" ? true : false,
   }
 
-    UpdateData("story",UID, 'USID',Data ,Datal).then(window.location.reload(true))
+    UpdateData("profile",UID, 'USID',Data ,Datal).then(window.location.reload(true))
     
   };
 
@@ -211,7 +213,7 @@ const AddProfileBox = () => {
               <div className=" cursor-pointer relative flex w-[50px]  h-[100%] justify-center items-center  rounded-full ">
                 <img
                   className=" hover:brightness-75  rounded-full object-cover w-full h-full "
-                  src={userAvatar}
+                  src={adminProfile}
                   alt=""
                   srcSet=""
                 />

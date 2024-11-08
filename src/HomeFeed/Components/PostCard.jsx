@@ -127,13 +127,14 @@ const PostCard = ({ name, data }) => {
       const urls = await getDownloadURL(ref(storage, path));
 
       setUserProfile(urls);
+      localStorage.setItem("userProfile")
     };
 
     const storageRef = ref(
       storage,
       `user_photo/${data?.UID?.stringValue}/${
         hasPf &&
-        data?.profile_picture?.arrayValue?.values[0]?.mapValue?.fields?.PFID
+        data?.profile?.arrayValue?.values[0]?.mapValue?.fields?.PFID
           ?.stringValue
       }`
     );

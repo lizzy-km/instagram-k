@@ -39,8 +39,6 @@ const UpdateData = async (
   //     nick = firstCharacters.reduce((prev, curr) => prev + curr);
   //   }
 
-console.log(UID,USID);
-
   const collectionRef = collection(firestore, "story");
   const postRef = collection(firestore, "user_posts");
   const userRef = doc(firestore, "/users", `/${UID}/`);
@@ -61,53 +59,59 @@ console.log(UID,USID);
     }).catch((error) => console.log(error));
   }
 
-  if (colName === "unliked_posts"){
+  if (colName === "unliked_posts") {
     await updateDoc(userRef, {
       liked_post: arrayRemove(Data),
     }).catch((error) => console.log(error));
 
     await updateDoc(udRef, {
-        likes: arrayRemove(Datal),
-      }).catch((error) => console.log(error));
-
-}
-  if (colName === "shared_posts"){
-
+      likes: arrayRemove(Datal),
+    }).catch((error) => console.log(error));
+  }
+  if (colName === "shared_posts") {
     await updateDoc(userRef, {
       shared_posts: arrayUnion(Data),
     }).catch((error) => console.log(error));
 
     await updateDoc(udRef, {
-        shares: arrayUnion(Datal),
-      }).catch((error) => console.log(error));
-
-
-}
-  if (colName === "unshared_posts"){
+      shares: arrayUnion(Datal),
+    }).catch((error) => console.log(error));
+  }
+  if (colName === "unshared_posts") {
     await updateDoc(userRef, {
       shared_posts: arrayRemove(Data),
     }).catch((error) => console.log(error));
 
     await updateDoc(udRef, {
-        shares: arrayRemove(Datal),
-      }).catch((error) => console.log(error));
-}
-  if (colName === "saved_posts"){
+      shares: arrayRemove(Datal),
+    }).catch((error) => console.log(error));
+  }
+  if (colName === "saved_posts") {
     await updateDoc(userRef, {
       saved_posts: arrayUnion(Data),
     }).catch((error) => console.log(error));
-}
-  if (colName === "unsaved_posts"){
+  }
+  if (colName === "unsaved_posts") {
     await updateDoc(userRef, {
       saved_posts: arrayRemove(Data),
     }).catch((error) => console.log(error));
-}
-  if (colName === "story"){
+  }
+
+  if (colName === "story") {
     await updateDoc(userRef, {
       story: [Data],
     })
       .then((data) => console.log(data))
-      .catch((error) => console.log(error));}
+      .catch((error) => console.log(error));
+  }
+
+  if (colName === "profile") {
+    await updateDoc(userRef, {
+      profile: [Data],
+    })
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+  }
 };
 
 export default UpdateData;
