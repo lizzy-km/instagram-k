@@ -256,12 +256,16 @@ const PostCard = ({ name, data }) => {
                 </div>
               </div>
 
-              <div onClick={()=>setPostMenu(!postMenu)} className=" transition-transform absolute right-0 bottom-2 w-[40px] bg-[#3333332f] h-[40px] flex justify-center items-center rounded  cursor-pointer ">
+              <div onClick={()=>{
+                setPostMenu(!postMenu)
+                console.log(postMenu);
+                
+                }} className=" transition-transform absolute right-0 bottom-2 w-[40px] bg-[#3333332f] h-[40px] flex justify-center items-center rounded  cursor-pointer ">
                 <Icon path={mdiDotsHorizontal} size={1} />
               </div>
               <section style={{
                 visibility: postMenu ? 'visible' :'collapse'
-              }} className=" transition-transform text-sm tracking-wide flex flex-col gap-2 p-1 rounded-md bg-[#31313157] backdrop-blur absolute right-2 top-12 min-w-[25%] min-h-[40px] " >
+              }} className=" z-[9999] transition-transform   text-sm tracking-wide flex flex-col gap-2 p-1 rounded-md bg-[#31313157] backdrop-blur absolute right-2 top-12 min-w-[25%] min-h-[40px] " >
                     <div onClick={copyToClipboard } className="flex gap-1 cursor-pointer hover:bg-[#24252657] p-2 rounded-md  justify-center items-center" >
                     <Icon path={mdiContentCopy} size={0.8} />
                     <a id="linkToCopy"  href={link} ></a>

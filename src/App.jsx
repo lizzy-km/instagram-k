@@ -199,7 +199,7 @@ function App() {
         )}
       </section>
       {
-        !isDeskTop && isAuth &&  <section className=" fixed bottom-3 flex w-full h-auto justify-center items-center  " >
+        isAuth &&  !isDeskTop && <section className=" fixed bottom-3 flex w-full h-auto justify-center items-center  " >
         <MidNAv/>
       </section>
       }
