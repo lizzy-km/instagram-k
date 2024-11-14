@@ -127,7 +127,7 @@ const PostCard = ({ name, data }) => {
       const urls = await getDownloadURL(ref(storage, path));
 
       setUserProfile(urls);
-      localStorage.setItem("userProfile")
+      localStorage.setItem('userProfile',urls)
     };
 
     const storageRef = ref(

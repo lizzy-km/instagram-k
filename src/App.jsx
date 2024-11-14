@@ -10,12 +10,13 @@ import Group from "./Group/Group";
 import Game from "./Game/Game";
 import Watch from "./Watch/Watch";
 import MidNAv from "./Components/MidNAv";
-import "react-toastify/ReactToastify.min.css"
+import "react-toastify/ReactToastify.min.css";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   blurOn,
   setArea,
+  setBottomNav,
   setDesktop,
   setMobile,
   setTablet,
@@ -35,10 +36,22 @@ import { Bounce, ToastContainer } from "react-toastify";
 import AddProfileBox from "./Components/AddProfileBox";
 
 function App() {
-  const isAuth = useSelector((deserializedState) => deserializedState.authSlice.isLogin);
+  const isAuth = useSelector(
+    (deserializedState) => deserializedState.authSlice.isLogin
+  );
 
-  const { width, height, blur, isTablet, isMobile, isDeskTop, showStory,viewStory,addProfile } =
-    useSelector((state) => state.animateSlice);
+  const {
+    width,
+    height,
+    blur,
+    isTablet,
+    isMobile,
+    isDeskTop,
+    showStory,
+    viewStory,
+    addProfile,
+    bottomNav,
+  } = useSelector((state) => state.animateSlice);
 
   let ScreenSize = window.innerWidth;
 
@@ -71,10 +84,10 @@ function App() {
     ResponsiveFun();
   }, [window.innerWidth]);
 
-
   const getAdmin = [GetAdminData()];
-  const { admin,hasNewStory } = useSelector((deserializedState) => deserializedState.authSlice);
-
+  const { admin, hasNewStory } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
 
   useEffect(() => {
     Promise.all(getAdmin)
@@ -94,11 +107,9 @@ function App() {
         getAdminProfileImage();
       })
       .catch((error) => console.log(error));
-
   }, [hasNewStory]);
 
   async function getAdminProfileImage() {
-
     const userActivePf = admin?.profile?.arrayValue?.values.filter(
       (d) => d.mapValue.fields
     )[0];
@@ -116,94 +127,122 @@ function App() {
       }
     });
 
-    await getDownloadURL(ref(storage, adminImgs[0])).then((data) =>{
-      
-      dispatch(addAdminProfile(data))}
-    );
+    await getDownloadURL(ref(storage, adminImgs[0])).then((data) => {
+      dispatch(addAdminProfile(data));
+    });
   }
 
-  useEffect(()=> {
-    getAdminProfileImage()
-  },[admin])
+  useEffect(() => {
+    getAdminProfileImage();
+  }, [admin]);
 
-  
+  const [botNav, setBotNav] = useState(true);
+
+  useEffect(() => {
+    dispatch(setBottomNav(botNav));
+    console.log(!bottomNav);
+  }, [botNav]);
+
+  let scrollTopNum = [];
+
+  const page = document.getElementById("page");
+
+  page?.addEventListener("scroll", () => {
+    scrollTopNum.length < 2
+      ? scrollTopNum.push(page.scrollTop)
+      : (scrollTopNum.shift(), scrollTopNum.push(page.scrollTop));
+
+    for (let i = 0; i < scrollTopNum.length; i++) {
+      const prev = scrollTopNum[i - 1];
+      const curr = scrollTopNum[i];
+
+      if (prev > curr && prev !== undefined) {
+        setBotNav(true);
+      }
+      if (prev < curr && prev !== undefined) {
+        setBotNav(false);
+      }
+    }
+  });
 
   return (
-    <section className=" bg-main relative snap-mandatory overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen ">
+    <section
+      id="page"
+      className=" bg-main relative snap-mandatory overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen "
+    >
+      <div className=" absolute right-0 max-h-[70px] h-[70px] top-0 ">
+        <ToastContainer autoClose={1000} />
+      </div>
 
-<div className=" absolute right-0 max-h-[70px] h-[70px] top-0 " >
-     <ToastContainer autoClose={1000}
-/>
-</div>
-    
       <BrowserRouter>
         {isAuth === true && <NavBar />}
         <section
-        style={{
-          width: blur === true ? "100%" : "0%",
-          height: blur === true ? "100vh" : "0%",
-          alignItems: isMobile ? "start" : "center",
-        }} 
-        className={`flex i py-[5rem] overflow-hidden justify-center z-[9999999]   fixed bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
-      >
-        <CreatePostBox />
-      </section>
-      <section
-        style={{
-          width: showStory === true ? "100%" : "0%",
-          height: showStory === true ? "100vh" : "0%",
-          alignItems: isMobile ? "start" : "center",
-        }}
-        className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
-      >
-        <CreateStory />
-      </section>
-      <section
-        style={{
-          width: addProfile === true ? "100%" : "0%",
-          height: addProfile === true ? "100vh" : "0%",
-          alignItems: isMobile ? "start" : "center",
-        }}
-        className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
-      >
-        <AddProfileBox />
-      </section>
-      <section style={{
-        display: viewStory ? 'flex' : 'none'
-      }} className=' fixed flex justify-center items-center p-3 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] ' >
-          <ViewStory/>
-      </section>
+          style={{
+            width: blur === true ? "100%" : "0%",
+            height: blur === true ? "100vh" : "0%",
+            alignItems: isMobile ? "start" : "center",
+          }}
+          className={`flex i py-[5rem] overflow-hidden justify-center z-[9999999]   fixed bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+        >
+          <CreatePostBox />
+        </section>
+        <section
+          style={{
+            width: showStory === true ? "100%" : "0%",
+            height: showStory === true ? "100vh" : "0%",
+            alignItems: isMobile ? "start" : "center",
+          }}
+          className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+        >
+          <CreateStory />
+        </section>
+        <section
+          style={{
+            width: addProfile === true ? "100%" : "0%",
+            height: addProfile === true ? "100vh" : "0%",
+            alignItems: isMobile ? "start" : "center",
+          }}
+          className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+        >
+          <AddProfileBox />
+        </section>
+        <section
+          style={{
+            display: viewStory ? "flex" : "none",
+          }}
+          className=" fixed flex justify-center items-center p-3 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] "
+        >
+          <ViewStory />
+        </section>
 
-      <section className=" w-full snap-center  absolute  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center " >
-      {isAuth === true ? (
-          <Routes>
-              
-            <Route exact path="/*" element={<HomeFeed />} />
-            <Route exact path="/game" element={<Game />} />
-            <Route exact path="/gallery" element={<Watch />} />
-            <Route exact path="/group" element={<Group />} />
-            <Route exact path="/loading" element={<Loading />} />
-            <Route exact path="/message" element={<Messenger />} />
-            <Route exact path="/notification" element={<Noti />} />
+        <section className=" w-full snap-center  absolute  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center ">
+          {isAuth === true ? (
+            <Routes>
+              <Route exact path="/*" element={<HomeFeed />} />
+              <Route exact path="/game" element={<Game />} />
+              <Route exact path="/gallery" element={<Watch />} />
+              <Route exact path="/group" element={<Group />} />
+              <Route exact path="/loading" element={<Loading />} />
+              <Route exact path="/message" element={<Messenger />} />
+              <Route exact path="/notification" element={<Noti />} />
 
-
-
-            <Route path="/:user/" element={<UserProfile />} />
-            <Route path="/profile/:username/" element={<OtherProfile />} />
-            <Route path="/:uid/post_detail/:pid" element={<PostDetail />} />
-          </Routes>
-        ) : (
-          <Routes>
-            <Route exact path="/*" element={<Login />} />
-          </Routes>
+              <Route path="/:user/" element={<UserProfile />} />
+              <Route path="/profile/:username/" element={<OtherProfile />} />
+              <Route path="/:uid/post_detail/:pid" element={<PostDetail />} />
+            </Routes>
+          ) : (
+            <Routes>
+              <Route exact path="/*" element={<Login />} />
+            </Routes>
+          )}
+        </section>
+        {isAuth && !isDeskTop && (
+          <section style={{
+            bottom : bottomNav ? '20px' : -300
+          }} className=" transition-all fixed  flex w-full h-10 justify-center items-center  ">
+            <MidNAv />
+          </section>
         )}
-      </section>
-      {
-        isAuth &&  !isDeskTop && <section className=" fixed bottom-3 flex w-full h-auto justify-center items-center  " >
-        <MidNAv/>
-      </section>
-      }
-         
       </BrowserRouter>
     </section>
   );

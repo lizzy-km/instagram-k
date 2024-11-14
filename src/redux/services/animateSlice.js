@@ -14,7 +14,8 @@ const initialState = {
   isDeskTop: false,
   showStory:false,
   viewStory:false,
-  addProfile:false
+  addProfile:false,
+  bottomNav: true
 };
 
 const STORAGE_KEY = "Animate";
@@ -90,7 +91,11 @@ export const animateSlice = createSlice({
     },
     setViewStory:(state,{payload})=>{
       state.viewStory = payload
+    },
+    setBottomNav:(state,{payload})=>{
+      state.bottomNav = payload
     }
+
   },
 });
 
@@ -112,6 +117,8 @@ export const {
   viewStory,
   setViewStory,
   setAddProfile,
-  addProfile
+  addProfile,
+  setBottomNav,
+  bottomNav
 } = animateSlice.actions;
 export default animateSlice.reducer;
