@@ -277,7 +277,8 @@ const PostCard = ({ name, data }) => {
             </div>
           </div>
 
-          { !loading&& postUrl[0].length > 1 ? (
+          { !loading ?
+           postUrl[0].length > 1 ? (
             <Carousel loop={false} slideInterval={0} slide={false}>
               {postUrl[0]?.map((d) => {
                 
@@ -288,7 +289,12 @@ const PostCard = ({ name, data }) => {
             postUrl[0]?.map((d) => {
               return <ImageCard UID={UID} PID={PID}  key={d+124} data={d} />;
             })
-          )}
+          )
+          :
+          <div className=" w-full h-[500px] bg-[#3333332f] rounded-md opacity-[0.5]  " >
+
+          </div>
+        }
 
           <div className=" flex flex-col w-full justify-between items-center py-2  ">
             <div className=" flex w-full justify-between items-center  ">

@@ -48,7 +48,7 @@ const ImageCard = ({ data,UID,PID }) => {
       style={{
         width: isMobile ? '100%' :'100%'
       }}
-      className=" cursor-pointer h-full  bg-[#242526] rounded-xl   snap-center transition-all   object-cover object-top  "
+      className=" cursor-pointer h-full   bg-[#242526] rounded-xl   snap-center transition-all   object-cover object-top  "
       alt=""
       srcset=""
     />
