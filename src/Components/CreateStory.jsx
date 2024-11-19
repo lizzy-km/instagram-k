@@ -23,7 +23,7 @@ const CreateStory = () => {
   const [icon, setIcon] = useState(
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34"
   );
-  const { admin } = useSelector((deserializedState) => deserializedState.authSlice);
+  const { admin,adminProfile ,userAvatar} = useSelector((deserializedState) => deserializedState.authSlice);
 
   const privacyData = [
     {
@@ -211,7 +211,9 @@ const CreateStory = () => {
               <div className=" cursor-pointer relative flex w-[50px]  h-[100%] justify-center items-center  rounded-full ">
                 <img
                   className=" hover:brightness-75  rounded-full object-cover w-full h-full "
-                  src="https://i.pinimg.com/originals/70/d5/50/70d5505465ff94d11d911f2f8b64bcda.jpg"
+                  src={
+                    adminProfile?.length > 5 ? adminProfile : userAvatar
+                  }
                   alt=""
                   srcSet=""
                 />
