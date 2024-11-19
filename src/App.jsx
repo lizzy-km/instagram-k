@@ -140,7 +140,6 @@ function App() {
 
   useEffect(() => {
     dispatch(setBottomNav(botNav));
-    console.log(!bottomNav);
   }, [botNav]);
 
   let scrollTopNum = [];
@@ -210,7 +209,7 @@ function App() {
           style={{
             display: viewStory ? "flex" : "none",
           }}
-          className=" fixed flex justify-center items-center p-3 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] "
+          className=" fixed flex justify-center items-center p-0 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] "
         >
           <ViewStory />
         </section>

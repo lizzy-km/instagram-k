@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setStoryId } from "../../redux/services/authSlice";
+import { setChangesSTID, setStoryId } from "../../redux/services/authSlice";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { storage } from "../../firebase/firebase";
 
 const UserCard = ({ data }) => {
   const dispatch = useDispatch();
+  const hasPf = data?.profile_picture?.arrayValue?.values?.length > 0;
+
 
   const UID = data?.UID.stringValue;
   const STID =  data?.story?.arrayValue?.values ? 
@@ -13,10 +15,12 @@ const UserCard = ({ data }) => {
   const UserName = data.user_name.stringValue;
   const PFID = data?.profile_picture.arrayValue.values[0]?.mapValue.fields.PFID.stringValue
 
-  const { storyId, userId } = useSelector((deserializedState) => deserializedState.authSlice);
+  const { storyId, userId,userAvatar,changesSTID } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const [imgPath,setImgPath] = useState("")
   const [profileUrl,setProfileUrl] = useState()
+
+
 
 //   Get User Profile Image Url From Firebase Storage 
 const imgUrl = async () => {
@@ -26,12 +30,17 @@ const imgUrl = async () => {
 
   const storageRef = ref(
     storage,
-    `user_photo/${UID}/${PFID}`
+    `user_photo/${data?.UID?.stringValue}/${
+      hasPf &&
+      data?.profile?.arrayValue?.values[0]?.mapValue?.fields?.PFID
+        ?.stringValue
+    }`
   );
 
   const list = async () => {
     const not = await listAll(storageRef);
 
+    setProfileUrl("");
     for (let ii = 0; ii < not?.items.length; ii++) {
         setImgPath(not.items[ii]?.fullPath);
     }
@@ -45,15 +54,22 @@ const imgUrl = async () => {
     imgUrl();
   }, [imgPath]);
 
+  useEffect(() => {
+    list();
+  }, [storyId, changesSTID]);
+
   return (
     <div
-      onClick={() => dispatch(setStoryId(STID))}
+      onClick={() => {
+        dispatch(setStoryId(STID))
+        dispatch(setChangesSTID(!changesSTID))
+    }  }
       className={` bg-[${
         storyId === STID ? "#333333" : "#262626"
       }] rounded-md hover:bg-[#333333] cursor-pointer flex w-[300px]  gap-3 p-2 `}
     >
         <div className=" flex justify-center items-center p-1 rounded-full bg-[#212121] " >
-            <img className=" w-[45px] h-[45px] rounded-full object-cover object-center " src={profileUrl} alt="" srcset="" />
+            <img className=" w-[45px] h-[45px] rounded-full object-cover object-center " src={profileUrl?.length > 4 ? profileUrl : userAvatar} alt="" srcset="" />
         </div>
 
         <div className=" flex py-1 justify-start items-center " >

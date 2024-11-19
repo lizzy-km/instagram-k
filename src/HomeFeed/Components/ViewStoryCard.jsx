@@ -10,7 +10,9 @@ import { setViewStory } from "../../redux/services/animateSlice";
 import { setStoryId } from "../../redux/services/authSlice";
 
 const ViewStoryCard = ({ userData }) => {
-  const { storyId, admin } = useSelector((deserializedState) => deserializedState.authSlice);
+  const { storyId, admin, userAvatar, changesSTID } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
 
   const navigate = useNavigate();
 
@@ -38,9 +40,15 @@ const ViewStoryCard = ({ userData }) => {
     setProfileUrl(urls);
   };
 
-  const storageRef = ref(storage, `user_photo/${UID}/${PFID}`);
+  const hasPf = data?.profile_picture?.arrayValue?.values?.length > 0;
 
-
+  const storageRef = ref(
+    storage,
+    `user_photo/${data?.UID?.stringValue}/${
+      hasPf &&
+      data?.profile?.arrayValue?.values[0]?.mapValue?.fields?.PFID?.stringValue
+    }`
+  );
 
   const list = async () => {
     const not = await listAll(storageRef);
@@ -53,7 +61,7 @@ const ViewStoryCard = ({ userData }) => {
   useEffect(() => {
     list();
     storyId?.length > 0 && setStoryD("");
-  }, [storyId]);
+    }, [storyId, changesSTID]);
 
   useEffect(() => {
     list();
@@ -121,7 +129,7 @@ const ViewStoryCard = ({ userData }) => {
   return (
     <div
       style={{
-        width: isDeskTop ? "45%" : "100%",
+        width: isDeskTop ? "70%" : "100%",
       }}
       className="  z-[9999] h-full relative  rounded-md flex justify-start items-start "
     >
@@ -131,7 +139,7 @@ const ViewStoryCard = ({ userData }) => {
         <div className=" flex justify-center items-center p-1 rounded-full bg-[#212121] ">
           <img
             className=" w-[45px] h-[45px] rounded-full object-cover object-center "
-            src={profileUrl}
+            src={profileUrl?.length > 4 ? profileUrl : userAvatar}
             alt=""
             srcset=""
           />
@@ -152,7 +160,8 @@ const ViewStoryCard = ({ userData }) => {
           {!isDeskTop && (
             <div
               onClick={() => {
-                dispatch(setViewStory(false)), dispatch(setStoryId(0));
+                dispatch(setViewStory(false)), dispatch(setStoryId(0)),
+                setProfileUrl("")
               }}
               className=" cursor-pointer  rounded-full p-1 "
             >
@@ -165,7 +174,7 @@ const ViewStoryCard = ({ userData }) => {
               onClick={deleteStory}
               style={{
                 display: menu ? "flex" : "none",
-                right: isMobile ? '55%' :'10px'
+                right: isMobile ? "55%" : "10px",
               }}
               className=" text-sm p-2  w-auto gap-1 flex justify-start items-center top-10 right-[55%] backdrop-blur-sm bg-[#18181859] rounded absolute "
             >

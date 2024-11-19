@@ -15,7 +15,7 @@ import ViewStoryCard from "./ViewStoryCard";
 
 const ViewStory = () => {
   const [plus, setPlus] = useState(false);
-  const { UserData, Story, admin, adminProfile } = useSelector(
+  const { UserData, Story, admin, adminProfile,userAvatar } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
   const dispatch = useDispatch();
@@ -81,10 +81,11 @@ const ViewStory = () => {
     (state) => state.animateSlice
   );
   return (
-    <div className=" flex justify-start items-center p-2 w-full h-full ">
+    <div className=" flex justify-start items-center p-0 w-full h-full ">
 
 {
-    isDeskTop &&  <div className="  justify-start items-start h-full flex flex-col gap-2 ">
+    isDeskTop &&  
+    <div className="  justify-start items-start h-full flex flex-col gap-2 ">
     <div className=" w-full h-[65px] flex justify-between p-2 items-center ">
       <div
         onClick={() =>{ dispatch(setViewStory(false)),
@@ -116,8 +117,8 @@ const ViewStory = () => {
 
       <div style={{
         width: isDeskTop ? '60%' : '100%'
-      }} className=" flex justify-center items-center  h-full p-2 backdrop-brightness-50 backdrop-blur " >
-          <ViewStoryCard userData={userData} />
+      }} className=" flex justify-center items-center  h-full p-0  backdrop-brightness-50 backdrop-blur " >
+          <ViewStoryCard userData={user} />
       </div>
 
     </div>

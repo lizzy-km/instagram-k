@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { storage } from "../../firebase/firebase";
 import { setViewStory } from "../../redux/services/animateSlice";
-import { setStoryId } from "../../redux/services/authSlice";
+import { setChangesSTID, setStoryId } from "../../redux/services/authSlice";
 import { NavLink } from "react-router-dom";
 
 const OtherStoryCard = ({ data, translateX }) => {
@@ -11,7 +11,7 @@ const OtherStoryCard = ({ data, translateX }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
-  const { userAvatar } = useSelector((deserializedState) => deserializedState.authSlice);
+  const { userAvatar,changesSTID } = useSelector((deserializedState) => deserializedState.authSlice);
 
   const user =data?._document.data.value.mapValue.fields
 
@@ -116,7 +116,8 @@ const OtherStoryCard = ({ data, translateX }) => {
       <div className=" relative flex flex-col justify-between items-start w-full h-full rounded-md ">
         <div onClick={()=> {
       dispatch(setViewStory(true)),
-      dispatch(setStoryId(STID))
+      dispatch(setStoryId(STID)),
+      dispatch(setChangesSTID(!changesSTID))
     }} className="h-[100%] absolute  bg-center object-center    object-cover rounded-md ">
         {
                 storyD && <img

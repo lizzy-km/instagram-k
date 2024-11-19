@@ -28,7 +28,7 @@ const PostCard = ({ name, data }) => {
   const dispatch = useDispatch();
 
   const { userAvatar, UserData, admin, hasNewStory } = useSelector(
-    (deserializedState) => deserializedState.authSlice
+    (deserializedState) => deserializedState.authSlice 
   );
 
   const hasPf = data?.profile_picture?.arrayValue?.values?.length > 0;
