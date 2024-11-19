@@ -24,6 +24,7 @@ const UserCard = ({ data }) => {
 
 //   Get User Profile Image Url From Firebase Storage 
 const imgUrl = async () => {
+
     const urls = await getDownloadURL(ref(storage, imgPath));
     setProfileUrl(urls);
   };
@@ -39,10 +40,15 @@ const imgUrl = async () => {
 
   const list = async () => {
     const not = await listAll(storageRef);
-
     setProfileUrl("");
     for (let ii = 0; ii < not?.items.length; ii++) {
         setImgPath(not.items[ii]?.fullPath);
+
+   
+
+          const urls = await getDownloadURL(ref(storage, imgPath));
+          setProfileUrl(urls);
+        
     }
   };
 
@@ -52,6 +58,7 @@ const imgUrl = async () => {
 
   useEffect(() => {
     imgUrl();
+
   }, [imgPath]);
 
   useEffect(() => {

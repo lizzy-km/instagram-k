@@ -52,9 +52,12 @@ const ViewStoryCard = ({ userData }) => {
 
   const list = async () => {
     const not = await listAll(storageRef);
+    setProfileUrl("");
 
     for (let ii = 0; ii < not?.items.length; ii++) {
       setImgPath(not.items[ii]?.fullPath);
+      const urls = await getDownloadURL(ref(storage, imgPath));
+      setProfileUrl(urls);
     }
   };
 
