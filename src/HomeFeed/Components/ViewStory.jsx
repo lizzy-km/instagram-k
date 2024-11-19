@@ -81,7 +81,7 @@ const ViewStory = () => {
     (state) => state.animateSlice
   );
   return (
-    <div className=" flex justify-start items-center p-0 w-full h-full ">
+    <div className={` flex justify-start items-center ${isDeskTop && 'p-2'} w-full h-full `}>
 
 {
     isDeskTop &&  
@@ -116,7 +116,8 @@ const ViewStory = () => {
      
 
       <div style={{
-        width: isDeskTop ? '60%' : '100%'
+        width: isDeskTop ? '50%' : '100%',
+        padding: isDeskTop ? '1rem' : 0
       }} className=" flex justify-center items-center  h-full p-0  backdrop-brightness-50 backdrop-blur " >
           <ViewStoryCard userData={user} />
       </div>

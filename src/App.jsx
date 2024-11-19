@@ -207,9 +207,9 @@ function App() {
         </section>
         <section
           style={{
-            display: viewStory ? "flex" : "none",
+            display: viewStory ? "flex" : "none"
           }}
-          className=" fixed flex justify-center items-center p-0 w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] "
+          className={`fixed flex justify-center items-center ${isDeskTop && 'p-2'} w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] `}
         >
           <ViewStory />
         </section>
