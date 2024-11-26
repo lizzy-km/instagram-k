@@ -23,7 +23,9 @@ const CreateStory = () => {
   const [icon, setIcon] = useState(
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34"
   );
-  const { admin,adminProfile ,userAvatar} = useSelector((deserializedState) => deserializedState.authSlice);
+  const { admin, adminProfile, userAvatar } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
 
   const privacyData = [
     {
@@ -110,9 +112,8 @@ const CreateStory = () => {
 
   const imageFile = imgSrc; // Assuming you have a file input element
 
-
   const [imfurlForUp, setImgUrlUp] = useState();
-  const [isImage,setIsImage] = useState(true)
+  const [isImage, setIsImage] = useState(true);
 
   const storyData = { STID: nick + "ST" + `${imgSrc?.size}` };
 
@@ -124,17 +125,24 @@ const CreateStory = () => {
     };
     const fileType = checkFileType(file);
 
-    setIsImage( fileType === "image" ? true : false)
+    setIsImage(fileType === "image" ? true : false);
 
     const uploadTask =
       file &&
       (await uploadBytes(storageRef, file)
         .then((data) => {
           console.log(data);
-          UpdateData("story",UID, name, {
-            STID: nick + "ST" + `${fileSize}`,
-            isImage: fileType === "image" ? true : false,
-          },{});
+          UpdateData(
+            "story",
+            UID,
+            name,
+            {
+              STID: nick + "ST" + `${fileSize}`,
+              isImage: fileType === "image" ? true : false,
+              uploaded_at: Date.now(),
+            },
+            {}
+          );
           getDownloadURL(data.ref).then((downloadURL) => {
             setImgUrlUp(downloadURL);
             console.log("File available at", downloadURL);
@@ -143,8 +151,8 @@ const CreateStory = () => {
         .catch((error) => console.log(error)));
   };
 
-  const [fileSizes,setFileSize] = useState()
-  const [fileTypes,setFileType] = useState()
+  const [fileSizes, setFileSize] = useState();
+  const [fileTypes, setFileType] = useState();
 
   const CreateNewStory = async (e) => {
     const file = e.target.files[0];
@@ -157,36 +165,36 @@ const CreateStory = () => {
 
     const fileType = checkFileType(file);
 
-    setFileType(fileType)
+    setFileType(fileType);
 
-    fileType ? setFileSize(fileSize) : null
+    fileType ? setFileSize(fileSize) : null;
 
     fileType
-      ? uploadStory(file, fileSize, STID, filePath).then((data) =>data
+      ? uploadStory(file, fileSize, STID, filePath).then(
+          (data) => data
           // console.log(data)
         )
-      : alert("Your file type doesn't allow to post",fileType);
+      : alert("Your file type doesn't allow to post", fileType);
   };
 
   const navigate = useNavigate();
 
-  
-
   const newStoryAdded = () => {
+    const Data = {
+      STID: nick + "ST" + `${fileSizes}`,
+      isImage: fileTypes === "image" ? true : false,
+      uploaded_at: Date.now(),
+    };
 
+    const Datal = {
+      STID: nick + "ST" + `${fileSizes}`,
+      isImage: fileTypes === "image" ? true : false,
+      uploaded_at: Date.now(),
+    };
 
-   const Data ={
-    STID: nick + "ST" + `${fileSizes}`,
-    isImage: fileTypes === "image" ? true : false,
-  }
-
-  const Datal = {
-    STID: nick + "ST" + `${fileSizes}`,
-    isImage: fileTypes === "image" ? true : false,
-  }
-
-    UpdateData("story",UID, 'USID',Data ,Datal).then(window.location.reload(true))
-    
+    UpdateData("story", UID, "USID", Data, Datal).then(
+      window.location.reload(true)
+    );
   };
 
   return (
@@ -211,9 +219,7 @@ const CreateStory = () => {
               <div className=" cursor-pointer relative flex w-[50px]  h-[100%] justify-center items-center  rounded-full ">
                 <img
                   className=" hover:brightness-75  rounded-full object-cover w-full h-full "
-                  src={
-                    adminProfile?.length > 5 ? adminProfile : userAvatar
-                  }
+                  src={adminProfile?.length > 5 ? adminProfile : userAvatar}
                   alt=""
                   srcSet=""
                 />
@@ -329,19 +335,19 @@ const CreateStory = () => {
             </div>
           ) : (
             <div className=" flex justify-center w-full h-full items-center p-1 rounded ">
-              {
-                isImage ? <img
-                className="  h-full object-cover "
-                src={imfurlForUp}
-                alt=""
-              /> :
-              <video
-                className="  h-auto w-auto object-cover "
-                src={imfurlForUp}
-                alt=""
-              />
-              }
-             
+              {isImage ? (
+                <img
+                  className="  h-full object-cover "
+                  src={imfurlForUp}
+                  alt=""
+                />
+              ) : (
+                <video
+                  className="  h-auto w-auto object-cover "
+                  src={imfurlForUp}
+                  alt=""
+                />
+              )}
             </div>
           )}
 

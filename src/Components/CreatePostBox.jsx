@@ -10,12 +10,13 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
-import { storage } from "../firebase/firebase";
+import { firestore, storage } from "../firebase/firebase";
 import UpdateData from "../redux/services/Hooks/UpdateData";
 import { setHasNewStory, setNotHasNewStory } from "../redux/services/authSlice";
 import { useNavigate } from "react-router-dom";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
 import { FactorId } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 const CreatePostBox = () => {
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState(
@@ -43,7 +44,9 @@ const CreatePostBox = () => {
   const dispatch = useDispatch();
   const [privacy, setPrivacy] = useState(false);
   const Create_post = ["Create_post"];
-  const { blur, isMobile,isDeskTop } = useSelector((state) => state.animateSlice);
+  const { blur, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
   const { admin, adminProfile, userAvatar } = useSelector(
     (state) => state.authSlice
   );
@@ -104,23 +107,113 @@ const CreatePostBox = () => {
       ? firstCharacters?.reduce((prev, curr) => prev + curr)
       : null;
 
-  const [imfurlForUp, setImgUrlUp] = useState([]);
   const [isImage, setIsImage] = useState(true);
 
-  const totalSize =
-    imfurlForUp.length > 0
-      ? imfurlForUp?.reduce((prev, curr) => prev.fileSize + curr.fileSize)
-      : 0;
+ 
+  
+  
+  const [PID, setPID] = useState('0');
+  const [imfurlForUp, setImgUrlUp] = useState([]);
 
-  const uploadStory = async (file, fileSize, STID, filePath) => {
+  const CreateNewPost = async (e) => {
+    if (PID?.length < 4) {
+      setPID(UID + "_" + Date.now());
+
+    }
+    else{
+      let FileType;
+      let FileSize;
+      const file = e.target.files[0];
+  
+      const fileSize = e.target.files[0]?.size;
+  
+      const filePath = `user_post/${UID}/${PID}/${file.name}`;
+  
+      const fileType = checkFileType(file);
+  
+      FileType = fileType;
+  
+      fileType ? (FileSize = fileSize) : null;
+  
+  
+      fileType
+        ? uploadPost(file, fileSize, PID, filePath).then((data) =>
+            console.log(data)
+          )
+        : alert("Your file type doesn't allow to post", fileType);
+    }
+  
+  };
+
+  async function addUserPost() {
+    const userPostRef = doc(firestore, "USER_POSTS", `/${PID}/`);
+
+    const PostData = {
+      PID,
+      UPLOADED_AT: Date.now(),
+      POST_OWNER_DETAIL: {
+        POID: admin?.UID.stringValue,
+        PON: admin?.user_name.stringValue,
+      },
+      POST_DETAIL: {
+        POST_CAPTION: detail.length > 0 ? detail : false ,
+        POST_IMAGE_PATH: imfurlForUp,
+        LIKES: [
+          {
+            LOID: "0A",
+            LON: "BOT",
+          },
+        ],
+        SHARES: [
+          {
+            SOID: "0A",
+            SON: "BOT",
+          },
+        ],
+        COMMENTS: [
+          {
+            COID: "0A",
+            CON: "BOT",
+            COMMENTS_DETAIL: {
+              COT: "FIRST COMMENT!",
+              REPLYS: [
+                {
+                  RPOID: "1A",
+                  RPON: "BOT_01",
+                  RPOT: "FIRST REPLY",
+                },
+                {
+                  RPOID: admin?.UID.stringValue,
+                  RPON: admin?.user_name.stringValue,
+                  RPOT: "REPLIED BY OWNER",
+                },
+                {
+                  RPOID: "2A",
+                  RPON: "BOT_02",
+                  RPOT: "SECOND REPLY",
+                },
+              ],
+            },
+          },
+        ],
+      },
+    };
+
+    await setDoc(userPostRef, PostData).then((data) => {
+      dispatch(blurOn({ blur: false }));
+      window.location.reload(true);
+    })
+    .catch((error) => console.log(error));
+  }
+
+  const uploadPost = async (file, fileSize, PID, filePath) => {
     const storageRef = file && ref(storage, filePath); // Replace with your desired file path
 
-    const fileType = checkFileType(file);
+    // const fileType = checkFileType(file);
 
-    setIsImage(fileType === "image" ? true : false);
+    // setIsImage(fileType === "image" ? true : false);
 
-    const uploadTask =
-      file &&
+    file &&
       (await uploadBytes(storageRef, file)
         .then((data) => {
           console.log(data);
@@ -135,58 +228,10 @@ const CreatePostBox = () => {
         })
         .catch((error) => console.log(error)));
   };
+  
 
-  const [fileSizes, setFileSize] = useState();
-  const [fileTypes, setFileType] = useState();
-  const [FID, setFID] = useState(0);
 
-  useEffect(() => {
-    const id = Math.round(Math.random() * 100000000);
-    setFID(id);
-  }, [blur]);
-
-  const CreateNewStory = async (e) => {
-    const file = e.target.files[0];
-
-    const fileSize = e.target.files[0]?.size;
-
-    const STID = nick + "P" + `${FID}`;
-
-    const filePath = `user_post/${UID}/${STID}/${file.name}`;
-
-    const fileType = checkFileType(file);
-
-    setFileType(fileType);
-
-    fileType ? setFileSize(fileSize) : null;
-
-    fileType
-      ? uploadStory(file, fileSize, STID, filePath).then((data) =>
-          console.log(data)
-        )
-      : alert("Your file type doesn't allow to post", fileType);
-  };
-
-  const navigate = useNavigate();
-
-  const newStoryAdded = () => {
-    UpdateData(
-      "user_posts",
-      UID,
-      name,
-      {
-        PID: nick + "P" + `${FID}`,
-        isImage: fileTypes === "image" ? true : false,
-        caption: detail?.length > 0 ? detail : false,
-      },
-      { UID: UID }
-    )
-      .then((data) => {
-        dispatch(blurOn({ blur: false }));
-        window.location.reload(true);
-      })
-      .catch((error) => console.log(error));
-  };
+  
 
   return (
     <div
@@ -295,9 +340,8 @@ const CreatePostBox = () => {
                   setDetail(e.target.value);
                 }
               }}
-              onChange={(e)=> {
-                setDetail(e.target.value) 
-
+              onChange={(e) => {
+                setDetail(e.target.value);
               }}
               placeholder="What's on your mind?"
               value={detail}
@@ -358,7 +402,7 @@ const CreatePostBox = () => {
                         Photo / Video{" "}
                       </p>
                       <input
-                        onChange={CreateNewStory}
+                        onChange={CreateNewPost}
                         id="dropzone-file"
                         type="file"
                         className=" absolute cursor-pointer w-full opacity-0 h-full "
@@ -371,7 +415,7 @@ const CreatePostBox = () => {
           </div>
           <div className=" flex justify-end items-center w-full h-[50px] p-1 ">
             <div
-              onClick={newStoryAdded}
+              onClick={addUserPost}
               className=" rounded justify-center items-center bg-[#0866ff] cursor-pointer px-4 py-1 "
             >
               Post

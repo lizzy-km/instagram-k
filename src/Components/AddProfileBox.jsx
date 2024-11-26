@@ -170,7 +170,6 @@ const AddProfileBox = () => {
       : alert("Your file type doesn't allow to post",fileType);
   };
 
-  const navigate = useNavigate();
 
   
 
@@ -180,11 +179,14 @@ const AddProfileBox = () => {
    const Data ={
     PFID: nick + "PF" + `${fileSizes}`,
     isImage: fileTypes === "image" ? true : false,
+    PFPATH:imfurlForUp
   }
 
   const Datal = {
     PFID: nick + "PF" + `${fileSizes}`,
     isImage: fileTypes === "image" ? true : false,
+    PFPATH:imfurlForUp
+
   }
 
     UpdateData("profile",UID, 'USID',Data ,Datal).then(window.location.reload(true))

@@ -41,7 +41,7 @@ const UpdateData = async (
 
   const collectionRef = collection(firestore, "story");
   const postRef = collection(firestore, "user_posts");
-  const userRef = doc(firestore, "/users", `/${UID}/`);
+  const userRef = doc(firestore, "/users", `/${UID}/`); 
   const udRef = doc(firestore, "/users", `/${USID}`);
 
   if (colName === "user_posts")

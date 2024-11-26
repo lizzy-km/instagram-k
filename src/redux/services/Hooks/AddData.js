@@ -49,6 +49,7 @@ const addData = async (colName = "users", uemail = "", username = "",name) => {
         PFID: shortName + "PF"+date,
         src: "",
         isActive: true,
+        uploaded_at: Date.now(),
       }
     ],
     cover_photo: [
@@ -56,6 +57,7 @@ const addData = async (colName = "users", uemail = "", username = "",name) => {
         CVID: shortName + "CV"+date,
         src: "",
         isActive: true,
+        uploaded_at: Date.now(),
       }
     ],
     story: [
@@ -80,7 +82,7 @@ const addData = async (colName = "users", uemail = "", username = "",name) => {
     STID: shortName + "ST" + `${date}`,
     STUID: username,
     img_src: "",
-
+    uploaded_at: Date.now(),
     isImg: false,
 
     vid_src:
@@ -90,7 +92,7 @@ const addData = async (colName = "users", uemail = "", username = "",name) => {
   const postData = {
     PID: shortName + "P" + `${date}`,
     PUID: username,
-
+    uploaded_at: Date.now(),
     isImg: false,
 
     

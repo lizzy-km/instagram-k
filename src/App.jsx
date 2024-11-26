@@ -146,7 +146,7 @@ function App() {
 
   const page = document.getElementById("page");
 
-  page?.addEventListener("scroll", () => {
+ !isDeskTop && page?.addEventListener("scroll", () => {
     scrollTopNum.length < 2
       ? scrollTopNum.push(page.scrollTop)
       : (scrollTopNum.shift(), scrollTopNum.push(page.scrollTop));
