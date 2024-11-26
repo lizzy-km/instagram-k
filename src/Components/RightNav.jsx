@@ -170,7 +170,7 @@ const RightNav = () => {
                     opacity: account === true ? "0.5" : "1",
                   }}
                   className=" cursor-pointer hover:brightness-75 w-[40px] h-[40px] p-[3px]  bg-center object-center    object-cover rounded-full "
-                  src={adminProfile?.length > 0 ? adminProfile : userAvatar}
+                  src={adminProfile?.length > 10 ? adminProfile : userAvatar}
                   alt="profile_picture"
                   srcSet=""
                 />

@@ -19,8 +19,8 @@ const UserProfile = () => {
   const user = UserData?.find((d) => d.id === UID?.user)?._document.data.value
     .mapValue.fields;
 
-  const userProfile = localStorage.getItem("userProfile");
-
+  const userProfile = user.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue
+  
   const bg =
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2F328652225_477950631031057_4570664772778110705_n%20(2).jpg?alt=media&token=ada5ce90-591d-47a6-88cb-07e80e9117d7";
 
