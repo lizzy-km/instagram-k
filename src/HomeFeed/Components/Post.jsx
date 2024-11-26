@@ -37,7 +37,7 @@ const Post = () => {
         }}
         className="flex flex-col gap-8 w-[70%] self-center  p-2 my-2 h-auto  rounded-md"
       >
-        {USER_POSTS?.docs?.reverse().map((d) => {
+        {USER_POSTS?.docs?.map((d) => {
           const data = d._document.data.value.mapValue.fields;
           const PID = data?.PID.stringValue;
           const PON = data?.POST_OWNER_DETAIL.mapValue.fields.PON.stringValue;
