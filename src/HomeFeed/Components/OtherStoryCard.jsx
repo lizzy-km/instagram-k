@@ -18,6 +18,10 @@ const OtherStoryCard = ({ data, translateX }) => {
   const UID = user?.UID?.stringValue
 
 
+  const userPfData = user?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue
+
+
+
 
    const dispatch = useDispatch()
 
@@ -153,7 +157,7 @@ const OtherStoryCard = ({ data, translateX }) => {
                   {d.mapValue.fields.isActive.booleanValue === true ? (
                     <img key={d.mapValue.fields.PFID.stringValue}
                       className=" z-[99] rounded-full object-cover w-full h-full "
-                      src={userProfile?.length > 0 ? userProfile : userAvatar}
+                      src={userPfData?.length > 0 ? userPfData : userAvatar}
                       alt=""
                       srcSet=""
                     />

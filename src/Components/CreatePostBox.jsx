@@ -116,11 +116,8 @@ const CreatePostBox = () => {
   const [imfurlForUp, setImgUrlUp] = useState([]);
 
   const CreateNewPost = async (e) => {
-    if (PID?.length < 4) {
-      setPID(UID + "_" + Date.now());
-
-    }
-    else{
+    
+    
       let FileType;
       let FileSize;
       const file = e.target.files[0];
@@ -141,7 +138,7 @@ const CreatePostBox = () => {
             console.log(data)
           )
         : alert("Your file type doesn't allow to post", fileType);
-    }
+    
   
   };
 
@@ -255,7 +252,7 @@ const CreatePostBox = () => {
               <div className=" cursor-pointer relative flex w-[50px]  h-[100%] justify-center items-center  rounded-full ">
                 <img
                   className=" hover:brightness-75  rounded-full object-cover w-full h-full "
-                  src={adminProfile.length > 0 ? adminProfile : userAvatar}
+                  src={adminProfile?.length > 10 ? adminProfile : userAvatar}
                   alt=""
                   srcSet=""
                 />
@@ -402,6 +399,7 @@ const CreatePostBox = () => {
                         Photo / Video{" "}
                       </p>
                       <input
+                      onClick={()=> setPID(UID + "_" + Date.now())}
                         onChange={CreateNewPost}
                         id="dropzone-file"
                         type="file"

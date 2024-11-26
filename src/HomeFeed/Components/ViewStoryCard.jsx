@@ -5,7 +5,6 @@ import { firestore, storage } from "../../firebase/firebase";
 import Icon from "@mdi/react";
 import { mdiDotsVertical, mdiTrashCanOutline, mdiWindowClose } from "@mdi/js";
 import { deleteField, doc, updateDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 import { setViewStory } from "../../redux/services/animateSlice";
 import { setStoryId } from "../../redux/services/authSlice";
 
@@ -14,7 +13,6 @@ const ViewStoryCard = ({ userData }) => {
     (deserializedState) => deserializedState.authSlice
   );
 
-  const navigate = useNavigate();
 
   const data = userData?.filter((d) =>
     d?._document.data.value.mapValue.fields?.story.arrayValue.values?.length
@@ -27,53 +25,24 @@ const ViewStoryCard = ({ userData }) => {
   const STID =
     data?.story?.arrayValue.values[0]?.mapValue.fields?.STID?.stringValue;
   const UserName = data?.user_name?.stringValue;
-  const PFID =
-    data?.profile_picture?.arrayValue.values[0]?.mapValue.fields.PFID
-      .stringValue;
+  
+      const PFURL = data?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue
 
-  const [imgPath, setImgPath] = useState("");
-  const [profileUrl, setProfileUrl] = useState();
 
-  //   Get User Profile Image Url From Firebase Storage
-  const imgUrl = async () => {
-    const urls = await getDownloadURL(ref(storage, imgPath));
-    setProfileUrl(urls);
-  };
 
-  const hasPf = data?.profile_picture?.arrayValue?.values?.length > 0;
-
-  const storageRef = ref(
-    storage,
-    `user_photo/${data?.UID?.stringValue}/${
-      hasPf &&
-      data?.profile?.arrayValue?.values[0]?.mapValue?.fields?.PFID?.stringValue
-    }`
-  );
-
-  const list = async () => {
-    const not = await listAll(storageRef);
-    setProfileUrl("");
-
-    for (let ii = 0; ii < not?.items.length; ii++) {
-      setImgPath(not.items[ii]?.fullPath);
-      const urls = await getDownloadURL(ref(storage, imgPath));
-      setProfileUrl(urls);
-    }
-  };
+ 
+ 
+  
 
   useEffect(() => {
-    list();
     storyId?.length > 0 && setStoryD("");
     }, [storyId, changesSTID]);
 
   useEffect(() => {
-    list();
     storyId?.length > 0 && setStoryD("");
   }, []);
 
-  useEffect(() => {
-    imgUrl();
-  }, [imgPath]);
+ 
 
   const [storySrc, setStorySrc] = useState();
   const [storyD, setStoryD] = useState();
@@ -142,7 +111,7 @@ const ViewStoryCard = ({ userData }) => {
         <div className=" flex justify-center items-center p-1 rounded-full bg-[#212121] ">
           <img
             className=" w-[45px] h-[45px] rounded-full object-cover object-center "
-            src={profileUrl?.length > 4 ? profileUrl : userAvatar}
+            src={PFURL?.length > 4 ? PFURL : userAvatar}
             alt=""
             srcset=""
           />
@@ -163,8 +132,7 @@ const ViewStoryCard = ({ userData }) => {
           {!isDeskTop && (
             <div
               onClick={() => {
-                dispatch(setViewStory(false)), dispatch(setStoryId(0)),
-                setProfileUrl("")
+                dispatch(setViewStory(false)), dispatch(setStoryId(0))
               }}
               className=" cursor-pointer  rounded-full p-1 "
             >

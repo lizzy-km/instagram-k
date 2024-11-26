@@ -109,31 +109,14 @@ function App() {
       .catch((error) => console.log(error));
   }, [hasNewStory]);
 
-  async function getAdminProfileImage() {
-    const userActivePf = admin?.profile?.arrayValue?.values.filter(
-      (d) => d.mapValue.fields
-    )[0];
-    const adminId = localStorage.getItem("adminId");
-
-    const adminImgs = [];
-    const storageRef = ref(
-      storage,
-      `user_photo/${adminId}/${userActivePf?.mapValue.fields.PFID?.stringValue}`
-    );
-
-    await listAll(storageRef).then((not) => {
-      for (let ii = 0; ii < not?.items.length; ii++) {
-        adminImgs.push(not.items[ii]?.fullPath);
-      }
-    });
-
-    await getDownloadURL(ref(storage, adminImgs[0])).then((data) => {
-      dispatch(addAdminProfile(data));
-    });
-  }
-
   useEffect(() => {
-    getAdminProfileImage();
+    const userActivePf = admin?.profile?.arrayValue.values?.filter(
+      (d) => d?.mapValue.fields
+    )[0]?.mapValue.fields?.PFPATH?.stringValue;
+
+    
+
+    dispatch(addAdminProfile(userActivePf?.length > 15 ? userActivePf : ""));
   }, [admin]);
 
   const [botNav, setBotNav] = useState(true);
@@ -146,23 +129,24 @@ function App() {
 
   const page = document.getElementById("page");
 
- !isDeskTop && page?.addEventListener("scroll", () => {
-    scrollTopNum.length < 2
-      ? scrollTopNum.push(page.scrollTop)
-      : (scrollTopNum.shift(), scrollTopNum.push(page.scrollTop));
+  !isDeskTop &&
+    page?.addEventListener("scroll", () => {
+      scrollTopNum.length < 2
+        ? scrollTopNum.push(page.scrollTop)
+        : (scrollTopNum.shift(), scrollTopNum.push(page.scrollTop));
 
-    for (let i = 0; i < scrollTopNum.length; i++) {
-      const prev = scrollTopNum[i - 1];
-      const curr = scrollTopNum[i];
+      for (let i = 0; i < scrollTopNum.length; i++) {
+        const prev = scrollTopNum[i - 1];
+        const curr = scrollTopNum[i];
 
-      if (prev > curr && prev !== undefined) {
-        setBotNav(true);
+        if (prev > curr && prev !== undefined) {
+          setBotNav(true);
+        }
+        if (prev < curr && prev !== undefined) {
+          setBotNav(false);
+        }
       }
-      if (prev < curr && prev !== undefined) {
-        setBotNav(false);
-      }
-    }
-  });
+    });
 
   return (
     <section
@@ -207,9 +191,11 @@ function App() {
         </section>
         <section
           style={{
-            display: viewStory ? "flex" : "none"
+            display: viewStory ? "flex" : "none",
           }}
-          className={`fixed flex justify-center items-center ${isDeskTop && 'p-2'} w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] `}
+          className={`fixed flex justify-center items-center ${
+            isDeskTop && "p-2"
+          } w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] `}
         >
           <ViewStory />
         </section>
@@ -236,9 +222,12 @@ function App() {
           )}
         </section>
         {isAuth && !isDeskTop && (
-          <section style={{
-            bottom : bottomNav ? '20px' : -300
-          }} className=" transition-all fixed  flex w-full h-10 justify-center items-center  ">
+          <section
+            style={{
+              bottom: bottomNav ? "20px" : -300,
+            }}
+            className=" transition-all fixed  flex w-full h-10 justify-center items-center  "
+          >
             <MidNAv />
           </section>
         )}

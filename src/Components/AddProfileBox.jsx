@@ -215,7 +215,7 @@ const AddProfileBox = () => {
               <div className=" cursor-pointer relative flex w-[50px]  h-[100%] justify-center items-center  rounded-full ">
                 <img
                   className=" hover:brightness-75  rounded-full object-cover w-full h-full "
-                  src={adminProfile}
+                  src={adminProfile?.length > 15 ? adminProfile : userAvatar}
                   alt=""
                   srcSet=""
                 />

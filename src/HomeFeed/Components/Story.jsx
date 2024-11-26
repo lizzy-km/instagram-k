@@ -51,9 +51,11 @@ const Story = () => {
     getData();
   }, []);
 
-  const pf = admin?.profile_picture?.arrayValue.values?.filter(
+  const pf = admin?.profile?.arrayValue.values?.filter(
     (d) => d?.mapValue.fields
-  )[0]; // Check this profile picture is currently use
+  )[0]?.mapValue.fields.PFPATH?.stringValue; // Check this profile picture is currently use
+
+  
 
   const [translateX, setTranslateX] = useState(0);
   const [count, setCount] = useState(0);
@@ -135,14 +137,12 @@ const Story = () => {
         >
           <div className=" h-full flex flex-col justify-between items-center rounded-md ">
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
-              {pf && (
                 <img
                   className=" transition-all  cursor-pointer hover:scale-105  h-[100%] w-[145px]  bg-center object-center    object-cover rounded-t-md "
-                  src={adminProfile?.length > 0 ? adminProfile:userAvatar}
+                  src={adminProfile?.length > 10 ? adminProfile:userAvatar}
                   alt="profile_picture"
                   srcSet=""
                 />
-              )}
             </div>
 
             <div className=" z-n1  relative w-full h-[20%] flex rounded-b-md justify-center items-center ">

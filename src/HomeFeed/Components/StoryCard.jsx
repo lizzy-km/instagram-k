@@ -125,7 +125,7 @@ const StoryCard = ({ translateX }) => {
             <NavLink  to={`/${adminId}`} onClick={()=> localStorage.setItem('userProfile',adminProfile) } className=" cursor-pointer  flex rounded-full   bg-[#CA3E47] ">
               <img
                 className=" z-[99] rounded-full object-cover p-[3px] w-[40px] h-[40px] "
-                src={adminProfile.length > 0 ? adminProfile : userAvatar}
+                src={adminProfile?.length > 10 ? adminProfile : userAvatar}
                 alt=""
                 srcSet=""
               />
