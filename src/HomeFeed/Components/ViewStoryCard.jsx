@@ -13,7 +13,6 @@ const ViewStoryCard = ({ userData }) => {
     (deserializedState) => deserializedState.authSlice
   );
 
-
   const data = userData?.filter((d) =>
     d?._document.data.value.mapValue.fields?.story.arrayValue.values?.length
       ? d?._document.data.value.mapValue.fields?.story?.arrayValue?.values[0]
@@ -25,24 +24,17 @@ const ViewStoryCard = ({ userData }) => {
   const STID =
     data?.story?.arrayValue.values[0]?.mapValue.fields?.STID?.stringValue;
   const UserName = data?.user_name?.stringValue;
-  
-      const PFURL = data?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue
 
-
-
- 
- 
-  
+  const PFURL =
+    data?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;
 
   useEffect(() => {
     storyId?.length > 0 && setStoryD("");
-    }, [storyId, changesSTID]);
+  }, [storyId, changesSTID]);
 
   useEffect(() => {
     storyId?.length > 0 && setStoryD("");
   }, []);
-
- 
 
   const [storySrc, setStorySrc] = useState();
   const [storyD, setStoryD] = useState();
@@ -132,7 +124,7 @@ const ViewStoryCard = ({ userData }) => {
           {!isDeskTop && (
             <div
               onClick={() => {
-                dispatch(setViewStory(false)), dispatch(setStoryId(0))
+                dispatch(setViewStory(false)), dispatch(setStoryId(0));
               }}
               className=" cursor-pointer  rounded-full p-1 "
             >

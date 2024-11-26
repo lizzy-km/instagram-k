@@ -4,18 +4,9 @@ import { useSelector } from "react-redux";
 import { firestore, storage } from "../../firebase/firebase";
 import PostCard from "./PostCard";
 import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
-import checkFileType from "../../redux/services/Hooks/CheckFileType";
 
 const Post = () => {
-  const { admin, adminProfile, UserData } = useSelector(
-    (deserializedState) => deserializedState.authSlice
-  );
-
-  const { isTablet, isMobile, isDeskTop } = useSelector(
-    (state) => state.animateSlice
-  );
-
- 
+  const { isMobile } = useSelector((state) => state.animateSlice);
 
   const [USER_POSTS, setUSER_POSTS] = useState([]);
 
@@ -41,7 +32,7 @@ const Post = () => {
           const data = d._document.data.value.mapValue.fields;
           const PID = data?.PID.stringValue;
           const PON = data?.POST_OWNER_DETAIL.mapValue.fields.PON.stringValue;
-          
+
           return <PostCard data={data} name={PON} key={PID} />;
         })}
       </div>

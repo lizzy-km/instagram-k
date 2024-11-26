@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import StoryCard from "./StoryCard";
 import { useDispatch, useSelector } from "react-redux";
-import GetData from "../../redux/services/Hooks/useGetData";
 import { addStory } from "../../redux/services/authSlice";
 import OtherStoryCard from "./OtherStoryCard";
-import addData from "../../redux/services/Hooks/AddData";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase";
 import { setShowStory } from "../../redux/services/animateSlice";
 
 const Story = () => {
   const [plus, setPlus] = useState(false);
-  const { UserData, Story, admin, adminProfile,userAvatar } = useSelector(
+  const { UserData, Story, admin, adminProfile, userAvatar } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
   const dispatch = useDispatch();
@@ -23,10 +21,11 @@ const Story = () => {
 
   const userData = UserData;
 
-  const user = userData?.filter(
-    (d) =>d?._document.data.value.mapValue.fields?.story.arrayValue.values?.length >0?
-      d?._document.data.value.mapValue.fields.story?.arrayValue.values[0]
-        ?.mapValue.fields.STID?.stringValue?.length > 0 : false
+  const user = userData?.filter((d) =>
+    d?._document.data.value.mapValue.fields?.story.arrayValue.values?.length > 0
+      ? d?._document.data.value.mapValue.fields.story?.arrayValue.values[0]
+          ?.mapValue.fields.STID?.stringValue?.length > 0
+      : false
   );
 
   const userStory = admin.story.arrayValue.values?.map(
@@ -55,28 +54,18 @@ const Story = () => {
     (d) => d?.mapValue.fields
   )[0]?.mapValue.fields.PFPATH?.stringValue; // Check this profile picture is currently use
 
-  
-
   const [translateX, setTranslateX] = useState(0);
   const [count, setCount] = useState(0);
 
- 
   const storyCard = document.getElementById("story_id");
   const storyWidth = storyCard?.clientWidth;
 
-  
-
   const translateStoryCard = (type) => {
- type === "next"
-      ? (setTranslateX(
-          translateX + 157
-        ))
-      : 
-        setTranslateX(
-          translateX - 157
-        )
+    type === "next"
+      ? setTranslateX(translateX + 157)
+      : setTranslateX(translateX - 157);
 
-    type === 'next' ? setCount(count+1) : setCount(count-1)
+    type === "next" ? setCount(count + 1) : setCount(count - 1);
   };
 
   const { isTablet, isMobile, isDeskTop } = useSelector(
@@ -84,27 +73,22 @@ const Story = () => {
   );
   return (
     <div id="story_id" className=" story px-2 rounded-lg  ">
-      <div  className=" absolute hidden top-0  z-[99999] text-black bg-slate-100 p-1 " >
-        {
-         translateX
-        }
-        {
-         " <->"
-        }
-        {
-          count
-        }
-       {  " <->"}
-        {
-          storyWidth
-        }
+      <div className=" absolute hidden top-0  z-[99999] text-black bg-slate-100 p-1 ">
+        {translateX}
+        {" <->"}
+        {count}
+        {" <->"}
+        {storyWidth}
       </div>
-      <div style={{
-        overflowX: isMobile ? 'scroll' :'hidden'
-      }} className=" story-holder rounded-lg  ">
+      <div
+        style={{
+          overflowX: isMobile ? "scroll" : "hidden",
+        }}
+        className=" story-holder rounded-lg  "
+      >
         {isDeskTop && otherStory?.length > 1 && (
           <>
-            { (((user.length+1)-(storyWidth/157))).toFixed(0) > count&& (
+            {(user.length + 1 - storyWidth / 157).toFixed(0) > count && (
               <div className=" nextStory   ">
                 <div
                   onClick={() => translateStoryCard("next")}
@@ -137,12 +121,12 @@ const Story = () => {
         >
           <div className=" h-full flex flex-col justify-between items-center rounded-md ">
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
-                <img
-                  className=" transition-all  cursor-pointer hover:scale-105  h-[100%] w-[145px]  bg-center object-center    object-cover rounded-t-md "
-                  src={adminProfile?.length > 10 ? adminProfile:userAvatar}
-                  alt="profile_picture"
-                  srcSet=""
-                />
+              <img
+                className=" transition-all  cursor-pointer hover:scale-105  h-[100%] w-[145px]  bg-center object-center    object-cover rounded-t-md "
+                src={adminProfile?.length > 10 ? adminProfile : userAvatar}
+                alt="profile_picture"
+                srcSet=""
+              />
             </div>
 
             <div className=" z-n1  relative w-full h-[20%] flex rounded-b-md justify-center items-center ">
