@@ -6,6 +6,7 @@ import {
   arrayUnion,
   collection,
   collectionGroup,
+  deleteDoc,
   doc,
   getDocs,
   setDoc,
@@ -16,7 +17,7 @@ import { set } from "firebase/database";
 const UpdateData = async (
   colName = "story",
   UID = "",
-  USID = "",
+  PID = "",
   Data = {},
   Datal = {}
 ) => {
@@ -40,22 +41,20 @@ const UpdateData = async (
   //   }
 
   const collectionRef = collection(firestore, "story");
-  const postRef = collection(firestore, "user_posts");
-  const userRef = doc(firestore, "/users", `/${UID}/`); 
-  const udRef = doc(firestore, "/users", `/${USID}`);
+  const postRef = doc(firestore, "/USER_POSTS", `/${PID}`);
+  const userRef = doc(firestore, "/users", `/${UID}/`);
+  const udRef = doc(firestore, "/USER_POSTS", `/${PID}`);
 
-  if (colName === "user_posts")
-    await updateDoc(userRef, {
-      post: arrayUnion(Data),
-    }).catch((error) => console.log(error));
-
+  if (colName === "delete_user_post") {
+    await deleteDoc(postRef).catch((error) => console.log(error));
+  }
   if (colName === "liked_posts") {
     await updateDoc(userRef, {
       liked_post: arrayUnion(Data),
     }).catch((error) => console.log(error));
 
     await updateDoc(udRef, {
-      likes: arrayUnion(Datal),
+      "POST_DETAIL.LIKES": arrayUnion(Datal),
     }).catch((error) => console.log(error));
   }
 
@@ -65,7 +64,7 @@ const UpdateData = async (
     }).catch((error) => console.log(error));
 
     await updateDoc(udRef, {
-      likes: arrayRemove(Datal),
+      "POST_DETAIL.LIKES": arrayRemove(Datal),
     }).catch((error) => console.log(error));
   }
   if (colName === "shared_posts") {
@@ -74,7 +73,7 @@ const UpdateData = async (
     }).catch((error) => console.log(error));
 
     await updateDoc(udRef, {
-      shares: arrayUnion(Datal),
+      "POST_DETAIL.SHARES": arrayUnion(Datal),
     }).catch((error) => console.log(error));
   }
   if (colName === "unshared_posts") {
@@ -83,7 +82,7 @@ const UpdateData = async (
     }).catch((error) => console.log(error));
 
     await updateDoc(udRef, {
-      shares: arrayRemove(Datal),
+      "POST_DETAIL.SHARES": arrayRemove(Datal),
     }).catch((error) => console.log(error));
   }
   if (colName === "saved_posts") {

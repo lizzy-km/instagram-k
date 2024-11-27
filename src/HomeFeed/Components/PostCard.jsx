@@ -8,6 +8,10 @@ import {
   mdiBookmark,
   mdiBookmarkOutline,
   mdiContentCopy,
+  mdiDeleteAlertOutline,
+  mdiDeleteForever,
+  mdiDeleteForeverOutline,
+  mdiDeleteOutline,
   mdiDotsHorizontal,
   mdiHeart,
   mdiHeartOutline,
@@ -84,11 +88,17 @@ const PostCard = ({ name, data }) => {
   const user_name = admin?.user_name.stringValue;
   const USID = admin?.UID.stringValue;
 
-  const likes = data?.LIKES
-    ? data.LIKES?.filter((d) => d.mapValue.fields.PID.stringValue === PID)
+  // console.log(data?.POST_DETAIL?.mapValue.fields?.SHARES?.arrayValue.values);
+
+  const likes = data?.POST_DETAIL?.mapValue.fields?.LIKES?.arrayValue.values
+    ? data.POST_DETAIL?.mapValue.fields?.LIKES?.arrayValue.values?.filter(
+        (d) => d?.mapValue.fields?.PID?.stringValue === PID
+      )
     : 0;
-  const shares = data?.SHARES
-    ? data.SHARES?.filter((d) => d.mapValue.fields.PID.stringValue === PID)
+  const shares = data?.POST_DETAIL?.mapValue.fields?.SHARES?.arrayValue.values
+    ? data.POST_DETAIL?.mapValue.fields?.SHARES?.arrayValue.values?.filter(
+        (d) => d?.mapValue.fields?.PID?.stringValue === PID
+      )
     : 0;
 
   const [likeC, setLikeC] = useState(likes?.length > 0 ? likes?.length : 0);
@@ -114,12 +124,12 @@ const PostCard = ({ name, data }) => {
         : {};
 
     const upUData = {
-      UID: USID,
-      user_name: user_name,
+      POID: POID,
+      PON: user_name,
       PID: PID,
     };
 
-    UpdateData(type, USID, UID, upData, upUData);
+    UpdateData(type, USID, PID, upData, upUData);
 
     if (type === "liked_posts" || type === "unliked_posts") {
       setLiked(value);
@@ -140,19 +150,21 @@ const PostCard = ({ name, data }) => {
     for (let i = 0; i < admin?.liked_post?.arrayValue?.values?.length; i++) {
       const likedPost = admin?.liked_post?.arrayValue?.values[i];
 
-      likedPost?.mapValue.fields.LPID?.stringValue === PID && setLiked(true);
+      likedPost?.mapValue.fields?.LPID?.stringValue === PID && setLiked(true);
     }
 
     for (let i = 0; i < admin?.shared_posts?.arrayValue?.values?.length; i++) {
       const shared_post = admin?.shared_posts?.arrayValue?.values[i];
 
-      shared_post?.mapValue.fields.SHPID?.stringValue === PID &&
+      console.log(shared_post);
+
+      shared_post?.mapValue.fields?.SHPID?.stringValue === PID &&
         setShared(true);
     }
     for (let i = 0; i < admin?.saved_posts?.arrayValue?.values?.length; i++) {
       const saved_post = admin?.saved_posts?.arrayValue?.values[i];
 
-      saved_post?.mapValue.fields.SPID?.stringValue === PID && setSaved(true);
+      saved_post?.mapValue.fields?.SPID?.stringValue === PID && setSaved(true);
     }
   }, []);
 
@@ -165,6 +177,8 @@ const PostCard = ({ name, data }) => {
   const link = `localhost:5173/${UID}/post_detail/${PID}`;
 
   const [copied, setCopied] = useState(false);
+
+  const [deleted, setDeleted] = useState(false);
 
   const copyToClipboard = async () => {
     const a = document.getElementById("linkToCopy");
@@ -179,12 +193,26 @@ const PostCard = ({ name, data }) => {
     }
   };
 
+  useEffect(()=> {
+    deleted === true && window.location.reload(true)
+
+  },[deleted])
+
   useEffect(() => {
     const timeout = setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
     return () => clearTimeout(timeout);
   }, [copied]);
 
-  const caption = data?.POST_DETAIL.mapValue.fields.POST_CAPTION.stringValue;
+  const caption = data?.POST_DETAIL?.mapValue.fields?.POST_CAPTION?.stringValue;
+
+  const deletePost = async (type, PID) => {
+    UpdateData(type, "USID", PID, "upData", "upUData").then((data)=>
+       setDeleted(true)
+  ).catch((error)=> console.log(error)
+    )
+
+
+  };
 
   return (
     <section
@@ -252,25 +280,36 @@ const PostCard = ({ name, data }) => {
             style={{
               visibility: postMenu ? "visible" : "collapse",
             }}
-            className=" z-[9999] transition-transform   text-sm tracking-wide flex flex-col gap-2 p-1 rounded-md bg-[#31313157] backdrop-blur absolute right-2 top-12 min-w-[25%] min-h-[40px] "
+            className=" z-[9999] transition-transform   text-sm tracking-wide flex flex-col gap-2 p-2 rounded-md bg-[#31313157] backdrop-blur absolute right-2 top-12 min-w-[25%] min-h-[40px] "
           >
             <div
               onClick={copyToClipboard}
-              className="flex gap-1 cursor-pointer hover:bg-[#24252657] p-2 rounded-md  justify-center items-center"
+              className="flex gap-1 cursor-pointer  hover:bg-[#33333357] p-2 rounded-md  justify-start items-center"
             >
               <Icon path={mdiContentCopy} size={0.8} />
               <a id="linkToCopy" href={link}></a>
               <p>{copied ? "Copied!" : "Copy Link"}</p>
             </div>
+
+            {POID === USID && (
+              <div
+                onClick={() => deletePost("delete_user_post", PID)}
+                className="flex gap-1 cursor-pointer hover:bg-[#33333357] p-2 rounded-md  justify-start items-center"
+              >
+                <Icon path={mdiDeleteForeverOutline} size={0.9} />
+                <a id="linkToCopy" href={link}></a>
+                <p>{deleted ? "Deleted!" : "Delete"}</p>
+              </div>
+            )}
           </section>
         </div>
       </div>
 
       {!loading ? (
-        PostImg?.length > 1 ? (
+        PostImg?.length > 15 ? (
           <Carousel loop={false} slideInterval={0} slide={false}>
             {PostImg?.map((d) => {
-              const url = d.mapValue.fields.downloadURL.stringValue;
+              const url = d.mapValue.fields?.downloadURL?.stringValue;
               return (
                 <ImageCard UID={UID} PID={PID} key={url} data={d} url={url} />
               );
