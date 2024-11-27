@@ -20,9 +20,10 @@ import {
 } from "@mdi/js";
 import UpdateData from "../../redux/services/Hooks/UpdateData";
 import ImageCard from "./ImageCard";
+import { setUpdateFeed } from "../../redux/services/authSlice";
 
 const PostCard = ({ name, data }) => {
-  const { userAvatar, UserData, admin, hasNewStory } = useSelector(
+  const { userAvatar, UserData, admin, hasNewStory,updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -193,10 +194,11 @@ const PostCard = ({ name, data }) => {
     }
   };
 
-  useEffect(()=> {
-    deleted === true && window.location.reload(true)
+  const dispatch = useDispatch();
 
-  },[deleted])
+  useEffect(() => {
+    deleted === true && dispatch(setUpdateFeed(+1));
+  }, [deleted]);
 
   useEffect(() => {
     const timeout = setTimeout(() => setCopied(false), 2000); // Reset copied state after 2 seconds
@@ -206,12 +208,12 @@ const PostCard = ({ name, data }) => {
   const caption = data?.POST_DETAIL?.mapValue.fields?.POST_CAPTION?.stringValue;
 
   const deletePost = async (type, PID) => {
-    UpdateData(type, "USID", PID, "upData", "upUData").then((data)=>
-       setDeleted(true)
-  ).catch((error)=> console.log(error)
-    )
-
-
+    UpdateData(type, "USID", PID, "upData", "upUData")
+      .then((data) => {
+        setDeleted(true);
+        dispatch(setUpdateFeed(!updateFeed));
+      })
+      .catch((error) => console.log(error));
   };
 
   return (

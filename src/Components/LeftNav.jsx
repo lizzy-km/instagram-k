@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { addAdmin } from "../redux/services/authSlice";
+import { addAdmin, setUpdateFeed } from "../redux/services/authSlice";
 import { auth } from "../firebase/firebase";
 
 const LeftNav = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
+  const { updateFeed } = useSelector((deserializedState) => deserializedState.authSlice)
+
   const dispatch = useDispatch()
   const user = auth?.currentUser?.uid
 
@@ -22,7 +24,11 @@ const LeftNav = () => {
       padding:isMobile ? '8px' :'0'
     }} className= {` ${isMobile && 'flex-row-reverse'} flex w-[30%]  gap-2 items-center left_nav h-full`} >
       <NavLink onDoubleClick={()=> {
-        window.location.reload(true)
+        // window.location.reload(true)
+        dispatch(setUpdateFeed(!updateFeed))
+
+        console.log(updateFeed);
+        
 
       } }
         to={"/"}

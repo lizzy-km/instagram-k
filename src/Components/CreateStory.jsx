@@ -15,7 +15,11 @@ import {
 } from "firebase/storage";
 import { storage } from "../firebase/firebase";
 import UpdateData from "../redux/services/Hooks/UpdateData";
-import { setHasNewStory, setNotHasNewStory } from "../redux/services/authSlice";
+import {
+  setHasNewStory,
+  setNotHasNewStory,
+  setUpdateFeed,
+} from "../redux/services/authSlice";
 import { useNavigate } from "react-router-dom";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
 const CreateStory = () => {
@@ -23,7 +27,7 @@ const CreateStory = () => {
   const [icon, setIcon] = useState(
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34"
   );
-  const { admin, adminProfile, userAvatar } = useSelector(
+  const { admin, adminProfile, userAvatar, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -192,9 +196,9 @@ const CreateStory = () => {
       uploaded_at: Date.now(),
     };
 
-    UpdateData("story", UID, "USID", Data, Datal).then(
-      window.location.reload(true)
-    );
+    UpdateData("story", UID, "USID", Data, Datal)
+      .then(dispatch(setUpdateFeed(!updateFeed)))
+      .finally(dispatch(setShowStory({ showStory: false })));
   };
 
   return (

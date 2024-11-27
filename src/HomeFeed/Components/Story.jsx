@@ -9,7 +9,7 @@ import { setShowStory } from "../../redux/services/animateSlice";
 
 const Story = () => {
   const [plus, setPlus] = useState(false);
-  const { UserData, Story, admin, adminProfile, userAvatar } = useSelector(
+  const { UserData, Story, admin, adminProfile, userAvatar,updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
   const dispatch = useDispatch();
@@ -49,6 +49,10 @@ const Story = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    getData();
+  }, [updateFeed]);
 
   const pf = admin?.profile?.arrayValue.values?.filter(
     (d) => d?.mapValue.fields

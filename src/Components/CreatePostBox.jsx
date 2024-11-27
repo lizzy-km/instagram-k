@@ -12,7 +12,7 @@ import {
 } from "firebase/storage";
 import { firestore, storage } from "../firebase/firebase";
 import UpdateData from "../redux/services/Hooks/UpdateData";
-import { setHasNewStory, setNotHasNewStory } from "../redux/services/authSlice";
+import { setHasNewStory, setNotHasNewStory, setUpdateFeed } from "../redux/services/authSlice";
 import { useNavigate } from "react-router-dom";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
 import { FactorId } from "firebase/auth";
@@ -47,7 +47,7 @@ const CreatePostBox = () => {
   const { blur, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
-  const { admin, adminProfile, userAvatar } = useSelector(
+  const { admin, adminProfile, userAvatar,updateFeed } = useSelector(
     (state) => state.authSlice
   );
 
@@ -197,8 +197,11 @@ const CreatePostBox = () => {
     };
 
     await setDoc(userPostRef, PostData).then((data) => {
+      dispatch(setUpdateFeed(!updateFeed));
+      setImgUrlUp([])
+      setDetail("")
       dispatch(blurOn({ blur: false }));
-      window.location.reload(true);
+
     })
     .catch((error) => console.log(error));
   }

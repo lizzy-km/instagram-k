@@ -15,7 +15,11 @@ import {
 } from "firebase/storage";
 import { storage } from "../firebase/firebase";
 import UpdateData from "../redux/services/Hooks/UpdateData";
-import { setHasNewStory, setNotHasNewStory } from "../redux/services/authSlice";
+import {
+  setHasNewStory,
+  setNotHasNewStory,
+  setUpdateFeed,
+} from "../redux/services/authSlice";
 import { useNavigate } from "react-router-dom";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
 const AddProfileBox = () => {
@@ -23,7 +27,9 @@ const AddProfileBox = () => {
   const [icon, setIcon] = useState(
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34"
   );
-  const { admin,userAvatar,adminProfile } = useSelector((deserializedState) => deserializedState.authSlice);
+  const { admin, userAvatar, adminProfile } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
 
   const privacyData = [
     {
@@ -46,7 +52,7 @@ const AddProfileBox = () => {
   const dispatch = useDispatch();
   const [privacy, setPrivacy] = useState(false);
   const Create_story = ["Create_profile"];
-  const {  isMobile,addProfile } = useSelector((state) => state.animateSlice);
+  const { isMobile, addProfile } = useSelector((state) => state.animateSlice);
 
   useEffect(() => {
     addProfile === false
@@ -86,8 +92,6 @@ const AddProfileBox = () => {
   const bio = "It's me " + name;
   const UID = admin?.UID?.stringValue;
 
-  
-
   function getFirstChars() {
     if (!name) return []; // Handle empty string case
 
@@ -112,9 +116,8 @@ const AddProfileBox = () => {
 
   const imageFile = imgSrc; // Assuming you have a file input element
 
-
   const [imfurlForUp, setImgUrlUp] = useState();
-  const [isImage,setIsImage] = useState(true)
+  const [isImage, setIsImage] = useState(true);
 
   const profileData = { PFID: nick + "PF" + `${imgSrc?.size}` };
 
@@ -126,17 +129,23 @@ const AddProfileBox = () => {
     };
     const fileType = checkFileType(file);
 
-    setIsImage( fileType === "image" ? true : false)
+    setIsImage(fileType === "image" ? true : false);
 
     const uploadTask =
       file &&
       (await uploadBytes(storageRef, file)
         .then((data) => {
           console.log(data);
-          UpdateData("profile",UID, name, {
-            PFID: nick + "PF" + `${fileSize}`,
-            isImage: fileType === "image" ? true : false,
-          },{});
+          UpdateData(
+            "profile",
+            UID,
+            name,
+            {
+              PFID: nick + "PF" + `${fileSize}`,
+              isImage: fileType === "image" ? true : false,
+            },
+            {}
+          );
           getDownloadURL(data.ref).then((downloadURL) => {
             setImgUrlUp(downloadURL);
             console.log("File available at", downloadURL);
@@ -145,8 +154,8 @@ const AddProfileBox = () => {
         .catch((error) => console.log(error)));
   };
 
-  const [fileSizes,setFileSize] = useState()
-  const [fileTypes,setFileType] = useState()
+  const [fileSizes, setFileSize] = useState();
+  const [fileTypes, setFileType] = useState();
 
   const CreateNewStory = async (e) => {
     const file = e.target.files[0];
@@ -159,38 +168,34 @@ const AddProfileBox = () => {
 
     const fileType = checkFileType(file);
 
-    setFileType(fileType)
+    setFileType(fileType);
 
-    fileType ? setFileSize(fileSize) : null
+    fileType ? setFileSize(fileSize) : null;
 
     fileType
-      ? uploadStory(file, fileSize, PFID, filePath).then((data) =>data
+      ? uploadStory(file, fileSize, PFID, filePath).then(
+          (data) => data
           // console.log(data)
         )
-      : alert("Your file type doesn't allow to post",fileType);
+      : alert("Your file type doesn't allow to post", fileType);
   };
 
-
-  
-
   const newStoryAdded = () => {
+    const Data = {
+      PFID: nick + "PF" + `${fileSizes}`,
+      isImage: fileTypes === "image" ? true : false,
+      PFPATH: imfurlForUp,
+    };
 
+    const Datal = {
+      PFID: nick + "PF" + `${fileSizes}`,
+      isImage: fileTypes === "image" ? true : false,
+      PFPATH: imfurlForUp,
+    };
 
-   const Data ={
-    PFID: nick + "PF" + `${fileSizes}`,
-    isImage: fileTypes === "image" ? true : false,
-    PFPATH:imfurlForUp
-  }
-
-  const Datal = {
-    PFID: nick + "PF" + `${fileSizes}`,
-    isImage: fileTypes === "image" ? true : false,
-    PFPATH:imfurlForUp
-
-  }
-
-    UpdateData("profile",UID, 'USID',Data ,Datal).then(window.location.reload(true))
-    
+    UpdateData("profile", UID, "USID", Data, Datal).then(
+      dispatch(setUpdateFeed(+1))
+    );
   };
 
   return (
@@ -331,19 +336,19 @@ const AddProfileBox = () => {
             </div>
           ) : (
             <div className=" flex justify-center w-full h-full items-center p-1 rounded ">
-              {
-                isImage ? <img
-                className="  h-full object-cover "
-                src={imfurlForUp}
-                alt=""
-              /> :
-              <video
-                className="  h-auto w-auto object-cover "
-                src={imfurlForUp}
-                alt=""
-              />
-              }
-             
+              {isImage ? (
+                <img
+                  className="  h-full object-cover "
+                  src={imfurlForUp}
+                  alt=""
+                />
+              ) : (
+                <video
+                  className="  h-auto w-auto object-cover "
+                  src={imfurlForUp}
+                  alt=""
+                />
+              )}
             </div>
           )}
 

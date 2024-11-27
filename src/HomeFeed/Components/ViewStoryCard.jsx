@@ -6,7 +6,7 @@ import Icon from "@mdi/react";
 import { mdiDotsVertical, mdiTrashCanOutline, mdiWindowClose } from "@mdi/js";
 import { deleteField, doc, updateDoc } from "firebase/firestore";
 import { setViewStory } from "../../redux/services/animateSlice";
-import { setStoryId } from "../../redux/services/authSlice";
+import { setStoryId, setUpdateFeed } from "../../redux/services/authSlice";
 
 const ViewStoryCard = ({ userData }) => {
   const { storyId, admin, userAvatar, changesSTID } = useSelector(
@@ -80,7 +80,7 @@ const ViewStoryCard = ({ userData }) => {
                 isImage: false,
               },
             ],
-          }).then(() => window.location.reload(true))
+          }).then(() => dispatch(setUpdateFeed(+1)))
       )
       .catch((error) => console.log(error));
   };

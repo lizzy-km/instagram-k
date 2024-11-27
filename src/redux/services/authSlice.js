@@ -23,7 +23,8 @@ const initialState = {
   sharePost:[],
   savePost:[],
   imageList : [],
-  changesSTID:[]
+  changesSTID:[],
+  updateFeed:true
   // friend:[]
 };
 
@@ -110,11 +111,16 @@ export const authSlice = createSlice({
    
         deserializedState.changesSTID = payload
       
-    }
+    },
+    setUpdateFeed : (deserializedState, { payload }) => {
+   
+      deserializedState.updateFeed = payload
+    
+  }
     
   },
 });
 
-export const {setChangesSTID, changesSTID,imageList,setImageList, userId,setUserId, storyId,setStoryId, setNotHasNewStory, addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post,addStory,Story,addAdmin,admin,addAdminProfile,adminProfile,setHasNewStory,hasNewStory } =
+export const {updateFeed,setUpdateFeed,setChangesSTID, changesSTID,imageList,setImageList, userId,setUserId, storyId,setStoryId, setNotHasNewStory, addUser, addFriend, addViewImage, addStoryImage,setLogin,addElement,element,addUserData,UserData,addPost,Post,addStory,Story,addAdmin,admin,addAdminProfile,adminProfile,setHasNewStory,hasNewStory } =
   authSlice.actions;
 export default authSlice.reducer;
