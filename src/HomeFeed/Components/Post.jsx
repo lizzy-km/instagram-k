@@ -40,7 +40,6 @@ const Post = () => {
     User_post();
   }, [updateFeed]);
 
-  console.log(updateFeed);
   
 
   const acnUP = USER_POSTS?.docs?.sort((prev, curr) => {

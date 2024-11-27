@@ -198,7 +198,10 @@ const CreateStory = () => {
 
     UpdateData("story", UID, "USID", Data, Datal)
       .then(dispatch(setUpdateFeed(!updateFeed)))
-      .finally(dispatch(setShowStory({ showStory: false })));
+      .finally(
+        dispatch(setShowStory({ showStory: false })),
+        window.location.reload(true)
+      );
   };
 
   return (

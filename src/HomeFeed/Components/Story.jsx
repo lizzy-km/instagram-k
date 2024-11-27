@@ -47,10 +47,24 @@ const Story = () => {
   };
 
   useEffect(() => {
+    const getData = async () => {
+      const data = await getDocs(collection(firestore, "story"));
+  
+      const doc = data.docs;
+  
+      dispatch(addStory(doc));
+    };
     getData();
   }, []);
 
   useEffect(() => {
+    const getData = async () => {
+      const data = await getDocs(collection(firestore, "story"));
+  
+      const doc = data.docs;
+  
+      dispatch(addStory(doc));
+    };
     getData();
   }, [updateFeed]);
 
