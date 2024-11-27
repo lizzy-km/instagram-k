@@ -308,7 +308,7 @@ const PostCard = ({ name, data }) => {
       </div>
 
       {!loading ? (
-        PostImg?.length > 15 ? (
+        PostImg?.length > 1 ? (
           <Carousel loop={false} slideInterval={0} slide={false}>
             {PostImg?.map((d) => {
               const url = d.mapValue.fields?.downloadURL?.stringValue;

@@ -163,7 +163,7 @@ function App() {
             height: blur === true ? "100vh" : "0%",
             alignItems: isMobile ? "start" : "center",
           }}
-          className={`flex i py-[5rem] overflow-hidden justify-center z-[9999999]   fixed bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+          className={`flex i py-[2rem] overflow-hidden justify-center z-[9999999]   fixed bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
         >
           <CreatePostBox />
         </section>

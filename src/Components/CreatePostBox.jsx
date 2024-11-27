@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
 import { FactorId } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import Icon from "@mdi/react";
+import { mdiImageAlbum, mdiPlusBoxMultipleOutline } from "@mdi/js";
 const CreatePostBox = () => {
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState(
@@ -238,9 +240,9 @@ const CreatePostBox = () => {
       id="Create_post"
       style={{
         visibility: blur === true ? "visible" : "hidden",
-        width: !isDeskTop ? "95%" : "70%",
+        width: !isDeskTop ? "95%" : "50%",
       }}
-      className=" text-[#d4d4d4] p-2 Create_post flex flex-col justify-between items-center rounded-md bg-[#18191a]  h-[75%] overflow-y-auto max-h-[75%] "
+      className=" text-[#d4d4d4] p-2 Create_post flex flex-col justify-between items-center rounded-md bg-[#18191a]  h-[90%] overflow-y-auto max-h-[90%] "
     >
       <div
         style={{
@@ -329,8 +331,8 @@ const CreatePostBox = () => {
             <div className=" absolute rotate-45  w-[45%] h-[2px] rounded-full bg-[#e4e6ebb5] "></div>
           </div>
         </div>
-        <div className=" relative flex h-[75%] overflow-y-auto min-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
-          <div className=" relative h-auto flex flex-col gap-0 justify-start items-start w-full ">
+        <div className=" relative  flex h-[80%] overflow-y-auto min-h-[80%] flex-col outline-none p-0 justify-between items-center w-full ">
+          <div className="  h-auto flex flex-col gap-0 justify-start items-start w-full ">
             <textarea
               id="myInput"
               onKeyDown={(e) => {
@@ -345,17 +347,17 @@ const CreatePostBox = () => {
               }}
               placeholder="What's on your mind?"
               value={detail}
-              className="border-l-2 bg-[#33333375] border-[#d4d4d4b9] rounded-r relative outline-none p-2 w-full min-h-[50px] cursor-text text-[24px] break-words whitespace-pre-wrap user-select-[text]"
+              className="border-l-2 bg-[#11111175]    rounded-r relative outline-none p-2 w-full min-h-[50px] cursor-text text-[24px] break-words whitespace-pre-wrap user-select-[text]"
               spellCheck="true"
               autoFocus
             />
           </div>
 
-          <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-wrap outline-none p-0 justify-start items-center w-full ">
+          <div className=" relative flex-col h-[85%] p-2 overflow-y-auto max-h-[75%] flex-wrap outline-none p-0 justify-center items-center w-[60%] ">
             {imfurlForUp?.length > 0 &&
               imfurlForUp.reverse().map((d) => {
                 return (
-                  <div className=" flex  justify-center w-[20%] flex-col  flex-wrap-reverse h-auto items-center p-1 rounded ">
+                  <div className=" flex  justify-start w-[100%] flex-col  flex-wrap-reverse h-auto items-start p-1 rounded ">
                     {isImage ? (
                       <img
                         className=" rounded  h-[70%] object-cover "
@@ -373,34 +375,15 @@ const CreatePostBox = () => {
                 );
               })}
             {imfurlForUp.length < 11 && (
-              <div className=" cursor-pointer justify-center items-center  h-auto p-2 flex w-[50%] bg-[#111111]  rounded-lg  ">
-                <div className="flex cursor-pointer items-center justify-center w-full">
+              <div className=" cursor-pointer justify-center self-center items-center  h-[100px]   flex w-full bg-[#111111]  rounded-lg  ">
+                <div className="flex cursor-pointer self-center items-center justify-center  h-full w-full">
                   <label
                     for="dropzone-file"
-                    className="flex flex-col items-center  justify-center w-[100%] h-[100%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
+                    className="flex flex-col items-center   justify-center w-[100%] h-[100%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
                   >
-                    <div className="flex flex-col cursor-pointer relative items-center justify-center p-2 ">
-                      <svg
-                        className="w-[20%] h-auto p-1 cursor-pointer text-gray-500 dark:text-gray-400"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 20 16"
-                      >
-                        <path
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                        />
-                      </svg>
-                      <p className="p-2 text-sm cursor-pointer text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Click to upload</span>
-                      </p>
-                      <p className="text-xs cursor-pointer text-gray-500 dark:text-gray-400">
-                        Photo / Video{" "}
-                      </p>
+                    <div className="flex h-full w-full flex-col cursor-pointer relative items-center justify-center  ">
+                      
+                    <Icon path={mdiPlusBoxMultipleOutline} size={10} />
                       <input
                       onClick={()=> setPID(UID + "_" + Date.now())}
                         onChange={CreateNewPost}
@@ -414,7 +397,7 @@ const CreatePostBox = () => {
               </div>
             )}
           </div>
-          <div className=" flex justify-end items-center w-full h-[50px] p-1 ">
+          <div className=" sticky-bottom    flex justify-end    items-center  h-[50px] p-1 ">
             <div
               onClick={addUserPost}
               className=" rounded justify-center items-center bg-[#0866ff] cursor-pointer px-4 py-1 "
