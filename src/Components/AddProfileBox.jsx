@@ -194,7 +194,7 @@ const AddProfileBox = () => {
     };
 
     UpdateData("profile", UID, "USID", Data, Datal).then(
-      dispatch(setUpdateFeed(+1))
+      window.location.reload(true)
     );
   };
 
