@@ -93,7 +93,6 @@ function App() {
     Promise.all(getAdmin)
       .then((data) => {
         dispatch(addAdmin(data[0]));
-        getAdminProfileImage();
       })
       .catch((error) => console.log(error));
   }, []);
@@ -104,7 +103,6 @@ function App() {
     Promise.all(getAdmin)
       .then((data) => {
         dispatch(addAdmin(data[0]));
-        getAdminProfileImage();
       })
       .catch((error) => console.log(error));
   }, [hasNewStory]);
