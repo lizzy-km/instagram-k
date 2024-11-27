@@ -157,7 +157,6 @@ const PostCard = ({ name, data }) => {
     for (let i = 0; i < admin?.shared_posts?.arrayValue?.values?.length; i++) {
       const shared_post = admin?.shared_posts?.arrayValue?.values[i];
 
-      console.log(shared_post);
 
       shared_post?.mapValue.fields?.SHPID?.stringValue === PID &&
         setShared(true);
