@@ -149,9 +149,9 @@ const Story = () => {
         }}
         className=" story-holder rounded-lg  "
       >
-        {isDeskTop && otherStory?.length > 1 && (
+        {isDeskTop && OtherStory?.length > 1 && (
           <>
-            {(users?.length + 1 - storyWidth / 157).toFixed(0) > count && (
+            {(OtherStory?.length + 1 - storyWidth / 157).toFixed(0) > count && (
               <div className=" nextStory   ">
                 <div
                   onClick={() => translateStoryCard("next")}
