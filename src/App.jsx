@@ -57,11 +57,11 @@ function App() {
   function ResponsiveFun() {
     ScreenSize = window.innerWidth;
 
-    if (ScreenSize < 600) {
+    if (ScreenSize < 780) {
       dispatch(setMobile());
     }
 
-    if (ScreenSize > 600 && ScreenSize < 1150) {
+    if (ScreenSize > 800 && ScreenSize < 1150) {
       dispatch(setTablet());
     }
     if (ScreenSize > 1150) {
@@ -77,12 +77,13 @@ function App() {
     ResponsiveFun();
   }, [window.innerWidth]);
 
-  const getAdmin = [GetAdminData()];
-  const { admin, hasNewStory } = useSelector(
+  const { admin, hasNewStory,updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
   useEffect(() => {
+    const getAdmin = [GetAdminData()];
+
     Promise.all(getAdmin)
       .then((data) => {
         dispatch(addAdmin(data[0]));
@@ -98,7 +99,7 @@ function App() {
         dispatch(addAdmin(data[0]));
       })
       .catch((error) => console.log(error));
-  }, [hasNewStory]);
+  }, [updateFeed]);
 
   useEffect(() => {
     const userActivePf = admin?.profile?.arrayValue.values?.filter(

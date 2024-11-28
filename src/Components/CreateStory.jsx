@@ -171,13 +171,13 @@ const CreateStory = () => {
       id="Create_story"
       style={{
         visibility: showStory === true ? "visible" : "hidden",
-        width: isMobile ? "95%" : isTablet ? "70%" : "30%",
+        width: isMobile ? "95%" : isTablet ? "90%" : "40%",
       }}
       className=" text-[#d4d4d4] p-2  flex flex-col justify-between items-center rounded-md bg-[#18191a]  h-[95%] overflow-y-hidden max-h-[95%] "
     >
       <div
         style={{
-          width: showStory === true ? "100%" : "100%",
+          width: showStory === true ? "100%" : "0%",
           height: showStory === true ? "100%" : "0%",
         }}
         className=" flex flex-col justify-start items-start "

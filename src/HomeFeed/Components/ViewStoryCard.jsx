@@ -6,10 +6,15 @@ import Icon from "@mdi/react";
 import { mdiDotsVertical, mdiTrashCanOutline, mdiWindowClose } from "@mdi/js";
 import { deleteField, doc, updateDoc } from "firebase/firestore";
 import { setViewStory } from "../../redux/services/animateSlice";
-import { setStoryId, setUpdateFeed } from "../../redux/services/authSlice";
+import {
+  addAdmin,
+  setStoryId,
+  setUpdateFeed,
+} from "../../redux/services/authSlice";
+import GetAdminData from "../../redux/services/Hooks/GetAdminData";
 
 const ViewStoryCard = ({ userData }) => {
-  const { storyId, admin, userAvatar, changesSTID } = useSelector(
+  const { storyId, admin, userAvatar, changesSTID, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -34,6 +39,8 @@ const ViewStoryCard = ({ userData }) => {
 
   useEffect(() => {
     storyId?.length > 0 && setStoryD("");
+    storyList();
+    storyUrl();
   }, []);
 
   const [storySrc, setStorySrc] = useState();
@@ -63,6 +70,7 @@ const ViewStoryCard = ({ userData }) => {
   }, [storySrc]);
 
   const [menu, setMenu] = useState(false);
+  const getAdmin = [GetAdminData()];
 
   const deleteStory = async () => {
     setMenu(false);
@@ -80,15 +88,21 @@ const ViewStoryCard = ({ userData }) => {
                 isImage: false,
               },
             ],
-          }).then(() => dispatch(setUpdateFeed(+1)))
+          }).then(() => {
+            Promise.all(getAdmin)
+              .then((data) => {
+                dispatch(addAdmin(data[0]));
+                dispatch(setUpdateFeed(!updateFeed));
+                !isDeskTop && dispatch(setViewStory(false))
+              })
+              .catch((error) => console.log(error));
+          })
       )
       .catch((error) => console.log(error));
   };
 
   const dispatch = useDispatch();
-  const {  isMobile, isDeskTop } = useSelector(
-    (state) => state.animateSlice
-  );
+  const { isMobile, isDeskTop } = useSelector((state) => state.animateSlice);
 
   return (
     <div

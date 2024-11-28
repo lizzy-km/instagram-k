@@ -17,6 +17,8 @@ const ViewStory = () => {
 
   const userData = UserData;
 
+  
+
   const user = userData?.filter((d) =>
     d?._document.data.value.mapValue.fields?.story?.arrayValue.values?.length >
     0
@@ -25,17 +27,7 @@ const ViewStory = () => {
       : false
   );
 
-  const getData = async () => {
-    const data = await getDocs(collection(firestore, "story"));
 
-    const doc = data?.docs;
-
-    dispatch(addStory(doc));
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const { isMobile, isDeskTop } = useSelector((state) => state.animateSlice);
   return (
