@@ -48,6 +48,23 @@ const Story = () => {
         .STOID?.stringValue !== admin.UID.stringValue
   );
 
+  let OtherStory = [];
+
+  for (let i = 0; i < otherStory.length; i++) {
+    const data = otherStory[i];
+    const prevData = otherStory[i - 1];
+    const createTimeP =
+      prevData?._document.createTime?.timestamp.seconds * 1000;
+    const createTime = data?._document.createTime?.timestamp.seconds * 1000;
+
+    const TimeDiff = realTime - createTime;
+    const TimeDiffP = realTime - createTimeP;
+
+    if (TimeDiff < TimeDiffP) {
+      OtherStory.push(data);
+    }
+  }
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -75,7 +92,7 @@ const Story = () => {
         timeInHr > 23 ? await deleteDoc(storyRef) : null;
       });
     };
-    deleteOldStory()
+    deleteOldStory();
     USER_STORY();
   }, []);
 
@@ -196,9 +213,9 @@ const Story = () => {
           />
         )}
 
-        {otherStory?.length > 0 &&
+        {OtherStory?.length > 0 &&
           !isLoading &&
-          otherStory?.map((d) => {
+          OtherStory?.map((d) => {
             return (
               <OtherStoryCard data={d} translateX={translateX} key={d?.id} />
             );

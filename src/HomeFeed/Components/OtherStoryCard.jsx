@@ -8,6 +8,10 @@ const OtherStoryCard = ({ data, translateX }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
+
+  
+
+
   const { userAvatar, changesSTID, UserData, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
