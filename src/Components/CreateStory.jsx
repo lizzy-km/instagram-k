@@ -202,7 +202,7 @@ const CreateStory = () => {
       .then(dispatch(setUpdateFeed(!updateFeed)))
       .finally(
         dispatch(setShowStory({ showStory: false })),
-        window.location.reload(true)
+        // window.location.reload(true)
       );
   };
 

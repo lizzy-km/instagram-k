@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import StoryCard from "./StoryCard";
 import { useDispatch, useSelector } from "react-redux";
-import { addStory } from "../../redux/services/authSlice";
+import { addAdmin, addStory } from "../../redux/services/authSlice";
 import OtherStoryCard from "./OtherStoryCard";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase";
 import { setShowStory } from "../../redux/services/animateSlice";
+import GetAdminData from "../../redux/services/Hooks/GetAdminData";
 
 const Story = () => {
   const [plus, setPlus] = useState(false);
-  const { UserData, Story, admin, adminProfile, userAvatar,updateFeed } = useSelector(
-    (deserializedState) => deserializedState.authSlice
-  );
+  const { UserData, Story, admin, adminProfile, userAvatar, updateFeed } =
+    useSelector((deserializedState) => deserializedState.authSlice);
   const dispatch = useDispatch();
 
   const createStory = () => {
@@ -38,33 +38,41 @@ const Story = () => {
       admin.UID.stringValue
   );
 
-  const getData = async () => {
-    const data = await getDocs(collection(firestore, "story"));
-
-    const doc = data.docs;
-
-    dispatch(addStory(doc));
-  };
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getDocs(collection(firestore, "story"));
-  
-      const doc = data.docs;
-  
-      dispatch(addStory(doc));
+      setIsLoading(true);
+      await getDocs(collection(firestore, "story"))
+        .then((data) => {
+          const doc = data.docs;
+
+          dispatch(addStory(doc));
+        })
+        .finally(() => setIsLoading(false));
     };
     getData();
   }, []);
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getDocs(collection(firestore, "story"));
-  
-      const doc = data.docs;
-  
-      dispatch(addStory(doc));
+      setIsLoading(true);
+
+      await getDocs(collection(firestore, "story"))
+        .then((data) => {
+          const doc = data.docs;
+
+          dispatch(addStory(doc));
+        })
+        .finally(() => setIsLoading(false));
     };
+    const getAdmin = [GetAdminData()];
+
+    Promise.all(getAdmin)
+      .then((data) => {
+        dispatch(addAdmin(data[0]));
+      })
+      .catch((error) => console.log(error));
     getData();
   }, [updateFeed]);
 
@@ -89,6 +97,7 @@ const Story = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
+
   return (
     <div id="story_id" className=" story px-2 rounded-lg  ">
       <div className=" absolute hidden top-0  z-[99999] text-black bg-slate-100 p-1 ">
@@ -167,9 +176,12 @@ const Story = () => {
           </div>
         </div>
 
-        {userStory && <StoryCard data={userStory} translateX={translateX} />}
+        {userStory && !isLoading && (
+          <StoryCard data={userStory} translateX={translateX} />
+        )}
 
         {otherStory?.length > 0 &&
+          !isLoading &&
           otherStory?.map((d) => {
             return (
               <OtherStoryCard
