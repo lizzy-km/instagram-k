@@ -1,67 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  getDownloadURL, ref, listAll } from "firebase/storage";
+import { getDownloadURL, ref, listAll } from "firebase/storage";
 import { storage } from "../../firebase/firebase";
-import {  setStoryId } from "../../redux/services/authSlice";
+import { setChangesSTID, setStoryId } from "../../redux/services/authSlice";
 import { setViewStory } from "../../redux/services/animateSlice";
 import { NavLink } from "react-router-dom";
 
-const StoryCard = ({ translateX }) => {
+const StoryCard = ({ translateX, data }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
-  const dispatch = useDispatch()
-  const [count,setCount] = useState(0)
+  const dispatch = useDispatch();
 
-  const {  admin, adminProfile,userAvatar } = useSelector(
+  const { admin, adminProfile, userAvatar, changesSTID } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
-  const [storySrc, setStorySrc] = useState();
-  const [storyD, setStoryD] = useState();
+  const img_url =
+    data?._document.data.value.mapValue.fields?.STORY_DETAIL?.mapValue.fields
+      ?.STORY_IMAGE_PATH?.mapValue.fields?.downloadURL?.stringValue;
 
   const adminId = localStorage.getItem("adminId");
 
-  const isImage = admin.story?.arrayValue.values[0]?.mapValue.fields?.isImage?.booleanValue
+  const isImage = true;
 
-  const STID = admin.story.arrayValue.values[0].mapValue.fields?.STID?.stringValue
-
-  const storyUrl = async () => {
-    const urls = await getDownloadURL(ref(storage, storySrc));
-    setStoryD(urls);
-  };
-
-  const storyeRef = ref(
-    storage,
-    `user_story/${adminId}/${admin.story.arrayValue.values[0].mapValue.fields?.STID?.stringValue}`
-  );
-
-  const storyList = async () => {
-    const not = await listAll(storyeRef);
-
-    for (let ii = 0; ii < not?.items.length; ii++) {
-      setStorySrc(not.items[ii]?.fullPath);
-    }
-  };
-
-  useEffect(() => {
-    storyList();
-    storyUrl();
-
-  }, []);
-
-  useEffect(() => {
-
-
-    storyUrl();
-  }, [storySrc,count]);
-
-  useEffect(()=> {
-    storyList();
-    storyUrl();
-
-    setCount(count+1)
-  },[admin])
+  const STID = data?.id;
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -78,13 +41,13 @@ const StoryCard = ({ translateX }) => {
     }
   }, [isPlaying]);
 
-  if (storyD?.length > 0)
+  if (img_url?.length > 0)
     return (
-      <div onClick={()=> {
-        dispatch(setViewStory(true),
-        dispatch(setStoryId(STID))
-      )
-      } }
+      <div
+        onClick={() => {
+          dispatch(setViewStory(true), dispatch(setStoryId(STID)));
+          dispatch(setChangesSTID(!changesSTID));
+        }}
         style={{
           translate: -translateX,
         }}
@@ -96,7 +59,7 @@ const StoryCard = ({ translateX }) => {
               {isImage && (
                 <img
                   className=" transition-all  cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-full  h-[100%]  bg-center object-center    object-cover rounded-md "
-                  src={storyD?.length > 0 ? storyD:userAvatar}
+                  src={img_url?.length > 0 ? img_url : userAvatar}
                   alt="story_picture"
                   srcSet=""
                 />
@@ -105,7 +68,7 @@ const StoryCard = ({ translateX }) => {
                 <video
                   className=" rounded-md cursor-pointer "
                   ref={videoRef}
-                  src={storyD}
+                  src={img_url}
                   onClick={handlePlayPause}
                   onMouseEnter={() => {
                     videoRef.current.play();
@@ -121,7 +84,11 @@ const StoryCard = ({ translateX }) => {
           </div>
 
           <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  ">
-            <NavLink  to={`/${adminId}`} onClick={()=> localStorage.setItem('userProfile',adminProfile) } className=" cursor-pointer  flex rounded-full   bg-[#CA3E47] ">
+            <NavLink
+              to={`/${adminId}`}
+              onClick={() => localStorage.setItem("userProfile", adminProfile)}
+              className=" cursor-pointer  flex rounded-full   bg-[#CA3E47] "
+            >
               <img
                 className=" z-[99] rounded-full object-cover p-[3px] w-[40px] h-[40px] "
                 src={adminProfile?.length > 10 ? adminProfile : userAvatar}

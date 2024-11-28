@@ -4,7 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { firestore, storage } from "../../firebase/firebase";
 import Icon from "@mdi/react";
 import { mdiDotsVertical, mdiTrashCanOutline, mdiWindowClose } from "@mdi/js";
-import { deleteField, doc, updateDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  deleteField,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { setViewStory } from "../../redux/services/animateSlice";
 import {
   addAdmin,
@@ -18,85 +24,76 @@ const ViewStoryCard = ({ userData }) => {
     (deserializedState) => deserializedState.authSlice
   );
 
+  console.log(storyId);
+  
+
+  const [storyData, setStoryData] = useState([]);
+
+  const StoryDetail = storyData?.STORY_DETAIL?.mapValue.fields;
+  const StoryOwnerDetail = storyData?.STORY_OWNER_DETAIL?.mapValue.fields;
+  const UID = StoryOwnerDetail?.STOID?.stringValue;
+
+  const img_url =
+    StoryDetail?.STORY_IMAGE_PATH?.mapValue.fields.downloadURL?.stringValue;
+
   const data = userData?.filter((d) =>
-    d?._document.data.value.mapValue.fields?.story.arrayValue.values?.length
-      ? d?._document.data.value.mapValue.fields?.story?.arrayValue?.values[0]
-          ?.mapValue.fields.STID?.stringValue === storyId
+    d?._document?.data?.value.mapValue.fields
+      ? d?._document.data.value.mapValue.fields?.UID?.stringValue === UID
       : false
   )[0]?._document.data.value.mapValue.fields;
 
-  const UID = data?.UID.stringValue;
-  const STID =
-    data?.story?.arrayValue.values[0]?.mapValue.fields?.STID?.stringValue;
-  const UserName = data?.user_name?.stringValue;
+  const STID = storyData?.STID?.stringValue;
+
+  const UserName = StoryOwnerDetail?.STON?.stringValue;
 
   const PFURL =
     data?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;
 
-  useEffect(() => {
-    storyId?.length > 0 && setStoryD("");
-  }, [storyId, changesSTID]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    storyId?.length > 0 && setStoryD("");
-    storyList();
-    storyUrl();
+    const getStoryById = async () => {
+      setIsLoading(true);
+      await getDoc(doc(firestore, "/USER_STORYS", `/${storyId}`))
+        .then((data) =>
+          setStoryData(data?._document?.data?.value.mapValue.fields)
+        )
+        .finally(() => setIsLoading(false));
+    };
+
+    getStoryById();
   }, []);
 
-  const [storySrc, setStorySrc] = useState();
-  const [storyD, setStoryD] = useState();
-
-  const storyUrl = async () => {
-    const urls = await getDownloadURL(ref(storage, storySrc));
-    setStoryD(urls);
-  };
-
-  const storyeRef = ref(storage, `user_story/${UID}/${STID}`);
-
-  const storyList = async () => {
-    const not = await listAll(storyeRef);
-
-    for (let ii = 0; ii < not?.items.length; ii++) {
-      setStorySrc(not.items[ii]?.fullPath);
-    }
-  };
-
   useEffect(() => {
-    storyList();
-  }, [storyId]);
+    const getStoryById = async () => {
+      setIsLoading(true);
+      await getDoc(doc(firestore, "/USER_STORYS", `/${storyId}`))
+        .then((data) =>
+          setStoryData(data?._document?.data?.value.mapValue.fields)
+        )
+        .finally(() => setIsLoading(false));
+    };
 
-  useEffect(() => {
-    storyUrl();
-  }, [storySrc]);
+    getStoryById();
+  }, [changesSTID, updateFeed]);
 
   const [menu, setMenu] = useState(false);
   const getAdmin = [GetAdminData()];
 
   const deleteStory = async () => {
     setMenu(false);
+    const storyRef = doc(firestore, "/USER_STORYS", `/${STID}`);
 
-    const storyRef = doc(firestore, "users", `${UID}`);
-
-    await updateDoc(storyRef, {
-      story: deleteField(),
-    })
-      .then(
-        async (data) =>
-          await updateDoc(storyRef, {
-            story: [
-              {
-                isImage: false,
-              },
-            ],
-          }).then(() => {
-            Promise.all(getAdmin)
-              .then((data) => {
-                dispatch(addAdmin(data[0]));
-                dispatch(setUpdateFeed(!updateFeed));
-                !isDeskTop && dispatch(setViewStory(false))
-              })
-              .catch((error) => console.log(error));
+    await deleteDoc(storyRef)
+      .then((data) =>
+        Promise.all(getAdmin)
+          .then((data) => {
+            dispatch(addAdmin(data[0]));
+            dispatch(setUpdateFeed(!updateFeed));
+            dispatch(setStoryId())
+            !isDeskTop && dispatch(setViewStory(false));
           })
+          .catch((error) => console.log(error))
       )
       .catch((error) => console.log(error));
   };
@@ -104,13 +101,15 @@ const ViewStoryCard = ({ userData }) => {
   const dispatch = useDispatch();
   const { isMobile, isDeskTop } = useSelector((state) => state.animateSlice);
 
+  
   return (
     <div
       style={{
         width: isDeskTop ? "70%" : "100%",
       }}
       className="  z-[9999] h-full relative  rounded-md flex justify-start items-start "
-    >
+    >{
+      storyId?.length > 10 && <>
       <div
         className={` z-[99] relative rounded-t-md backdrop-brightness-[80px] bg-[#21212145] backdrop-blur   flex w-[100%]  gap-3 p-2 `}
       >
@@ -161,14 +160,19 @@ const ViewStoryCard = ({ userData }) => {
         </div>
       </div>
 
-      {storyD && (
+      {!isLoading ? (
         <img
           className=" absolute cursor-pointer w-full h-full object-cover rounded-md "
-          src={storyD}
+          src={img_url}
           alt=""
           srcset=""
         />
+      ) : (
+        <div className=" absolute cursor-pointer bg-[#24242490] w-full h-full object-cover rounded-lg "></div>
       )}
+      </>
+    }
+      
     </div>
   );
 };

@@ -74,7 +74,6 @@ const UpdateData = async (
     await updateDoc(userRef, {
       story: [Data],
     })
-      .then((data) => console.log(data))
       .catch((error) => console.log(error));
   }
 
@@ -82,7 +81,6 @@ const UpdateData = async (
     await updateDoc(userRef, {
       profile: [Data],
     })
-      .then((data) => console.log(data))
       .catch((error) => console.log(error));
   }
 };

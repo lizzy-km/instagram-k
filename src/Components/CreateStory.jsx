@@ -13,12 +13,13 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
-import { storage } from "../firebase/firebase";
+import { firestore, storage } from "../firebase/firebase";
 import UpdateData from "../redux/services/Hooks/UpdateData";
 import { setUpdateFeed } from "../redux/services/authSlice";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
 import Icon from "@mdi/react";
 import { mdiImageAlbum } from "@mdi/js";
+import { doc, setDoc } from "firebase/firestore";
 const CreateStory = () => {
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState(
@@ -29,6 +30,7 @@ const CreateStory = () => {
   const [isImage, setIsImage] = useState(true);
   const [fileSizes, setFileSize] = useState();
   const [fileTypes, setFileType] = useState();
+  const [STID, setSTID] = useState(0);
 
   const { admin, adminProfile, userAvatar, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
@@ -101,11 +103,9 @@ const CreateStory = () => {
 
     setIsImage(fileType === "image" ? true : false);
 
-    const uploadTask =
-      file &&
+    file &&
       (await uploadBytes(storageRef, file)
         .then((data) => {
-          console.log(data);
           UpdateData(
             "story",
             UID,
@@ -118,27 +118,27 @@ const CreateStory = () => {
             {}
           );
           getDownloadURL(data.ref).then((downloadURL) => {
-            setImgUrlUp(downloadURL);
-            console.log("File available at", downloadURL);
+            setImgUrlUp({ downloadURL: downloadURL, fileSize: fileSize });
           });
         })
         .catch((error) => console.log(error)));
   };
 
+
   const CreateNewStory = async (e) => {
+    let FileType;
+    let FileSize;
     const file = e.target.files[0];
 
     const fileSize = e.target.files[0]?.size;
-
-    const STID = nick + "ST" + `${fileSize}`;
 
     const filePath = `user_story/${UID}/${STID}/${file.name}`;
 
     const fileType = checkFileType(file);
 
-    setFileType(fileType);
+    FileType = fileType;
 
-    fileType ? setFileSize(fileSize) : null;
+    fileType ? (FileSize = fileSize) : null;
 
     fileType
       ? uploadStory(file, fileSize, STID, filePath).then(
@@ -148,22 +148,60 @@ const CreateStory = () => {
       : alert("Your file type doesn't allow to post", fileType);
   };
 
-  const newStoryAdded = () => {
-    const Data = {
-      STID: nick + "ST" + `${fileSizes}`,
-      isImage: fileTypes === "image" ? true : false,
-      uploaded_at: Date.now(),
-    };
+  const StoryData = {
+    STID,
+    UPLOADED_AT: Date.now(),
+    STORY_OWNER_DETAIL: {
+      STOID: admin?.UID?.stringValue,
+      STON: admin?.user_name?.stringValue,
+    },
+    STORY_DETAIL: {
+      STORY_IMAGE_PATH: imfurlForUp,
+      LIKES: [
+        {
+          LOID: "0A",
+          LON: "BOT",
+        },
+      ],
+      COMMENTS: [
+        {
+          COID: "0A",
+          CON: "BOT",
+          COMMENTS_DETAIL: {
+            COT: "FIRST COMMENT!",
+            REPLYS: [
+              {
+                RPOID: "1A",
+                RPON: "BOT_01",
+                RPOT: "FIRST REPLY",
+              },
+              {
+                RPOID: admin?.UID?.stringValue,
+                RPON: admin?.user_name?.stringValue,
+                RPOT: "REPLIED BY OWNER",
+              },
+              {
+                RPOID: "2A",
+                RPON: "BOT_02",
+                RPOT: "SECOND REPLY",
+              },
+            ],
+          },
+        },
+      ],
+    },
+  };
 
-    const Datal = {
-      STID: nick + "ST" + `${fileSizes}`,
-      isImage: fileTypes === "image" ? true : false,
-      uploaded_at: Date.now(),
-    };
+  const newStoryAdded = async () => {
+    const userStoryRef = doc(firestore, "USER_STORYS", `/${STID}/`);
 
-    UpdateData("story", UID, "USID", Data, Datal)
-      .then(dispatch(setUpdateFeed(!updateFeed)))
-      .finally(dispatch(setShowStory({ showStory: false })), setImgUrlUp());
+    await setDoc(userStoryRef, StoryData)
+      .then((data) => {
+        dispatch(setUpdateFeed(!updateFeed));
+        setImgUrlUp();
+        dispatch(setShowStory({ showStory: false }));
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -263,7 +301,7 @@ const CreateStory = () => {
           </div>
         </div>
         <div className=" relative flex h-[80%]   overflow-y-hidden max-h-[90%]  flex-col  outline-none justify-between items-center w-[100%] ">
-          {!imfurlForUp ? (
+          {!imfurlForUp?.downloadURL ? (
             <div className=" cursor-pointer self-center h-[250px] flex w-[250px]   rounded-full  ">
               <div className="flex cursor-pointer  items-center justify-center w-full">
                 <label
@@ -274,6 +312,7 @@ const CreateStory = () => {
                     <Icon path={mdiImageAlbum} size={10} />
 
                     <input
+                      onClick={() => setSTID(UID + "_" + Date.now())}
                       onChange={CreateNewStory}
                       id="dropzone-file"
                       type="file"
@@ -288,13 +327,13 @@ const CreateStory = () => {
               {isImage ? (
                 <img
                   className="  h-full object-cover rounded-md "
-                  src={imfurlForUp}
+                  src={imfurlForUp?.downloadURL}
                   alt=""
                 />
               ) : (
                 <video
                   className="  h-auto w-auto object-cover "
-                  src={imfurlForUp}
+                  src={imfurlForUp?.downloadURL}
                   alt=""
                 />
               )}

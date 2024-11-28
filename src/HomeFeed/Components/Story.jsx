@@ -5,6 +5,8 @@ import { addAdmin } from "../../redux/services/authSlice";
 import OtherStoryCard from "./OtherStoryCard";
 import { setShowStory } from "../../redux/services/animateSlice";
 import GetAdminData from "../../redux/services/Hooks/GetAdminData";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { firestore } from "../../firebase/firebase";
 
 const Story = () => {
   const [plus, setPlus] = useState(false);
@@ -16,53 +18,80 @@ const Story = () => {
     setPlus(!plus);
     dispatch(setShowStory(true));
   };
+  const realTime = Date.now(); //Date Now
 
   const userData = UserData;
 
-  const user = userData?.filter((d) =>
-    d?._document.data.value.mapValue.fields?.story.arrayValue.values?.length > 0
-      ? d?._document.data.value.mapValue.fields.story?.arrayValue.values[0]
-          ?.mapValue.fields.STID?.stringValue?.length > 0
-      : false
-  );
+  const [USER_STORYS, setUSER_STORYS] = useState([]);
 
-  const userStory = admin.story.arrayValue.values?.map(
-    (d) => d.mapValue.fields
-  );
+  const users = userData?.filter((usd) => {
+    const STOID = USER_STORYS?.map((ust) => {
+      const STOID =
+        ust?._document.data.value.mapValue.fields?.STORY_OWNER_DETAIL?.mapValue
+          .fields?.STOID?.stringValue;
 
-  const otherStory = userData?.filter(
+      return STOID;
+    });
+
+    return usd.id === STOID[0];
+  });
+
+  const userStory = USER_STORYS?.filter(
     (d) =>
-      d._document.data.value.mapValue.fields.UID.stringValue !==
-      admin.UID.stringValue
+      d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
+        .STOID?.stringValue === admin.UID.stringValue
+  );
+
+  const otherStory = USER_STORYS?.filter(
+    (d) =>
+      d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
+        .STOID?.stringValue !== admin.UID.stringValue
   );
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    const getDataFromAPI = [GetAdminData()];
-    Promise.all(getDataFromAPI)
-      .then((data) => {
-        dispatch(addAdmin(data[0]))
-        setIsLoading(false);
-      })
-      .catch((error) => console.log(error));
+    async function USER_STORY() {
+      setIsLoading(true);
+
+      await getDocs(collection(firestore, "/USER_STORYS"))
+        .then((data) => {
+          setUSER_STORYS(data?.docs);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => setIsLoading(false));
+    }
+    const deleteOldStory = () => {
+      USER_STORYS?.map(async (data) => {
+        const storyRef = doc(firestore, "/USER_STORYS", `/${data?.id}`);
+
+        const miliSec = data?._document?.createTime.timestamp.seconds * 1000;
+
+        const diffTime = realTime - miliSec;
+        const timeInSec = diffTime / 1000;
+        const timeINMin = (timeInSec / 60).toFixed(0);
+        const timeInHr = (timeINMin / 60).toFixed(0);
+
+        timeInHr > 23 ? await deleteDoc(storyRef) : null;
+      });
+    };
+    deleteOldStory()
+    USER_STORY();
   }, []);
 
-  useEffect(() => {
-    setIsLoading(true);
-    const getDataFromAPI = [GetAdminData()];
-    Promise.all(getDataFromAPI)
-      .then((data) => {
-        dispatch(addAdmin(data[0]))
-        setIsLoading(false);
-      })
-      .catch((error) => console.log(error));
-  }, [updateFeed]);
+  // console.log(USER_STORYS[0]?._document?.createTime.timestamp.seconds);
 
-  const pf = admin?.profile?.arrayValue.values?.filter(
-    (d) => d?.mapValue.fields
-  )[0]?.mapValue.fields.PFPATH?.stringValue; // Check this profile picture is currently use
+  useEffect(() => {
+    async function USER_STORY() {
+      setIsLoading(true);
+
+      await getDocs(collection(firestore, "/USER_STORYS"))
+        .then((data) => setUSER_STORYS(data?.docs))
+        .catch((error) => console.log(error))
+        .finally(() => setIsLoading(false));
+    }
+    USER_STORY();
+  }, [updateFeed]);
 
   const [translateX, setTranslateX] = useState(0);
   const [count, setCount] = useState(0);
@@ -99,7 +128,7 @@ const Story = () => {
       >
         {isDeskTop && otherStory?.length > 1 && (
           <>
-            {(user.length + 1 - storyWidth / 157).toFixed(0) > count && (
+            {(users?.length + 1 - storyWidth / 157).toFixed(0) > count && (
               <div className=" nextStory   ">
                 <div
                   onClick={() => translateStoryCard("next")}
@@ -161,18 +190,17 @@ const Story = () => {
         </div>
 
         {userStory && !isLoading && (
-          <StoryCard data={userStory} translateX={translateX} />
+          <StoryCard
+            data={userStory[[userStory?.length - 1]]}
+            translateX={translateX}
+          />
         )}
 
         {otherStory?.length > 0 &&
           !isLoading &&
           otherStory?.map((d) => {
             return (
-              <OtherStoryCard
-                data={d}
-                translateX={translateX}
-                key={d?.UID?.stringValue}
-              />
+              <OtherStoryCard data={d} translateX={translateX} key={d?.id} />
             );
           })}
       </div>

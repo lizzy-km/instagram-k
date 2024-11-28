@@ -14,7 +14,10 @@ const CreatePostBox = () => {
   const [icon, setIcon] = useState(
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34"
   );
+  const [isImage, setIsImage] = useState(true);
 
+  const [PID, setPID] = useState("0");
+  const [imfurlForUp, setImgUrlUp] = useState([]);
   const privacyData = [
     {
       id: "1",
@@ -80,10 +83,23 @@ const CreatePostBox = () => {
       ? firstCharacters?.reduce((prev, curr) => prev + curr)
       : null;
 
-  const [isImage, setIsImage] = useState(true);
+  const uploadPost = async (file, fileSize, PID, filePath) => {
+    const storageRef = file && ref(storage, filePath); // Replace with your desired file path
 
-  const [PID, setPID] = useState("0");
-  const [imfurlForUp, setImgUrlUp] = useState([]);
+    file &&
+      (await uploadBytes(storageRef, file)
+        .then((data) => {
+          console.log(data);
+
+          getDownloadURL(data.ref).then((downloadURL) => {
+            setImgUrlUp([
+              ...imfurlForUp,
+              { downloadURL: downloadURL, fileSize: fileSize },
+            ]);
+          });
+        })
+        .catch((error) => console.log(error)));
+  };
 
   const CreateNewPost = async (e) => {
     let FileType;
@@ -170,29 +186,6 @@ const CreatePostBox = () => {
       })
       .catch((error) => console.log(error));
   }
-
-  const uploadPost = async (file, fileSize, PID, filePath) => {
-    const storageRef = file && ref(storage, filePath); // Replace with your desired file path
-
-    // const fileType = checkFileType(file);
-
-    // setIsImage(fileType === "image" ? true : false);
-
-    file &&
-      (await uploadBytes(storageRef, file)
-        .then((data) => {
-          console.log(data);
-
-          getDownloadURL(data.ref).then((downloadURL) => {
-            setImgUrlUp([
-              ...imfurlForUp,
-              { downloadURL: downloadURL, fileSize: fileSize },
-            ]);
-            console.log("File available at", downloadURL);
-          });
-        })
-        .catch((error) => console.log(error)));
-  };
 
   return (
     <div

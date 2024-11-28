@@ -36,6 +36,7 @@ const PostCard = ({ name, data }) => {
   const [loading, setLoading] = useState(true);
 
   const realTime = Date.now(); //Date Now
+  
   const intg = data.UPLOADED_AT?.integerValue;
   const tsm = data.UPLOADED_AT?.timestampValue;
 

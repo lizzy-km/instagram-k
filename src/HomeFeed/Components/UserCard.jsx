@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setChangesSTID, setStoryId } from "../../redux/services/authSlice";
 
-const UserCard = ({ data }) => {
+const UserCard = ({ data,STID }) => {
   const dispatch = useDispatch();
   
 
+console.log(STID);
 
-  const STID =  data?.story?.arrayValue?.values ? 
-    data?.story?.arrayValue?.values[0]?.mapValue.fields?.STID?.stringValue : []
-  const UserName = data.user_name.stringValue;
+
+  const UserName = data?.user_name?.stringValue;
   const PFURL = data?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue
 
   const { storyId, userAvatar,changesSTID } = useSelector((deserializedState) => deserializedState.authSlice);
@@ -18,6 +18,7 @@ const UserCard = ({ data }) => {
   return (
     <div
       onClick={() => {
+        
         dispatch(setStoryId(STID))
         dispatch(setChangesSTID(!changesSTID))
     }  }
