@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setShowStory,
@@ -24,6 +24,8 @@ import { useNavigate } from "react-router-dom";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
 import Icon from "@mdi/react";
 import { mdiImageAlbum, mdiPlusCircleOutline, mdiPlusOutline } from "@mdi/js";
+import { unmountComponentAtNode } from "react-dom";
+import { clearAllListeners } from "@reduxjs/toolkit";
 const CreateStory = () => {
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState(
@@ -183,7 +185,6 @@ const CreateStory = () => {
       : alert("Your file type doesn't allow to post", fileType);
   };
 
-  const navigate = useNavigate();
 
   const newStoryAdded = () => {
     const Data = {
@@ -202,7 +203,7 @@ const CreateStory = () => {
       .then(dispatch(setUpdateFeed(!updateFeed)))
       .finally(
         dispatch(setShowStory({ showStory: false })),
-        // window.location.reload(true)
+        setImgUrlUp()
       );
   };
 

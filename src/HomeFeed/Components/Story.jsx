@@ -41,39 +41,25 @@ const Story = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getData = async () => {
-      setIsLoading(true);
-      await getDocs(collection(firestore, "story"))
-        .then((data) => {
-          const doc = data.docs;
-
-          dispatch(addStory(doc));
-        })
-        .finally(() => setIsLoading(false));
-    };
-    getData();
+    setIsLoading(true);
+    const getDataFromAPI = [GetAdminData()];
+    Promise.all(getDataFromAPI)
+      .then((data) => {
+        dispatch(addAdmin(data[0]))
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error));
   }, []);
 
   useEffect(() => {
-    const getData = async () => {
-      setIsLoading(true);
-
-      await getDocs(collection(firestore, "story"))
-        .then((data) => {
-          const doc = data.docs;
-
-          dispatch(addStory(doc));
-        })
-        .finally(() => setIsLoading(false));
-    };
-    const getAdmin = [GetAdminData()];
-
-    Promise.all(getAdmin)
+    setIsLoading(true);
+    const getDataFromAPI = [GetAdminData()];
+    Promise.all(getDataFromAPI)
       .then((data) => {
-        dispatch(addAdmin(data[0]));
+        dispatch(addAdmin(data[0]))
+        setIsLoading(false);
       })
       .catch((error) => console.log(error));
-    getData();
   }, [updateFeed]);
 
   const pf = admin?.profile?.arrayValue.values?.filter(
