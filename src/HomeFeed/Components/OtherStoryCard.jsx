@@ -8,10 +8,6 @@ const OtherStoryCard = ({ data, translateX }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef(null);
 
-
-  
-
-
   const { userAvatar, changesSTID, UserData, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
@@ -32,9 +28,7 @@ const OtherStoryCard = ({ data, translateX }) => {
     const STOID = UID;
 
     return usd.id === STOID;
-  })[0]?._document.data.value.mapValue.fields
-
-  
+  })[0]?._document.data.value.mapValue.fields;
 
   const userPfData =
     user?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;

@@ -26,7 +26,7 @@ const Post = () => {
     User_post();
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { // refresh data on Something changes in data (add/remove)
     async function User_post() {
       setIsLoading(true);
 
@@ -38,7 +38,7 @@ const Post = () => {
     User_post();
   }, [updateFeed]);
 
-  const acnUP = USER_POSTS?.docs?.sort((prev, curr) => {
+  const acnUP = USER_POSTS?.docs?.sort((prev, curr) => { // view posts data depend on it's uploaded date
     const currTime =
       +curr?._document.data?.value.mapValue.fields.UPLOADED_AT?.integerValue;
     const prevTime =

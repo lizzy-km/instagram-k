@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setShowStory,
@@ -6,12 +6,10 @@ import {
   isTablet,
 } from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
-import addData from "../redux/services/Hooks/AddData";
 import {
   getDownloadURL,
   ref,
   uploadBytes,
-  uploadBytesResumable,
 } from "firebase/storage";
 import { firestore, storage } from "../firebase/firebase";
 import UpdateData from "../redux/services/Hooks/UpdateData";
@@ -28,8 +26,6 @@ const CreateStory = () => {
   const [privacy, setPrivacy] = useState(false);
   const [imfurlForUp, setImgUrlUp] = useState();
   const [isImage, setIsImage] = useState(true);
-  const [fileSizes, setFileSize] = useState();
-  const [fileTypes, setFileType] = useState();
   const [STID, setSTID] = useState(0);
 
   const { admin, adminProfile, userAvatar, updateFeed } = useSelector(

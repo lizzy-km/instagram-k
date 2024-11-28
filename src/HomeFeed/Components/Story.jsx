@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import StoryCard from "./StoryCard";
 import { useDispatch, useSelector } from "react-redux";
-import { addAdmin } from "../../redux/services/authSlice";
 import OtherStoryCard from "./OtherStoryCard";
 import { setShowStory } from "../../redux/services/animateSlice";
-import GetAdminData from "../../redux/services/Hooks/GetAdminData";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase";
 
@@ -24,7 +22,7 @@ const Story = () => {
 
   const [USER_STORYS, setUSER_STORYS] = useState([]);
 
-  const users = userData?.filter((usd) => {
+  const users = userData?.filter((usd) => { // pull users who has storys data
     const STOID = USER_STORYS?.map((ust) => {
       const STOID =
         ust?._document.data.value.mapValue.fields?.STORY_OWNER_DETAIL?.mapValue
@@ -48,9 +46,9 @@ const Story = () => {
         .STOID?.stringValue !== admin.UID.stringValue
   );
 
-  let OtherStory = [];
+  let OtherStory = []; // Non DuplicateDataFor Other user's Story
 
-  for (let i = 0; i < otherStory.length; i++) {
+  for (let i = 0; i < otherStory.length; i++) { // for remove duplicate data from otherStory
     const data = otherStory[i];
     const prevData = otherStory[i - 1];
     const createTimeP =

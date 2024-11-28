@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDownloadURL, ref, listAll } from "firebase/storage";
-import { storage } from "../../firebase/firebase";
 import { setChangesSTID, setStoryId } from "../../redux/services/authSlice";
 import { setViewStory } from "../../redux/services/animateSlice";
 import { NavLink } from "react-router-dom";
