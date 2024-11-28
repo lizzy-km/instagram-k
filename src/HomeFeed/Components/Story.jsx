@@ -55,12 +55,20 @@ const Story = () => {
       prevData?._document.createTime?.timestamp.seconds * 1000;
     const createTime = data?._document.createTime?.timestamp.seconds * 1000;
 
+    const userId = data?._document?.data?.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields.STOID?.stringValue
+    const userIdP = prevData?._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields.STOID?.stringValue
+
     const TimeDiff = realTime - createTime;
     const TimeDiffP = realTime - createTimeP;
 
-    if (TimeDiff < TimeDiffP) {
-      OtherStory.push(data);
+    if (userId !== userIdP) {
+      OtherStory.push(prevData);
+    }else{
+      if (TimeDiff < TimeDiffP) {
+        OtherStory.push(data);
+      }
     }
+   
   }
 
   const [isLoading, setIsLoading] = useState(true);
