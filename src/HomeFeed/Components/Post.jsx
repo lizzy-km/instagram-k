@@ -1,10 +1,8 @@
-import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { firestore, storage } from "../../firebase/firebase";
+import { firestore } from "../../firebase/firebase";
 import PostCard from "./PostCard";
-import { addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
-import GetUserPost from "./GetUserPost";
+import { collection, getDocs } from "firebase/firestore";
 
 const Post = () => {
   const { isMobile } = useSelector((state) => state.animateSlice);
@@ -39,8 +37,6 @@ const Post = () => {
     }
     User_post();
   }, [updateFeed]);
-
-  
 
   const acnUP = USER_POSTS?.docs?.sort((prev, curr) => {
     const currTime =

@@ -1,5 +1,5 @@
 import { collection, getDocs } from "firebase/firestore";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { firestore } from "../../firebase/firebase";
 
 const GetUserPost = () => {

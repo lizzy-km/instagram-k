@@ -86,7 +86,7 @@ const ViewStoryCard = ({ userData }) => {
   };
 
   const dispatch = useDispatch();
-  const { isTablet, isMobile, isDeskTop } = useSelector(
+  const {  isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
 

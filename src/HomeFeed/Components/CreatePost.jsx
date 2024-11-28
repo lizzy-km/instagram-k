@@ -8,7 +8,7 @@ const CreatePost = () => {
     dispatch(blurOn({ blur: true }));
   };
 
-  const { isTablet, isMobile, isDeskTop } = useSelector(
+  const {  isMobile } = useSelector(
     (state) => state.animateSlice
   );
 

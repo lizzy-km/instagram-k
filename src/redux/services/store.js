@@ -1,12 +1,14 @@
-import { configureStore, createSerializableStateInvariantMiddleware } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  createSerializableStateInvariantMiddleware,
+} from "@reduxjs/toolkit";
 import { authApi } from "../api/AuthApi";
 import authSlice from "./authSlice";
-import  animateSlice  from "./animateSlice";
+import animateSlice from "./animateSlice";
 import { TvApi } from "../api/TvApi";
 import { CollectionsApi } from "../api/CollectionsApis";
 
 const nonSerializableMiddleware = createSerializableStateInvariantMiddleware();
-
 
 export const store = configureStore({
   reducer: {
@@ -15,10 +17,8 @@ export const store = configureStore({
     [TvApi.reducerPath]: TvApi.reducer,
     [CollectionsApi.reducerPath]: CollectionsApi.reducer,
 
-
-
     authSlice: authSlice,
-    animateSlice: animateSlice
+    animateSlice: animateSlice,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -29,9 +29,5 @@ export const store = configureStore({
       TvApi.middleware,
       CollectionsApi.middleware,
       nonSerializableMiddleware
-
-    )
-
-
-
+    ),
 });

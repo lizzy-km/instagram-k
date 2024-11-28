@@ -51,7 +51,6 @@ const OtherStoryCard = ({ data, translateX }) => {
   const [userProfile, setUserProfile] = useState();
 
 
-  const [storyImg, setStoryImg] = useState();
   const [storySrc, setStorySrc] = useState();
   const [storyD, setStoryD] = useState();
 

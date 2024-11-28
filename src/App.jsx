@@ -14,8 +14,6 @@ import "react-toastify/ReactToastify.min.css";
 
 import { useEffect, useState } from "react";
 import {
-  blurOn,
-  setArea,
   setBottomNav,
   setDesktop,
   setMobile,
@@ -25,14 +23,12 @@ import CreatePostBox from "./Components/CreatePostBox";
 import CreateStory from "./Components/CreateStory";
 import GetAdminData from "./redux/services/Hooks/GetAdminData";
 import { addAdmin, addAdminProfile } from "./redux/services/authSlice";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { storage } from "./firebase/firebase";
 import Loading from "./Loading/Loading";
 import ViewStory from "./HomeFeed/Components/ViewStory";
 import Messenger from "./Messenger/Messenger";
 import Noti from "./Noti/Noti";
 import PostDetail from "./PostDetail/PostDetail";
-import { Bounce, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import AddProfileBox from "./Components/AddProfileBox";
 
 function App() {
@@ -41,10 +37,7 @@ function App() {
   );
 
   const {
-    width,
-    height,
     blur,
-    isTablet,
     isMobile,
     isDeskTop,
     showStory,
@@ -111,8 +104,6 @@ function App() {
     const userActivePf = admin?.profile?.arrayValue.values?.filter(
       (d) => d?.mapValue.fields
     )[0]?.mapValue.fields?.PFPATH?.stringValue;
-
-    
 
     dispatch(addAdminProfile(userActivePf?.length > 15 ? userActivePf : ""));
   }, [admin]);

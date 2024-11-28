@@ -1,14 +1,8 @@
-import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const ImageCard = ({ data,UID,PID,url }) => {
 
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [full, setFull] = useState(false);
-
-  console.log(url);
   
 
   function getImageSize(imageLink) {
@@ -32,14 +26,13 @@ const ImageCard = ({ data,UID,PID,url }) => {
   const imageUrl = url;
   getImageSize(imageUrl)
     .then((size) => {
-      setHeight(size?.height);
-      setWidth(size?.width);
+      size
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 
-    const { isTablet, isMobile, isDeskTop } = useSelector(
+    const {  isMobile } = useSelector(
         (state) => state.animateSlice
       );
   return (

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getStorage, getDownloadURL, ref, listAll } from "firebase/storage";
+import {  getDownloadURL, ref, listAll } from "firebase/storage";
 import { storage } from "../../firebase/firebase";
-import { addAdminProfile, setStoryId } from "../../redux/services/authSlice";
+import {  setStoryId } from "../../redux/services/authSlice";
 import { setViewStory } from "../../redux/services/animateSlice";
 import { NavLink } from "react-router-dom";
 
@@ -13,11 +13,10 @@ const StoryCard = ({ translateX }) => {
   const dispatch = useDispatch()
   const [count,setCount] = useState(0)
 
-  const { UserData, admin, adminProfile,hasNewStory,userAvatar } = useSelector(
+  const {  admin, adminProfile,userAvatar } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
-  const [storyImgs, setStoryImgs] = useState();
   const [storySrc, setStorySrc] = useState();
   const [storyD, setStoryD] = useState();
 

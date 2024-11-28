@@ -1,19 +1,11 @@
 import {
-  CollectionReference,
-  Firestore,
-  addDoc,
   arrayRemove,
   arrayUnion,
-  collection,
-  collectionGroup,
   deleteDoc,
   doc,
-  getDocs,
-  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { firestore } from "../../../firebase/firebase";
-import { set } from "firebase/database";
 const UpdateData = async (
   colName = "story",
   UID = "",
@@ -21,26 +13,8 @@ const UpdateData = async (
   Data = {},
   Datal = {}
 ) => {
-  //   function getFirstChars() {
-  //     if (!name) return []; // Handle empty string case
 
-  //     const words = name?.split(" ");
-  //     const firstChars = [];
-  //     for (const word of words) {
-  //       firstChars.push(word[0]);
-  //     }
-  //     return firstChars;
-  //   }
 
-  //   const firstCharacters = getFirstChars();
-
-  //   let nick;
-
-  //   for (let i = 0; i < firstCharacters.length; i++) {
-  //     nick = firstCharacters.reduce((prev, curr) => prev + curr);
-  //   }
-
-  const collectionRef = collection(firestore, "story");
   const postRef = doc(firestore, "/USER_POSTS", `/${PID}`);
   const userRef = doc(firestore, "/users", `/${UID}/`);
   const udRef = doc(firestore, "/USER_POSTS", `/${PID}`);

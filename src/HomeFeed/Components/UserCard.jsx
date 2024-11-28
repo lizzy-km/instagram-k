@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setChangesSTID, setStoryId } from "../../redux/services/authSlice";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { storage } from "../../firebase/firebase";
 
 const UserCard = ({ data }) => {
   const dispatch = useDispatch();
   
 
 
-  const UID = data?.UID.stringValue;
   const STID =  data?.story?.arrayValue?.values ? 
     data?.story?.arrayValue?.values[0]?.mapValue.fields?.STID?.stringValue : []
   const UserName = data.user_name.stringValue;
-  const PFID = data?.profile?.arrayValue.values[0]?.mapValue.fields.PFID.stringValue
   const PFURL = data?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue
 
-  const { storyId, userId,userAvatar,changesSTID } = useSelector((deserializedState) => deserializedState.authSlice);
+  const { storyId, userAvatar,changesSTID } = useSelector((deserializedState) => deserializedState.authSlice);
 
 
 

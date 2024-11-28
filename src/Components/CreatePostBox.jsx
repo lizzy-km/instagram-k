@@ -1,24 +1,14 @@
 import { blurOn, setArea } from "../redux/services/animateSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowStory, isTablet } from "../redux/services/animateSlice";
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
-import addData from "../redux/services/Hooks/AddData";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-  uploadBytesResumable,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { firestore, storage } from "../firebase/firebase";
-import UpdateData from "../redux/services/Hooks/UpdateData";
-import { setHasNewStory, setNotHasNewStory, setUpdateFeed } from "../redux/services/authSlice";
-import { useNavigate } from "react-router-dom";
+import { setUpdateFeed } from "../redux/services/authSlice";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
-import { FactorId } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import Icon from "@mdi/react";
-import { mdiImageAlbum, mdiPlusBoxMultipleOutline } from "@mdi/js";
+import { mdiPlusBoxMultipleOutline } from "@mdi/js";
 const CreatePostBox = () => {
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState(
@@ -46,10 +36,8 @@ const CreatePostBox = () => {
   const dispatch = useDispatch();
   const [privacy, setPrivacy] = useState(false);
   const Create_post = ["Create_post"];
-  const { blur, isMobile, isDeskTop } = useSelector(
-    (state) => state.animateSlice
-  );
-  const { admin, adminProfile, userAvatar,updateFeed } = useSelector(
+  const { blur, isDeskTop } = useSelector((state) => state.animateSlice);
+  const { admin, adminProfile, userAvatar, updateFeed } = useSelector(
     (state) => state.authSlice
   );
 
@@ -69,26 +57,9 @@ const CreatePostBox = () => {
   }, []);
 
   const [detail, setDetail] = useState("");
-  const [imgSrc, setImgSrc] = useState();
-  const [inputHeight, setInputHeight] = useState(50);
-
-  const handleKeyPress = (e) => {
-    if (e.keyCode === 13) {
-      event.preventDefault();
-      setDetail(detail + " " + " \n ");
-      // Check for Enter key
-      //   setInputHeight(inputHeight + 50);
-    }
-    if (e.keyCode === 8 && inputHeight > 50) {
-      // Check for Enter key
-      setInputHeight(inputHeight / 2);
-    }
-  };
 
   const name = admin?.user_name?.stringValue;
-  const email = admin?.email?.stringValue;
 
-  const bio = "It's me " + name;
   const UID = admin?.UID?.stringValue;
 
   function getFirstChars() {
@@ -111,37 +82,29 @@ const CreatePostBox = () => {
 
   const [isImage, setIsImage] = useState(true);
 
- 
-  
-  
-  const [PID, setPID] = useState('0');
+  const [PID, setPID] = useState("0");
   const [imfurlForUp, setImgUrlUp] = useState([]);
 
   const CreateNewPost = async (e) => {
-    
-    
-      let FileType;
-      let FileSize;
-      const file = e.target.files[0];
-  
-      const fileSize = e.target.files[0]?.size;
-  
-      const filePath = `user_post/${UID}/${PID}/${file.name}`;
-  
-      const fileType = checkFileType(file);
-  
-      FileType = fileType;
-  
-      fileType ? (FileSize = fileSize) : null;
-  
-  
-      fileType
-        ? uploadPost(file, fileSize, PID, filePath).then((data) =>
-            console.log(data)
-          )
-        : alert("Your file type doesn't allow to post", fileType);
-    
-  
+    let FileType;
+    let FileSize;
+    const file = e.target.files[0];
+
+    const fileSize = e.target.files[0]?.size;
+
+    const filePath = `user_post/${UID}/${PID}/${file.name}`;
+
+    const fileType = checkFileType(file);
+
+    FileType = fileType;
+
+    fileType ? (FileSize = fileSize) : null;
+
+    fileType
+      ? uploadPost(file, fileSize, PID, filePath).then((data) =>
+          console.log(data)
+        )
+      : alert("Your file type doesn't allow to post", fileType);
   };
 
   async function addUserPost() {
@@ -155,7 +118,7 @@ const CreatePostBox = () => {
         PON: admin?.user_name.stringValue,
       },
       POST_DETAIL: {
-        POST_CAPTION: detail.length > 0 ? detail : false ,
+        POST_CAPTION: detail.length > 0 ? detail : false,
         POST_IMAGE_PATH: imfurlForUp,
         LIKES: [
           {
@@ -198,14 +161,14 @@ const CreatePostBox = () => {
       },
     };
 
-    await setDoc(userPostRef, PostData).then((data) => {
-      dispatch(setUpdateFeed(!updateFeed));
-      setImgUrlUp([])
-      setDetail("")
-      dispatch(blurOn({ blur: false }));
-
-    })
-    .catch((error) => console.log(error));
+    await setDoc(userPostRef, PostData)
+      .then((data) => {
+        dispatch(setUpdateFeed(!updateFeed));
+        setImgUrlUp([]);
+        setDetail("");
+        dispatch(blurOn({ blur: false }));
+      })
+      .catch((error) => console.log(error));
   }
 
   const uploadPost = async (file, fileSize, PID, filePath) => {
@@ -230,10 +193,6 @@ const CreatePostBox = () => {
         })
         .catch((error) => console.log(error)));
   };
-  
-
-
-  
 
   return (
     <div
@@ -382,10 +341,9 @@ const CreatePostBox = () => {
                     className="flex flex-col items-center   justify-center w-[100%] h-[100%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
                   >
                     <div className="flex h-full w-full flex-col cursor-pointer relative items-center justify-center  ">
-                      
-                    <Icon path={mdiPlusBoxMultipleOutline} size={10} />
+                      <Icon path={mdiPlusBoxMultipleOutline} size={10} />
                       <input
-                      onClick={()=> setPID(UID + "_" + Date.now())}
+                        onClick={() => setPID(UID + "_" + Date.now())}
                         onChange={CreateNewPost}
                         id="dropzone-file"
                         type="file"

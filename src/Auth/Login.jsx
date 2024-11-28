@@ -1,36 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { setLogin } from "../redux/services/authSlice";
-import { collection, doc, getDocs } from "firebase/firestore";
 
-import { app, auth, firestore, storage } from "../firebase/firebase";
+import { auth } from "../firebase/firebase";
 import addData from "../redux/services/Hooks/AddData";
 import {
   createUserWithEmailAndPassword,
-  getAuth,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import GetAdminData from "../redux/services/Hooks/GetAdminData";
 import { useForm } from "react-hook-form";
-import { Bounce, ToastContainer, Zoom, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Spin } from "antd";
 
 const Login = () => {
   const [loginState, setLoginState] = useState(true);
   const dispatch = useDispatch();
-  const [userData, setUserData] = useState([]);
-
-  const fetchUser = async () => {
-    await getDocs(collection(firestore, `/users/`)).then((data) => {
-      setUserData(data);
-    });
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   const {
     register,
@@ -38,23 +23,11 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const { admin } = useSelector(
-    (deserializedState) => deserializedState.authSlice
-  );
-
-  // const name = userData.username;
-  // const email = userData.email;
-  // const password = userData.password;
-
-  // const userId = name.replace(/ /g, "_") + "Official";
-  const [userId, setUserId] = useState([]);
-
-  const [isUserExist, setIsUserExist] = useState(false);
+  const [isUserExist] = useState(false);
 
   const SignUp = async (data) => {
     setIsLoading(true);
 
-    const user_name = data.user_name;
     const name = data.name;
     const email = data.email;
     const password = data.password;
@@ -76,31 +49,34 @@ const Login = () => {
       });
   };
 
-  const [hasUserData, setHasUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const SignIn = async (data) => {
     setIsLoading(true);
-  
+
     const user_name = data.user_name;
     const email = data.email;
     const password = data.password;
-  
+
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       // Login successful, navigate or handle user
-      console.log('User logged in:', userCredential);
-  
+      console.log("User logged in:", userCredential);
+
       const getAdmin = [GetAdminData("users", user_name)];
-  
+
       Promise.all(getAdmin)
         .then((data) => {
           setIsLoading(false);
           toast.success("Login successful");
-          window.location.reload(true)
+          window.location.reload(true);
         })
         .catch((error) => console.log(error));
-  
+
       dispatch(setLogin(true));
     } catch (error) {
       setIsLoading(false);
@@ -108,7 +84,6 @@ const Login = () => {
       console.log(error.message);
     }
   };
-  const [value, setValue] = useState("");
 
   const onSubmit = async (data) => {
     loginState === false ? SignUp(data) : SignIn(data);

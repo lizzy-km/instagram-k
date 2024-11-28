@@ -91,15 +91,15 @@ const RightNav = () => {
     );
   };
 
-  const { adminProfile } = useSelector((deserializedState) => deserializedState.authSlice);
+  const { adminProfile } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
 
-  
-
-  const { admin, userAvatar } = useSelector((deserializedState) => deserializedState.authSlice);
+  const { admin, userAvatar } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const [uD, setUD] = useState([]);
 
   const getData = async () => {
     const data = await getDocs(collection(firestore, "users"));
@@ -154,7 +154,6 @@ const RightNav = () => {
             isMobile ? "justify-evenly" : "justify-between px-3 "
           }   backdrop-blur bg-[#2121217c] gap-3 items-center 
            h-${MenuOn && isMobile ? "auto" : "[60px]"} py-2 items-center `}
-           
         >
           <div
             aria-label="Account Setting"
@@ -274,17 +273,18 @@ const RightNav = () => {
               }`}
             >
               <div className=" w-full h-full flex flex-col p-2 justify-start items-start gap-2 ">
-
-                <div     onClick={()=> dispatch(setAddProfile(true)) }               className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#3333336d] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}
->
-<Icon path={mdiPlus} size={1} />
-<p className="font-[500] text-[16px] tracking-wide">Add Profile Picture</p>
-
-
-
+                <div
+                  onClick={() => dispatch(setAddProfile(true))}
+                  className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#3333336d] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}
+                >
+                  <Icon path={mdiPlus} size={1} />
+                  <p className="font-[500] text-[16px] tracking-wide">
+                    Add Profile Picture
+                  </p>
                 </div>
 
-                <NavLink to={`/${admin.UID.stringValue}`}
+                <NavLink
+                  to={`/${admin.UID.stringValue}`}
                   className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#3333336d] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}
                 >
                   <img
@@ -300,14 +300,13 @@ const RightNav = () => {
                 <Link
                   onClick={() => {
                     dispatch(setLogin(false));
-                    dispatch(addAdmin([]))
-                    dispatch(addUserData([]))
+                    dispatch(addAdmin([]));
+                    dispatch(addUserData([]));
 
-                    window.location.reload(true)
+                    window.location.reload(true);
 
                     localStorage.clear();
                     Cookies.remove("adminData");
-
                   }}
                   className=" text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#33333364] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center "
                 >

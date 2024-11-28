@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { addAdmin, setUpdateFeed } from "../redux/services/authSlice";
+import {  setUpdateFeed } from "../redux/services/authSlice";
 import { auth } from "../firebase/firebase";
 
 const LeftNav = () => {
-  const { isTablet, isMobile, isDeskTop } = useSelector(
+  const { isTablet, isMobile } = useSelector(
     (state) => state.animateSlice
   );
   const { updateFeed } = useSelector((deserializedState) => deserializedState.authSlice)
@@ -27,7 +27,6 @@ const LeftNav = () => {
         // window.location.reload(true)
         dispatch(setUpdateFeed(!updateFeed))
 
-        console.log(updateFeed);
         
 
       } }

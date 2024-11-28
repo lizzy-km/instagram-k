@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Icon from "@mdi/react";
 import { Carousel } from "flowbite-react";
 
@@ -8,10 +8,7 @@ import {
   mdiBookmark,
   mdiBookmarkOutline,
   mdiContentCopy,
-  mdiDeleteAlertOutline,
-  mdiDeleteForever,
   mdiDeleteForeverOutline,
-  mdiDeleteOutline,
   mdiDotsHorizontal,
   mdiHeart,
   mdiHeartOutline,
@@ -23,7 +20,7 @@ import ImageCard from "./ImageCard";
 import { setUpdateFeed } from "../../redux/services/authSlice";
 
 const PostCard = ({ name, data }) => {
-  const { userAvatar, UserData, admin, hasNewStory,updateFeed } = useSelector(
+  const { userAvatar, UserData, admin, hasNewStory, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -156,7 +153,6 @@ const PostCard = ({ name, data }) => {
 
     for (let i = 0; i < admin?.shared_posts?.arrayValue?.values?.length; i++) {
       const shared_post = admin?.shared_posts?.arrayValue?.values[i];
-
 
       shared_post?.mapValue.fields?.SHPID?.stringValue === PID &&
         setShared(true);

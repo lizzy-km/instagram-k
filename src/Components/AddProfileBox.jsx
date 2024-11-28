@@ -69,27 +69,8 @@ const AddProfileBox = () => {
     );
   }, []);
 
-  const [detail, setDetail] = useState("");
-  const [imgSrc, setImgSrc] = useState();
-  const [inputHeight, setInputHeight] = useState(50);
-
-  const handleKeyPress = (e) => {
-    if (e.keyCode === 13) {
-      event.preventDefault();
-      setDetail(detail + " " + " \n ");
-      // Check for Enter key
-      //   setInputHeight(inputHeight + 50);
-    }
-    if (e.keyCode === 8 && inputHeight > 50) {
-      // Check for Enter key
-      //   setInputHeight(inputHeight / 2);
-    }
-  };
-
   const name = admin?.user_name?.stringValue;
-  const email = admin?.email?.stringValue;
 
-  const bio = "It's me " + name;
   const UID = admin?.UID?.stringValue;
 
   function getFirstChars() {
@@ -110,23 +91,12 @@ const AddProfileBox = () => {
       ? firstCharacters?.reduce((prev, curr) => prev + curr)
       : null;
 
-  const shortName = nick;
-  const nickName = "qwer";
-  const date = new Date().getUTCMilliseconds();
-
-  const imageFile = imgSrc; // Assuming you have a file input element
-
   const [imfurlForUp, setImgUrlUp] = useState();
   const [isImage, setIsImage] = useState(true);
-
-  const profileData = { PFID: nick + "PF" + `${imgSrc?.size}` };
 
   const uploadStory = async (file, fileSize, PFID, filePath) => {
     const storageRef = file && ref(storage, filePath); // Replace with your desired file path
 
-    const metadata = {
-      contentType: "image/jpeg",
-    };
     const fileType = checkFileType(file);
 
     setIsImage(fileType === "image" ? true : false);

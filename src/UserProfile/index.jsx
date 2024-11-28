@@ -1,12 +1,8 @@
-import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import CreatePost from "../HomeFeed/Components/CreatePost";
-import firebase from "firebase/compat/app";
-import { app, storage } from "../firebase/firebase";
 import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
-  const { adminProfile, userAvatar, admin, UserData } = useSelector(
+  const { userAvatar, UserData } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -19,8 +15,9 @@ const UserProfile = () => {
   const user = UserData?.find((d) => d.id === UID?.user)?._document.data.value
     .mapValue.fields;
 
-  const userProfile = user?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue
-  
+  const userProfile =
+    user?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;
+
   const bg =
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2F328652225_477950631031057_4570664772778110705_n%20(2).jpg?alt=media&token=ada5ce90-591d-47a6-88cb-07e80e9117d7";
 
@@ -31,9 +28,12 @@ const UserProfile = () => {
       }}
       className=" flex flex-col relative top-[-70px]  bg-[#121212] w-full   h-screen max-h-screen overflow-y-auto overflow-x-hidden "
     >
-      <section style={{
-        height: !isDeskTop ? '70%' :'80%'
-      }} className="  w-full absolute flex flex-col justify-center items-center bg-[#242526]  ">
+      <section
+        style={{
+          height: !isDeskTop ? "70%" : "80%",
+        }}
+        className="  w-full absolute flex flex-col justify-center items-center bg-[#242526]  "
+      >
         <div
           className={` absolute w-full h-[70%] top-0 blur-xl opacity-[0.3] brightness-45  `}
         >
@@ -61,9 +61,12 @@ const UserProfile = () => {
             alt=""
             srcset=""
           />
-          <div style={{
-            bottom: !isDeskTop ? '15%' :'1%'
-          }} className=" w-full h-auto absolute left-0 flex justify-start items-center ">
+          <div
+            style={{
+              bottom: !isDeskTop ? "15%" : "1%",
+            }}
+            className=" w-full h-auto absolute left-0 flex justify-start items-center "
+          >
             <div
               style={{
                 width: !isDeskTop ? "70px" : "150px",

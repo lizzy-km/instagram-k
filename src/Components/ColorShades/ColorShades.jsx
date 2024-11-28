@@ -9,10 +9,10 @@ const ColorShades = () => {
   return (
     <div className=" w-[100%] border border-[#333333] p-2 flex gap-6 flex-col justify-between items-start  rounded-md ">
       <div className=" flex  gap-2 justify-between items-center ">
-        
         {colorCode.map((colorCodes) => {
           return (
-            <div onClick={() => setColorInput(shades[colorCodes])}
+            <div
+              onClick={() => setColorInput(shades[colorCodes])}
               key={colorCodes}
               style={{
                 backgroundColor: shades[colorCodes],

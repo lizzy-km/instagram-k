@@ -1,7 +1,6 @@
 export default function checkFileType(file) {
     if (!file || !file?.type) return false; // Handle invalid file input
 
-    const type = 'image/png'
     const reader = new FileReader();
     reader.readAsArrayBuffer(file?.slice(0, 4)); // Read the first 4 bytes (usually enough for MIME type)
 

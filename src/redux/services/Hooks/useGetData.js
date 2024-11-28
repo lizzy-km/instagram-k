@@ -5,17 +5,13 @@ import { addUserData } from "../authSlice";
 import { useEffect, useState } from "react";
 
 export default async function GetData(colName = "empty") {
-  const dispatch = useDispatch()
-  const data = await getDocs(collection(firestore, colName))
-
-
+  const dispatch = useDispatch();
+  const data = await getDocs(collection(firestore, colName));
 
   const content = data?.docs
     ?.map((d) => d)
     ?.map((d) => d._document)
     ?.map(({ data }) => data?.value?.mapValue?.fields);
 
-
-
-  return   content;
+  return content;
 }

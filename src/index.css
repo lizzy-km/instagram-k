@@ -3,23 +3,24 @@
 @tailwind utilities;
 
 body {
-    color: #d4d4d4;
+  color: #d4d4d4;
 }
 
-.cl-internal-b3fm6y, .cl-userButtonPopoverFooter, .cl-internal-uyu30o {
-    display: none !important;
+.cl-internal-b3fm6y,
+.cl-userButtonPopoverFooter,
+.cl-internal-uyu30o {
+  display: none !important;
 }
 
 .active > .out_line {
-    background-color: #ca3e47;
-   
+  background-color: #ca3e47;
 }
 
-*{
-    scrollbar-width: none;
-    scroll-behavior: smooth;
+* {
+  scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
 }

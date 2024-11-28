@@ -1,22 +1,14 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setLogin } from "../redux/services/authSlice";
+import {  useSelector } from "react-redux";
 import LeftNav from "./LeftNav";
 import MidNAv from "./MidNAv";
 import RightNav from "./RightNav";
 
 const NavBar = () => {
-  const dispatch = useDispatch();
+  
 
-  const Login = () => {
-    dispatch(setLogin(true));
-  };
 
-  const Logout = () => {
-    dispatch(setLogin(false));
-  };
-
-  const { isTablet, isMobile, isDeskTop } = useSelector(
+  const {  isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
 

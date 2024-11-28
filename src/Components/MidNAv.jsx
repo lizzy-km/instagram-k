@@ -3,20 +3,25 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Icon from "@mdi/react";
 import { mdiImageMultiple } from "@mdi/js";
-
+import { setUpdateFeed } from "../redux/services/authSlice";
 
 const MidNAv = () => {
-  const { isTablet, isMobile, isDeskTop } = useSelector(
-    (state) => state.animateSlice
-  );
+  const { isTablet, isMobile } = useSelector((state) => state.animateSlice);
+  const { updateFeed } = useSelector((state) => state.authSlice);
+  const dispatch = useDispatch();
   return (
     <section
-    style={{
-      width: isMobile ? '90%' : isTablet ?  '60%' : '40%'
-    }}
-     className="  backdrop-blur-md bg-[#2121217c] rounded-lg h-[60px] flex justify-center items-center  ">
+      style={{
+        width: isMobile ? "90%" : isTablet ? "60%" : "40%",
+      }}
+      className="  backdrop-blur-md bg-[#2121217c] rounded-lg h-[60px] flex justify-center items-center  "
+    >
       <div className=" flex w-[80%] h-full  justify-between items-center ">
-      <NavLink to={"/"} className=" relative py-1 w-[25%] h-full">
+        <NavLink
+          onClick={() => dispatch(setUpdateFeed(!updateFeed))}
+          to={"/"}
+          className=" relative py-1 w-[25%] h-full"
+        >
           <div className=" out_line absolute bottom-0  rounded-t-lg z-[99] w-full h-1 " />
 
           <div className="transition-colors rounded-md py-0 justify-center items-center cursor-pointer hover:bg-slate-600 flex h-full ">
@@ -33,7 +38,7 @@ const MidNAv = () => {
           <div className=" out_line absolute bottom-0  rounded-t-lg z-[99] w-full h-1 " />
 
           <div className="transition-colors rounded-md py-0 justify-center items-center cursor-pointer hover:bg-slate-600 flex h-full ">
-          <Icon path={mdiImageMultiple} size={1} />
+            <Icon path={mdiImageMultiple} size={1} />
           </div>
         </NavLink>
         <NavLink to={"/group"} className=" relative py-1 w-[25%] h-full">

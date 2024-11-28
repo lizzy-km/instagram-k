@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import StoryCard from "./StoryCard";
 import { useDispatch, useSelector } from "react-redux";
-import { addAdmin, addStory } from "../../redux/services/authSlice";
+import { addAdmin } from "../../redux/services/authSlice";
 import OtherStoryCard from "./OtherStoryCard";
-import { collection, getDocs } from "firebase/firestore";
-import { firestore } from "../../firebase/firebase";
 import { setShowStory } from "../../redux/services/animateSlice";
 import GetAdminData from "../../redux/services/Hooks/GetAdminData";
 

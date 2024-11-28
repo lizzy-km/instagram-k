@@ -15,25 +15,29 @@ import {
 } from "firebase/storage";
 import { storage } from "../firebase/firebase";
 import UpdateData from "../redux/services/Hooks/UpdateData";
-import {
-  setHasNewStory,
-  setNotHasNewStory,
-  setUpdateFeed,
-} from "../redux/services/authSlice";
-import { useNavigate } from "react-router-dom";
+import { setUpdateFeed } from "../redux/services/authSlice";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
 import Icon from "@mdi/react";
-import { mdiImageAlbum, mdiPlusCircleOutline, mdiPlusOutline } from "@mdi/js";
-import { unmountComponentAtNode } from "react-dom";
-import { clearAllListeners } from "@reduxjs/toolkit";
+import { mdiImageAlbum } from "@mdi/js";
 const CreateStory = () => {
   const [option, setOption] = useState("Public");
   const [icon, setIcon] = useState(
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FPublic.png?alt=media&token=e3945f3a-c97e-41f0-b44e-a7027f23df34"
   );
+  const [privacy, setPrivacy] = useState(false);
+  const [imfurlForUp, setImgUrlUp] = useState();
+  const [isImage, setIsImage] = useState(true);
+  const [fileSizes, setFileSize] = useState();
+  const [fileTypes, setFileType] = useState();
+
   const { admin, adminProfile, userAvatar, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
+  const { showStory, isMobile } = useSelector((state) => state.animateSlice);
+
+  const Create_story = ["Create_story"];
+
+  const dispatch = useDispatch();
 
   const privacyData = [
     {
@@ -53,11 +57,6 @@ const CreateStory = () => {
     },
   ];
 
-  const dispatch = useDispatch();
-  const [privacy, setPrivacy] = useState(false);
-  const Create_story = ["Create_story"];
-  const { showStory, isMobile } = useSelector((state) => state.animateSlice);
-
   useEffect(() => {
     showStory === false
       ? useChangeChildrenVisibility(Create_story, "hidden")
@@ -73,27 +72,8 @@ const CreateStory = () => {
     );
   }, []);
 
-  const [detail, setDetail] = useState("");
-  const [imgSrc, setImgSrc] = useState();
-  const [inputHeight, setInputHeight] = useState(50);
-
-  const handleKeyPress = (e) => {
-    if (e.keyCode === 13) {
-      event.preventDefault();
-      setDetail(detail + " " + " \n ");
-      // Check for Enter key
-      //   setInputHeight(inputHeight + 50);
-    }
-    if (e.keyCode === 8 && inputHeight > 50) {
-      // Check for Enter key
-      //   setInputHeight(inputHeight / 2);
-    }
-  };
-
   const name = admin?.user_name?.stringValue;
-  const email = admin?.email?.stringValue;
 
-  const bio = "It's me " + name;
   const UID = admin?.UID?.stringValue;
 
   function getFirstChars() {
@@ -114,23 +94,9 @@ const CreateStory = () => {
       ? firstCharacters?.reduce((prev, curr) => prev + curr)
       : null;
 
-  const shortName = nick;
-  const nickName = "qwer";
-  const date = new Date().getUTCMilliseconds();
-
-  const imageFile = imgSrc; // Assuming you have a file input element
-
-  const [imfurlForUp, setImgUrlUp] = useState();
-  const [isImage, setIsImage] = useState(true);
-
-  const storyData = { STID: nick + "ST" + `${imgSrc?.size}` };
-
   const uploadStory = async (file, fileSize, STID, filePath) => {
     const storageRef = file && ref(storage, filePath); // Replace with your desired file path
 
-    const metadata = {
-      contentType: "image/jpeg",
-    };
     const fileType = checkFileType(file);
 
     setIsImage(fileType === "image" ? true : false);
@@ -159,9 +125,6 @@ const CreateStory = () => {
         .catch((error) => console.log(error)));
   };
 
-  const [fileSizes, setFileSize] = useState();
-  const [fileTypes, setFileType] = useState();
-
   const CreateNewStory = async (e) => {
     const file = e.target.files[0];
 
@@ -185,7 +148,6 @@ const CreateStory = () => {
       : alert("Your file type doesn't allow to post", fileType);
   };
 
-
   const newStoryAdded = () => {
     const Data = {
       STID: nick + "ST" + `${fileSizes}`,
@@ -201,10 +163,7 @@ const CreateStory = () => {
 
     UpdateData("story", UID, "USID", Data, Datal)
       .then(dispatch(setUpdateFeed(!updateFeed)))
-      .finally(
-        dispatch(setShowStory({ showStory: false })),
-        setImgUrlUp()
-      );
+      .finally(dispatch(setShowStory({ showStory: false })), setImgUrlUp());
   };
 
   return (
@@ -311,7 +270,6 @@ const CreateStory = () => {
                   for="dropzone-file"
                   className="flex flex-col items-start  opacity-50 justify-start w-full h-full border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
                 >
-
                   <div className="flex  cursor-pointer self-center  flex-col relative items-center justify-center  ">
                     <Icon path={mdiImageAlbum} size={10} />
 

@@ -12,10 +12,10 @@ const initialState = {
   isMobile: false,
   isTablet: false,
   isDeskTop: false,
-  showStory:false,
-  viewStory:false,
-  addProfile:false,
-  bottomNav: true
+  showStory: false,
+  viewStory: false,
+  addProfile: false,
+  bottomNav: true,
 };
 
 const STORAGE_KEY = "Animate";
@@ -73,7 +73,6 @@ export const animateSlice = createSlice({
       state.height = payload.height;
     },
 
-    
     setMobile: (state, { payload }) => {
       state.isMobile = true;
       state.isTablet = false;
@@ -89,13 +88,12 @@ export const animateSlice = createSlice({
       state.isTablet = false;
       state.isDeskTop = true;
     },
-    setViewStory:(state,{payload})=>{
-      state.viewStory = payload
+    setViewStory: (state, { payload }) => {
+      state.viewStory = payload;
     },
-    setBottomNav:(state,{payload})=>{
-      state.bottomNav = payload
-    }
-
+    setBottomNav: (state, { payload }) => {
+      state.bottomNav = payload;
+    },
   },
 });
 
@@ -119,6 +117,6 @@ export const {
   setAddProfile,
   addProfile,
   setBottomNav,
-  bottomNav
+  bottomNav,
 } = animateSlice.actions;
 export default animateSlice.reducer;

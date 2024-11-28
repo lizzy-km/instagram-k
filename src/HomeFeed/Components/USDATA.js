@@ -1,5 +1,5 @@
 import { getDownloadURL, listAll, ref } from "firebase/storage";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { storage } from "../../firebase/firebase";
 import { setImageList } from "../../redux/services/authSlice";
 const USDATA = async({pd,name,UID,data}) => {
