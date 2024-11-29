@@ -228,7 +228,7 @@ const CreateStory = () => {
                 />
               </div>
               <div className=" relative px-2  w-[80%] font-[600] flex flex-col tracking-wide text-[15px] justify-start items-start ">
-                <p>Kaung Myat Soe</p>
+                <p>{admin?.user_name?.stringValue}</p>
                 <div
                   onClick={() => setPrivacy(!privacy)}
                   className="  cursor-pointer hover:brightness-[120%] flex justify-center gap-1 items-center p-1 rounded w-auto h-[25px] bg-[#212121] "
