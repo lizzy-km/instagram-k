@@ -46,7 +46,6 @@ const LeftNav = () => {
     });
   };
 
-  console.log(searchValue);
 
   return (
     <section
