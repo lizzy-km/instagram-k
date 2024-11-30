@@ -26,6 +26,7 @@ const initialState = {
   imageList: [],
   changesSTID: [],
   updateFeed: true,
+  isSearch: false,
   // friend:[]
 };
 
@@ -109,10 +110,15 @@ export const authSlice = createSlice({
     setUpdateFeed: (deserializedState, { payload }) => {
       deserializedState.updateFeed = payload;
     },
+    setIsSearch: (deserializedState, { payload }) => {
+      deserializedState.isSearch = payload;
+    },
   },
 });
 
 export const {
+  setIsSearch,
+  isSearch,
   updateFeed,
   setUpdateFeed,
   setChangesSTID,

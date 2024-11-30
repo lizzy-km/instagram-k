@@ -91,7 +91,7 @@ const RightNav = () => {
     );
   };
 
-  const { adminProfile } = useSelector(
+  const { adminProfile,isSearch } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 

@@ -11,7 +11,9 @@ const NavBar = () => {
   const {  isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
   );
-
+  const { adminProfile,isSearch } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
   return (
     <>
       <header style={{
@@ -20,8 +22,12 @@ const NavBar = () => {
         <LeftNav/>
       {
         isDeskTop && <MidNAv/>
-      }  
-        <RightNav/>
+      } 
+      {
+        isMobile ? !isSearch  ? <RightNav/> : !isMobile ? <RightNav/> :null : <RightNav/>
+      }
+      
+        
       </header>
     </>
   );
