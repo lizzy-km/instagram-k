@@ -113,7 +113,7 @@ const LeftNav = () => {
           }} className=" flex justify-start items-center flex-col px-2 py-3 absolute top-[120%] left-0 w-full min-h-[200px] bg-[#2d2d2d] rounded-xl   " >
               {
                 searchValue?.length > 0 ? searchValue?.map((sv)=> {
-                  return <NavLink to={`/${sv?._document?.data.value.mapValue.fields.UID?.stringValue}`} className=" flex text-lg justify-start items-center p-2 rounded-lg bg-[#333333] gap-2      w-[95%] h-[50px] " >
+                  return <NavLink to={`/${sv?._document?.data?.value.mapValue.fields.UID?.stringValue}`} className=" flex text-lg justify-start items-center p-2 rounded-lg bg-[#333333] gap-2      w-[95%] h-[50px] " >
                     
                     <div className=" bg-[#2d2d2d] p-1 w-[50px] h-[50px] rounded-full " >
                       <img className=" w-[100%] h-[100%] object-cover rounded-full " src={
