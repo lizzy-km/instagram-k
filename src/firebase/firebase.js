@@ -4,7 +4,6 @@ import { getAnalytics } from "firebase/analytics";
 import {  getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-import firebase from "firebase/compat/app";
 
 
 
@@ -20,7 +19,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase?.initializeApp(firebaseConfig)
 // Initialize Firebase Authentication and get a reference to the service
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
