@@ -31,21 +31,22 @@ const LeftNav = () => {
   }, []);
 
   const [searchValue, setValue] = useState("");
-  const [searchText,setSearchText] = useState('')
+  const [searchText, setSearchText] = useState("");
 
   const getSearchData = async (e) => {
     e.preventDefault();
-    setSearchText(e.target.value)
-    await getDocs(query(collection(firestore,"users"),where("user_name","==",e.target.value))).then((data)=>{
-     
-      setValue(data?.docs)
-      
- } )
-        
+    setSearchText(e.target.value);
+    await getDocs(
+      query(
+        collection(firestore, "users"),
+        where("user_name", "==", e.target.value)
+      )
+    ).then((data) => {
+      setValue(data?.docs);
+    });
   };
 
   console.log(searchValue);
-  
 
   return (
     <section
@@ -103,46 +104,56 @@ const LeftNav = () => {
           style={{
             visibility: isSearch ? "visible" : "hidden",
           }}
-          onClick={() =>{
-             dispatch(setIsSearch(false))
-             setSearchText('')
-             setValue([])
-            }}
+          onClick={() => {
+            dispatch(setIsSearch(false));
+            setSearchText("");
+            setValue([]);
+          }}
           className=" cursor-pointer opacity-50  "
           path={mdiCloseCircleMultiple}
           size={1}
-
-         
         />
-         <div  style={{
+        <div
+          style={{
             width: isSearch ? "90%" : "40px",
             visibility: isSearch ? "visible" : "hidden",
-          }} className=" flex justify-start items-center flex-col px-2 py-3 absolute top-[120%] left-0 w-full min-h-[200px] bg-[#2d2d2d] rounded-xl   " >
-              {
-                searchValue?.length > 0 ? searchValue?.map((sv)=> {
-                  return <NavLink to={`/${sv?._document?.data?.value.mapValue.fields.UID?.stringValue}`} className=" flex text-lg justify-start items-center p-2 rounded-lg bg-[#333333] gap-2      w-[95%] h-[50px] " >
-                    
-                    <div className=" bg-[#2d2d2d] p-1 w-[50px] h-[50px] rounded-full " >
-                      <img className=" w-[100%] h-[100%] object-cover rounded-full " src={
-                      sv?._document?.data.value.mapValue.fields.profile.arrayValue.values[0].mapValue.fields.PFPATH.stringValue
-                    } alt="" srcset="" />
-                    </div>
-                          <p>{sv?._document?.data.value.mapValue.fields.user_name?.stringValue}</p>
-                  </NavLink>
-                } 
-                  
-                  
-                ) : (
-                  <div className=" flex p-2 rounded-lg bg-[#333333] w-[95%] h-[40px] " >
-                      <h1>
-                        No search data.
-                      </h1>
+          }}
+          className=" flex justify-start items-center flex-col px-2 py-3 absolute top-[120%] left-0 w-full min-h-[200px] bg-[#2d2d2d] rounded-xl   "
+        >
+          {searchValue?.length > 0 ? (
+            searchValue?.map((sv) => {
+              return (
+                <NavLink
+                  to={`/${sv?._document?.data?.value.mapValue.fields.UID?.stringValue}`}
+                  className=" flex text-lg justify-start items-center p-2 rounded-lg hover-bg-[#333333] gap-2      w-[95%] h-[50px] "
+                >
+                  <div className=" bg-[#2d2d2d] p-1 w-[50px] h-[50px] rounded-full ">
+                    <img
+                      className=" w-[100%] h-[100%] object-cover rounded-full "
+                      src={
+                        sv?._document?.data.value.mapValue.fields.profile
+                          .arrayValue.values[0].mapValue.fields.PFPATH
+                          .stringValue
+                      }
+                      alt=""
+                      srcset=""
+                    />
                   </div>
-                )
-              }
-           
-            
+                  <p>
+                    {
+                      sv?._document?.data.value.mapValue.fields.user_name
+                        ?.stringValue
+                    }
+                  </p>
+                </NavLink>
+              );
+            })
+          ) : (
+            <div className=" flex p-2 rounded-lg bg-[#333333] w-[95%] h-[40px] ">
+              <h1>No search data.</h1>
             </div>
+          )}
+        </div>
       </div>
     </section>
   );
