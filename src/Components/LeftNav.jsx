@@ -31,9 +31,11 @@ const LeftNav = () => {
   }, []);
 
   const [searchValue, setValue] = useState("");
+  const [searchText,setSearchText] = useState('')
 
   const getSearchData = async (e) => {
     e.preventDefault();
+    setSearchText(e.target.value)
     await getDocs(query(collection(firestore,"users"),where("user_name","==",e.target.value))).then((data)=>{
      
       setValue(data?.docs)
@@ -86,6 +88,7 @@ const LeftNav = () => {
         />
         <input
           onChange={(e) => getSearchData(e)}
+          value={searchText}
           placeholder="Search"
           style={{
             width: isSearch ? "80%" : "40px",
@@ -100,7 +103,11 @@ const LeftNav = () => {
           style={{
             visibility: isSearch ? "visible" : "hidden",
           }}
-          onClick={() => dispatch(setIsSearch(false))}
+          onClick={() =>{
+             dispatch(setIsSearch(false))
+             setSearchText('')
+             setValue([])
+            }}
           className=" cursor-pointer opacity-50  "
           path={mdiCloseCircleMultiple}
           size={1}
