@@ -18,6 +18,8 @@ const CreatePostBox = () => {
 
   const [PID, setPID] = useState("0");
   const [imfurlForUp, setImgUrlUp] = useState([]);
+  const[isUploading,setIsUploading] = useState(false)
+
   const privacyData = [
     {
       id: "1",
@@ -84,6 +86,7 @@ const CreatePostBox = () => {
       : null;
 
   const uploadPost = async (file, fileSize, PID, filePath) => {
+    setIsUploading(true)
     const storageRef = file && ref(storage, filePath); // Replace with your desired file path
 
     file &&
@@ -96,6 +99,7 @@ const CreatePostBox = () => {
               ...imfurlForUp,
               { downloadURL: downloadURL, fileSize: fileSize },
             ]);
+            setIsUploading(false)
           });
         })
         .catch((error) => console.log(error)));
@@ -306,7 +310,10 @@ const CreatePostBox = () => {
           </div>
 
           <div className=" relative flex-col h-[85%] p-2 overflow-y-auto max-h-[75%] flex-wrap outline-none p-0 justify-center items-center w-[60%] ">
-            {imfurlForUp?.length > 0 &&
+            { isUploading ?   <div className=" flex justify-center bg-[#242424] w-full h-[90%] items-center p-1 rounded ">
+             
+             </div> :
+            imfurlForUp?.length > 0 &&
               imfurlForUp.reverse().map((d) => {
                 return (
                   <div className=" flex  justify-start w-[100%] flex-col  flex-wrap-reverse h-auto items-start p-1 rounded ">

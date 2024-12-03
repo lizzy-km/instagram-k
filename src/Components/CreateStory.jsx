@@ -27,6 +27,7 @@ const CreateStory = () => {
   const [imfurlForUp, setImgUrlUp] = useState();
   const [isImage, setIsImage] = useState(true);
   const [STID, setSTID] = useState(0);
+  const[isUploading,setIsUploading] = useState(false)
 
   const { admin, adminProfile, userAvatar, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
@@ -95,6 +96,8 @@ const CreateStory = () => {
   const uploadStory = async (file, fileSize, STID, filePath) => {
     const storageRef = file && ref(storage, filePath); // Replace with your desired file path
 
+                setIsUploading(true)
+
     const fileType = checkFileType(file);
 
     setIsImage(fileType === "image" ? true : false);
@@ -115,6 +118,7 @@ const CreateStory = () => {
           );
           getDownloadURL(data.ref).then((downloadURL) => {
             setImgUrlUp({ downloadURL: downloadURL, fileSize: fileSize });
+            setIsUploading(false)
           });
         })
         .catch((error) => console.log(error)));
@@ -297,7 +301,12 @@ const CreateStory = () => {
           </div>
         </div>
         <div className=" relative flex h-[80%]   overflow-y-hidden max-h-[90%]  flex-col  outline-none justify-between items-center w-[100%] ">
-          {!imfurlForUp?.downloadURL ? (
+
+          {
+            isUploading ?   <div className=" flex justify-center bg-[#242424] w-full h-[90%] items-center p-1 rounded ">
+             
+            </div> :
+          !imfurlForUp?.downloadURL ? (
             <div className=" cursor-pointer self-center h-[250px] flex w-[250px]   rounded-full  ">
               <div className="flex cursor-pointer  items-center justify-center w-full">
                 <label

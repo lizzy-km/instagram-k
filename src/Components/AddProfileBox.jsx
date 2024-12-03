@@ -52,6 +52,7 @@ const AddProfileBox = () => {
   const dispatch = useDispatch();
   const [privacy, setPrivacy] = useState(false);
   const Create_story = ["Create_profile"];
+  const [isUploading, setIsUploading] = useState(false);
   const { isMobile, addProfile } = useSelector((state) => state.animateSlice);
 
   useEffect(() => {
@@ -95,6 +96,7 @@ const AddProfileBox = () => {
   const [isImage, setIsImage] = useState(true);
 
   const uploadStory = async (file, fileSize, PFID, filePath) => {
+    setIsUploading(true);
     const storageRef = file && ref(storage, filePath); // Replace with your desired file path
 
     const fileType = checkFileType(file);
@@ -105,7 +107,6 @@ const AddProfileBox = () => {
       file &&
       (await uploadBytes(storageRef, file)
         .then((data) => {
-          console.log(data);
           UpdateData(
             "profile",
             UID,
@@ -118,7 +119,7 @@ const AddProfileBox = () => {
           );
           getDownloadURL(data.ref).then((downloadURL) => {
             setImgUrlUp(downloadURL);
-            console.log("File available at", downloadURL);
+            setIsUploading(false);
           });
         })
         .catch((error) => console.log(error)));
@@ -265,7 +266,9 @@ const AddProfileBox = () => {
           </div>
         </div>
         <div className=" relative flex h-[75%] overflow-y-auto max-h-[75%] flex-col outline-none p-0 justify-between items-center w-full ">
-          {!imfurlForUp ? (
+          {isUploading ? (
+            <div className=" flex justify-center bg-[#242424] w-full h-[90%] items-center p-1 rounded "></div>
+          ) : !imfurlForUp ? (
             <div className=" cursor-pointer self-end h-[75%] flex w-full bg-[#111111]  rounded  ">
               <div className="flex items-center justify-center w-full">
                 <label
