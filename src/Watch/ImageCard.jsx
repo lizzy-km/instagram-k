@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from "react-router-dom";
 
-const ImageCard = ({d}) => {
+const ImageCard = ({d,cardWidth}) => {
     const { userAvatar } = useSelector(
         (deserializedState) => deserializedState.authSlice
       );
@@ -14,12 +14,12 @@ const ImageCard = ({d}) => {
     <div
     style={{
       top:0,
-      width: isMobile ? '90%' :'200px'
+      width: isMobile ? '100%' :cardWidth
     }}
-     className=" relative cursor-pointer  w-[200px] h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
+     className=" relative cursor-pointer   h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
     <img style={{ 
-      width: isMobile ? '100%' :'220px'
-    }} onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" w-[200px] h-full object-cover rounded-lg " src={d.url} alt="" srcset="" />
+      width: isMobile ? '100%' :cardWidth
+    }} onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className="  h-[100%] object-cover rounded-lg " src={d.url} alt="" srcset="" />
 
     <div onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)}  style={{
           visibility: isShow ? 'visible' : 'hidden'
@@ -40,7 +40,7 @@ const ImageCard = ({d}) => {
 
           <img
             className=" w-full   h-full rounded-full object-cover cursor-pointer "
-            src={d.userProfile?.length > 0 ? d.userProfile : userAvatar}
+            src={d?.userProfile?.length > 0 ? d?.userProfile : userAvatar}
             alt=""
             srcset=""
           />

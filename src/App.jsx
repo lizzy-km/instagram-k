@@ -46,7 +46,7 @@ function App() {
     bottomNav,
   } = useSelector((state) => state.animateSlice);
 
-  let ScreenSize = window.innerWidth;
+  let ScreenSize = window?.innerWidth;
 
   const dispatch = useDispatch();
 
@@ -57,11 +57,11 @@ function App() {
   function ResponsiveFun() {
     ScreenSize = window.innerWidth;
 
-    if (ScreenSize < 780) {
+    if (ScreenSize < 770) {
       dispatch(setMobile());
     }
 
-    if (ScreenSize > 800 && ScreenSize < 1150) {
+    if (ScreenSize > 770 && ScreenSize < 1150) {
       dispatch(setTablet());
     }
     if (ScreenSize > 1150) {

@@ -1,78 +1,40 @@
-import { getDownloadURL, listAll, ref } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { storage } from "../../../firebase/firebase";
+import { useDispatch, useSelector } from "react-redux";
 import { setImageList } from "../authSlice";
-const DataCard = ({ name, data }) => {
+const DataCard = ({ data }) => {
   const dispatch = useDispatch();
+  const { userAvatar, UserData, admin, hasNewStory, updateFeed } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
 
-  const hasPf = data?.profile_picture?.arrayValue?.values?.length > 0;
+  const PIP_Length =
+    data?.POST_DETAIL?.mapValue.fields.POST_IMAGE_PATH.arrayValue.values;
+  const POD = data?.POST_OWNER_DETAIL?.mapValue.fields;
 
-  const hasPostD = data?.post?.arrayValue?.values?.length > 0;
+  const url =
+    PIP_Length[PIP_Length?.length - 1]?.mapValue.fields.downloadURL
+      ?.stringValue;
+  const UID = POD?.POID?.stringValue;
 
-  const post = hasPostD ? data?.post?.arrayValue?.values : [];
+  const userProfileById = UserData?.filter((ud) => ud?.id === UID)[0]?._document
+    ?.data.value.mapValue.fields?.profile?.arrayValue.values[0]?.mapValue.fields
+    ?.PFPATH?.stringValue;
 
-  return post.map((d) => {
-    const [userProfile, setUserProfile] = useState();
-    const UID = data.UID.stringValue;
-
-    async function postUrlGen(path) {
-      let u = [];
-      path?.map(
-        async (d) =>
-          await getDownloadURL(ref(storage, d.fullPath)).then((data) => {
-            u.push(data !== u ? data : null);
-
-            dispatch(
-              setImageList({
-                url: u,
-                name: name,
-                userProfile: userProfile,
-                UID: UID,
-              })
-            );
-          })
-      );
-    }
-
-    const imgUrl = async (path) => {
-      const urls = await getDownloadURL(ref(storage, path));
-      setUserProfile(urls);
-    };
-
-    const storageRef = ref(
-      storage,
-      `user_photo/${data?.UID?.stringValue}/${
-        hasPf &&
-        data?.profile_picture?.arrayValue?.values[0]?.mapValue?.fields?.PFID
-          ?.stringValue
-      }`
+  const name = POD?.PON?.stringValue;
+  useEffect(() => {
+    userProfileById?.length > 10 &&  dispatch(
+      setImageList({
+        url,
+        name: name,
+        userProfile: userProfileById,
+        UID: UID,
+      })
     );
+    // console.log(userProfileById);
+    
+  }, [userProfileById]);
 
-    const postRef = ref(
-      storage,
-      `user_post/${data?.UID?.stringValue}/${
-        hasPostD && d?.mapValue?.fields?.PID?.stringValue
-      }`
-    );
-
-    const list = async () => {
-      const not = await listAll(storageRef).then((data) => {
-        imgUrl(data?.items[0]?.fullPath);
-      });
-    };
-
-    const postList = async () => {
-      await listAll(postRef).then((data) => postUrlGen(data.items));
-    };
-
-    useEffect(() => {
-      list();
-      postList();
-    }, []);
-
-    return <></>;
-  });
+  return;
 };
 
 export default DataCard;

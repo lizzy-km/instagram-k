@@ -15,21 +15,22 @@ const Watch = () => {
   );
   const width = document.getElementById("mainWidth");
   const [mainWidth, setMainWidth] = useState(width?.clientWidth);
-  const cardWidth = 200;
-
-  const deskWidth = mainWidth / cardWidth;
-
-  const deskCount = deskWidth > 0 ? deskWidth : 9
-
-  const totalCardRow = isDeskTop
-    ? deskCount
+  const cardWidth = isDeskTop
+    ? (mainWidth / 100) * 10
     : isMobile
-    ? 1
-    : 3;
+    ? mainWidth
+    : isTablet
+    ? (mainWidth / 100) * 30
+    : 200;
+
+  const deskWidth = mainWidth / (+cardWidth + 25);
+
+  const deskCount = deskWidth > 0 ? deskWidth : 7;
+
+  const totalCardRow = isDeskTop ? deskCount : isMobile ? 1 : 3;
 
   const cardPerCol = imageList?.length / totalCardRow;
   let newArray = [];
-
 
   const [realData, setRealData] = useState([]);
 
@@ -38,35 +39,34 @@ const Watch = () => {
     setMainWidth(width?.clientWidth);
   });
 
- 
-
   useEffect(() => {
     for (let i = 0; i < totalCardRow?.toFixed(0); i++) {
-      newArray?.push([imageList.slice(i * cardPerCol, cardPerCol * (i +1))]);
+      newArray?.push([imageList.slice(i * cardPerCol, cardPerCol * (i + 1))]);
       setRealData(newArray);
     }
   }, [imageList, UserData]);
 
   return (
     <div
-
       id="mainWidth"
       className=" relative pt-[100px]  h-auto flex  min-h-screen     w-[95%] p-2   justify-center items-center  "
     >
-      <div  className=" flex w-auto justify-center  gap-3 rounded-lg  items-center">
-        {realData.reverse()?.map((d,index) => {
+      <div className=" flex w-auto justify-center  gap-3 rounded-lg  items-center">
+        {realData.reverse()?.map((d, index) => {
           return (
-            <div key={index} className="  place-self-start justify-center   w-full flex flex-wrap gap-[16px] ">
+            <div
+              key={index}
+              className="  place-self-start justify-center   w-full flex flex-wrap gap-[16px] "
+            >
               {d?.length > 0 &&
                 d[0]?.map((dd) => {
-                  return <ImageCard key={dd.url} d={dd} />;
+                  return <ImageCard cardWidth={cardWidth} key={dd.url} d={dd} />;
                 })}
             </div>
           );
         })}
       </div>
       <GetData />
-
     </div>
   );
 };
