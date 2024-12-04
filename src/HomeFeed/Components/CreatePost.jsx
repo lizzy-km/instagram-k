@@ -36,7 +36,7 @@ const CreatePost = () => {
           <div className=" flex justify-between gap-2 items-center w-full h-full   ">
             <div className=" flex cursor-pointer  rounded-full  bg-[#333333] ">
               <img
-                className=" hover:brightness-75 rounded-full object-cover w-[40px] h-[40px] p-[3px]"
+                className=" invert-none hover:brightness-75 rounded-full object-cover w-[40px] h-[40px] p-[3px]"
                 src={adminProfile?.length > 0 ? adminProfile:userAvatar}
                 alt=""
                 srcSet=""
@@ -46,7 +46,7 @@ const CreatePost = () => {
               <input
                 onClick={() => createPost()}
                 placeholder={`What's on your mind, ${firstWord}?`}
-                className=" outline-none bg-transparent px-4 text-[#d4d4d4] w-full rounded-full h-[40px] "
+                className="  outline-none bg-transparent px-4 text-[#d4d4d4] w-full rounded-full h-[40px] "
                 type="text"
                 name=""
                 id=""

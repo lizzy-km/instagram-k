@@ -138,8 +138,9 @@ function App() {
       }
     });
 
- 
+      const allParagraphs = document.querySelectorAll('img')
 
+     
   return (
     <section
       id="page"

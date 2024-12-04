@@ -24,7 +24,7 @@ const UserCard = ({ data, STID ,UID}) => {
     >
       <div className=" flex justify-center items-center p-1 rounded-full bg-[#212121] ">
         <img
-          className=" w-[45px] h-[45px] rounded-full object-cover object-center "
+          className=" w-[45px] invert-none h-[45px] rounded-full object-cover object-center "
           src={PFURL?.length > 4 ? PFURL : userAvatar}
           alt=""
           srcset=""

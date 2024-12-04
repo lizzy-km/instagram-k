@@ -168,7 +168,7 @@ const RightNav = () => {
                   style={{
                     opacity: account === true ? "0.5" : "1",
                   }}
-                  className=" cursor-pointer hover:brightness-75 w-[40px] h-[40px] p-[3px]  bg-center object-center    object-cover rounded-full "
+                  className=" invert-none cursor-pointer hover:brightness-75 w-[40px] h-[40px] p-[3px]  bg-center object-center    object-cover rounded-full "
                   src={adminProfile?.length > 10 ? adminProfile : userAvatar}
                   alt="profile_picture"
                   srcSet=""
@@ -180,7 +180,7 @@ const RightNav = () => {
                   style={{
                     rotate: account === true ? "180deg" : "0deg",
                   }}
-                  className=" w-[14px] "
+                  className=" invert-none w-[14px] "
                   src={
                     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FArrowDown.svg?alt=media&token=9c43da96-a4d0-4894-bc09-54ea459ee604"
                   }
@@ -208,7 +208,7 @@ const RightNav = () => {
                 style={{
                   opacity: noti === true ? "0.5" : "1",
                 }}
-                className=" cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
+                className=" invert-1 cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
                 src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FNoti.svg?alt=media&token=1df0d59a-57be-43c4-8c62-fbf48aa8846e"
                 alt="profile_picture"
                 srcSet=""
@@ -225,7 +225,7 @@ const RightNav = () => {
                 style={{
                   opacity: messenger === true ? "0.5" : "1",
                 }}
-                className=" cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
+                className=" invert-1 cursor-pointer hover:brightness-75 h-[100%]  bg-center object-center    object-cover rounded-full "
                 src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FMessenger.svg?alt=media&token=7f30cf84-cc33-4056-a28b-3741bb2aa9c2"
                 alt="profile_picture"
                 srcSet=""
@@ -242,7 +242,7 @@ const RightNav = () => {
                 style={{
                   opacity: menu === true ? "0.5" : "1",
                 }}
-                className=" cursor-pointer hover:brightness-75 h-full   bg-center object-center    object-cover  "
+                className=" invert-1 cursor-pointer hover:brightness-75 h-full   bg-center object-center    object-cover  "
                 src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FMenu.svg?alt=media&token=065ece43-6480-486b-98e7-333c1be28381"
                 alt="profile_picture"
                 srcSet=""
@@ -288,7 +288,7 @@ const RightNav = () => {
                   className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#3333336d] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}
                 >
                   <img
-                    className=" hover:brightness-75  rounded-full object-cover w-[40px] h-[40px] p-[3px] "
+                    className=" invert-none hover:brightness-75  rounded-full object-cover w-[40px] h-[40px] p-[3px] "
                     src={adminProfile?.length > 0 ? adminProfile : userAvatar}
                     alt=""
                     srcSet=""

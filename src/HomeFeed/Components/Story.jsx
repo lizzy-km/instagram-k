@@ -171,7 +171,7 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
           <div className=" h-full flex flex-col justify-between items-center rounded-md ">
             <div className="max-h-[80%] h-[80%] z-0  bg-center object-center overflow-hidden    object-cover rounded-t-md ">
               <img
-                className=" invert-0 transition-all  cursor-pointer hover:scale-105  h-[100%] w-[145px]  bg-center object-center    object-cover rounded-t-md "
+                className=" invert-none transition-all  cursor-pointer hover:scale-105  h-[100%] w-[145px]  bg-center object-center    object-cover rounded-t-md "
                 src={adminProfile?.length > 10 ? adminProfile : userAvatar}
                 alt="profile_picture"
                 srcSet=""

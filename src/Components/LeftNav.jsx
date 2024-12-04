@@ -67,7 +67,7 @@ const LeftNav = () => {
         className=" cursor-pointer flex rounded-full justify-center items-center "
       >
         <img
-          className=" h-[40px] w-[40px] object-cover "
+          className=" h-[40px]  w-[40px] object-cover "
           src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FLogo.svg?alt=media&token=e93a02de-9b36-48e1-a74c-cd7af8dea71a"
           alt=""
         />

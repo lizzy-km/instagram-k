@@ -39,7 +39,7 @@ const ImageCard = ({d,cardWidth}) => {
 
 
           <img
-            className=" invert-0 w-full   h-full rounded-full object-cover cursor-pointer "
+            className=" invert-none w-full   h-full rounded-full object-cover cursor-pointer "
             src={d?.userProfile?.length > 0 ? d?.userProfile : userAvatar}
             alt=""
             srcset=""

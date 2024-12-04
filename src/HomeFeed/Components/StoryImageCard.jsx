@@ -39,7 +39,7 @@ const StoryImageCard = ({ PID, url }) => {
         style={{
           width: isMobile ? "100%" : "100%",
         }}
-        className=" invert-0 cursor-pointer h-full   bg-[#242526] rounded-xl   snap-center transition-all   object-cover object-top  "
+        className=" invert-none cursor-pointer h-full   bg-[#242526] rounded-xl   snap-center transition-all   object-cover object-top  "
         alt=""
         srcset=""
       />

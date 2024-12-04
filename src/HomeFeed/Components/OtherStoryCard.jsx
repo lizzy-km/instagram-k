@@ -118,7 +118,7 @@ const OtherStoryCard = ({ data, translateX }) => {
               >
                 {img_url && (
                   <img
-                    className=" transition-all  cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-[100%] h-[100%]  bg-center object-center    object-cover rounded-md "
+                    className=" invert-none transition-all  cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-[100%] h-[100%]  bg-center object-center    object-cover rounded-md "
                     src={img_url?.length > 0 ? img_url : userAvatar}
                     alt="story_picture"
                     srcSet=""
@@ -126,7 +126,7 @@ const OtherStoryCard = ({ data, translateX }) => {
                 )}
                 {img_url && (
                   <video
-                    className=" rounded-md cursor-pointer "
+                    className=" invert-none rounded-md cursor-pointer "
                     ref={videoRef}
                     src={img_url}
                     onClick={handlePlayPause}
@@ -156,7 +156,7 @@ const OtherStoryCard = ({ data, translateX }) => {
                     {d.mapValue.fields.isActive.booleanValue === true ? (
                       <img
                         key={d.mapValue.fields.PFID.stringValue}
-                        className=" z-[99] rounded-full object-cover w-full h-full "
+                        className=" invert-none z-[99] rounded-full object-cover w-full h-full "
                         src={userPfData?.length > 0 ? userPfData : userAvatar}
                         alt=""
                         srcSet=""

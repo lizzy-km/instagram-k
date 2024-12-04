@@ -75,7 +75,7 @@ const UserProfile = () => {
               className=" cursor-pointer p-1 bg-[#333333] rounded-full  "
             >
               <img
-                className=" invert-0 rounded-full h-[100%] w-full  object-cover "
+                className=" invert-none rounded-full h-[100%] w-full  object-cover "
                 src={userProfile?.length > 10 ? userProfile : userAvatar}
                 alt=""
                 srcset=""

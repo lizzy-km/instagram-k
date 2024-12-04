@@ -225,7 +225,7 @@ const CreateStory = () => {
             <div className=" w-full h-[50px] flex justify-start items-start  ">
               <div className=" cursor-pointer relative flex w-[50px]  h-[100%] justify-center items-center  rounded-full ">
                 <img
-                  className=" hover:brightness-75  rounded-full object-cover w-full h-full "
+                  className=" invert-none hover:brightness-75  rounded-full object-cover w-full h-full "
                   src={adminProfile?.length > 15 ? adminProfile : userAvatar}
                   alt=""
                   srcSet=""
@@ -238,7 +238,7 @@ const CreateStory = () => {
                   className="  cursor-pointer hover:brightness-[120%] flex justify-center gap-1 items-center p-1 rounded w-auto h-[25px] bg-[#212121] "
                 >
                   <div className="  flex justify-center items-center  ">
-                    <img className="  w-[14px] flex   " src={icon} alt="" />
+                    <img className=" invert-none  w-[14px] flex   " src={icon} alt="" />
                   </div>
                   <div className=" tracking-wide font-normal text-[12px] flex flex-col justify-center items-center ">
                     {option}
@@ -249,7 +249,7 @@ const CreateStory = () => {
                       style={{
                         rotate: privacy === true ? "180deg" : "0deg",
                       }}
-                      className=" w-[16px] h-[16px] "
+                      className=" invert-none w-[16px] h-[16px] "
                       src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2FArrowDown.svg?alt=media&token=9c43da96-a4d0-4894-bc09-54ea459ee604"
                       alt=""
                     />
@@ -279,7 +279,7 @@ const CreateStory = () => {
                         className=" px-1 justify-between items-center gap-1 rounded py-1 cursor-pointer hover:bg-[#333333] flex hover:brightness-125 "
                       >
                         <img
-                          className=" h-[14px] w-[14px] flex   "
+                          className=" invert-none h-[14px] w-[14px] flex   "
                           src={data.icon}
                           alt=""
                         />
@@ -331,13 +331,13 @@ const CreateStory = () => {
             <div className=" flex justify-center w-full h-[90%] items-center p-1 rounded ">
               {isImage ? (
                 <img
-                  className="  h-full object-cover rounded-md "
+                  className=" invert-none  h-full object-cover rounded-md "
                   src={imfurlForUp?.downloadURL}
                   alt=""
                 />
               ) : (
                 <video
-                  className="  h-auto w-auto object-cover "
+                  className=" invert-none  h-auto w-auto object-cover "
                   src={imfurlForUp?.downloadURL}
                   alt=""
                 />

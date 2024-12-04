@@ -238,7 +238,7 @@ const PostCard = ({ name, data }) => {
                 <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] rounded-sm bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
 
                 <img
-                  className=" w-full   h-full rounded-full object-cover cursor-pointer "
+                  className=" invert-none w-full   h-full rounded-full object-cover cursor-pointer "
                   src={
                     userPfData?.PFPATH?.stringValue?.length > 0
                       ? userPfData?.PFPATH?.stringValue

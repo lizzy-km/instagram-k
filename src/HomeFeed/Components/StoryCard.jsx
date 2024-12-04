@@ -57,7 +57,7 @@ const StoryCard = ({ translateX, data }) => {
             <>
               {isImage && (
                 <img
-                  className=" transition-all  cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-full  h-[100%]  bg-center object-center    object-cover rounded-md "
+                  className=" invert-none transition-all  cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-full  h-[100%]  bg-center object-center    object-cover rounded-md "
                   src={img_url?.length > 0 ? img_url : userAvatar}
                   alt="story_picture"
                   srcSet=""
@@ -65,7 +65,7 @@ const StoryCard = ({ translateX, data }) => {
               )}
               {!isImage && (
                 <video
-                  className=" rounded-md cursor-pointer "
+                  className=" invert-none rounded-md cursor-pointer "
                   ref={videoRef}
                   src={img_url}
                   onClick={handlePlayPause}
@@ -89,7 +89,7 @@ const StoryCard = ({ translateX, data }) => {
               className=" cursor-pointer  flex rounded-full   bg-[#CA3E47] "
             >
               <img
-                className=" z-[99] rounded-full object-cover p-[3px] w-[40px] h-[40px] "
+                className=" invert-none z-[99] rounded-full object-cover p-[3px] w-[40px] h-[40px] "
                 src={adminProfile?.length > 10 ? adminProfile : userAvatar}
                 alt=""
                 srcSet=""
