@@ -1,31 +1,64 @@
+import { mdiTruckDelivery } from "@mdi/js";
 import React, { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 
-const ImageCard = ({d,cardWidth}) => {
-    const { userAvatar } = useSelector(
-        (deserializedState) => deserializedState.authSlice
-      );
-      const { isTablet, isMobile, isDeskTop } = useSelector(
-        (state) => state.animateSlice
-      );
-      const [isShow,setIsShow] = useState(false)
+const ImageCard = ({ d, cardWidth }) => {
+  const { userAvatar } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  function getImageSize(imageLink) {
+    setIsLoading(true);
+
+    Promise.all(imageLink)
+      .then((data) => {
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error));
+  }
+
+  useEffect(() => {
+    getImageSize(d?.url);
+  }, []);
+
+  const [isShow, setIsShow] = useState(false);
   return (
     <div
-    style={{
-      top:0,
-      width: isMobile ? '100%' :cardWidth
-    }}
-     className=" relative cursor-pointer   h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
-    <img style={{ 
-      width: isMobile ? '100%' :cardWidth
-    }} onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" invert-none  h-[100%] object-cover rounded-lg " src={d.url} alt="" srcset="" />
+      style={{
+        top: 0,
+        width: isMobile ? "100%" : cardWidth,
+      }}
+      className=" relative cursor-pointer   h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg "
+    >
+      {isLoading === true ? (
+        <div className=" invert-none w-full bg-[#24242457]  h-[100%] object-cover rounded-lg "></div>
+      ) : (
+        <img
+          style={{
+            width: isMobile ? "100%" : cardWidth,
+          }}
+          className=" invert-none  h-[100%] object-cover rounded-lg "
+          src={d?.url}
+          alt=""
+          srcset=""
+        />
+      )}
 
-    <div onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)}  style={{
-          visibility: isShow ? 'visible' : 'visible'
-        }} className="  w-full h-auto bg-[#21212157] backdrop-blur  gap-0  left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start ">
+      <div
+        onMouseEnter={() => setIsShow(true)}
+        onMouseLeave={() => setIsShow(false)}
+        style={{
+          visibility: isShow ? "visible" : "visible",
+        }}
+        className="  w-full h-auto bg-[#21212157] backdrop-blur  gap-0  left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start "
+      >
         <NavLink
-       
           to={`/${d.UID}`}
           className="  relative   rounded-sm w-[26px]  h-[26px] justify-center items-center   "
         >
@@ -34,9 +67,6 @@ const ImageCard = ({d,cardWidth}) => {
           <div className=" -z-10 rotate-[40deg] rounded-sm   bg-[#ca3e4796] w-[26px] h-[26px] absolute "></div>
           <div className=" -z-10 rotate-[60deg] rounded-sm   bg-[#ca3e4796] w-[26px] h-[26px] absolute "></div>
           <div className=" -z-10 rotate-[80deg] rounded-sm   bg-[#ca3e4796] w-[26px] h-[26px] absolute "></div>
-
-
-
 
           <img
             className=" invert-none w-full   h-full rounded-full object-cover cursor-pointer "
@@ -52,8 +82,8 @@ const ImageCard = ({d,cardWidth}) => {
           <p>{d.name}</p>
         </NavLink>
       </div>
-  </div>
-  )
-}
+    </div>
+  );
+};
 
-export default ImageCard
+export default ImageCard;

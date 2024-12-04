@@ -1,56 +1,42 @@
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
 
-const ImageCard = ({PID,url }) => {
-
-  
-
+const ImageCard = ({ PID, url }) => {
+  const [isLoading, setIsLoading] = useState(true);
 
   function getImageSize(imageLink) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = function () {
-        const imageSize = {
-          width: this.width,
-          height: this.height,
-        };
-        resolve(imageSize);
-      };
-      img.onerror = function () {
-        reject(new Error("Failed to load image"));
-      };
-      img.src = imageLink;
-    });
+    setIsLoading(true);
+
+    Promise.all(imageLink)
+      .then((data) => {
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error));
   }
 
-  // Usage example
-  const imageUrl = url;
-  getImageSize(imageUrl)
-    .then((size) => {
-      size
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  useEffect(() => {
+    getImageSize(url);
+  }, []);
 
-    const {  isMobile } = useSelector(
-        (state) => state.animateSlice
-      );
+  const { isMobile } = useSelector((state) => state.animateSlice);
   return (
-    <div className=" w-full h-full "  >
-      <img
-      src={url}
-      key={PID+"_"+url}
-      id="imgW"
-      style={{
-        width: isMobile ? '100%' :'100%'
-      }}
-      className=" invert-none cursor-pointer h-full   bg-[#242526] rounded-xl   snap-center transition-all   object-cover object-top  "
-      alt=""
-      srcset=""
-    />
+    <div className=" w-full h-full ">
+      {isLoading === true ? (
+        <div className=" invert-none cursor-pointer h-[350px] w-[400px]   bg-[#24252657] rounded-xl   snap-center transition-all   object-cover object-top  "></div>
+      ) : (
+        <img
+          src={url}
+          key={PID + "_" + url}
+          id="imgW"
+          style={{
+            width: isMobile ? "100%" : "100%",
+          }}
+          className=" invert-none cursor-pointer h-full   bg-[#242526] rounded-xl   snap-center transition-all   object-cover object-top  "
+          alt=""
+          srcset=""
+        />
+      )}
     </div>
-    
   );
 };
 
