@@ -9,9 +9,11 @@
 }
 
 * :focus :active  {
-  --tw-ring-color: none !important,
+  --tw-ring-color: none !important;
   border-color: none !important;
 }    
+
+
 
 
 
@@ -31,7 +33,7 @@
     font-size: 1rem;
     line-height: 1.5rem;
     --tw-shadow: 0 0 #0000;
-    --tw-ring-color: none !important,
+    --tw-ring-color: none !important
 }
 
 .backdrop-shadow {

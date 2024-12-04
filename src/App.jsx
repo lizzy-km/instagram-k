@@ -77,7 +77,7 @@ function App() {
     ResponsiveFun();
   }, [window.innerWidth]);
 
-  const { admin, hasNewStory,updateFeed } = useSelector(
+  const { admin, hasNewStory, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -138,10 +138,12 @@ function App() {
       }
     });
 
+ 
+
   return (
     <section
       id="page"
-      className=" bg-main relative snap-mandatory overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen "
+      className="    bg-main relative snap-mandatory overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen "
     >
       <div className=" absolute right-0 max-h-[70px] h-[70px] top-0 ">
         <ToastContainer autoClose={1000} />
@@ -149,46 +151,54 @@ function App() {
 
       <BrowserRouter>
         {isAuth === true && <NavBar />}
-        <section
-          style={{
-            width: blur === true ? "100%" : "0%",
-            height: blur === true ? "100vh" : "0%",
-            alignItems: isMobile ? "start" : "center",
-          }}
-          className={`flex i py-[2rem] overflow-hidden justify-center z-[9999999]   fixed bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
-        >
-          <CreatePostBox />
-        </section>
-        <section
-          style={{
-            width: showStory === true ? "100%" : "0%",
-            height: showStory === true ? "100vh" : "0%",
-            alignItems: isMobile ? "start" : "center",
-          }}
-          className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
-        >
-          <CreateStory />
-        </section>
-        <section
-          style={{
-            width: addProfile === true ? "100%" : "0%",
-            height: addProfile === true ? "100vh" : "0%",
-            alignItems: isMobile ? "start" : "center",
-          }}
-          className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
-        >
-          <AddProfileBox />
-        </section>
-        <section
-          style={{
-            display: viewStory ? "flex" : "none",
-          }}
-          className={`fixed flex justify-center items-center ${
-            isDeskTop && "p-2"
-          } w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] `}
-        >
-          <ViewStory />
-        </section>
+        {blur === true && (
+          <section
+            style={{
+              width: blur === true ? "100%" : "0%",
+              height: blur === true ? "100vh" : "0%",
+              alignItems: isMobile ? "start" : "center",
+            }}
+            className={`flex i py-[2rem] overflow-hidden justify-center z-[9999999]   fixed bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+          >
+            <CreatePostBox />
+          </section>
+        )}
+        {showStory === true && (
+          <section
+            style={{
+              width: showStory === true ? "100%" : "0%",
+              height: showStory === true ? "100vh" : "0%",
+              alignItems: isMobile ? "start" : "center",
+            }}
+            className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+          >
+            <CreateStory />
+          </section>
+        )}
+        {addProfile === true && (
+          <section
+            style={{
+              width: addProfile === true ? "100%" : "0%",
+              height: addProfile === true ? "100vh" : "0%",
+              alignItems: isMobile ? "start" : "center",
+            }}
+            className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+          >
+            <AddProfileBox />
+          </section>
+        )}
+        {viewStory && (
+          <section
+            style={{
+              display: viewStory ? "flex" : "none",
+            }}
+            className={`fixed flex justify-center items-center ${
+              isDeskTop && "p-2"
+            } w-full z-[9999] h-full backdrop-blur backdrop-brightness-50 bg-[#21212152] `}
+          >
+            <ViewStory />
+          </section>
+        )}
 
         <section className=" w-full snap-center  absolute  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center ">
           {isAuth === true ? (

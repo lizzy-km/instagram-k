@@ -56,7 +56,7 @@ const Watch = () => {
           return (
             <div
               key={index}
-              className="  place-self-start justify-center   w-full flex flex-wrap gap-[16px] "
+              className="  place-self-start justify-center   w-full flex flex-wrap gap-[2rem] "
             >
               {d?.length > 0 &&
                 d[0]?.map((dd) => {

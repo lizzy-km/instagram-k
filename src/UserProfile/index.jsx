@@ -38,7 +38,7 @@ const UserProfile = () => {
           className={` absolute w-full h-[70%] top-0 blur-xl opacity-[0.3] brightness-45  `}
         >
           <img
-            className=" rounded-lg h-full w-full  object-cover "
+            className=" invert-0 rounded-lg h-full w-full  object-cover "
             src={bg}
             alt=""
             srcset=""
@@ -56,7 +56,7 @@ const UserProfile = () => {
             style={{
               height: !isDeskTop ? "65%" : "70%",
             }}
-            className=" rounded  w-full  object-cover "
+            className=" invert-0 rounded  w-full  object-cover "
             src={bg}
             alt=""
             srcset=""
@@ -75,7 +75,7 @@ const UserProfile = () => {
               className=" cursor-pointer p-1 bg-[#333333] rounded-full  "
             >
               <img
-                className=" rounded-full h-[100%] w-full  object-cover "
+                className=" invert-0 rounded-full h-[100%] w-full  object-cover "
                 src={userProfile?.length > 10 ? userProfile : userAvatar}
                 alt=""
                 srcset=""

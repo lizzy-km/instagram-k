@@ -19,11 +19,11 @@ const ImageCard = ({d,cardWidth}) => {
      className=" relative cursor-pointer   h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
     <img style={{ 
       width: isMobile ? '100%' :cardWidth
-    }} onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className="  h-[100%] object-cover rounded-lg " src={d.url} alt="" srcset="" />
+    }} onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" invert-0  h-[100%] object-cover rounded-lg " src={d.url} alt="" srcset="" />
 
     <div onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)}  style={{
-          visibility: isShow ? 'visible' : 'hidden'
-        }} className="  w-full h-auto bg-[#21212157] backdrop-blur  gap-0 absolute left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start ">
+          visibility: isShow ? 'visible' : 'visible'
+        }} className="  w-full h-auto bg-[#21212157] backdrop-blur  gap-0  left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start ">
         <NavLink
        
           to={`/${d.UID}`}
@@ -39,7 +39,7 @@ const ImageCard = ({d,cardWidth}) => {
 
 
           <img
-            className=" w-full   h-full rounded-full object-cover cursor-pointer "
+            className=" invert-0 w-full   h-full rounded-full object-cover cursor-pointer "
             src={d?.userProfile?.length > 0 ? d?.userProfile : userAvatar}
             alt=""
             srcset=""
