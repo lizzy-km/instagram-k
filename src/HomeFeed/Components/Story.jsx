@@ -22,19 +22,33 @@ const Story = () => {
 
   const [USER_STORYS, setUSER_STORYS] = useState([]);
 
-  const users = userData?.filter((usd) => {
-    // pull users who has storys data
-    const STOID = USER_STORYS?.map((ust) => {
+  let user = [];
+
+  for (let i = 0; i < userData?.length; i++) {
+    const usd = userData[i];
+    const UID = usd.id;
+
+    for (let ii = 0; ii < USER_STORYS?.length; ii++) {
+      const ust = USER_STORYS[ii];
+
       const STOID =
-        ust?._document.data.value.mapValue.fields?.STORY_OWNER_DETAIL?.mapValue
-          .fields?.STOID?.stringValue;
+        ust?._document?.data?.value.mapValue.fields?.STORY_OWNER_DETAIL
+          ?.mapValue.fields?.STOID?.stringValue;
 
-      return STOID;
-    });
+          if (UID === STOID) {
+            user.push(usd)
+          }
+    }
+  }
 
-    return usd.id === STOID[0];
-  });
+  const arrayWithDuplicates = user
 
+const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
+  if (!acc.includes(curr)) {
+    acc.push(curr);
+  }
+  return acc;
+}, []);
   const userStory = USER_STORYS?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
@@ -155,9 +169,9 @@ const Story = () => {
         }}
         className=" story-holder rounded-lg  "
       >
-        {isDeskTop && OtherStory?.length > 1 && (
+        {isDeskTop && uniqueArray?.length > 1 && (
           <>
-            {((OtherStory?.length +2) - storyWidth / 157).toFixed(0) > count && (
+            {((uniqueArray?.length +2) - storyWidth / 157).toFixed(0) > count && (
               <div className=" nextStory   ">
                 <div
                   onClick={() => translateStoryCard("next")}
@@ -225,13 +239,14 @@ const Story = () => {
           />
         )}
 
-        {OtherStory?.length > 0 &&
+        {uniqueArray?.length > 0 &&
           !isLoading &&
-          OtherStory?.map((d) => {
+          uniqueArray?.map((d) => {
             return (
               <OtherStoryCard data={d} translateX={translateX} key={d?.id} />
             );
           })}
+          
       </div>
     </div>
   );

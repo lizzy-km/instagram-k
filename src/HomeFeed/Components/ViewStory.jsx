@@ -48,7 +48,7 @@ const ViewStory = () => {
     USER_STORY();
   }, [updateFeed]);
 
-  let user = [];
+  let user = []; 
 
   for (let i = 0; i < userData?.length; i++) {
     const usd = userData[i];
