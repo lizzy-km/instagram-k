@@ -137,7 +137,7 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
       >
         {isDeskTop && uniqueArray?.length > 1 && (
           <>
-            {((uniqueArray?.length +2) - storyWidth / 157).toFixed(0) > count && (
+            {((uniqueArray?.length +1) - storyWidth / 150).toFixed(0) > count && (
               <div className=" nextStory   ">
                 <div
                   onClick={() => translateStoryCard("next")}
