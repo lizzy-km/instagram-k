@@ -37,7 +37,7 @@ const ImageCard = ({PID,url }) => {
         (state) => state.animateSlice
       );
   return (
-    <div className=" w-full h-auto "  >
+    <div className=" w-full h-full "  >
       <img
       src={url}
       key={PID+"_"+url}
