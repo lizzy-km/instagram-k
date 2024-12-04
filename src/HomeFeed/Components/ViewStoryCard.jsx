@@ -128,12 +128,12 @@ const ViewStoryCard = ({ userData }) => {
       style={{
         width: isDeskTop ? "55%" : "100%",
       }}
-      className=" min-w-[45%]  z-[9999] h-full relative  rounded-md flex justify-start items-start "
+      className=" min-w-[45%]  z-[9999] h-full relative  rounded-2xl flex justify-start items-start "
     >
       {storyId?.length > 0 && (
         <>
           <div
-            className={` z-[99] relative rounded-t-md    p-2  bg-[#24242457] backdrop-blur-[10px]  flex  w-[100%]  gap-2 `}
+            className={` z-[99] relative rounded-t-2xl    p-2  bg-[#24242457] backdrop-blur-[10px]  flex  w-[100%]  gap-2 `}
           >
             <div className=" flex gap-2 justify-center w-[40px] p-1 h-[40px] items-center  rounded-full  ">
               <img
@@ -183,7 +183,7 @@ const ViewStoryCard = ({ userData }) => {
           </div>
 
           {!isLoading ? (
-            <div className=" absolute cursor-pointer flex justify-center items-center  w-full h-full object-cover rounded-lg ">
+            <div className=" absolute cursor-pointer flex justify-center items-center  w-full h-full object-cover rounded-2xl ">
               {UserStory?.length > 1 ? (
                 <Carousel loop={false} slideInterval={0} slide={false}>
                   {UserStory?.reverse()?.map((ust) => {

@@ -18,24 +18,29 @@ const StoryImageCard = ({ PID, url }) => {
 
   const { isMobile } = useSelector((state) => state.animateSlice);
   return (
-    <div className=" relative min-w-full w-full flex justify-center items-center py-0 px-2  h-full ">
-      <img
-        className=" invert absolute top-0 left-0 w-[150%] h-[150%] blur "
-        src={url}
-        alt=""
-        srcset=""
-      />
-      <img
-        src={url}
-        key={PID + "_" + url}
-        id="imgW"
-        style={{
-          width: isMobile ? "100%" : "100%",
-        }}
-        className=" invert-none cursor-pointer h-full  min-w-full  bg-[#24252657]    snap-center transition-all   object-cover object-top  "
-        alt=""
-        srcset=""
-      />
+    <div className=" relative min-w-full w-full flex justify-center items-center py-0   h-full ">
+      {isLoading === true ? (
+        <img
+          className=" invert-none cursor-pointer h-full  min-w-full  bg-[#24252657]    snap-center transition-all   object-cover object-top  "
+          src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/vecteezy_placeholder-image-default-set-for-the-website_.jpg?alt=media&token=25df6d22-ec04-4c60-b31b-6d74b953610e"
+          alt=""
+          srcset=""
+        />
+      ) : (
+        <img
+          src={url}
+          key={PID + "_" + url}
+          id="imgW"
+          style={{
+            width: isMobile ? "100%" : "100%",
+          }}
+          className=" invert-none cursor-pointer h-full  min-w-full  bg-[#24252657] rounded-2xl    snap-center transition-all   object-cover object-top  "
+          alt=""
+          srcset=""
+        />
+      )}
+
+      
     </div>
   );
 };
