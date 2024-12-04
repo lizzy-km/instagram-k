@@ -4,17 +4,16 @@ import { useSelector } from "react-redux";
 const ImageCard = ({ PID, url }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  function getImageSize(imageLink) {
-    setIsLoading(true);
-
-    Promise.all(imageLink)
-      .then((data) => {
-        setIsLoading(false);
-      })
-      .catch((error) => console.log(error));
-  }
-
   useEffect(() => {
+    function getImageSize(imageLink) {
+      setIsLoading(true);
+
+      Promise.all(imageLink)
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((error) => console.log(error));
+    }
     getImageSize(url);
   }, []);
 
@@ -22,7 +21,9 @@ const ImageCard = ({ PID, url }) => {
   return (
     <div className=" w-full h-full ">
       {isLoading === true ? (
-        <div className=" invert-none cursor-pointer h-[350px] w-[400px]   bg-[#24252657] rounded-xl   snap-center transition-all   object-cover object-top  "></div>
+        <img           src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/vecteezy_placeholder-image-default-set-for-the-website_.jpg?alt=media&token=25df6d22-ec04-4c60-b31b-6d74b953610e"
+        className=" invert-none cursor-pointer h-full   bg-[#242526] rounded-xl   snap-center transition-all   object-cover object-top  "
+        />
       ) : (
         <img
           src={url}

@@ -13,21 +13,19 @@ const ImageCard = ({ d, cardWidth }) => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  function getImageSize(imageLink) {
-    setIsLoading(true);
-
-    Promise.all(imageLink)
-      .then((data) => {
-        setIsLoading(false);
-      })
-      .catch((error) => console.log(error));
-  }
-
   useEffect(() => {
+    function getImageSize(imageLink) {
+      setIsLoading(true);
+
+      Promise.all(imageLink)
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((error) => console.log(error));
+    }
     getImageSize(d?.url);
   }, []);
 
-  const [isShow, setIsShow] = useState(false);
   return (
     <div
       style={{
@@ -37,7 +35,13 @@ const ImageCard = ({ d, cardWidth }) => {
       className=" relative cursor-pointer   h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg "
     >
       {isLoading === true ? (
-        <div className=" invert-none w-full bg-[#24242457]  h-[100%] object-cover rounded-lg "></div>
+        <img
+        style={{
+          width: isMobile ? "100%" : cardWidth,
+        }}
+          src="https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/vecteezy_placeholder-image-default-set-for-the-website_.jpg?alt=media&token=25df6d22-ec04-4c60-b31b-6d74b953610e"
+          className=" invert-none  bg-[#24242457]  h-[100%] object-cover rounded-lg "
+        />
       ) : (
         <img
           style={{
@@ -50,16 +54,9 @@ const ImageCard = ({ d, cardWidth }) => {
         />
       )}
 
-      <div
-        onMouseEnter={() => setIsShow(true)}
-        onMouseLeave={() => setIsShow(false)}
-        style={{
-          visibility: isShow ? "visible" : "visible",
-        }}
-        className="  w-full h-auto bg-[#21212157] backdrop-blur  gap-0  left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start "
-      >
+      <div className="  w-full h-auto bg-[#21212157] backdrop-blur  gap-0  left-0 top-0 rounded-t-lg   flex justify-start p-2 items-start ">
         <NavLink
-          to={`/${d.UID}`}
+          to={`/${d?.UID}`}
           className="  relative   rounded-sm w-[26px]  h-[26px] justify-center items-center   "
         >
           <div className=" -z-10 rotate-[0deg] rounded-sm   bg-[#ca3e4796] w-[26px] h-[26px] absolute "></div>
@@ -79,7 +76,7 @@ const ImageCard = ({ d, cardWidth }) => {
           to={`/${d.UID}`}
           className=" cursor-pointer rounded-br px-2 object-cover  h-full min-w-[100px]  w-auto flex justify-start items-center tracking-wide text-[12px]  "
         >
-          <p>{d.name}</p>
+          <p>{d?.name}</p>
         </NavLink>
       </div>
     </div>

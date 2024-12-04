@@ -1,38 +1,30 @@
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 const StoryImageCard = ({ PID, url }) => {
-    console.log(url);
-    
-  function getImageSize(imageLink) {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = function () {
-        const imageSize = {
-          width: this.width,
-          height: this.height,
-        };
-        resolve(imageSize);
-      };
-      img.onerror = function () {
-        reject(new Error("Failed to load image"));
-      };
-      img.src = imageLink;
-    });
-  }
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Usage example
-  const imageUrl = url;
-  getImageSize(imageUrl)
-    .then((size) => {
-      size;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  useEffect(() => {
+    function getImageSize(imageLink) {
+      setIsLoading(true);
+
+      Promise.all(imageLink)
+        .then(() => {
+          setIsLoading(false);
+        })
+        .catch((error) => console.log(error));
+    }
+    getImageSize(url);
+  }, []);
 
   const { isMobile } = useSelector((state) => state.animateSlice);
   return (
-    <div  className=" relative min-w-full w-full flex justify-center items-center py-0 px-2  h-full ">
-        <img className=" invert absolute top-0 left-0 w-[150%] h-[150%] blur " src={url} alt="" srcset="" />
+    <div className=" relative min-w-full w-full flex justify-center items-center py-0 px-2  h-full ">
+      <img
+        className=" invert absolute top-0 left-0 w-[150%] h-[150%] blur "
+        src={url}
+        alt=""
+        srcset=""
+      />
       <img
         src={url}
         key={PID + "_" + url}
