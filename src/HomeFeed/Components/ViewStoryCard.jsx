@@ -126,28 +126,28 @@ const ViewStoryCard = ({ userData }) => {
   return (
     <div
       style={{
-        width: isDeskTop ? "70%" : "100%",
+        width: isDeskTop ? "55%" : "100%",
       }}
-      className="  z-[9999] h-full relative  rounded-md flex justify-start items-start "
+      className=" min-w-[45%]  z-[9999] h-full relative  rounded-md flex justify-start items-start "
     >
       {storyId?.length > 0 && (
         <>
           <div
-            className={` z-[99] relative rounded-t-md backdrop-brightness-[80px] bg-[#21212145] backdrop-blur p-2   flex w-[100%]  gap-3 `}
+            className={` z-[99] relative rounded-t-md    p-2  bg-[#24242457] backdrop-blur-[10px]  flex  w-[100%]  gap-2 `}
           >
-            <div className=" flex justify-center items-center p-1 rounded-full bg-[#212121] ">
+            <div className=" flex gap-2 justify-center w-[40px] p-1 h-[40px] items-center  rounded-full  ">
               <img
-                className=" invert-none w-[45px] h-[45px] rounded-full object-cover object-center "
+                className=" invert-none  w-full  h-full rounded-full object-cover object-center "
                 src={PFURL?.length > 4 ? PFURL : userAvatar}
                 alt=""
                 srcset=""
               />
             </div>
 
-            <div className=" flex py-1 justify-start items-center ">
-              <p className=" p-1 text-center w-full h-full "> {UserName} </p>
+            <div className=" flex py-0 justify-start items-center ">
+              <p className=" p-1 text-sm text-center w-full h-full "> {UserName} </p>
             </div>
-            <div className=" p-2 w-[30%] cursor-pointer gap-3 flex justify-end items-center absolute right-0 ">
+            <div className=" p-2 w-[30%] cursor-pointer gap-3 flex justify-end items-center top-1 absolute right-0 ">
               {admin?.UID?.stringValue === UID && (
                 <Icon
                   onClick={() => setMenu(!menu)}
@@ -183,10 +183,10 @@ const ViewStoryCard = ({ userData }) => {
           </div>
 
           {!isLoading ? (
-            <div className=" absolute cursor-pointer  w-full h-full object-cover rounded-lg ">
+            <div className=" absolute cursor-pointer flex justify-center items-center  w-full h-full object-cover rounded-lg ">
               {UserStory?.length > 1 ? (
                 <Carousel loop={false} slideInterval={0} slide={false}>
-                  {UserStory?.map((ust) => {
+                  {UserStory?.reverse()?.map((ust) => {
                     const data = ust?._document.data.value.mapValue.fields;
                     const SOD = data?.STORY_OWNER_DETAIL?.mapValue.fields;
                     const SD = data?.STORY_DETAIL?.mapValue.fields;

@@ -85,7 +85,7 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
       } w-full h-full `}
     >
       {isDeskTop && (
-        <div className=" min-w-[30%]  justify-start items-start h-full flex flex-col gap-2 ">
+        <div className="   justify-start items-start h-full flex flex-col gap-2 ">
           <div className=" w-full h-[65px] flex justify-between p-2 items-center ">
             <div
               onClick={() => {
