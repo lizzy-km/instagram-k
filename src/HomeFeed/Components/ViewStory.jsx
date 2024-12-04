@@ -111,6 +111,7 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
                         ?.STORY_OWNER_DETAIL?.mapValue.fields?.STOID
                         ?.stringValue;
                     return STOID === data?.UID?.stringValue;
+
                   });
 
                   return (
@@ -118,6 +119,10 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
                       STID={STID[STID?.length -1]?.id}
                       data={d?._document?.data?.value.mapValue.fields}
                       key={
+                        d?._document?.data?.value.mapValue.fields.UID
+                          .stringValue
+                      }
+                      UID={
                         d?._document?.data?.value.mapValue.fields.UID
                           .stringValue
                       }
@@ -132,7 +137,7 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
       <div
         style={{
           width: isDeskTop ? "50%" : "100%",
-          padding: isDeskTop ? "1rem" : 0,
+          padding: isDeskTop ? "0" : 0,
         }}
         className=" flex justify-center items-center  h-full p-0  backdrop-brightness-50 backdrop-blur "
       >

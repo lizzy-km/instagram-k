@@ -1,11 +1,7 @@
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-
-const ImageCard = ({PID,url }) => {
-
-  
-
-
+const StoryImageCard = ({ PID, url }) => {
+    console.log(url);
+    
   function getImageSize(imageLink) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -27,31 +23,28 @@ const ImageCard = ({PID,url }) => {
   const imageUrl = url;
   getImageSize(imageUrl)
     .then((size) => {
-      size
+      size;
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 
-    const {  isMobile } = useSelector(
-        (state) => state.animateSlice
-      );
+  const { isMobile } = useSelector((state) => state.animateSlice);
   return (
-    <div className=" w-full h-auto "  >
+    <div className=" w-full h-full ">
       <img
-      src={url}
-      key={PID+"_"+url}
-      id="imgW"
-      style={{
-        width: isMobile ? '100%' :'100%'
-      }}
-      className=" cursor-pointer h-full   bg-[#242526] rounded-xl   snap-center transition-all   object-cover object-top  "
-      alt=""
-      srcset=""
-    />
+        src={url}
+        key={PID + "_" + url}
+        id="imgW"
+        style={{
+          width: isMobile ? "100%" : "100%",
+        }}
+        className=" cursor-pointer h-full   bg-[#242526] rounded-xl   snap-center transition-all   object-cover object-top  "
+        alt=""
+        srcset=""
+      />
     </div>
-    
   );
 };
 
-export default ImageCard;
+export default StoryImageCard;

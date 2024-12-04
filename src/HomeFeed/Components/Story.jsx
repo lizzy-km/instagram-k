@@ -55,41 +55,7 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
         .STOID?.stringValue === admin.UID.stringValue
   );
 
-  const otherStory = USER_STORYS?.filter(
-    (d) =>
-      d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
-        .STOID?.stringValue !== admin.UID.stringValue
-  );
-
-  let OtherStory = []; // Non DuplicateDataFor Other user's Story
-
-  for (let i = 0; i < otherStory?.length; i++) {
-    // for remove duplicate data from otherStory
-    const data = otherStory[i];
-    const prevData = otherStory[i - 1];
-    const createTimeP =
-      prevData?._document.createTime?.timestamp.seconds * 1000;
-    const createTime = data?._document.createTime?.timestamp.seconds * 1000;
-
-    const userId =
-      data?._document?.data?.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue
-        .fields.STOID?.stringValue;
-    const userIdP =
-      prevData?._document.data.value.mapValue.fields.STORY_OWNER_DETAIL
-        ?.mapValue.fields.STOID?.stringValue;
-
-    const TimeDiff = realTime - createTime;
-    const TimeDiffP = realTime - createTimeP;
-
-    if (userId !== userIdP) {
-      OtherStory.push(data);
-    }
-    // if (userId === userIdP) {
-    //   if (TimeDiff < TimeDiffP) {
-    //     OtherStory.push(data);
-    //   }
-    // }
-  }
+ 
 
   const [isLoading, setIsLoading] = useState(true);
 

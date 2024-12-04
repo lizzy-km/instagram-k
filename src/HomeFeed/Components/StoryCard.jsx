@@ -45,6 +45,8 @@ const StoryCard = ({ translateX, data }) => {
         onClick={() => {
           dispatch(setViewStory(true), dispatch(setStoryId(STID)));
           dispatch(setChangesSTID(!changesSTID));
+          localStorage.setItem('STOID',adminId)
+
         }}
         style={{
           translate: -translateX,

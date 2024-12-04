@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setChangesSTID, setStoryId } from "../../redux/services/authSlice";
 
-const UserCard = ({ data, STID }) => {
+const UserCard = ({ data, STID ,UID}) => {
   const dispatch = useDispatch();
 
   const UserName = data?.user_name?.stringValue;
@@ -16,7 +16,8 @@ const UserCard = ({ data, STID }) => {
     <div
       onClick={() => {
         dispatch(setStoryId(STID));
-        dispatch(setChangesSTID(!changesSTID));
+        dispatch(setChangesSTID(!changesSTID))
+        localStorage.setItem('STOID',UID)
       }}
       className={` bg-[${
         storyId === STID ? "#333333" : "#262626"

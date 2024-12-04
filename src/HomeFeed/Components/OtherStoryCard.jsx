@@ -12,13 +12,9 @@ const OtherStoryCard = ({ data, translateX }) => {
 
   const videoRef = useRef(null);
 
-  
-
-  const { userAvatar, changesSTID, UserData, updateFeed,admin } = useSelector(
+  const { userAvatar, changesSTID, UserData, updateFeed, admin } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
-
-  
 
   const Story = USER_STORYS?.filter(
     (d) =>
@@ -26,19 +22,15 @@ const OtherStoryCard = ({ data, translateX }) => {
         .STOID?.stringValue !== admin.UID.stringValue
   );
 
-  const UserStory = Story?.filter((d)=>
-    d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
-    .STOID?.stringValue === data?.id
-    
-    
-  )
+  const UserStory = Story?.filter(
+    (d) =>
+      d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
+        .STOID?.stringValue === data?.id
+  );
 
-  
-
-
-  const img_url =''
-  const UID = data?.id
-  const name = data?._document.data.value.mapValue.fields?.user_name.stringValue
+  const UID = data?.id;
+  const name =
+    data?._document.data.value.mapValue.fields?.user_name.stringValue;
 
   const user = UserData?.filter((usd) => {
     const STOID = UID;
@@ -62,8 +54,7 @@ const OtherStoryCard = ({ data, translateX }) => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-
-  useEffect(()=> {
+  useEffect(() => {
     async function USER_STORY() {
       setIsLoading(true);
 
@@ -74,8 +65,21 @@ const OtherStoryCard = ({ data, translateX }) => {
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false));
     }
-    USER_STORY()
-  },[])
+    USER_STORY();
+  }, []);
+  useEffect(() => {
+    async function USER_STORY() {
+      setIsLoading(true);
+
+      await getDocs(collection(firestore, "/USER_STORYS"))
+        .then((data) => {
+          setUSER_STORYS(data?.docs);
+        })
+        .catch((error) => console.log(error))
+        .finally(() => setIsLoading(false));
+    }
+    USER_STORY();
+  }, [updateFeed]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -94,20 +98,22 @@ const OtherStoryCard = ({ data, translateX }) => {
         className=" transition-all tracking-wider flex min-w-[145px] h-full bg-[#525252] rounded-md "
       >
         <div className=" relative flex flex-col justify-between items-start w-full h-full rounded-md ">
-          {
-            UserStory?.map((ust)=> {
-              const data = ust?._document.data.value.mapValue.fields
-              const SOD = data?.STORY_OWNER_DETAIL?.mapValue.fields
-              const SD = data?.STORY_DETAIL?.mapValue.fields
-              const img_url = SD?.STORY_IMAGE_PATH?.mapValue.fields?.downloadURL?.stringValue
-              const STID = ust?.id
-              
-              return (
-                <div
+          {UserStory?.map((ust) => {
+            const data = ust?._document.data.value.mapValue.fields;
+            const SOD = data?.STORY_OWNER_DETAIL?.mapValue.fields;
+            const SD = data?.STORY_DETAIL?.mapValue.fields;
+            const img_url =
+              SD?.STORY_IMAGE_PATH?.mapValue.fields?.downloadURL?.stringValue;
+            const STID = ust?.id;
+
+            return (
+              <div
                 onClick={() => {
                   dispatch(setViewStory(true)),
                     dispatch(setStoryId(STID)),
                     dispatch(setChangesSTID(!changesSTID));
+                    localStorage.setItem('STOID',UID)
+
                 }}
                 className="h-[100%] absolute  bg-center object-center    object-cover rounded-md "
               >
@@ -136,10 +142,8 @@ const OtherStoryCard = ({ data, translateX }) => {
                   ></video>
                 )}
               </div>
-              )
-            })
-          }
-         
+            );
+          })}
 
           <div className=" z-[9] p-2  w-full h-[50px] flex justify-start items-start  ">
             <NavLink
@@ -167,9 +171,7 @@ const OtherStoryCard = ({ data, translateX }) => {
 
           <div className=" rounded-b-md relative z-[9] w-full p-0 ">
             <div className="  bg-img rounded-b-md    text-[#d1d1d1] font-[450]  ">
-              <p className=" p-2 flex w-full h-full backdrop-shadow ">
-                {name}
-              </p>
+              <p className=" p-2 flex w-full h-full backdrop-shadow ">{name}</p>
             </div>
           </div>
         </div>
