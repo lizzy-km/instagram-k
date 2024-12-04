@@ -129,7 +129,6 @@ const RightNav = () => {
 
   useEffect(() => {}, []);
 
-  if (admin?.user_name?.stringValue)
     return (
       <section
         style={{
@@ -235,7 +234,7 @@ const RightNav = () => {
               aria-label="Menu"
               aria-describedby="Menu"
               aria-description="Menu"
-              onClick={menuShow}
+              onClick={ admin?.user_name?.stringValue && menuShow}
               className=" cursor-pointer flex w-[40px] h-[40px] rounded-full p-[10px] backdrop-blur-md bg-[#33333347] "
             >
               <img
@@ -284,7 +283,7 @@ const RightNav = () => {
                 </div>
 
                 <NavLink
-                  to={`/${admin.UID.stringValue}`}
+                  to={`/${admin?.UID?.stringValue}`}
                   className={` text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#3333336d] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center `}
                 >
                   <img
@@ -294,7 +293,7 @@ const RightNav = () => {
                     srcSet=""
                   />
                   <p className="font-[500] text-[16px] tracking-wide">
-                    {admin.user_name.stringValue}
+                    {admin?.user_name?.stringValue}
                   </p>
                 </NavLink>
                 <Link
