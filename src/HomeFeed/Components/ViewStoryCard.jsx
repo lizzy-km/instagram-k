@@ -18,7 +18,6 @@ import {
 } from "../../redux/services/authSlice";
 import GetAdminData from "../../redux/services/Hooks/GetAdminData";
 import { Carousel } from "flowbite-react";
-import ImageCard from "./ImageCard";
 import StoryImageCard from "./StoryImageCard";
 
 const ViewStoryCard = ({ userData }) => {
@@ -26,13 +25,12 @@ const ViewStoryCard = ({ userData }) => {
     (deserializedState) => deserializedState.authSlice
   );
 
-  const UID = localStorage.getItem("STOID");
+  const UID = storyId ? storyId : ''
 
-  console.log(UID);
+
 
   const STID = "";
 
-  const UserName = "";
 
   const data = userData?.filter((d) =>
     d?._document?.data?.value.mapValue.fields
@@ -40,20 +38,25 @@ const ViewStoryCard = ({ userData }) => {
       : false
   )[0]?._document.data.value.mapValue.fields;
 
+  const UserName = data?.user_name?.stringValue;
+
   // const [storyData, setStoryData] = useState([]);
   const [USER_STORYS, setUSER_STORYS] = useState([]);
 
   const Story = USER_STORYS?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
-        .STOID?.stringValue !== admin.UID.stringValue
+        .STOID?.stringValue !== admin?.UID?.stringValue
   );
 
   const UserStory = USER_STORYS?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
-        .STOID?.stringValue === UID
+        .STOID?.stringValue ===  UID 
   );
+
+  // console.log(UserStory);
+  
 
   const PFURL =
     data?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;
@@ -127,7 +130,7 @@ const ViewStoryCard = ({ userData }) => {
       }}
       className="  z-[9999] h-full relative  rounded-md flex justify-start items-start "
     >
-      {storyId?.length > 10 && (
+      {storyId?.length > 0 && (
         <>
           <div
             className={` z-[99] relative rounded-t-md backdrop-brightness-[80px] bg-[#21212145] backdrop-blur p-2   flex w-[100%]  gap-3 `}

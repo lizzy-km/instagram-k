@@ -15,9 +15,8 @@ const UserCard = ({ data, STID ,UID}) => {
   return (
     <div
       onClick={() => {
-        dispatch(setStoryId(STID));
+        dispatch(setStoryId(UID));
         dispatch(setChangesSTID(!changesSTID))
-        localStorage.setItem('STOID',UID)
       }}
       className={` bg-[${
         storyId === STID ? "#333333" : "#262626"

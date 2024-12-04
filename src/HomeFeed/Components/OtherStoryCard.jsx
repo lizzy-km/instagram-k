@@ -110,9 +110,8 @@ const OtherStoryCard = ({ data, translateX }) => {
               <div
                 onClick={() => {
                   dispatch(setViewStory(true)),
-                    dispatch(setStoryId(STID)),
+                    dispatch(setStoryId(UID)),
                     dispatch(setChangesSTID(!changesSTID));
-                    localStorage.setItem('STOID',UID)
 
                 }}
                 className="h-[100%] absolute  bg-center object-center    object-cover rounded-md "
