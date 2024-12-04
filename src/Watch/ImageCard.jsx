@@ -19,7 +19,7 @@ const ImageCard = ({d,cardWidth}) => {
      className=" relative cursor-pointer   h-auto  flex flex-col gap-3 justify-start items-start  rounded-lg " >
     <img style={{ 
       width: isMobile ? '100%' :cardWidth
-    }} onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" invert-0  h-[100%] object-cover rounded-lg " src={d.url} alt="" srcset="" />
+    }} onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)} className=" invert-none  h-[100%] object-cover rounded-lg " src={d.url} alt="" srcset="" />
 
     <div onMouseEnter={()=>setIsShow(true)} onMouseLeave={()=>setIsShow(false)}  style={{
           visibility: isShow ? 'visible' : 'visible'
