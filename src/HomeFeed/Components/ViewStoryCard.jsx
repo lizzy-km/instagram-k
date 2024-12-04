@@ -137,7 +137,7 @@ const ViewStoryCard = ({ userData }) => {
           >
             <div className=" flex justify-center items-center p-1 rounded-full bg-[#212121] ">
               <img
-                className=" w-[45px] h-[45px] rounded-full object-cover object-center "
+                className=" invert-none w-[45px] h-[45px] rounded-full object-cover object-center "
                 src={PFURL?.length > 4 ? PFURL : userAvatar}
                 alt=""
                 srcset=""

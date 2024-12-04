@@ -4,7 +4,7 @@
 
 body {
   color: #d4d4d4;
-  filter : invert(1)
+  filter : invert(88%)
 }
 
 .cl-internal-b3fm6y,
@@ -27,6 +27,6 @@ body {
 }
 
 .invert-none {
-  --tw-invert: invert(1) !important;
+  --tw-invert: invert(100%) !important;
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }

@@ -56,7 +56,7 @@ const UserProfile = () => {
             style={{
               height: !isDeskTop ? "65%" : "70%",
             }}
-            className=" invert-0 rounded  w-full  object-cover "
+            className=" invert-none rounded  w-full  object-cover "
             src={bg}
             alt=""
             srcset=""
