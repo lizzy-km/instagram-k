@@ -41,26 +41,11 @@ const Watch = () => {
   });
 
   useEffect(() => {
-    return function () {
-
-      for (let i = 0; i < totalCardRow?.toFixed(0); i++) {
-        newArray?.push([imageList.slice(i * cardPerCol, cardPerCol * (i + 1))]);
-        setRealData(newArray);
-      }
+    for (let i = 0; i < totalCardRow?.toFixed(0); i++) {
+      newArray?.push([imageList.slice(i * cardPerCol, cardPerCol * (i + 1))]);
+      setRealData(newArray);
     }
-   
   }, [imageList, UserData]);
-
-
-
-    useEffect(()=>{
-
-      
-      
-    },[])
-     
-
-
 
   return (
     <div
