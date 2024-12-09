@@ -114,7 +114,7 @@ const OtherStoryCard = ({ data, translateX }) => {
                     dispatch(setChangesSTID(!changesSTID));
 
                 }}
-                className="h-[100%] absolute  bg-center object-center    object-cover rounded-md "
+                className="h-[100%] absolute  bg-center object-center  w-full   object-cover rounded-md "
               >
                 {img_url && (
                   <img

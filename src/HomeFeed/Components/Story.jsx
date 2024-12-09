@@ -35,27 +35,25 @@ const Story = () => {
         ust?._document?.data?.value.mapValue.fields?.STORY_OWNER_DETAIL
           ?.mapValue.fields?.STOID?.stringValue;
 
-          if (UID === STOID) {
-            user.push(usd)
-          }
+      if (UID === STOID) {
+        user.push(usd);
+      }
     }
   }
 
-  const arrayWithDuplicates = user
+  const arrayWithDuplicates = user;
 
-const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
-  if (!acc.includes(curr)) {
-    acc.push(curr);
-  }
-  return acc;
-}, []);
+  const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
+    if (!acc.includes(curr)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, []);
   const userStory = USER_STORYS?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
         .STOID?.stringValue === admin.UID.stringValue
   );
-
- 
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -69,26 +67,26 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
         })
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false));
+
+        return () => {
+          data?.docs?.map(async (data) => {
+            const storyRef = doc(firestore, "/USER_STORYS", `/${data?.id}`);
+    
+            const miliSec = data?._document?.createTime.timestamp.seconds * 1000;
+    
+            const diffTime = realTime - miliSec;
+            const timeInSec = diffTime / 1000;
+            const timeINMin = (timeInSec / 60).toFixed(0);
+            const timeInHr = (timeINMin / 60).toFixed(0);
+    
+            timeInHr > 23 ? await deleteDoc(storyRef) : null;
+          });
+        }
     }
-    const deleteOldStory = () => {
-      USER_STORYS?.map(async (data) => {
-        const storyRef = doc(firestore, "/USER_STORYS", `/${data?.id}`);
-
-        const miliSec = data?._document?.createTime.timestamp.seconds * 1000;
-
-        const diffTime = realTime - miliSec;
-        const timeInSec = diffTime / 1000;
-        const timeINMin = (timeInSec / 60).toFixed(0);
-        const timeInHr = (timeINMin / 60).toFixed(0);
-
-        timeInHr > 23 ? await deleteDoc(storyRef) : null;
-      });
-    };
-    deleteOldStory();
-    USER_STORY();
+   
+    return ()=>  USER_STORY()
   }, []);
 
-  // console.log(USER_STORYS[0]?._document?.createTime.timestamp.seconds);
 
   useEffect(() => {
     async function USER_STORY() {
@@ -99,7 +97,7 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false));
     }
-    USER_STORY();
+   return ()=>  USER_STORY()
   }, [updateFeed]);
 
   const [translateX, setTranslateX] = useState(0);
@@ -137,7 +135,8 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
       >
         {isDeskTop && uniqueArray?.length > 1 && (
           <>
-            {((uniqueArray?.length +1) - storyWidth / 150).toFixed(0) > count && (
+            {(uniqueArray?.length + 1 - storyWidth / 150).toFixed(0) >
+              count && (
               <div className=" nextStory   ">
                 <div
                   onClick={() => translateStoryCard("next")}
@@ -212,7 +211,6 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
               <OtherStoryCard data={d} translateX={translateX} key={d?.id} />
             );
           })}
-          
       </div>
     </div>
   );

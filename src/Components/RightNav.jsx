@@ -16,6 +16,7 @@ import { firestore } from "../firebase/firebase";
 import Cookies from "js-cookie";
 import Icon from "@mdi/react";
 import { mdiArrowDown, mdiChevronDown, mdiChevronUp, mdiPlus } from "@mdi/js";
+import Messenger from "./ColorShades/Messenger/Messenger";
 
 const RightNav = () => {
   const { account, noti, messenger, menu } = useSelector(
@@ -343,10 +344,12 @@ const RightNav = () => {
                       : "100%"
                     : 0,
               }}
-              className={`Messenger flex w-full   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
+              className={`Messenger flex w-full p-2 justify-center items-center   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
                 isMobile ? "0" : "6"
               }px]`}
-            ></div>
+            >
+              <Messenger/>
+            </div>
 
             <div
               id="menu"
