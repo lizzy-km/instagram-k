@@ -19,7 +19,7 @@ const UserCard = ({ data, STID ,UID}) => {
         dispatch(setChangesSTID(!changesSTID))
       }}
       className={` bg-[${
-        storyId === UID ? "#333333" : "#454545"
+        storyId === UID ? "#333333" : "#181818"
       }] rounded-md hover:bg-[#333333] cursor-pointer flex w-[300px]  gap-3 p-2 `}
     >
       <div className=" flex justify-center items-center p-1 rounded-full bg-[#212121] ">
