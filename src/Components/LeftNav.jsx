@@ -128,7 +128,7 @@ const LeftNav = () => {
                 >
                   <div className=" bg-[#2d2d2d] p-1 w-[50px] h-[50px] rounded-full ">
                     <img
-                      className=" w-[100%] h-[100%] object-cover rounded-full "
+                      className=" invert-none w-[100%] h-[100%] object-cover rounded-full "
                       src={
                         sv?._document?.data.value.mapValue.fields.profile
                           .arrayValue.values[0].mapValue.fields.PFPATH
