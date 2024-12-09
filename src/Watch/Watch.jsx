@@ -2,7 +2,8 @@ import { useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import ImageCard from "./ImageCard";
 import GetData from "../redux/services/Hooks/GetData";
-import { useEffect, useState } from "react";
+import { Component, useEffect, useState } from "react";
+import { unmountComponentAtNode } from "react-dom";
 
 const Watch = () => {
   const navigate = useNavigate();
@@ -60,7 +61,9 @@ const Watch = () => {
             >
               {d?.length > 0 &&
                 d[0]?.map((dd) => {
-                  return <ImageCard cardWidth={cardWidth} key={dd.url} d={dd} />;
+                  return (
+                    <ImageCard cardWidth={cardWidth} key={dd.url} d={dd} />
+                  );
                 })}
             </div>
           );
