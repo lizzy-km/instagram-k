@@ -49,9 +49,11 @@ const Post = () => {
 
   
 
-  if (USER_POSTS?.docs?.length > 0 && !isLoading)
-    return (
-      <div
+  if (isLoading === true) {
+    return <></>
+  }
+  
+    return ( <div
         style={{
           width: isMobile ? "100%" : "80%",
         }}

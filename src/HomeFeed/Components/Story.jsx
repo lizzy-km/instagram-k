@@ -118,7 +118,10 @@ const Story = () => {
     (state) => state.animateSlice
   );
 
-  return (
+  if (isLoading === true) {
+    return <></>
+  }
+  return(
     <div id="story_id" className=" story px-2 rounded-lg  ">
       <div className=" absolute hidden top-0  z-[99999] text-black bg-slate-100 p-1 ">
         {translateX}
