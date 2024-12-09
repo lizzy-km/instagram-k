@@ -26,7 +26,8 @@ const Post = () => {
     User_post();
   }, []);
 
-  useEffect(() => { // refresh data on Something changes in data (add/remove)
+  useEffect(() => {
+    // refresh data on Something changes in data (add/remove)
     async function User_post() {
       setIsLoading(true);
 
@@ -38,7 +39,8 @@ const Post = () => {
     User_post();
   }, [updateFeed]);
 
-  const acnUP = USER_POSTS?.docs?.sort((prev, curr) => { // view posts data depend on it's uploaded date
+  const acnUP = USER_POSTS?.docs?.sort((prev, curr) => {
+    // view posts data depend on it's uploaded date
     const currTime =
       +curr?._document.data?.value.mapValue.fields.UPLOADED_AT?.integerValue;
     const prevTime =
@@ -47,27 +49,26 @@ const Post = () => {
     return currTime - prevTime;
   });
 
-  
-
   if (isLoading === true) {
-    return <></>
+    return <></>;
   }
-  
-    return ( <div
-        style={{
-          width: isMobile ? "100%" : "80%",
-        }}
-        className="flex flex-col gap-8 w-[70%] self-center  p-2 my-2 h-auto  rounded-md"
-      >
-        {acnUP?.map((d) => {
-          const data = d._document.data.value.mapValue.fields;
-          const PID = data?.PID.stringValue;
-          const PON = data?.POST_OWNER_DETAIL.mapValue.fields.PON.stringValue;
 
-          return <PostCard data={data} name={PON} key={PID} />;
-        })}
-      </div>
-    );
+  return (
+    <div
+      style={{
+        width: isMobile ? "100%" : "80%",
+      }}
+      className="flex flex-col gap-8 w-[70%] self-center  p-2 my-2 h-auto  rounded-md"
+    >
+      {acnUP?.map((d) => {
+        const data = d._document.data.value.mapValue.fields;
+        const PID = data?.PID.stringValue;
+        const PON = data?.POST_OWNER_DETAIL.mapValue.fields.PON.stringValue;
+
+        return <PostCard data={data} name={PON} key={PID} />;
+      })}
+    </div>
+  );
 };
 
 export default Post;
