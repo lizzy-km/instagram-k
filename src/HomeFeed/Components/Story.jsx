@@ -117,7 +117,6 @@ const Story = () => {
     (state) => state.animateSlice
   );
 
-
   const StoryDataOnLoading = (
     <div id="story_id" className=" story px-2 rounded-lg  ">
       <div
@@ -263,10 +262,12 @@ const Story = () => {
 
   const [StoryEl, setStoryEl] = useState(StoryDataOnLoading);
 
-
   useEffect(() => {
     setStoryEl(isLoading ? StoryDataOnLoading : StoryDataOnLoaded);
   }, [isLoading]);
+  useEffect(() => {
+    setStoryEl(isLoading ? StoryDataOnLoading : StoryDataOnLoaded);
+  }, []);
 
   return StoryEl;
 };
