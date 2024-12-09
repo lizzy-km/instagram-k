@@ -64,6 +64,7 @@ const Story = () => {
       await getDocs(collection(firestore, "/USER_STORYS"))
         .then((data) => {
           setUSER_STORYS(data?.docs);
+          setIsLoading(false)
         })
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false));
@@ -84,7 +85,7 @@ const Story = () => {
       };
     }
 
-    return () => USER_STORY();
+     USER_STORY();
   }, []);
 
   useEffect(() => {
@@ -92,11 +93,30 @@ const Story = () => {
       setIsLoading(true);
 
       await getDocs(collection(firestore, "/USER_STORYS"))
-        .then((data) => setUSER_STORYS(data?.docs))
+        .then((data) => {
+          setUSER_STORYS(data?.docs);
+          setIsLoading(false)
+        })
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false));
+
+      return () => {
+        data?.docs?.map(async (data) => {
+          const storyRef = doc(firestore, "/USER_STORYS", `/${data?.id}`);
+
+          const miliSec = data?._document?.createTime.timestamp.seconds * 1000;
+
+          const diffTime = realTime - miliSec;
+          const timeInSec = diffTime / 1000;
+          const timeINMin = (timeInSec / 60).toFixed(0);
+          const timeInHr = (timeINMin / 60).toFixed(0);
+
+          timeInHr > 23 ? await deleteDoc(storyRef) : null;
+        });
+      };
     }
-    return () => USER_STORY();
+
+     USER_STORY();
   }, [updateFeed]);
 
   const [translateX, setTranslateX] = useState(0);
