@@ -25,12 +25,9 @@ const ViewStoryCard = ({ userData }) => {
     (deserializedState) => deserializedState.authSlice
   );
 
-  const UID = storyId ? storyId : ''
-
-
+  const UID = storyId ? storyId : "";
 
   const STID = "";
-
 
   const data = userData?.filter((d) =>
     d?._document?.data?.value.mapValue.fields
@@ -52,11 +49,10 @@ const ViewStoryCard = ({ userData }) => {
   const UserStory = USER_STORYS?.filter(
     (d) =>
       d._document.data.value.mapValue.fields.STORY_OWNER_DETAIL?.mapValue.fields
-        .STOID?.stringValue ===  UID 
+        .STOID?.stringValue === UID
   );
 
   // console.log(UserStory);
-  
 
   const PFURL =
     data?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;
@@ -122,18 +118,18 @@ const ViewStoryCard = ({ userData }) => {
     SD?.STORY_IMAGE_PATH?.mapValue.fields?.downloadURL?.stringValue;
   const STIDd = Stdata?.id;
 
-
   return (
     <div
       style={{
-        width: isDeskTop ? "55%" : "100%",
+        width: isDeskTop ? "55%" : isMobile ? "100%" :'70%',
+        height :  isDeskTop ? "100%" : isMobile ? "100%" :'90%',
       }}
       className=" min-w-[45%]  z-[9999] h-full relative  rounded-2xl flex justify-start items-start "
     >
       {storyId?.length > 0 && (
         <>
           <div
-            className={` z-[99] relative rounded-t-2xl    p-2  bg-[#24242457] backdrop-blur-[10px]  flex  w-[100%]  gap-2 `}
+            className={` z-[99] relative ${!isMobile ? 'rounded-t-2xl ':''}    p-2  bg-[#24242457] backdrop-blur-[10px]  flex  w-[100%]  gap-2 `}
           >
             <div className=" flex gap-2 justify-center w-[40px] p-1 h-[40px] items-center  rounded-full  ">
               <img
@@ -145,7 +141,10 @@ const ViewStoryCard = ({ userData }) => {
             </div>
 
             <div className=" flex py-0 justify-start items-center ">
-              <p className=" p-1 text-sm text-center w-full h-full "> {UserName} </p>
+              <p className=" p-1 text-sm text-center w-full h-full ">
+                {" "}
+                {UserName}{" "}
+              </p>
             </div>
             <div className=" p-2 w-[30%] cursor-pointer gap-3 flex justify-end items-center top-1 absolute right-0 ">
               {admin?.UID?.stringValue === UID && (
@@ -166,19 +165,6 @@ const ViewStoryCard = ({ userData }) => {
                   <Icon path={mdiWindowClose} size={1} />
                 </div>
               )}
-
-              {admin?.UID?.stringValue === UID && (
-                <div
-                  onClick={deleteStory}
-                  style={{
-                    display: menu ? "flex" : "none",
-                    right: isMobile ? "55%" : "10px",
-                  }}
-                  className=" text-sm p-2  w-auto gap-1 flex justify-start items-center top-10 right-[55%] backdrop-blur-sm bg-[#18181859] rounded absolute "
-                >
-                  <Icon path={mdiTrashCanOutline} size={0.6} />
-                </div>
-              )}
             </div>
           </div>
 
@@ -196,12 +182,32 @@ const ViewStoryCard = ({ userData }) => {
                     const STID = ust?.id;
 
                     return (
-                      <StoryImageCard PID={STID} key={STID} url={img_url} />
+                      <StoryImageCard
+                        menu={menu}
+                        AID={admin?.UID?.stringValue}
+                        UID={UID}
+                        setMenu={setMenu}
+                        updateFeed={updateFeed}
+                        deleteStory={deleteStory}
+                        PID={STID}
+                        key={STID}
+                        url={img_url}
+                      />
                     );
                   })}
                 </Carousel>
               ) : (
-                <StoryImageCard PID={STIDd} key={STIDd} url={img_url} />
+                <StoryImageCard
+                menu={menu}
+                AID={admin?.UID?.stringValue}
+                UID={UID}
+                setMenu={setMenu}
+                updateFeed={updateFeed}
+                deleteStory={deleteStory}
+                PID={STID}
+                key={STID}
+                url={img_url}
+              />
               )}
             </div>
           ) : (

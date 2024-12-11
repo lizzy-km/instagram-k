@@ -70,7 +70,7 @@ const Story = () => {
         .finally(() => {
           setIsLoading(false);
 
-          data?.docs?.map(async (data) => {
+          USER_STORYS?.map(async (data) => {
             const storyRef = doc(firestore, "/USER_STORYS", `/${data?.id}`);
 
             const miliSec =
@@ -102,7 +102,7 @@ const Story = () => {
         .finally(() => {
           setIsLoading(false);
 
-          data?.docs?.map(async (data) => {
+          USER_STORYS?.map(async (data) => {
             const storyRef = doc(firestore, "/USER_STORYS", `/${data?.id}`);
 
             const miliSec =
