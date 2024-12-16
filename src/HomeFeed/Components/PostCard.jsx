@@ -18,6 +18,7 @@ import {
 import UpdateData from "../../redux/services/Hooks/UpdateData";
 import ImageCard from "./ImageCard";
 import { setUpdateFeed } from "../../redux/services/authSlice";
+import NameCard from "./NameCard";
 
 const PostCard = ({ name, data }) => {
   const { userAvatar, UserData, admin, hasNewStory, updateFeed } = useSelector(
@@ -36,7 +37,7 @@ const PostCard = ({ name, data }) => {
   const [loading, setLoading] = useState(true);
 
   const realTime = Date.now(); //Date Now
-  
+
   const intg = data.UPLOADED_AT?.integerValue;
   const tsm = data.UPLOADED_AT?.timestampValue;
 
@@ -205,7 +206,7 @@ const PostCard = ({ name, data }) => {
 
   const deletePost = async (type, PID) => {
     UpdateData(type, "USID", PID, "upData", "upUData")
-      .then((data) => {
+      .then(() => {
         setDeleted(true);
         dispatch(setUpdateFeed(!updateFeed));
       })
@@ -219,51 +220,14 @@ const PostCard = ({ name, data }) => {
     >
       <div className=" flex w-full h-auto rounded-t-md justify-between  ">
         <div className="  w-full  flex-col relative   rounded-tl-md h-auto min-h-[50px]  flex justify-between items-end ">
-          <div className=" absolute bottom-2 left-0 w-full px-2  h-[45px]   flex justify-between items-center ">
-            <div className=" w-auto h-full  gap-2    flex justify-center items-center ">
-              <NavLink
-                onClick={() =>
-                  localStorage.setItem(
-                    "userProfile",
-                    userPfData?.PFPATH?.stringValue
-                  )
-                }
-                to={`/${UID}`}
-                className=" rounded- relative w-[40px]  h-[40px] justify-center items-center   "
-              >
-                <div className=" -z-10 rotate-[0deg] rounded-sm  left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                <div className=" -z-10 rotate-[20deg] rounded-sm left-[1px] top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                <div className=" -z-10 rotate-[40deg] left-[1px] rounded-sm top-[1px] bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] rounded-sm bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-                <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] rounded-sm bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
-
-                <img
-                  className=" invert-none w-full   h-full rounded-full object-cover cursor-pointer "
-                  src={
-                    userPfData?.PFPATH?.stringValue?.length > 0
-                      ? userPfData?.PFPATH?.stringValue
-                      : userAvatar
-                  }
-                  alt=""
-                  srcset=""
-                />
-              </NavLink>
-              <NavLink
-                to={`/${UID}`}
-                className=" flex-col cursor-pointer rounded-br px-2  h-full min-w-[100px]  w-auto flex justify-start items-start tracking-wide text-base  "
-              >
-                <p>{name}</p>
-                <time
-                  dateTime={uploaded_at}
-                  datatype="UTC"
-                  className=" opacity-75 text-[12px] "
-                >
-                  {" "}
-                  {time}{" "}
-                </time>
-              </NavLink>
-            </div>
-          </div>
+          <NameCard
+            userAvatar={userAvatar}
+            UID={UID}
+            userPfData={userPfData}
+            name={name}
+            uploaded_at={uploaded_at}
+            time={time}
+          />
 
           <div
             onClick={() => {
@@ -308,16 +272,36 @@ const PostCard = ({ name, data }) => {
           <Carousel loop={false} slideInterval={0} slide={false}>
             {PostImg?.map((d) => {
               const url = d.mapValue.fields?.downloadURL?.stringValue;
+              const className = {
+                rounded: "rxl",
+              };
               return (
-                <ImageCard UID={UID} PID={PID} key={url} data={d} url={url} />
+                <ImageCard
+                  className={className}
+                  UID={UID}
+                  PID={PID}
+                  key={url}
+                  data={d}
+                  url={url}
+                />
               );
             })}
           </Carousel>
         ) : (
           PostImg?.map((d) => {
             const url = d.mapValue.fields.downloadURL.stringValue;
+            const className = {
+              rounded: "rxl",
+            };
             return (
-              <ImageCard UID={UID} PID={PID} key={url} data={d} url={url} />
+              <ImageCard
+                className={className}
+                UID={UID}
+                PID={PID}
+                key={url}
+                data={d}
+                url={url}
+              />
             );
           })
         )
