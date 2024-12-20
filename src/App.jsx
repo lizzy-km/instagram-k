@@ -25,7 +25,6 @@ import GetAdminData from "./redux/services/Hooks/GetAdminData";
 import { addAdmin, addAdminProfile } from "./redux/services/authSlice";
 import Loading from "./Loading/Loading";
 import ViewStory from "./HomeFeed/Components/ViewStory";
-import Messenger from "./Messenger/Messenger";
 import Noti from "./Noti/Noti";
 import PostDetail from "./PostDetail/PostDetail";
 import { ToastContainer } from "react-toastify";
@@ -34,6 +33,7 @@ import AddProfileBox from "./Components/AddProfileBox";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth } from "./firebase/firebase";
+import MessengerApp from "./Messenger/Messenger";
 
 function App() {
   const isUserLog = useAuthState(auth);
@@ -214,7 +214,7 @@ function App() {
               <Route exact path="/gallery" element={<Watch />} />
               <Route exact path="/group" element={<Group />} />
               <Route exact path="/loading" element={<Loading />} />
-              <Route exact path="/message" element={<Messenger />} />
+              <Route exact path="/message" element={<MessengerApp />} />
               <Route exact path="/notification" element={<Noti />} />
 
               <Route path="/:user/" element={<UserProfile />} />

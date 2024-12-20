@@ -94,8 +94,8 @@ const Login = () => {
         <div className="w-full max-w-md p-4 bg-[#212121] rounded-lg shadow-md">
           <h1 className="text-2xl font-bold text-center mb-4">
             {loginState === false
-              ? "Sign up with Facebook"
-              : "Login with Facebook"}
+              ? "Sign up with Queed"
+              : "Login with Queed"}
           </h1>
           <form onSubmit={handleSubmit(onSubmit)}>
             {!loginState && (
