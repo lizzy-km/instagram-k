@@ -56,7 +56,6 @@ const Post = ({ filter = "" ,position='feed'}) => {
     return UID === filter;
   });
 
-  console.log(filter);
   
 
   const Post = filter?.length > 10  ? filterByUID : acnUP;

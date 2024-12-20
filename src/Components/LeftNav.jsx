@@ -39,7 +39,7 @@ const LeftNav = () => {
     await getDocs(
       query(
         collection(firestore, "users"),
-        where("user_name", "==", e.target.value)
+        where("user_name", "==", e.target.value),
       )
     ).then((data) => {
       setValue(data?.docs);
