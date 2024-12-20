@@ -31,10 +31,18 @@ import PostDetail from "./PostDetail/PostDetail";
 import { ToastContainer } from "react-toastify";
 import AddProfileBox from "./Components/AddProfileBox";
 
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { auth } from "./firebase/firebase";
+
 function App() {
-  const isAuth = useSelector(
-    (deserializedState) => deserializedState.authSlice.isLogin
-  );
+  const isUserLog = useAuthState(auth);
+
+  
+
+
+
+  const isAuth = isUserLog[0]?.accessToken?.length > 0 ? true : false;
 
   const {
     blur,
@@ -138,8 +146,6 @@ function App() {
       }
     });
 
-
-     
   return (
     <section
       id="page"
@@ -150,7 +156,7 @@ function App() {
       </div>
 
       <BrowserRouter>
-        {isAuth === true && <NavBar />}
+        {isAuth === true  && <NavBar />}
         {blur === true && (
           <section
             style={{
@@ -201,7 +207,7 @@ function App() {
         )}
 
         <section className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center ">
-          {isAuth === true ? (
+          {isAuth === true  ? (
             <Routes>
               <Route exact path="/*" element={<HomeFeed />} />
               <Route exact path="/game" element={<Game />} />
@@ -221,11 +227,11 @@ function App() {
             </Routes>
           )}
         </section>
-        {isAuth && !isDeskTop && (
+        {isAuth === true && !isDeskTop && (
           <section
             style={{
               bottom: bottomNav ? "20px" : 10,
-              visibility:bottomNav ? "visible" : 'collapse'
+              visibility: bottomNav ? "visible" : "collapse",
             }}
             className=" transition-all fixed  flex w-full h-10 justify-center items-center  "
           >

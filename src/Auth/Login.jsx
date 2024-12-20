@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setLogin } from "../redux/services/authSlice";
+import { setLogin, setUpdateFeed } from "../redux/services/authSlice";
 
 import { auth } from "../firebase/firebase";
 import addData from "../redux/services/Hooks/AddData";
@@ -72,8 +72,7 @@ const Login = () => {
       Promise.all(getAdmin)
         .then((data) => {
           setIsLoading(false);
-          toast.success("Login successful");
-          window.location.reload(true);
+          dispatch(setUpdateFeed(true));
         })
         .catch((error) => console.log(error));
 
