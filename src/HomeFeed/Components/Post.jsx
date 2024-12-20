@@ -4,7 +4,7 @@ import { firestore } from "../../firebase/firebase";
 import PostCard from "./PostCard";
 import { collection, getDocs } from "firebase/firestore";
 
-const Post = () => {
+const Post = ({ filter = "" }) => {
   const { isMobile } = useSelector((state) => state.animateSlice);
 
   const { updateFeed } = useSelector(
@@ -49,6 +49,18 @@ const Post = () => {
     return currTime - prevTime;
   });
 
+  const filterByUID = acnUP?.filter((d) => {
+    const data = d?._document.data?.value.mapValue.fields;
+    const UID = data?.POST_OWNER_DETAIL.mapValue.fields.POID.stringValue;
+
+    return UID === filter;
+  });
+
+  console.log(filter);
+  
+
+  const Post = filter?.user  ? filterByUID : acnUP;
+
   if (isLoading === true) {
     return <></>;
   }
@@ -60,7 +72,7 @@ const Post = () => {
       }}
       className="flex flex-col gap-8 w-[70%] self-center  p-2 my-2 h-auto  rounded-md"
     >
-      {acnUP?.map((d) => {
+      {Post?.map((d) => {
         const data = d._document.data.value.mapValue.fields;
         const PID = data?.PID.stringValue;
         const PON = data?.POST_OWNER_DETAIL.mapValue.fields.PON.stringValue;

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import CreatePost from "../HomeFeed/Components/CreatePost";
+import Post from "../HomeFeed/Components/Post";
 
 const UserProfile = () => {
   const { userAvatar, UserData } = useSelector(
@@ -102,12 +103,15 @@ const UserProfile = () => {
         }}
         className=" absolute   flex justify-center items-center p-2 gap-4 "
       >
-        <div
+        { 
+          isDeskTop && <div
           style={{
             width: isMobile ? "100%" : "40%",
           }}
           className=" flex p-1 bg-[#333333]  h-screen rounded-md "
         ></div>
+        }
+        
 
         <div
           style={{
@@ -118,6 +122,8 @@ const UserProfile = () => {
           } " flex flex-col gap-4   w-[60%] h-screen rounded-md " `}
         >
           <CreatePost />
+
+          <Post filter={UID.user} />
         </div>
       </section>
     </section>

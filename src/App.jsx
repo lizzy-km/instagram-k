@@ -201,7 +201,7 @@ function App() {
           </section>
         )}
 
-        <section className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-start ">
+        <section className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center ">
           {isAuth === true ? (
             <Routes>
               <Route exact path="/*" element={<HomeFeed />} />
