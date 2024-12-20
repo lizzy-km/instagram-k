@@ -4,7 +4,7 @@ import { firestore } from "../../firebase/firebase";
 import PostCard from "./PostCard";
 import { collection, getDocs } from "firebase/firestore";
 
-const Post = ({ filter = "" }) => {
+const Post = ({ filter = "" ,position='feed'}) => {
   const { isMobile } = useSelector((state) => state.animateSlice);
 
   const { updateFeed } = useSelector(
@@ -59,7 +59,7 @@ const Post = ({ filter = "" }) => {
   console.log(filter);
   
 
-  const Post = filter?.user  ? filterByUID : acnUP;
+  const Post = filter?.length > 10  ? filterByUID : acnUP;
 
   if (isLoading === true) {
     return <></>;
@@ -68,7 +68,7 @@ const Post = ({ filter = "" }) => {
   return (
     <div
       style={{
-        width: isMobile ? "100%" : "80%",
+        width: isMobile ? "100%" : position ==='user'? "90%" :'80%',
       }}
       className="flex flex-col gap-8 w-[70%] self-center  p-2 my-2 h-auto  rounded-md"
     >

@@ -1,14 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { blurOn } from "../../redux/services/animateSlice";
+import { blurOn, isDeskTop, isTablet } from "../../redux/services/animateSlice";
 
-const CreatePost = () => {
+const CreatePost = ({position='feed'}) => {
   const dispatch = useDispatch();
   const createPost = () => {
     dispatch(blurOn({ blur: true }));
   };
 
-  const {  isMobile } = useSelector(
+  const {  isTablet,isMobile } = useSelector(
     (state) => state.animateSlice
   );
 
@@ -30,8 +30,8 @@ const CreatePost = () => {
   return (
     <>
       <div style={{
-        width: isMobile ? '100%' : '100%'
-      }} className=" tracking-wider self-center justify-center items-center  flex w-[80%] py-2 p-3 min-h-[80px] bg-[#242526] rounded-md  ">
+        width: !isTablet ? '100%':'90%',
+      }} className=" tracking-wider self-center justify-center items-center  flex  py-2 p-3 min-h-[80px] bg-[#242526] rounded-md  ">
         <div className=" px-2 flex rounded-md justify-between flex-col items-center w-full h-full ">
           <div className=" flex justify-between gap-2 items-center w-full h-full   ">
             <div className=" flex cursor-pointer  rounded-full  bg-[#333333] ">

@@ -27,9 +27,9 @@ const UserProfile = () => {
     <section className=" flex flex-col items-center relative   bg-[#121212] w-full   h-screen max-h-screen overflow-y-auto overflow-x-hidden ">
       <section
         style={{
-          height: !isDeskTop ? "70%" : "80%",
+          height: !isDeskTop ? "30%" : "80%",
         }}
-        className="  w-full absolute top-0 flex flex-col justify- items-center bg-[#242526]  "
+        className="  w-full absolute  top-0 flex flex-col justify- items-center bg-[#242526]  "
       >
         <div
           className={` absolute w-full h-[70%] top-0 blur-xl opacity-[0.3] brightness-45  `}
@@ -45,13 +45,13 @@ const UserProfile = () => {
         <div
           style={{
             width: !isDeskTop ? "100%" : "60%",
-            height: !isDeskTop ? "50%" : "80%",
+            height: !isDeskTop ? "100%" : "80%",
           }}
           className=" z-[100] relative flex flex-col  h-[50%] justify-start items-start   "
         >
           <img
             style={{
-              height: !isDeskTop ? "65%" : "70%",
+              height: !isDeskTop ? "80%" : "70%",
             }}
             className={` ${
               isDeskTop && "rounded-b"
@@ -62,7 +62,7 @@ const UserProfile = () => {
           />
           <div
             style={{
-              bottom: !isDeskTop ? "20%" : "8%",
+              bottom: !isDeskTop ? "2%" : "8%",
             }}
             className=" w-full h-auto absolute left-0 flex justify-start items-center "
           >
@@ -97,16 +97,16 @@ const UserProfile = () => {
       </section>
       <section
         style={{
-          top: !isDeskTop ? "71%" : "81%",
+          top: !isDeskTop ? "31%" : "81%",
           flexDirection: isMobile ? "column" : "row",
-          width: isMobile ? "100%" : "80%",
+          width: !isDeskTop ? "100%" : "80%",
         }}
-        className=" absolute   flex justify-center items-center p-2 gap-4 "
+        className="   absolute h-auto flex justify-center items-center p-2 gap-4 "
       >
         { 
           isDeskTop && <div
           style={{
-            width: isMobile ? "100%" : "40%",
+            width: !isDeskTop ? "100%" : "40%",
           }}
           className=" flex p-1 bg-[#333333]  h-screen rounded-md "
         ></div>
@@ -115,15 +115,19 @@ const UserProfile = () => {
 
         <div
           style={{
-            width: isMobile ? "100%" : "60%",
+            width: !isDeskTop ? "100%" : "60%",
           }}
           className={` ${
-            isMobile ? "px-0" : "px-4"
+            !isDeskTop ? "px-0" : "px-4"
           } " flex flex-col gap-4   w-[60%] h-screen rounded-md " `}
         >
-          <CreatePost />
+          <CreatePost position={'user'} />
 
-          <Post filter={UID.user} />
+          <Post position={'user'} filter={UID?.user} />
+
+          <div className=" flex justify-center items-center w-full h-[400px] " >
+            End
+          </div>
         </div>
       </section>
     </section>
