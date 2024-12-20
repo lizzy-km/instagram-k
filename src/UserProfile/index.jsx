@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import CreatePost from "../HomeFeed/Components/CreatePost";
 
 const UserProfile = () => {
   const { userAvatar, UserData } = useSelector(
@@ -26,7 +27,7 @@ const UserProfile = () => {
       style={{
         top: !isDeskTop ? "-110px" : "-70px",
       }}
-      className=" flex flex-col relative top-[-70px]  bg-[#121212] w-full   h-screen max-h-screen overflow-y-auto overflow-x-hidden "
+      className=" flex flex-col items-center relative top-[-70px]  bg-[#121212] w-full   h-screen max-h-screen overflow-y-auto overflow-x-hidden "
     >
       <section
         style={{
@@ -96,39 +97,17 @@ const UserProfile = () => {
           </div>
         </div>
       </section>
-
-      {/* <section
-        style={{
-          flexDirection: !isDeskTop ? "column" : "row",
-        }}
-        className="w-full p-3 absolute top-[78%] items-center  justify-center  flex gap-2  "
-      >
-        <div
-          style={{
-            flexDirection: !isDeskTop ? "column" : "row",
-            width: !isDeskTop ? "100%" : "60%",
-          }}
-          className="   flex gap-2  "
-        >
-          <div
-            style={{
-              flexDirection: !isDeskTop ? "column" : "row",
-              width: !isDeskTop ? "100%" : "40%",
-            }}
-            className="  h-[500px] bg-[#242526] rounded-md "
-          ></div>
-
-          <div
-            style={{
-              flexDirection: !isDeskTop ? "column" : "row",
-              width: !isDeskTop ? "100%" : "60%",
-            }}
-            className="  h-[800px]   justify-center items-center rounded-md "
-          >
-            <CreatePost />
-          </div>
+      <section style={{
+        top: !isDeskTop ? "71%" : "81%",
+      }} className=" absolute w-[80%]  flex justify-center items-center p-2 gap-4 " >
+        <div className=" flex p-1 bg-[#333333] w-[40%] h-screen rounded-md " >
+          
         </div>
-      </section> */}
+        
+        <div className=" flex flex-col gap-4 px-4  w-[60%] h-screen rounded-md " >
+          <CreatePost/>
+        </div>
+      </section>
     </section>
   );
 };
