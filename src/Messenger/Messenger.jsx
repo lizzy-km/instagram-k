@@ -13,7 +13,7 @@ import {
 import { auth, firestore } from "../firebase/firebase";
 
 const MessengerApp = () => {
-  const { adminProfile, isSearch } = useSelector(
+  const { adminProfile, isSearch,userAvatar } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -103,6 +103,9 @@ const MessengerApp = () => {
 
 function ChatMessage(props) {
   const { text, uid, photoURL } = props.message;
+   const { adminProfile, isSearch,userAvatar } = useSelector(
+      (deserializedState) => deserializedState.authSlice
+    );
 
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
 
@@ -120,7 +123,7 @@ function ChatMessage(props) {
         <img
           className="invert-none rounded-full object-cover w-[30px] h-[30px] "
           src={
-            photoURL || "https://api.adorable.io/avatars/23/abott@adorable.png"
+            photoURL || userAvatar
           }
         />
         <p className=" tracking-wide text-sm font-sans px-2 py-1 bg-[#333333] rounded-lg ">
