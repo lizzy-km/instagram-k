@@ -41,6 +41,15 @@ const Messenger = () => {
     setFormValue("");
   };
 
+  const [text, setText] = useState(""); // Input text
+  const [showPicker, setShowPicker] = useState(false); // Emoji picker visibility
+
+  // Handle emoji selection
+  const onEmojiClick = (emojiObject) => {
+    setText((prevText) => prevText + emojiObject.emoji);
+    setShowPicker(false); // Hide the picker after selection
+  };
+
   return (
     <section className=" flex flex-col gap-4 p-1 justify-end items-end w-full " >
       <main className=" flex flex-col justify-end items-end gap-2 " >
@@ -51,6 +60,24 @@ const Messenger = () => {
       </main>
 
       <form className=" flex justify-between items-center " onSubmit={sendMessage}>
+         {/* Emoji Picker Toggle
+         <button
+          onClick={() => setShowPicker((prev) => !prev)}
+          style={{
+            marginLeft: "10px",
+            padding: "10px",
+            fontSize: "16px",
+            cursor: "pointer",
+          }}
+        >
+          😀
+        </button>
+        {/* Emoji Picker */}
+        {/* {showPicker && ( */}
+          {/* <div style={{ position: "absolute", top: "50px", zIndex: 100 }}> */}
+            {/* <EmojiPicker onEmojiClick={onEmojiClick} /> */}
+          {/* </div> */}
+        {/* )} */} 
         <input className=" py-1 px-2 tracking-wide rounded-md bg-[#212121] "
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
