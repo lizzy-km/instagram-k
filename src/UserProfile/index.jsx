@@ -125,8 +125,8 @@ const UserProfile = () => {
 
           <Post position={'user'} filter={UID?.user} />
 
-          <div className=" flex justify-center items-center w-full h-[400px] " >
-            End
+          <div className=" flex justify-center items-center w-full min-h-[70px] " >
+            
           </div>
         </div>
       </section>

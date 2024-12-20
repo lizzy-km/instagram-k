@@ -54,7 +54,7 @@ const HomeFeed = () => {
           <CreatePost />
           <Post />
 
-          <div className=" w-full h-[200px] "></div>
+          <div className=" w-full h-[60px] "></div>
         </div>
       </div>
     );
