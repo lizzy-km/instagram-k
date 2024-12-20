@@ -23,23 +23,18 @@ const UserProfile = () => {
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2F328652225_477950631031057_4570664772778110705_n%20(2).jpg?alt=media&token=ada5ce90-591d-47a6-88cb-07e80e9117d7";
 
   return (
-    <section
-      style={{
-        top: !isDeskTop ? "-110px" : "-70px",
-      }}
-      className=" flex flex-col items-center relative top-[-70px]  bg-[#121212] w-full   h-screen max-h-screen overflow-y-auto overflow-x-hidden "
-    >
+    <section className=" flex flex-col items-center relative   bg-[#121212] w-full   h-screen max-h-screen overflow-y-auto overflow-x-hidden ">
       <section
         style={{
           height: !isDeskTop ? "70%" : "80%",
         }}
-        className="  w-full absolute flex flex-col justify-center items-center bg-[#242526]  "
+        className="  w-full absolute top-0 flex flex-col justify- items-center bg-[#242526]  "
       >
         <div
           className={` absolute w-full h-[70%] top-0 blur-xl opacity-[0.3] brightness-45  `}
         >
           <img
-            className=" invert-0 rounded-lg h-full w-full  object-cover "
+            className=" invert-0 rounded-b-lg h-full w-full  object-cover "
             src={bg}
             alt=""
             srcset=""
@@ -57,14 +52,16 @@ const UserProfile = () => {
             style={{
               height: !isDeskTop ? "65%" : "70%",
             }}
-            className=" invert-none rounded  w-full  object-cover "
+            className={` ${
+              isDeskTop && "rounded-b"
+            } " invert-none   w-full  object-cover "`}
             src={bg}
             alt=""
             srcset=""
           />
           <div
             style={{
-              bottom: !isDeskTop ? "15%" : "1%",
+              bottom: !isDeskTop ? "20%" : "8%",
             }}
             className=" w-full h-auto absolute left-0 flex justify-start items-center "
           >
@@ -97,15 +94,30 @@ const UserProfile = () => {
           </div>
         </div>
       </section>
-      <section style={{
-        top: !isDeskTop ? "71%" : "81%",
-      }} className=" absolute w-[80%]  flex justify-center items-center p-2 gap-4 " >
-        <div className=" flex p-1 bg-[#333333] w-[40%] h-screen rounded-md " >
-          
-        </div>
-        
-        <div className=" flex flex-col gap-4 px-4  w-[60%] h-screen rounded-md " >
-          <CreatePost/>
+      <section
+        style={{
+          top: !isDeskTop ? "71%" : "81%",
+          flexDirection: isMobile ? "column" : "row",
+          width: isMobile ? "100%" : "80%",
+        }}
+        className=" absolute   flex justify-center items-center p-2 gap-4 "
+      >
+        <div
+          style={{
+            width: isMobile ? "100%" : "40%",
+          }}
+          className=" flex p-1 bg-[#333333]  h-screen rounded-md "
+        ></div>
+
+        <div
+          style={{
+            width: isMobile ? "100%" : "60%",
+          }}
+          className={` ${
+            isMobile ? "px-0" : "px-4"
+          } " flex flex-col gap-4   w-[60%] h-screen rounded-md " `}
+        >
+          <CreatePost />
         </div>
       </section>
     </section>
