@@ -62,7 +62,7 @@ const Messenger = () => {
       </main>
 
       <form
-        className=" flex justify-between items-center "
+        className=" flex bg-[#181818] rounded-lg justify-between w-full p-2 items-center "
         onSubmit={sendMessage}
       >
         {/* Emoji Picker Toggle
@@ -84,7 +84,7 @@ const Messenger = () => {
         {/* </div> */}
         {/* )} */}
         <input
-          className=" py-1 px-2 tracking-wide rounded-md bg-[#212121] "
+          className=" py-1 px-2 tracking-wide w-auto rounded-md bg-[#212121] "
           value={formValue}
           onChange={(e) => setFormValue(e.target.value)}
           placeholder=" Message"

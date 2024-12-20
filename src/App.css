@@ -41,6 +41,10 @@
   filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.62));
 }
 
+.back-blur {
+  backdrop-filter: blur(4px) !important;
+}
+
 .highlight {
   -webkit-tap-highlight-color: transparent;
   background: rgba(0, 0, 0, 0.35);

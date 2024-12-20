@@ -326,7 +326,7 @@ const RightNav = () => {
                     : "100%"
                   : 0,
             }}
-            className={`Noti flex w-full   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
+            className={`Noti flex w-full   backdrop-blur-md  rounded-md bg-[#2121214e] rounded-[${
               isMobile ? "0" : "6"
             }px]`}
           ></div>
@@ -335,17 +335,15 @@ const RightNav = () => {
             id="messenger"
             style={{
               visibility: messenger === true ? "visible" : "hidden",
-              height: messenger === true ? "90vh" : "0",
+              height: messenger === true ? "85vh" : "0",
               width:
                 messenger === true
                   ? isMobile === true
                     ? fullWidth + "px"
                     : "100%"
-                  : 0,
+                  : "100%",
             }}
-            className={`Messenger flex w-full p-2 justify-center items-center   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
-              isMobile ? "0" : "6"
-            }px]`}
+            className={` flex w-full px-2 py-4 justify-end items-end   backdrop-blur-md bg-[#212121]    rounded-${isMobile ? '':'md'} `}
           >
             <Messenger />
           </div>
