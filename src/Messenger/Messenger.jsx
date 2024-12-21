@@ -43,10 +43,17 @@ const MessengerApp = () => {
 
   };
 
+  let view = document.getElementById('spn')
+
+
   useEffect(() => {
-    console.log("Here",dummy?.current?.scrollIntoView({ behavior: "smooth" }));
-    sendMessage()
-     dummy.current.scrollIntoView();
+    if (view) {
+      view?.scrollIntoView()
+
+    }
+     view = document.getElementById('spn')
+
+     
   }, []);
 
   const [text, setText] = useState(""); // Input text
@@ -63,12 +70,12 @@ const MessengerApp = () => {
   );
 
   return (
-    <section className=" flex flex-col gap-4  h-screen overflow-hidden p-1 justify-end items-end w-full ">
-      <main className=" flex w-full flex-col mt-[18%] justify- h-[85%] max-h-[85%] overflow-scroll items- gap-2 ">
+    <section className=" flex flex-col gap-4  h-screen overflow-scroll p-1 justify-between items-end w-full ">
+      <main className=" flex w-full flex-col mt-[18%] justify- h-[90%] max-h-[90%] overflow-scroll items-end gap-2 ">
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
 
-        <span ref={dummy}></span>
+        <span id="spn" className="w-full h-1 p-1 " ref={dummy}></span>
       </main>
 
       <form
@@ -105,7 +112,7 @@ const MessengerApp = () => {
         </button>
       </form>
 
-      {isMobile && <div className=" flex h-[80px] w-full "></div>}
+      {/* {isMobile && <div className=" flex h-[80px] w-full "></div>} */}
     </section>
   );
 };
