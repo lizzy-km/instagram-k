@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { addDoc, collection, limit, orderBy, query } from "firebase/firestore";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Icon from "@mdi/react";
 import {
   mdiMessageArrowRight,
@@ -11,13 +11,13 @@ import {
   mdiSendVariantOutline,
 } from "@mdi/js";
 import { auth, firestore } from "../firebase/firebase";
+import { setBottomNav } from "../redux/services/animateSlice";
 
 const MessengerApp = () => {
   const { adminProfile, isSearch, userAvatar } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
   const dummy = useRef();
- 
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"), limit(25));
@@ -31,29 +31,27 @@ const MessengerApp = () => {
 
     const { uid } = auth.currentUser;
 
-    formValue?.length > 0 &&  await addDoc(messagesRf, {
-      text: formValue,
-      createdAt: Date.now(),
-      uid,
-      photoURL: adminProfile,
-    });
+    formValue?.length > 0 &&
+      (await addDoc(messagesRf, {
+        text: formValue,
+        createdAt: Date.now(),
+        uid,
+        photoURL: adminProfile,
+      }));
 
     setFormValue("");
     dummy.current.scrollIntoView({ behavior: "smooth" });
-
   };
 
-  let view = document.getElementById('spn')
-
-
+  let view = document.getElementById("spn");
+  const dispatch = useDispatch()
   useEffect(() => {
+    dispatch(setBottomNav(false));
+
     if (view) {
-      view?.scrollIntoView()
-
+      view?.scrollIntoView();
     }
-     view = document.getElementById('spn')
-
-     
+    view = dummy.current;
   }, []);
 
   const [text, setText] = useState(""); // Input text
@@ -70,16 +68,21 @@ const MessengerApp = () => {
   );
 
   return (
-    <section className=" flex flex-col gap-4  h-screen overflow-scroll p-1 justify-between items-end w-full ">
-      <main className=" flex w-full flex-col mt-[18%] justify- h-[90%] max-h-[90%] overflow-scroll items-end gap-2 ">
+    <section className=" relative w-full flex h-screen    ">
+
+      <main className=" h-[80%] relative max-h-[80%] overflow-scroll mt-[20%]  w-full flex-col flex  ">
+        <div className={"flex flex-col absolute w-full h-auto top-0    "} >
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
 
         <span id="spn" className="w-full h-1 p-1 " ref={dummy}></span>
+        </div>
+       
+      
       </main>
 
       <form
-        className=" flex bg-[#181818] h-auto rounded-lg justify-between w-full p-2 items-center "
+        className=" fixed bottom-4 flex bg-[#181818] h-auto rounded-lg justify-between w-full p-2 items-center "
         onSubmit={sendMessage}
       >
         {/* Emoji Picker Toggle
@@ -129,7 +132,7 @@ function ChatMessage(props) {
     <section
       className={` ${
         uid === auth.currentUser.uid ? " justify-end " : " justify-start "
-      } " flex w-full   gap-2 "`}
+      } " flex w-full my-2   gap-2 "`}
     >
       <div
         className={` ${

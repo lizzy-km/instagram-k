@@ -39,10 +39,6 @@ import Menu from "./Menu/Menu";
 function App() {
   const isUserLog = useAuthState(auth);
 
-  
-
-
-
   const isAuth = isUserLog[0]?.accessToken?.length > 0 ? true : false;
 
   const {
@@ -91,6 +87,8 @@ function App() {
   );
 
   useEffect(() => {
+    dispatch(setBottomNav(true));
+
     const getAdmin = [GetAdminData()];
 
     Promise.all(getAdmin)
@@ -147,9 +145,9 @@ function App() {
       }
     });
 
-    // const location = useLocation()
+  // const location = useLocation()
 
-    const isMessenger = window.location.pathname === '/message'
+  const isMessenger = window.location.pathname === "/message";
   return (
     <section
       id="page"
@@ -160,7 +158,7 @@ function App() {
       </div>
 
       <BrowserRouter>
-        {isAuth === true  && <NavBar />}
+        {isAuth === true && <NavBar />}
         {blur === true && (
           <section
             style={{
@@ -211,7 +209,7 @@ function App() {
         )}
 
         <section className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center ">
-          {isAuth === true  ? (
+          {isAuth === true ? (
             <Routes>
               <Route exact path="/*" element={<HomeFeed />} />
               <Route exact path="/game" element={<Game />} />
@@ -221,7 +219,6 @@ function App() {
               <Route exact path="/message" element={<MessengerApp />} />
               <Route exact path="/notification" element={<Noti />} />
               <Route exact path="/menu" element={<Menu />} />
-
 
               <Route path="/:user/" element={<UserProfile />} />
               <Route path="/profile/:username/" element={<OtherProfile />} />
@@ -233,17 +230,19 @@ function App() {
             </Routes>
           )}
         </section>
-        {isAuth === true && !isDeskTop && !isMessenger && (
-          <section
-            style={{
-              bottom: bottomNav ? "8%" : 10,
-              visibility: bottomNav ? "visible" : "collapse",
-            }}
-            className=" transition-all fixed  flex w-full h-10 justify-center items-center  "
-          >
-            <MidNAv />
-          </section>
-        )}
+        {isAuth === true &&
+          !isDeskTop 
+           && (
+            <section
+              style={{
+                bottom: bottomNav ? "8%" : 10,
+                visibility: bottomNav ? "visible" : "collapse",
+              }}
+              className=" transition-all fixed  flex w-full h-10 justify-center items-center  "
+            >
+              <MidNAv />
+            </section>
+          )}
       </BrowserRouter>
     </section>
   );

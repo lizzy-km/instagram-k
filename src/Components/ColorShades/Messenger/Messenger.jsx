@@ -62,16 +62,16 @@ const Messenger = () => {
   };
 
   return (
-    <section className=" flex flex-col gap-4 p-1 justify-end items-end w-full ">
-      <main className=" flex w-full flex-col justify-end items-end gap-2 ">
-        {messages &&
+    <section className=" flex flex-col gap-4  h-full overflow-scroll p-1 justify-start items-start w-full ">
+      <main className=" flex w-full flex-col mt-[18%] justify- h-[95%] max-h-[95%] overflow-scroll items-end gap-2 ">
+         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
 
 <span ref={dummy}></span>
 </main>
 
       <form
-        className=" flex bg-[#181818] rounded-lg justify-between w-full p-2 items-center "
+        className=" flex bg-[#181818] h-auto rounded-lg justify-between w-full p-2 items-center "
         onSubmit={sendMessage}
       >
         {/* Emoji Picker Toggle
@@ -132,7 +132,7 @@ function ChatMessage(props) {
             photoURL || userAvatar
           }
         />
-        <p className=" tracking-wide text-sm font-sans px-2 py-1 bg-[#333333] rounded-lg ">
+        <p className=" invert-none tracking-wide text-sm font-sans px-2 py-1 bg-[#333333] rounded-lg ">
           {text}
         </p>
       </div>

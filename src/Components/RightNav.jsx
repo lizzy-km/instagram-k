@@ -80,6 +80,7 @@ const RightNav = () => {
             messenger: !messenger,
           })
         );
+
   };
 
   const menuShow = () => {
@@ -334,7 +335,7 @@ const RightNav = () => {
             id="messenger"
             style={{
               visibility: messenger === true ? "visible" : "hidden",
-              height: messenger === true ? "85vh" : "0",
+              height: messenger === true ? "80vh" : "0",
               width:
                 messenger === true
                   ? isMobile === true
@@ -342,7 +343,7 @@ const RightNav = () => {
                     : "100%"
                   : "100%",
             }}
-            className={` flex w-full px-2 py-4 justify-end items-end   backdrop-blur-md bg-[#212121]    rounded-${
+            className={` flex w-full px-2 py-1 justify-start items-start -z-1   backdrop-blur-md bg-[#212121]    rounded-${
               isMobile ? "" : "md"
             } `}
           >
