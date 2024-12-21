@@ -34,6 +34,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth } from "./firebase/firebase";
 import MessengerApp from "./Messenger/Messenger";
+import Menu from "./Menu/Menu";
 
 function App() {
   const isUserLog = useAuthState(auth);
@@ -216,6 +217,8 @@ function App() {
               <Route exact path="/loading" element={<Loading />} />
               <Route exact path="/message" element={<MessengerApp />} />
               <Route exact path="/notification" element={<Noti />} />
+              <Route exact path="/menu" element={<Menu />} />
+
 
               <Route path="/:user/" element={<UserProfile />} />
               <Route path="/profile/:username/" element={<OtherProfile />} />

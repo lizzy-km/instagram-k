@@ -10,12 +10,11 @@ import {
 import useChangeChildrenVisibility from "./ChangeChildrenVisibility";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { addAdmin, addUserData, setLogin } from "../redux/services/authSlice";
-import axios from "axios";
 import { collection, getDocs } from "firebase/firestore";
 import { auth, firestore } from "../firebase/firebase";
 import Cookies from "js-cookie";
 import Icon from "@mdi/react";
-import { mdiArrowDown, mdiChevronDown, mdiChevronUp, mdiPlus } from "@mdi/js";
+import {  mdiPlus } from "@mdi/js";
 import Messenger from "./ColorShades/Messenger/Messenger";
 
 const RightNav = () => {
@@ -29,7 +28,6 @@ const RightNav = () => {
 
   const navigate = useNavigate();
 
-  const [MenuOn, setMenuOn] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -85,11 +83,13 @@ const RightNav = () => {
   };
 
   const menuShow = () => {
-    dispatch(
-      menuOn({
-        menu: !menu,
-      })
-    );
+    isMobile
+      ? navigate("/menu")
+      : dispatch(
+          menuOn({
+            menu: !menu,
+          })
+        );
   };
 
   const { adminProfile, isSearch } = useSelector(
@@ -133,27 +133,27 @@ const RightNav = () => {
   return (
     <section
       style={{
-        width: isMobile ? "50px" : isTablet ? "35%" : "30%",
+        width: isMobile ? "70%" : isTablet ? "35%" : "30%",
         justifyContent: isMobile ? "end" : isTablet ? "end" : "end",
         padding: isMobile ? "0px" : "0",
         alignItems: isDeskTop ? "end" : "end",
         position: isMobile ? "absolute" : "unset",
       }}
       className={`h-full z-[99]  ${
-        isMobile ? "flex-col left-0 top-3 " : "flex"
+        isMobile ? "flex-row left-2 top-3 " : "flex"
       } justify-end items-end `}
     >
       <div
         style={{
-          width: isMobile ? "auto" : isTablet ? "100%" : "60%",
-          position: isMobile ? "unset" : "relative",
+          width: isMobile ? "100%" : isTablet ? "100%" : "60%",
+          position: "relative",
         }}
-        className={` transition-all ${
-          isMobile ? "flex-col" : " flex flex-row-reverse"
-        }  ${isMobile ? "rounded-r-xl" : "rounded-lg"}  ${
-          isMobile ? "justify-evenly" : "justify-between px-3 "
+        className={` transition-all 
+         flex flex-row
+          ${isMobile ? "rounded-xl" : "rounded-lg"}  ${
+          isMobile ? "justify-between px-3" : "justify-between px-3 "
         }   backdrop-blur bg-[#2121217c] gap-3 items-center 
-           h-${MenuOn && isMobile ? "auto" : "[60px]"} py-2 items-center `}
+           h-auto py-2 items-center `}
       >
         <div
           aria-label="Account Setting"
@@ -191,10 +191,9 @@ const RightNav = () => {
         </div>
 
         <section
-          className={` ${!MenuOn && isMobile && "hidden"} flex-${
-            isMobile ? "col" : "row"
-          }   lg flex justify-evenly  gap-3 items-center w-[80%]
-            } h-auto py-1 `}
+          className={`  flex-row
+           lg flex justify-evenly  gap-3 items-center w-[80%]
+             h-auto py-1 px-1 `}
         >
           {" "}
           <div
@@ -343,30 +342,34 @@ const RightNav = () => {
                     : "100%"
                   : "100%",
             }}
-            className={` flex w-full px-2 py-4 justify-end items-end   backdrop-blur-md bg-[#212121]    rounded-${isMobile ? '':'md'} `}
+            className={` flex w-full px-2 py-4 justify-end items-end   backdrop-blur-md bg-[#212121]    rounded-${
+              isMobile ? "" : "md"
+            } `}
           >
             <Messenger />
           </div>
 
-          <div
-            id="menu"
-            style={{
-              visibility: menu === true ? "visible" : "hidden",
-              height: menu === true ? "90vh" : "0",
-              width:
-                menu === true
-                  ? isMobile === true
-                    ? fullWidth + "px"
-                    : "100%"
-                  : 0,
-            }}
-            className={`Menu flex w-full   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
-              isMobile ? "0" : "6"
-            }px]`}
-          ></div>
+          {!isMobile && (
+            <div
+              id="menu"
+              style={{
+                visibility: menu === true ? "visible" : "hidden",
+                height: menu === true ? "90vh" : "0",
+                width:
+                  menu === true
+                    ? isMobile === true
+                      ? fullWidth + "px"
+                      : "100%"
+                    : 0,
+              }}
+              className={`Menu flex w-full   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
+                isMobile ? "0" : "6"
+              }px]`}
+            ></div>
+          )}
         </section>
 
-        <div
+        {/* <div
           onClick={() => setMenuOn(!MenuOn)}
           className={`p-[1px] rounded-full backdrop-blur ${
             !isMobile && "hidden"
@@ -375,7 +378,7 @@ const RightNav = () => {
           } `}
         >
           <Icon path={MenuOn ? mdiChevronUp : mdiChevronDown} size={0.7} />
-        </div>
+        </div> */}
       </div>
     </section>
   );
