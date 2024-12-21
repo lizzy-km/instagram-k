@@ -44,8 +44,10 @@ const MessengerApp = () => {
  
 
   const targetMessage = messages?.filter(
-    (msg) => msg?.mid ===uid + targetId?.id || msg?.mid === targetId?.id+uid 
+    (msg) =>  msg?.mid === targetId?.id+uid || msg?.mid === uid+targetId?.id
   );
+
+  
 
   const [formValue, setFormValue] = useState("");
 
@@ -88,7 +90,7 @@ const MessengerApp = () => {
         {targetMessage &&
           targetMessage?.map(
             (msg) =>
-              uid === msg.uid && <ChatMessage key={msg.id} message={msg} />
+               <ChatMessage key={msg.id} message={msg} />
           )}
 
         <span ref={dummy}></span>
