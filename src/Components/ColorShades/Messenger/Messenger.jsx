@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../../../firebase/firebase";
@@ -13,6 +13,14 @@ import {
 } from "@mdi/js";
 
 const Messenger = () => {
+    const dummy = useRef();
+
+    useEffect(()=> {
+    return  dummy.current.scrollIntoView();
+  
+    },[])
+  
+  
   const { adminProfile, isSearch,userAvatar } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
@@ -26,7 +34,6 @@ const Messenger = () => {
 
   const d = auth.currentUser;
 
-  console.log(d);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -40,8 +47,10 @@ const Messenger = () => {
       photoURL: adminProfile,
     });
 
-    setFormValue("");
-  };
+      dummy.current.scrollIntoView({ behavior: "smooth" });
+    };
+  
+   
 
   const [text, setText] = useState(""); // Input text
   const [showPicker, setShowPicker] = useState(false); // Emoji picker visibility
@@ -58,8 +67,8 @@ const Messenger = () => {
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
 
-        <span></span>
-      </main>
+<span ref={dummy}></span>
+</main>
 
       <form
         className=" flex bg-[#181818] rounded-lg justify-between w-full p-2 items-center "

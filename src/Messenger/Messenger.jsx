@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { addDoc, collection, limit, orderBy, query } from "firebase/firestore";
@@ -17,6 +17,7 @@ const MessengerApp = () => {
     (deserializedState) => deserializedState.authSlice
   );
   const dummy = useRef();
+ 
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"), limit(25));
@@ -25,14 +26,12 @@ const MessengerApp = () => {
 
   const [formValue, setFormValue] = useState("");
 
-  const d = auth.currentUser;
-
   const sendMessage = async (e) => {
     e.preventDefault();
 
     const { uid } = auth.currentUser;
 
-    await addDoc(messagesRf, {
+    formValue?.length > 0 &&  await addDoc(messagesRf, {
       text: formValue,
       createdAt: Date.now(),
       uid,
@@ -41,7 +40,14 @@ const MessengerApp = () => {
 
     setFormValue("");
     dummy.current.scrollIntoView({ behavior: "smooth" });
+
   };
+
+  useEffect(() => {
+    console.log("Here",dummy?.current?.scrollIntoView({ behavior: "smooth" }));
+    sendMessage()
+     dummy.current.scrollIntoView();
+  }, []);
 
   const [text, setText] = useState(""); // Input text
   const [showPicker, setShowPicker] = useState(false); // Emoji picker visibility
@@ -52,9 +58,9 @@ const MessengerApp = () => {
     setShowPicker(false); // Hide the picker after selection
   };
 
-   const { isTablet, isMobile, isDeskTop } = useSelector(
-      (deserializedState) => deserializedState.animateSlice
-    );
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (deserializedState) => deserializedState.animateSlice
+  );
 
   return (
     <section className=" flex flex-col gap-4  h-screen overflow-hidden p-1 justify-end items-end w-full ">
@@ -99,9 +105,7 @@ const MessengerApp = () => {
         </button>
       </form>
 
-     {
-      isMobile && <div className=" flex h-[80px] w-full "></div>
-     } 
+      {isMobile && <div className=" flex h-[80px] w-full "></div>}
     </section>
   );
 };

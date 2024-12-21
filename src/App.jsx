@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import HomeFeed from "./HomeFeed";
 import UserProfile from "./UserProfile";
@@ -147,6 +147,9 @@ function App() {
       }
     });
 
+    // const location = useLocation()
+
+    const isMessenger = window.location.pathname === '/message'
   return (
     <section
       id="page"
@@ -230,7 +233,7 @@ function App() {
             </Routes>
           )}
         </section>
-        {isAuth === true && !isDeskTop && (
+        {isAuth === true && !isDeskTop && !isMessenger && (
           <section
             style={{
               bottom: bottomNav ? "8%" : 10,
