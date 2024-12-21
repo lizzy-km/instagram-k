@@ -43,11 +43,8 @@ function App() {
 
   const isAuth = isUserLog[0]?.accessToken?.length > 0 ? true : false;
 
-  const messagesRf = collection(firestore, "MESSAGES");
-  const quer = query(messagesRf, orderBy("createdAt"));
   const dispatch = useDispatch();
 
-  const [messages] = useCollectionData(quer, { idField: "id" });
 
   const {
     blur,

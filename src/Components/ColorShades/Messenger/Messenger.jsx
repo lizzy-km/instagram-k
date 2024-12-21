@@ -17,6 +17,7 @@ const Messenger = () => {
   const targetId = localStorage.getItem("targetId");
 
   const dispatch = useDispatch();
+  const inputRef = useRef("");
 
   const { adminProfile } = useSelector(
     (deserializedState) => deserializedState.authSlice
@@ -24,7 +25,6 @@ const Messenger = () => {
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"));
-  const inputRef = useRef("");
 
   const [messages] = useCollectionData(quer, { idField: "id" });
   const { uid } = auth.currentUser;

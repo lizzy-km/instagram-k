@@ -50,16 +50,17 @@ const MessageCard = () => {
 
         return (
           <div
-            className={`${isMobile ? 'w-[90%]':'w-full' }`}
+            className={`${isMobile ? 'w-[90%]':'w-full' } h-auto p-1`}
             onClick={() => goChat(UID)}
             key={d?._document?.data?.value.mapValue.fields.UID.stringValue}
           >
             <UserCard
-              className={"  w-full w-full "}
+              className={"   w-full "}
               STID={"0"}
               data={d?._document?.data?.value.mapValue.fields}
               key={d?._document?.data?.value.mapValue.fields.UID.stringValue}
-              UID={d?._document?.data?.value.mapValue.fields.UID.stringValue}
+              UID={d?._document?.data?.value.mapValue.fields.UID?.stringValue}
+              isMessage={true}
             />
           </div>
         );
