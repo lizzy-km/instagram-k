@@ -27,19 +27,30 @@ import Loading from "./Loading/Loading";
 import ViewStory from "./HomeFeed/Components/ViewStory";
 import Noti from "./Noti/Noti";
 import PostDetail from "./PostDetail/PostDetail";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import AddProfileBox from "./Components/AddProfileBox";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { auth } from "./firebase/firebase";
+import { auth, firestore } from "./firebase/firebase";
 import MessengerApp from "./Messenger/Messenger";
 import Menu from "./Menu/Menu";
+import { collection, orderBy, query } from "firebase/firestore";
 
 function App() {
   const isUserLog = useAuthState(auth);
 
   const isAuth = isUserLog[0]?.accessToken?.length > 0 ? true : false;
+
+
+   const messagesRf = collection(firestore, "MESSAGES");
+    const quer = query(messagesRf, orderBy("createdAt"));
+  
+    const [messages] = useCollectionData(quer, { idField: "id" });
+
+    useEffect(() => {
+      toast.info("You have a new message");
+    }, [messages]);
 
   const {
     blur,
@@ -164,7 +175,7 @@ function App() {
               height: blur === true ? "100vh" : "0%",
               alignItems: isMobile ? "start" : "center",
             }}
-            className={`flex i py-[2rem] overflow-hidden justify-center z-[9999999]   fixed bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+            className={`flex i py-[2rem] overflow-hidden justify-center z-[99]   fixed bottom-[0%] bg-[#2121211a] backdrop-brightness-50 `}
           >
             <CreatePostBox />
           </section>
@@ -176,7 +187,7 @@ function App() {
               height: showStory === true ? "100vh" : "0%",
               alignItems: isMobile ? "start" : "center",
             }}
-            className={`flex  py-10 overflow-hidden justify-center z-[9999999] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
+            className={`flex  py-10 overflow-hidden justify-center z-[99] fixed top-[0%] bg-[#2121211a] backdrop-brightness-50 `}
           >
             <CreateStory />
           </section>

@@ -43,14 +43,14 @@ const MessageCard = () => {
   };
 
   return (
-    <div className=" flex flex-col w-full gap-2 p-2 justify-start items-start ">
+    <div className=" flex flex-col w-full gap-2  justify-start items-start ">
       {uniqueArray?.map((d) => {
         const data = d?._document?.data?.value.mapValue.fields;
         const UID = d.id;
 
         return (
           <div
-            className=" w-[90%] "
+            className={`${isMobile ? 'w-[90%]':'w-full' }`}
             onClick={() => goChat(UID)}
             key={d?._document?.data?.value.mapValue.fields.UID.stringValue}
           >

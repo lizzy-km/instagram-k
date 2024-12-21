@@ -2,13 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../../../firebase/firebase";
-import { addDoc, collection, limit, orderBy, query } from "firebase/firestore";
+import { addDoc, collection,  orderBy, query } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import Icon from "@mdi/react";
 import {
-  mdiMessageArrowRight,
-  mdiPhoneMessageOutline,
-  mdiSendVariant,
+ 
   mdiSendVariantOutline,
 } from "@mdi/js";
 import { chatOn } from "../../../redux/services/animateSlice";
@@ -18,18 +16,15 @@ const Messenger = () => {
 
   const targetId = localStorage.getItem("targetId");
 
-  
   const dispatch = useDispatch();
 
- 
-
-  const { adminProfile, isSearch, userAvatar } = useSelector(
+  const { adminProfile } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"));
-  const [formValue, setFormValue] = useState("");
+  const inputRef = useRef("");
 
   const [messages] = useCollectionData(quer, { idField: "id" });
   const { uid } = auth.currentUser;
@@ -45,23 +40,24 @@ const Messenger = () => {
 
     const { uid } = auth.currentUser;
 
-   await addDoc(messagesRf, {
-        text: formValue,
-        createdAt: Date.now(),
-        uid,
-        photoURL: adminProfile,
-        target: targetId,
-        mid: uid + targetId,
-        images:['']
-      });
+    await addDoc(messagesRf, {
+      text: inputRef.current?.value,
+      createdAt: Date.now(),
+      uid,
+      photoURL: adminProfile,
+      target: targetId,
+      mid: uid + targetId,
+      images: [""],
+    });
 
-    setFormValue("");
+    inputRef.current.value = "";
     dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     dummy.current.scrollIntoView({ behavior: "smooth" });
- }, [messages,targetMessage]);
+    // toast.info("You have a new message");
+  }, [messages, targetMessage]);
 
   const [text, setText] = useState(""); // Input text
   const [showPicker, setShowPicker] = useState(false); // Emoji picker visibility
@@ -74,7 +70,10 @@ const Messenger = () => {
 
   return (
     <section className=" flex flex-col gap-4  h-full overflow-scroll p-1 justify-start items-start w-full ">
-      <div onClick={()=>dispatch(chatOn(false))} className=" flex p-2 cursor-pointer tracking-wide text-2xl " >
+      <div
+        onClick={() => dispatch(chatOn(false))}
+        className=" flex p-2 cursor-pointer tracking-wide text-2xl "
+      >
         Close
       </div>
       <main className=" flex w-full flex-col mt-[18%] justify- h-[95%] max-h-[95%] overflow-scroll items-end gap-2 ">
@@ -90,32 +89,13 @@ const Messenger = () => {
         className=" flex bg-[#181818] h-auto rounded-lg justify-between w-full p-2 items-center "
         onSubmit={sendMessage}
       >
-        {/* Emoji Picker Toggle
-         <button
-          onClick={() => setShowPicker((prev) => !prev)}
-          style={{
-            marginLeft: "10px",
-            padding: "10px",
-            fontSize: "16px",
-            cursor: "pointer",
-          }}
-        >
-          😀
-        </button>
-        {/* Emoji Picker */}
-        {/* {showPicker && ( */}
-        {/* <div style={{ position: "absolute", top: "50px", zIndex: 100 }}> */}
-        {/* <EmojiPicker onEmojiClick={onEmojiClick} /> */}
-        {/* </div> */}
-        {/* )} */}
         <input
           className=" py-1 px-2 tracking-wide w-auto rounded-md bg-[#212121] "
-          value={formValue}
-          onChange={(e) => setFormValue(e.target.value)}
+          ref={inputRef}
           placeholder=" Message"
         />
 
-        <button type="submit" disabled={!formValue}>
+        <button type="submit">
           <Icon path={mdiSendVariantOutline} size={1.3} />
         </button>
       </form>
