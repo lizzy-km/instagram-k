@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { addDoc, collection, limit, orderBy, query } from "firebase/firestore";
@@ -13,9 +13,10 @@ import {
 import { auth, firestore } from "../firebase/firebase";
 
 const MessengerApp = () => {
-  const { adminProfile, isSearch,userAvatar } = useSelector(
+  const { adminProfile, isSearch, userAvatar } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
+  const dummy = useRef();
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"), limit(25));
@@ -25,7 +26,6 @@ const MessengerApp = () => {
   const [formValue, setFormValue] = useState("");
 
   const d = auth.currentUser;
-
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -40,6 +40,7 @@ const MessengerApp = () => {
     });
 
     setFormValue("");
+    dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const [text, setText] = useState(""); // Input text
@@ -51,17 +52,21 @@ const MessengerApp = () => {
     setShowPicker(false); // Hide the picker after selection
   };
 
+   const { isTablet, isMobile, isDeskTop } = useSelector(
+      (deserializedState) => deserializedState.animateSlice
+    );
+
   return (
-    <section className=" flex flex-col gap-4 h-screen p-1 justify-end items-end w-full ">
-      <main className=" flex w-full flex-col justify-end items-end gap-2 ">
+    <section className=" flex flex-col gap-4  h-screen overflow-hidden p-1 justify-end items-end w-full ">
+      <main className=" flex w-full flex-col mt-[18%] justify- h-[85%] max-h-[85%] overflow-scroll items- gap-2 ">
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
 
-        <span></span>
+        <span ref={dummy}></span>
       </main>
 
       <form
-        className=" flex bg-[#181818] rounded-lg justify-between w-full p-2 items-center "
+        className=" flex bg-[#181818] h-auto rounded-lg justify-between w-full p-2 items-center "
         onSubmit={sendMessage}
       >
         {/* Emoji Picker Toggle
@@ -94,18 +99,18 @@ const MessengerApp = () => {
         </button>
       </form>
 
-      <div className=" flex h-[100px] w-full " >
-        
-      </div>
+     {
+      isMobile && <div className=" flex h-[80px] w-full "></div>
+     } 
     </section>
   );
 };
 
 function ChatMessage(props) {
   const { text, uid, photoURL } = props.message;
-   const { adminProfile, isSearch,userAvatar } = useSelector(
-      (deserializedState) => deserializedState.authSlice
-    );
+  const { adminProfile, isSearch, userAvatar } = useSelector(
+    (deserializedState) => deserializedState.authSlice
+  );
 
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
 
@@ -122,11 +127,9 @@ function ChatMessage(props) {
       >
         <img
           className="invert-none rounded-full object-cover w-[30px] h-[30px] "
-          src={
-            photoURL || userAvatar
-          }
+          src={photoURL || userAvatar}
         />
-        <p className=" tracking-wide text-sm font-sans px-2 py-1 bg-[#333333] rounded-lg ">
+        <p className=" invert-none tracking-wide text-sm font-sans px-3 py-2 text-center bg-[#333333] rounded-lg ">
           {text}
         </p>
       </div>
