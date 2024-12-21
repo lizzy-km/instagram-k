@@ -233,7 +233,7 @@ function App() {
         {isAuth === true && !isDeskTop && (
           <section
             style={{
-              bottom: bottomNav ? "50px" : 10,
+              bottom: bottomNav ? "10%" : 10,
               visibility: bottomNav ? "visible" : "collapse",
             }}
             className=" transition-all fixed  flex w-full h-10 justify-center items-center  "
