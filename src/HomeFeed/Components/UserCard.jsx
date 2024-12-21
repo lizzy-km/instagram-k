@@ -38,7 +38,6 @@ const UserCard = ({
 
   const myMsg =targetMessage?.length > 0 && targetMessage[targetMessage?.length -1]?.uid === uid
 
-  console.log(targetMessage[targetMessage?.length -1]?.uid,"_",uid);
   
 
   const imageSize = isMessage ? ' w-[40px] h-[40px] ': ' w-[45px] h-[45px] '
