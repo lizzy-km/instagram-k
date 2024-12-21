@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { addDoc, collection, limit, orderBy, query } from "firebase/firestore";
+import { addDoc, collection, limit, orderBy, query, where } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import Icon from "@mdi/react";
 import {
@@ -32,7 +32,7 @@ const MessengerApp = () => {
 
   
 
-  const targetMessage = messages?.filter((msg)=> targetId?.id === msg?.target  )
+  const targetMessage = messages?.filter((msg)=>  uid+targetId?.id===msg?.mid  )
 
   
   const [formValue, setFormValue] = useState("");
@@ -49,7 +49,8 @@ const MessengerApp = () => {
       createdAt: Date.now(),
       uid,
       photoURL: adminProfile,
-      target:targetId?.id
+      target:targetId?.id,
+      mid:uid+targetId?.id
     });
 
     setFormValue("");
@@ -73,7 +74,7 @@ const MessengerApp = () => {
     <section className=" flex flex-col gap-4  h-screen overflow-hidden p-1 justify-end items-end w-full ">
       <main className=" flex w-full flex-col mt-[18%] justify- h-[85%] max-h-[85%] overflow-scroll items- gap-2 ">
         {targetMessage &&
-          targetMessage?.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
+          targetMessage?.map((msg) => uid === msg.uid && <ChatMessage key={msg.id} message={msg} />)}
 
         <span ref={dummy}></span>
       </main>
