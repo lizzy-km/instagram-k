@@ -214,7 +214,7 @@ function App() {
               <Route exact path="/gallery" element={<Watch />} />
               <Route exact path="/group" element={<Group />} />
               <Route exact path="/loading" element={<Loading />} />
-              <Route exact path="/message" element={<MessengerApp />} />
+              <Route exact path="/message/:id" element={<MessengerApp />} />
               <Route exact path="/notification" element={<Noti />} />
               <Route exact path="/menu" element={<Menu />} />
 

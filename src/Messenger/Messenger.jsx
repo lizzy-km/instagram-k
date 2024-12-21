@@ -11,6 +11,7 @@ import {
   mdiSendVariantOutline,
 } from "@mdi/js";
 import { auth, firestore } from "../firebase/firebase";
+import { useParams } from "react-router-dom";
 
 const MessengerApp = () => {
   const { adminProfile, isSearch, userAvatar } = useSelector(
@@ -18,13 +19,22 @@ const MessengerApp = () => {
   );
   const dummy = useRef();
 
+  const targetId = useParams()
+
+  // console.log(targetId?.id);
+  
+
   const messagesRf = collection(firestore, "MESSAGES");
-  const quer = query(messagesRf, orderBy("createdAt"), limit(25));
+  const quer = query(messagesRf, orderBy("createdAt"));
 
   const [messages] = useCollectionData(quer, { idField: "id" });
+  const { uid } = auth.currentUser;
 
   
 
+  const targetMessage = messages?.filter((msg)=> targetId?.id === msg?.target  )
+
+  
   const [formValue, setFormValue] = useState("");
 
   const d = auth.currentUser;
@@ -39,6 +49,7 @@ const MessengerApp = () => {
       createdAt: Date.now(),
       uid,
       photoURL: adminProfile,
+      target:targetId?.id
     });
 
     setFormValue("");
@@ -61,8 +72,8 @@ const MessengerApp = () => {
   return (
     <section className=" flex flex-col gap-4  h-screen overflow-hidden p-1 justify-end items-end w-full ">
       <main className=" flex w-full flex-col mt-[18%] justify- h-[85%] max-h-[85%] overflow-scroll items- gap-2 ">
-        {messages &&
-          messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
+        {targetMessage &&
+          targetMessage?.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
 
         <span ref={dummy}></span>
       </main>

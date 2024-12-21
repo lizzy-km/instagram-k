@@ -16,6 +16,7 @@ import Cookies from "js-cookie";
 import Icon from "@mdi/react";
 import {  mdiPlus } from "@mdi/js";
 import Messenger from "./ColorShades/Messenger/Messenger";
+import MessageCard from "./MessageCard";
 
 const RightNav = () => {
   const { account, noti, messenger, menu } = useSelector(
@@ -73,9 +74,7 @@ const RightNav = () => {
   };
 
   const messengerShow = () => {
-    isMobile
-      ? navigate("/message")
-      : dispatch(
+    dispatch(
           messengerOn({
             messenger: !messenger,
           })
@@ -347,7 +346,9 @@ const RightNav = () => {
               isMobile ? "" : "md"
             } `}
           >
-            <Messenger />
+            <MessageCard/>
+
+            {/* <Messenger /> */}
           </div>
 
           {!isMobile && (

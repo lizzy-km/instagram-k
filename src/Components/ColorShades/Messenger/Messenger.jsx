@@ -12,7 +12,7 @@ import {
   mdiSendVariantOutline,
 } from "@mdi/js";
 
-const Messenger = () => {
+const Messenger = ({targetId=''}) => {
     const dummy = useRef();
 
     useEffect(()=> {
