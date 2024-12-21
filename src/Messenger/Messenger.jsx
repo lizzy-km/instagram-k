@@ -41,7 +41,6 @@ const MessengerApp = () => {
   const ss = uid + targetId?.id
   const sr = st1+st
 
-console.log( ss?.toLowerCase());
  
 
   const targetMessage = messages?.filter(
