@@ -56,7 +56,6 @@ const Messenger = () => {
 
   useEffect(() => {
     dummy.current.scrollIntoView({ behavior: "smooth" });
-    // toast.info("You have a new message");
   }, [messages, targetMessage]);
 
   const [text, setText] = useState(""); // Input text

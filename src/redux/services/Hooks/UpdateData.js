@@ -18,6 +18,7 @@ const UpdateData = async (
   const postRef = doc(firestore, "/USER_POSTS", `/${PID}`);
   const userRef = doc(firestore, "/users", `/${UID}/`);
   const udRef = doc(firestore, "/USER_POSTS", `/${PID}`);
+  
 
   if (colName === "delete_user_post") {
     await deleteDoc(postRef).catch((error) => console.log(error));

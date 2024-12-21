@@ -25,7 +25,6 @@ const MessengerApp = () => {
 
   const targetId = useParams();
 
-  // console.log(targetId?.id);
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"));

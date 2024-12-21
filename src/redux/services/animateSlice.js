@@ -16,7 +16,8 @@ const initialState = {
   viewStory: false,
   addProfile: false,
   bottomNav: true,
-  showChat:false
+  showChat:false,
+  sentMsg:true
 };
 
 const STORAGE_KEY = "Animate";
@@ -38,6 +39,9 @@ export const animateSlice = createSlice({
       state.blur = payload.blur;
     },chatOn: (state, { payload }) => {
       state.showChat = payload;
+    }
+    ,sentMessage: (state, { payload }) => {
+      state.sentMsg = payload;
     },
     setShowStory: (state, { payload }) => {
       state.showStory = payload;
@@ -122,6 +126,8 @@ export const {
   setBottomNav,
   bottomNav,
   chatOn,
-  showChat
+  showChat,
+  sentMsg,
+  sentMessage
 } = animateSlice.actions;
 export default animateSlice.reducer;

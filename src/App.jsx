@@ -14,6 +14,7 @@ import "react-toastify/ReactToastify.min.css";
 
 import { useEffect, useState } from "react";
 import {
+  sentMessage,
   setBottomNav,
   setDesktop,
   setMobile,
@@ -42,15 +43,11 @@ function App() {
 
   const isAuth = isUserLog[0]?.accessToken?.length > 0 ? true : false;
 
+  const messagesRf = collection(firestore, "MESSAGES");
+  const quer = query(messagesRf, orderBy("createdAt"));
+  const dispatch = useDispatch();
 
-   const messagesRf = collection(firestore, "MESSAGES");
-    const quer = query(messagesRf, orderBy("createdAt"));
-  
-    const [messages] = useCollectionData(quer, { idField: "id" });
-
-    useEffect(() => {
-      toast.info("You have a new message");
-    }, [messages]);
+  const [messages] = useCollectionData(quer, { idField: "id" });
 
   const {
     blur,
@@ -60,11 +57,14 @@ function App() {
     viewStory,
     addProfile,
     bottomNav,
+    sentMsg,
   } = useSelector((state) => state.animateSlice);
 
   let ScreenSize = window?.innerWidth;
 
-  const dispatch = useDispatch();
+ 
+
+
 
   window.addEventListener("resize", () => {
     ResponsiveFun();
@@ -156,7 +156,6 @@ function App() {
       }
     });
 
-
   return (
     <section
       id="page"
@@ -239,19 +238,17 @@ function App() {
             </Routes>
           )}
         </section>
-        {isAuth === true &&
-          !isDeskTop 
-           && (
-            <section
-              style={{
-                bottom: bottomNav ? "8%" : 10,
-                visibility: bottomNav ? "visible" : "collapse",
-              }}
-              className=" transition-all fixed  flex w-full h-10 justify-center items-center  "
-            >
-              <MidNAv />
-            </section>
-          )}
+        {isAuth === true && !isDeskTop && (
+          <section
+            style={{
+              bottom: bottomNav ? "8%" : 10,
+              visibility: bottomNav ? "visible" : "collapse",
+            }}
+            className=" transition-all fixed  flex w-full h-10 justify-center items-center  "
+          >
+            <MidNAv />
+          </section>
+        )}
       </BrowserRouter>
     </section>
   );
