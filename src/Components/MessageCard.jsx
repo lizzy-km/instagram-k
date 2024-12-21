@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserCard from "../HomeFeed/Components/UserCard";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
-import { messengerOn, setBottomNav } from "../redux/services/animateSlice";
+import { chatOn, messengerOn, setBottomNav } from "../redux/services/animateSlice";
 
 const MessageCard = () => {
   const { UserData, updateFeed } = useSelector(
@@ -12,7 +12,7 @@ const MessageCard = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (deserializedState) => deserializedState.animateSlice
   );
-  const { account, noti, messenger, menu } = useSelector(
+  const { account, noti, messenger, showChat } = useSelector(
     (state) => state.animateSlice
   );
 
@@ -23,17 +23,20 @@ const MessageCard = () => {
 
   const uniqueArray = UserData?.filter((dat) => dat?.id !== Admin?.uid);
 
+
   const goChat = (UID) => {
-    console.log("click");
 
     localStorage.setItem("targetId", UID);
     isMobile && navigate(`/message/${UID}`);
-    dispatch(
+
+    isMobile &&  dispatch(
       messengerOn({
         messenger: !messenger,
       })
 
     );
+
+    !isMobile && dispatch(chatOn(true))
 
     dispatch(setBottomNav(false));
 

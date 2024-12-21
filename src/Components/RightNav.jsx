@@ -14,7 +14,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { auth, firestore } from "../firebase/firebase";
 import Cookies from "js-cookie";
 import Icon from "@mdi/react";
-import {  mdiPlus } from "@mdi/js";
+import { mdiPlus } from "@mdi/js";
 import Messenger from "./ColorShades/Messenger/Messenger";
 import MessageCard from "./MessageCard";
 
@@ -23,12 +23,11 @@ const RightNav = () => {
     (state) => state.animateSlice
   );
 
-  const { isTablet, isMobile, isDeskTop } = useSelector(
+  const { isTablet, isMobile, isDeskTop, showChat } = useSelector(
     (deserializedState) => deserializedState.animateSlice
   );
 
   const navigate = useNavigate();
-
 
   const dispatch = useDispatch();
 
@@ -75,11 +74,10 @@ const RightNav = () => {
 
   const messengerShow = () => {
     dispatch(
-          messengerOn({
-            messenger: !messenger,
-          })
-        );
-
+      messengerOn({
+        messenger: !messenger,
+      })
+    );
   };
 
   const menuShow = () => {
@@ -346,9 +344,7 @@ const RightNav = () => {
               isMobile ? "" : "md"
             } `}
           >
-            <MessageCard/>
-
-            {/* <Messenger /> */}
+            {showChat ? <Messenger /> : <MessageCard />}
           </div>
 
           {!isMobile && (

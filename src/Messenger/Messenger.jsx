@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
@@ -36,16 +36,13 @@ const MessengerApp = () => {
   const [messages] = useCollectionData(quer, { idField: "id" });
   const { uid } = auth.currentUser;
 
-  const st = "jdkgsjdg"
-  const st1 = "jdvbdkjie"
-  const ss = uid + targetId?.id
-  const sr = st1+st
+  
 
  
 
   const targetMessage = messages?.filter(
     (msg) =>  msg?.mid === targetId?.id+uid || msg?.mid === uid+targetId?.id
-  );
+  ).sort((a,b)=> a.createdAt - b.createdAt )
 
   
 
@@ -65,6 +62,7 @@ const MessengerApp = () => {
       photoURL: adminProfile,
       target: targetId?.id,
       mid: uid + targetId?.id,
+      images:['']
     });
 
     setFormValue("");
@@ -83,6 +81,11 @@ const MessengerApp = () => {
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (deserializedState) => deserializedState.animateSlice
   );
+
+  
+  useEffect(() => {
+    dummy.current.scrollIntoView({ behavior: "smooth" });
+ }, [messages,targetMessage]);
 
   return (
     <section className=" flex flex-col gap-4  h-screen overflow-hidden p-1 justify-end items-end w-full ">
