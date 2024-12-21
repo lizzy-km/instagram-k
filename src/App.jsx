@@ -145,9 +145,7 @@ function App() {
       }
     });
 
-  // const location = useLocation()
 
-  const isMessenger = window.location.pathname === "/message";
   return (
     <section
       id="page"

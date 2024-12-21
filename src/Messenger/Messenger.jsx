@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { addDoc, collection, limit, orderBy, query } from "firebase/firestore";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Icon from "@mdi/react";
 import {
   mdiMessageArrowRight,
@@ -11,7 +11,6 @@ import {
   mdiSendVariantOutline,
 } from "@mdi/js";
 import { auth, firestore } from "../firebase/firebase";
-import { setBottomNav } from "../redux/services/animateSlice";
 
 const MessengerApp = () => {
   const { adminProfile, isSearch, userAvatar } = useSelector(
@@ -24,35 +23,27 @@ const MessengerApp = () => {
 
   const [messages] = useCollectionData(quer, { idField: "id" });
 
+  
+
   const [formValue, setFormValue] = useState("");
+
+  const d = auth.currentUser;
 
   const sendMessage = async (e) => {
     e.preventDefault();
 
     const { uid } = auth.currentUser;
 
-    formValue?.length > 0 &&
-      (await addDoc(messagesRf, {
-        text: formValue,
-        createdAt: Date.now(),
-        uid,
-        photoURL: adminProfile,
-      }));
+    await addDoc(messagesRf, {
+      text: formValue,
+      createdAt: Date.now(),
+      uid,
+      photoURL: adminProfile,
+    });
 
     setFormValue("");
     dummy.current.scrollIntoView({ behavior: "smooth" });
   };
-
-  let view = document.getElementById("spn");
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(setBottomNav(false));
-
-    if (view) {
-      view?.scrollIntoView();
-    }
-    view = dummy.current;
-  }, []);
 
   const [text, setText] = useState(""); // Input text
   const [showPicker, setShowPicker] = useState(false); // Emoji picker visibility
@@ -63,26 +54,21 @@ const MessengerApp = () => {
     setShowPicker(false); // Hide the picker after selection
   };
 
-  const { isTablet, isMobile, isDeskTop } = useSelector(
-    (deserializedState) => deserializedState.animateSlice
-  );
+   const { isTablet, isMobile, isDeskTop } = useSelector(
+      (deserializedState) => deserializedState.animateSlice
+    );
 
   return (
-    <section className=" relative w-full flex h-screen    ">
-
-      <main className=" h-[80%] relative max-h-[80%] overflow-scroll mt-[20%]  w-full flex-col flex  ">
-        <div className={"flex flex-col absolute w-full h-auto top-0    "} >
+    <section className=" flex flex-col gap-4  h-screen overflow-hidden p-1 justify-end items-end w-full ">
+      <main className=" flex w-full flex-col mt-[18%] justify- h-[85%] max-h-[85%] overflow-scroll items- gap-2 ">
         {messages &&
           messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
 
-        <span id="spn" className="w-full h-1 p-1 " ref={dummy}></span>
-        </div>
-       
-      
+        <span ref={dummy}></span>
       </main>
 
       <form
-        className=" fixed bottom-4 flex bg-[#181818] h-auto rounded-lg justify-between w-full p-2 items-center "
+        className=" flex bg-[#181818] h-auto rounded-lg justify-between w-full p-2 items-center "
         onSubmit={sendMessage}
       >
         {/* Emoji Picker Toggle
@@ -115,7 +101,9 @@ const MessengerApp = () => {
         </button>
       </form>
 
-      {/* {isMobile && <div className=" flex h-[80px] w-full "></div>} */}
+     {
+      isMobile && <div className=" flex h-[80px] w-full "></div>
+     } 
     </section>
   );
 };
@@ -132,7 +120,7 @@ function ChatMessage(props) {
     <section
       className={` ${
         uid === auth.currentUser.uid ? " justify-end " : " justify-start "
-      } " flex w-full my-2   gap-2 "`}
+      } " flex w-full   gap-2 "`}
     >
       <div
         className={` ${

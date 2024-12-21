@@ -26,13 +26,12 @@ const Messenger = () => {
   );
 
   const messagesRf = collection(firestore, "MESSAGES");
-  const quer = query(messagesRf, orderBy("createdAt"), limit(25));
+  const quer = query(messagesRf, orderBy("createdAt"));
 
   const [messages] = useCollectionData(quer, { idField: "id" });
 
   const [formValue, setFormValue] = useState("");
 
-  const d = auth.currentUser;
 
 
   const sendMessage = async (e) => {
@@ -45,10 +44,10 @@ const Messenger = () => {
       createdAt: Date.now(),
       uid,
       photoURL: adminProfile,
-    });
+    }).catch((error)=>console.log(error))
 
-      dummy.current.scrollIntoView({ behavior: "smooth" });
-    };
+    setFormValue("");
+    dummy.current.scrollIntoView({ behavior: "smooth" });    };
   
    
 
