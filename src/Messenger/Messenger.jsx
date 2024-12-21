@@ -1,7 +1,14 @@
 import React, { useRef, useState } from "react";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { addDoc, collection, limit, orderBy, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  limit,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { useSelector } from "react-redux";
 import Icon from "@mdi/react";
 import {
@@ -19,10 +26,9 @@ const MessengerApp = () => {
   );
   const dummy = useRef();
 
-  const targetId = useParams()
+  const targetId = useParams();
 
   // console.log(targetId?.id);
-  
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"));
@@ -30,11 +36,18 @@ const MessengerApp = () => {
   const [messages] = useCollectionData(quer, { idField: "id" });
   const { uid } = auth.currentUser;
 
-  
+  const st = "jdkgsjdg"
+  const st1 = "jdvbdkjie"
+  const ss = uid + targetId?.id
+  const sr = st1+st
 
-  const targetMessage = messages?.filter((msg)=>  uid+targetId?.id===msg?.mid  )
+console.log( ss?.toLowerCase());
+ 
 
-  
+  const targetMessage = messages?.filter(
+    (msg) => msg?.mid ===uid + targetId?.id || msg?.mid === targetId?.id+uid 
+  );
+
   const [formValue, setFormValue] = useState("");
 
   const d = auth.currentUser;
@@ -49,8 +62,8 @@ const MessengerApp = () => {
       createdAt: Date.now(),
       uid,
       photoURL: adminProfile,
-      target:targetId?.id,
-      mid:uid+targetId?.id
+      target: targetId?.id,
+      mid: uid + targetId?.id,
     });
 
     setFormValue("");
@@ -66,15 +79,18 @@ const MessengerApp = () => {
     setShowPicker(false); // Hide the picker after selection
   };
 
-   const { isTablet, isMobile, isDeskTop } = useSelector(
-      (deserializedState) => deserializedState.animateSlice
-    );
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (deserializedState) => deserializedState.animateSlice
+  );
 
   return (
     <section className=" flex flex-col gap-4  h-screen overflow-hidden p-1 justify-end items-end w-full ">
       <main className=" flex w-full flex-col mt-[18%] justify- h-[85%] max-h-[85%] overflow-scroll items- gap-2 ">
         {targetMessage &&
-          targetMessage?.map((msg) => uid === msg.uid && <ChatMessage key={msg.id} message={msg} />)}
+          targetMessage?.map(
+            (msg) =>
+              uid === msg.uid && <ChatMessage key={msg.id} message={msg} />
+          )}
 
         <span ref={dummy}></span>
       </main>
@@ -113,9 +129,7 @@ const MessengerApp = () => {
         </button>
       </form>
 
-     {
-      isMobile && <div className=" flex h-[80px] w-full "></div>
-     } 
+      {isMobile && <div className=" flex h-[80px] w-full "></div>}
     </section>
   );
 };
