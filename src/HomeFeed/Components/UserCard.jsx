@@ -36,6 +36,11 @@ const UserCard = ({
 
   const text  = targetMessage?.length > 0 && targetMessage[targetMessage?.length -1]?.text
 
+  const myMsg =targetMessage?.length > 0 && targetMessage[targetMessage?.length -1]?.uid === uid
+
+  console.log(targetMessage[targetMessage?.length -1]?.uid,"_",uid);
+  
+
   const imageSize = isMessage ? ' w-[40px] h-[40px] ': ' w-[45px] h-[45px] '
 
   return (
@@ -59,7 +64,7 @@ const UserCard = ({
 
       <div className=" flex flex-col gap-1 py- justify-start items-start ">
         <p className=" p- text-start text-base w-full h-full "> {UserName} </p>
-        {isMessage && text && <p className=" text-sm  bg-[#33333357] px-2 rounded py-1  opacity-75 font-medium tracking-wide  ">{text}</p>}
+        {isMessage && text && <p className=" text-sm  bg-[#33333357] px-2 rounded py-1  opacity-75 font-medium tracking-wide  "> {myMsg && "You: "} {text}</p>}
       </div>
     </div>
   );
