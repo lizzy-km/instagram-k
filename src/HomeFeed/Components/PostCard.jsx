@@ -81,13 +81,13 @@ const PostCard = ({ name, data }) => {
   const userRf = collection(firestore, "users");
   const quer = query(userRf, where("UID", "==", UID));
 
-  const [user] = useCollectionDataOnce(quer, { idField: "id" });
+  const [user] = useCollectionDataOnce(quer, { idField: "id" })
 
   const POID = hasPostD ? UID : "0";
 
   const PID = hasPostD ? data?.PID : "0";
 
-  const userPfData = user[0] ? user[0]?.profile[0] : "";
+  const userPfData = user?.length > 0 ? user[0]?.profile[0] : "";
 
   const user_name = admin?.user_name.stringValue;
   const USID = admin?.UID.stringValue;

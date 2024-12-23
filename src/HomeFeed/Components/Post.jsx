@@ -12,7 +12,6 @@ const Post = ({ filter = "" ,position='feed'}) => {
     (deserializedState) => deserializedState.authSlice
   );
 
-  const [USER_POSTS, setUSER_POSTS] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
    const userRf = collection(firestore, "USER_POSTS");
@@ -24,7 +23,6 @@ const Post = ({ filter = "" ,position='feed'}) => {
       setIsLoading(true);
 
       await getDocs(collection(firestore, "/USER_POSTS"))
-        .then((data) => setUSER_POSTS(data))
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false));
     }
@@ -37,24 +35,14 @@ const Post = ({ filter = "" ,position='feed'}) => {
       setIsLoading(true);
 
       await getDocs(collection(firestore, "/USER_POSTS"))
-        .then((data) => setUSER_POSTS(data))
         .catch((error) => console.log(error))
         .finally(() => setIsLoading(false));
     }
     User_post();
   }, [updateFeed]);
 
-  const acnUP = USER_POSTS?.docs?.sort((prev, curr) => {
-    // view posts data depend on it's uploaded date
-    const currTime =
-      +curr?._document.data?.value.mapValue.fields.UPLOADED_AT?.integerValue;
-    const prevTime =
-      +prev?._document.data?.value.mapValue.fields.UPLOADED_AT?.integerValue;
+  
 
-    return currTime - prevTime;
-  });
-
-  console.log(TUser)
 
   const filterByUID = TUser?.filter((d) => {
     const data = d;
@@ -78,7 +66,7 @@ const Post = ({ filter = "" ,position='feed'}) => {
       }}
       className="flex flex-col gap-8  self-center  p-2 my-2 h-auto  rounded-md"
     >
-      {Post?.map((d) => {
+      {Post?.reverse()?.map((d) => {
         const data = d;
         const PID = data?.PID;
         const PON = data?.POST_OWNER_DETAIL.PON;
