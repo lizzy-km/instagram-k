@@ -29,6 +29,7 @@ const UserProfile = () => {
     user?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;
 
   const sendMessage = () => {
+    dispatch(chatOn(false))
     localStorage.setItem("targetId", UID?.user);
 
     dispatch(

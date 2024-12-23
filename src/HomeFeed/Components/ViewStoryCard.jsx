@@ -30,12 +30,12 @@ const ViewStoryCard = ({ userData }) => {
   const STID = "";
 
   const data = userData?.filter((d) =>
-    d?._document?.data?.value.mapValue.fields
-      ? d?._document.data.value.mapValue.fields?.UID?.stringValue === UID
+    d
+      ? d.UID === UID
       : false
-  )[0]?._document.data.value.mapValue.fields;
+  )[0];
 
-  const UserName = data?.user_name?.stringValue;
+  const UserName = data?.user_name;
 
   // const [storyData, setStoryData] = useState([]);
   const [USER_STORYS, setUSER_STORYS] = useState([]);
@@ -55,7 +55,8 @@ const ViewStoryCard = ({ userData }) => {
   // console.log(UserStory);
 
   const PFURL =
-    data?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;
+    data?.profile[0]?.PFPATH;
+    
 
   const [isLoading, setIsLoading] = useState(true);
 

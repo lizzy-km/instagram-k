@@ -6,17 +6,24 @@ import UserCard from "./UserCard";
 import { mdiWindowClose } from "@mdi/js";
 import Icon from "@mdi/react";
 import ViewStoryCard from "./ViewStoryCard";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../../firebase/firebase";
+import { useCollectionData, useCollectionDataOnce } from "react-firebase-hooks/firestore";
 
 const ViewStory = () => {
-  const { UserData, updateFeed } = useSelector(
+  const {  updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
   const dispatch = useDispatch();
 
-  const userData = UserData;
+  const userRf = collection(firestore, "users");
+  const userQuery = query(userRf);
+  const [TUser] = useCollectionDataOnce(userQuery, { idField: "id" });
+
+
+  
+  const userData = TUser;
 
   const [USER_STORYS, setUSER_STORYS] = useState([]);
 
@@ -48,12 +55,13 @@ const ViewStory = () => {
     USER_STORY();
   }, [updateFeed]);
 
+ 
   let user = []; 
 
   for (let i = 0; i < userData?.length; i++) {
     const usd = userData[i];
-    const UID = usd.id;
-    
+    const UID = usd.UID;
+
 
     for (let ii = 0; ii < USER_STORYS?.length; ii++) {
       const ust = USER_STORYS[ii];
@@ -104,28 +112,27 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
             <div className=" w-[100%] h-auto flex flex-col gap-2 ">
               {
                 uniqueArray?.map((d) => {
-                  const data = d?._document?.data?.value.mapValue.fields;
+                  const data = d;
 
                   const STID = USER_STORYS?.filter((ust) => {
                     const STOID =
                       ust?._document?.data.value.mapValue.fields
                         ?.STORY_OWNER_DETAIL?.mapValue.fields?.STOID
                         ?.stringValue;
-                    return STOID === data?.UID?.stringValue;
+                    return STOID === data?.UID;
 
                   });
 
                   return (
                     <UserCard
                       STID={STID[STID?.length -1]?.id}
-                      data={d?._document?.data?.value.mapValue.fields}
+                      data={d}
                       key={
-                        d?._document?.data?.value.mapValue.fields.UID
-                          .stringValue
+                        d?.UID
+                          
                       }
                       UID={
-                        d?._document?.data?.value.mapValue.fields.UID
-                          .stringValue
+                        d?.UID
                       }
                     />
                   );

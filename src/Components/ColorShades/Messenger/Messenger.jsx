@@ -1,15 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useCollectionDataOnce,
+} from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../../../firebase/firebase";
-import { addDoc, collection,  orderBy, query } from "firebase/firestore";
+import { addDoc, collection, orderBy, query, where } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import Icon from "@mdi/react";
 import {
- 
+  mdiCloseOutline,
   mdiSendVariantOutline,
+  mdiWindowClose,
 } from "@mdi/js";
 import { chatOn } from "../../../redux/services/animateSlice";
+import UserCard from "../../../HomeFeed/Components/UserCard";
+import { Link, NavLink } from "react-router-dom";
 
 const Messenger = () => {
   const dummy = useRef();
@@ -25,6 +31,10 @@ const Messenger = () => {
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"));
+
+  const userRf = collection(firestore, "users");
+  const userQuery = query(userRf, where("UID", "==", targetId));
+  const [TUser] = useCollectionDataOnce(userQuery, { idField: "id" });
 
   const [messages] = useCollectionData(quer, { idField: "id" });
   const { uid } = auth.currentUser;
@@ -58,23 +68,28 @@ const Messenger = () => {
     dummy.current.scrollIntoView({ behavior: "smooth" });
   }, [messages, targetMessage]);
 
-  const [text, setText] = useState(""); // Input text
-  const [showPicker, setShowPicker] = useState(false); // Emoji picker visibility
-
-  // Handle emoji selection
-  const onEmojiClick = (emojiObject) => {
-    setText((prevText) => prevText + emojiObject.emoji);
-    setShowPicker(false); // Hide the picker after selection
-  };
-
   return (
-    <section className=" flex flex-col gap-4  h-full overflow-scroll p-1 justify-start items-start w-full ">
-      <div
-        onClick={() => dispatch(chatOn(false))}
-        className=" flex p-2 cursor-pointer tracking-wide text-2xl "
-      >
-        Close
+    <section className=" flex flex-col gap-4  h-full overflow-scroll bg-[#181818]   rounded justify-start items-start w-full ">
+      <div className=" bg-[#333333] rounded-t flex justify-between items-center w-full  ">
+       
+        <UserCard
+            className={" border-none rounded-none   w-[80%] "}
+            href={`${targetId}`}
+
+            STID={"0"}
+            data={TUser ? TUser[0] : []}
+            UID={targetId}
+            isMessage={false}
+            topMsg={true}
+          />
+        <div
+          onClick={() => dispatch(chatOn(false))}
+          className=" flex p-2 flex w-[20%] justify-center items-center  cursor-pointer tracking-wide text-2xl "
+        >
+          <Icon path={mdiWindowClose} size={1} />
+        </div>
       </div>
+
       <main className=" flex w-full flex-col mt-[18%] justify- h-[95%] max-h-[95%] overflow-scroll items-end gap-2 ">
         {targetMessage &&
           targetMessage.map((msg) => (

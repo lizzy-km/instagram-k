@@ -1,9 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserCard from "../HomeFeed/Components/UserCard";
-import { auth } from "../firebase/firebase";
+import { auth, firestore } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import { chatOn, messengerOn, setBottomNav } from "../redux/services/animateSlice";
+import { collection, query, where } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const MessageCard = () => {
   const { UserData, updateFeed } = useSelector(
@@ -15,13 +17,18 @@ const MessageCard = () => {
   const { account, noti, messenger, showChat } = useSelector(
     (state) => state.animateSlice
   );
+  const Admin = auth.currentUser;
 
+  const userRf = collection(firestore, "users");
+  const userQuery = query(userRf,where("UID","!=",Admin?.uid));
+  const [TUser] = useCollectionData(userQuery, { idField: "id" });
+
+  console.log(TUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const Admin = auth.currentUser;
 
-  const uniqueArray = UserData?.filter((dat) => dat?.id !== Admin?.uid);
+  const uniqueArray = TUser
 
 
   const goChat = (UID) => {
@@ -45,21 +52,21 @@ const MessageCard = () => {
   return (
     <div className=" flex flex-col w-full gap-2  justify-start items-start ">
       {uniqueArray?.map((d) => {
-        const data = d?._document?.data?.value.mapValue.fields;
-        const UID = d.id;
+        const data = d
+        const UID = data.UID;
 
         return (
           <div
             className={`${isMobile ? 'w-[90%]':'w-full' } h-auto p-1`}
             onClick={() => goChat(UID)}
-            key={d?._document?.data?.value.mapValue.fields.UID.stringValue}
+            key={data.UID}
           >
             <UserCard
               className={"   w-full "}
               STID={"0"}
-              data={d?._document?.data?.value.mapValue.fields}
-              key={d?._document?.data?.value.mapValue.fields.UID.stringValue}
-              UID={d?._document?.data?.value.mapValue.fields.UID?.stringValue}
+              data={data}
+              key={data.UID}
+              UID={data.UID}
               isMessage={true}
             />
           </div>

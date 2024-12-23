@@ -340,7 +340,7 @@ const RightNav = () => {
                     : "100%"
                   : "100%",
             }}
-            className={` flex w-full px-2 py-1 justify-start items-start -z-1   backdrop-blur-md bg-[#212121]    rounded-${
+            className={` flex w-full px-2 py-2 justify-start items-start -z-1   backdrop-blur-md bg-[#212121]    rounded-${
               isMobile ? "" : "md"
             } `}
           >
