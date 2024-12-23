@@ -340,7 +340,7 @@ const RightNav = () => {
                     : "100%"
                   : "100%",
             }}
-            className={` flex w-full px-2 py-2 justify-start items-start -z-1   backdrop-blur-md bg-[#212121]    rounded-${
+            className={` flex w-full px-2 py-2 my-2 justify-start items-start -z-1   backdrop-blur-md bg-[#212121]    rounded-${
               isMobile ? "" : "md"
             } `}
           >
@@ -352,7 +352,7 @@ const RightNav = () => {
               id="menu"
               style={{
                 visibility: menu === true ? "visible" : "hidden",
-                height: menu === true ? "90vh" : "0",
+                height: menu === true ? "80vh" : "0",
                 width:
                   menu === true
                     ? isMobile === true
@@ -360,7 +360,7 @@ const RightNav = () => {
                       : "100%"
                     : 0,
               }}
-              className={`Menu flex w-full   backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
+              className={`Menu flex w-full px-2 py-2 my-2  backdrop-blur  rounded-md bg-[#2121214e] rounded-[${
                 isMobile ? "0" : "6"
               }px]`}
             ></div>

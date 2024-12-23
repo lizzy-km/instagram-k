@@ -84,7 +84,7 @@ const Messenger = () => {
           />
         <div
           onClick={() => dispatch(chatOn(false))}
-          className=" flex p-2 flex w-[20%] justify-center items-center  cursor-pointer tracking-wide text-2xl "
+          className=" flex p-2 flex w-[20%] justify-center items-center hover:bg-[#232425] rounded-l  cursor-pointer tracking-wide text-2xl "
         >
           <Icon path={mdiWindowClose} size={1} />
         </div>
@@ -104,7 +104,7 @@ const Messenger = () => {
         onSubmit={sendMessage}
       >
         <input
-          className=" py-1 px-2 tracking-wide w-auto rounded-md bg-[#212121] "
+          className=" py-1 px-2 tracking-wide w-[85%] rounded-md bg-[#212121] "
           ref={inputRef}
           placeholder=" Message"
         />

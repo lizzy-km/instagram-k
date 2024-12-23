@@ -67,9 +67,9 @@ const Post = ({ filter = "" ,position='feed'}) => {
   return (
     <div
       style={{
-        width: isMobile ? "100%" : position ==='user'? "90%" :'80%',
+        width: isMobile ? "100%" : position ==='user'? "80%" :'95%',
       }}
-      className="flex flex-col gap-8 w-[70%] self-center  p-2 my-2 h-auto  rounded-md"
+      className="flex flex-col gap-8  self-center  p-2 my-2 h-auto  rounded-md"
     >
       {Post?.map((d) => {
         const data = d._document.data.value.mapValue.fields;
