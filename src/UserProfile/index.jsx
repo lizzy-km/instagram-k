@@ -1,14 +1,22 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import CreatePost from "../HomeFeed/Components/CreatePost";
 import Post from "../HomeFeed/Components/Post";
+import Icon from "@mdi/react";
+import { mdiSendVariantOutline } from "@mdi/js";
+import { chatOn, messengerOn } from "../redux/services/animateSlice";
+import { auth } from "../firebase/firebase";
 
 const UserProfile = () => {
   const { userAvatar, UserData } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
+  const dispatch = useDispatch();
+
   const UID = useParams();
+
+  const { uid } = auth.currentUser;
 
   const { isTablet, isMobile, isDeskTop } = useSelector(
     (state) => state.animateSlice
@@ -19,6 +27,17 @@ const UserProfile = () => {
 
   const userProfile =
     user?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;
+
+  const sendMessage = () => {
+    localStorage.setItem("targetId", UID?.user);
+
+    dispatch(
+      messengerOn({
+        messenger: true,
+      })
+    );
+    dispatch(chatOn(true));
+  };
 
   const bg =
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2F328652225_477950631031057_4570664772778110705_n%20(2).jpg?alt=media&token=ada5ce90-591d-47a6-88cb-07e80e9117d7";
@@ -92,6 +111,18 @@ const UserProfile = () => {
                 <p className=" font-thin ">({user.nick_name?.stringValue})</p>
               )}
             </p>
+
+            {uid !== UID?.user && (
+              <div className=" flex gap-4 w-[40%] justify-end items-center p-1 ">
+                <div
+                  onClick={sendMessage}
+                  className=" bg-[#121212] cursor-pointer hover:bg-[#181818] tracking-wide flex justify-center gap-1 items-center text-center w-[45%] px-2 rounded-md py-2 "
+                >
+                  <p> Send Message</p>{" "}
+                  <Icon path={mdiSendVariantOutline} size={1} />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -103,15 +134,14 @@ const UserProfile = () => {
         }}
         className="   absolute h-auto flex justify-center items-center p-2 gap-4 "
       >
-        { 
-          isDeskTop && <div
-          style={{
-            width: !isDeskTop ? "100%" : "40%",
-          }}
-          className=" flex p-1 bg-[#333333]  h-screen rounded-md "
-        ></div>
-        }
-        
+        {isDeskTop && (
+          <div
+            style={{
+              width: !isDeskTop ? "100%" : "40%",
+            }}
+            className=" flex p-1 bg-[#333333]  h-screen rounded-md "
+          ></div>
+        )}
 
         <div
           style={{
@@ -121,13 +151,11 @@ const UserProfile = () => {
             !isDeskTop ? "px-0" : "px-4"
           } " flex flex-col gap-4   w-[60%] h-screen rounded-md " `}
         >
-          <CreatePost position={'user'} />
+          <CreatePost position={"user"} />
 
-          <Post position={'user'} filter={UID?.user} />
+          <Post position={"user"} filter={UID?.user} />
 
-          <div className=" flex justify-center items-center w-full min-h-[70px] " >
-            
-          </div>
+          <div className=" flex justify-center items-center w-full min-h-[70px] "></div>
         </div>
       </section>
     </section>

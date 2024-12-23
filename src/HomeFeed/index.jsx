@@ -32,7 +32,7 @@ const HomeFeed = () => {
             : isTablet
             ? "95%"
             : isDeskTop
-            ? "40%"
+            ? "35%"
             : "100%",
         }}
         className=" relative h-auto flex  bg-transparent mt-[80px]    p-0 w-[40%] gap-3 flex-col justify-start items-start  "
@@ -46,10 +46,10 @@ const HomeFeed = () => {
               : isTablet
               ? "90%"
               : isDeskTop
-              ? "100%"
-              : "100%",
+              ? "90%"
+              : "90%",
           }}
-          className="  w-[full] h-auto top-[270px] px-2 flex flex-col gap-6 "
+          className="  w-[full]  items-center h-auto top-[270px] px-2 flex flex-col gap-6 "
         >
           <CreatePost />
           <Post />

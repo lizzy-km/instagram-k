@@ -131,7 +131,7 @@ const RightNav = () => {
   return (
     <section
       style={{
-        width: isMobile ? "70%" : isTablet ? "35%" : "30%",
+        width: isMobile ? "70%" : isTablet ? "35%" : "35%",
         justifyContent: isMobile ? "end" : isTablet ? "end" : "end",
         padding: isMobile ? "0px" : "0",
         alignItems: isDeskTop ? "end" : "end",
