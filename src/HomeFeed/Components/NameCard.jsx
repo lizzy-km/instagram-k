@@ -10,7 +10,7 @@ const NameCard = ({userAvatar,UID,userPfData,name,uploaded_at,time} ) => {
         onClick={() =>
           localStorage.setItem(
             "userProfile",
-            userPfData?.PFPATH?.stringValue
+            userPfData?.PFPATH
           )
         }
         to={`/${UID}`}
@@ -25,8 +25,8 @@ const NameCard = ({userAvatar,UID,userPfData,name,uploaded_at,time} ) => {
         <img
           className=" invert-none w-full   h-full rounded-full object-cover cursor-pointer "
           src={
-            userPfData?.PFPATH?.stringValue?.length > 0
-              ? userPfData?.PFPATH?.stringValue
+            userPfData?.PFPATH?.length > 0
+              ? userPfData?.PFPATH
               : userAvatar
           }
           alt=""

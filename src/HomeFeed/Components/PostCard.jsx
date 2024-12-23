@@ -19,16 +19,18 @@ import UpdateData from "../../redux/services/Hooks/UpdateData";
 import ImageCard from "./ImageCard";
 import { setUpdateFeed } from "../../redux/services/authSlice";
 import NameCard from "./NameCard";
+import { collection, query, where } from "firebase/firestore";
+import { firestore } from "../../firebase/firebase";
+import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 
 const PostCard = ({ name, data }) => {
   const { userAvatar, UserData, admin, hasNewStory, updateFeed } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
-  const PostImg =
-    data?.POST_DETAIL?.mapValue.fields.POST_IMAGE_PATH?.arrayValue.values;
+  const PostImg = data?.POST_DETAIL?.POST_IMAGE_PATH;
 
-  const hasPostD = data?.PID?.stringValue?.length > 0;
+  const hasPostD = data?.PID?.length > 0;
 
   const [count, setCount] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -38,8 +40,8 @@ const PostCard = ({ name, data }) => {
 
   const realTime = Date.now(); //Date Now
 
-  const intg = data.UPLOADED_AT?.integerValue;
-  const tsm = data.UPLOADED_AT?.timestampValue;
+  const intg = data.UPLOADED_AT;
+  const tsm = data.UPLOADED_AT;
 
   const diffUpTimeINMilSec = new Date(tsm);
   const TimeInMilliSec = diffUpTimeINMilSec.getTime();
@@ -74,31 +76,28 @@ const PostCard = ({ name, data }) => {
       ? setTime(`just now`)
       : 0;
   }, []);
+  const POD = data?.POST_OWNER_DETAIL;
+  const UID = POD.POID;
+  const userRf = collection(firestore, "users");
+  const quer = query(userRf, where("UID", "==", UID));
 
-  const POD = data?.POST_OWNER_DETAIL?.mapValue.fields;
-  const UID = POD.POID.stringValue;
+  const [user] = useCollectionDataOnce(quer, { idField: "id" });
 
   const POID = hasPostD ? UID : "0";
 
-  const PID = hasPostD ? data?.PID.stringValue : "0";
+  const PID = hasPostD ? data?.PID : "0";
 
-  const userPfData = UserData.filter((data) => data.id === POID)[0]?._document
-    .data.value.mapValue.fields.profile.arrayValue.values[0]?.mapValue.fields;
+  const userPfData = user[0] ? user[0]?.profile[0] : "";
 
   const user_name = admin?.user_name.stringValue;
   const USID = admin?.UID.stringValue;
 
-  // console.log(data?.POST_DETAIL?.mapValue.fields?.SHARES?.arrayValue.values);
 
-  const likes = data?.POST_DETAIL?.mapValue.fields?.LIKES?.arrayValue.values
-    ? data.POST_DETAIL?.mapValue.fields?.LIKES?.arrayValue.values?.filter(
-        (d) => d?.mapValue.fields?.PID?.stringValue === PID
-      )
+  const likes = data?.POST_DETAIL?.LIKES
+    ? data.POST_DETAIL?.LIKES?.filter((d) => d?.PID === PID)
     : 0;
-  const shares = data?.POST_DETAIL?.mapValue.fields?.SHARES?.arrayValue.values
-    ? data.POST_DETAIL?.mapValue.fields?.SHARES?.arrayValue.values?.filter(
-        (d) => d?.mapValue.fields?.PID?.stringValue === PID
-      )
+  const shares = data?.POST_DETAIL?.SHARES
+    ? data.POST_DETAIL.SHARES?.filter((d) => d?.PID === PID)
     : 0;
 
   const [likeC, setLikeC] = useState(likes?.length > 0 ? likes?.length : 0);
@@ -202,7 +201,7 @@ const PostCard = ({ name, data }) => {
     return () => clearTimeout(timeout);
   }, [copied]);
 
-  const caption = data?.POST_DETAIL?.mapValue.fields?.POST_CAPTION?.stringValue;
+  const caption = data?.POST_DETAIL?.POST_CAPTION;
 
   const deletePost = async (type, PID) => {
     UpdateData(type, "USID", PID, "upData", "upUData")
@@ -271,7 +270,7 @@ const PostCard = ({ name, data }) => {
         PostImg?.length > 1 ? (
           <Carousel loop={false} slideInterval={0} slide={false}>
             {PostImg?.map((d) => {
-              const url = d.mapValue.fields?.downloadURL?.stringValue;
+              const url = d?.downloadURL;
               const className = {
                 rounded: "rxl",
               };
@@ -289,7 +288,7 @@ const PostCard = ({ name, data }) => {
           </Carousel>
         ) : (
           PostImg?.map((d) => {
-            const url = d.mapValue.fields.downloadURL.stringValue;
+            const url = d.downloadURL;
             const className = {
               rounded: "rxl",
             };

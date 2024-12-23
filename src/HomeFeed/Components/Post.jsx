@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { firestore } from "../../firebase/firebase";
 import PostCard from "./PostCard";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const Post = ({ filter = "" ,position='feed'}) => {
   const { isMobile } = useSelector((state) => state.animateSlice);
@@ -13,6 +14,10 @@ const Post = ({ filter = "" ,position='feed'}) => {
 
   const [USER_POSTS, setUSER_POSTS] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+   const userRf = collection(firestore, "USER_POSTS");
+    const userQuery = query(userRf,orderBy("UPLOADED_AT"));
+    const [TUser] = useCollectionData(userQuery, { idField: "id" });
 
   useEffect(() => {
     async function User_post() {
@@ -49,16 +54,18 @@ const Post = ({ filter = "" ,position='feed'}) => {
     return currTime - prevTime;
   });
 
-  const filterByUID = acnUP?.filter((d) => {
-    const data = d?._document.data?.value.mapValue.fields;
-    const UID = data?.POST_OWNER_DETAIL.mapValue.fields.POID.stringValue;
+  console.log(TUser)
+
+  const filterByUID = TUser?.filter((d) => {
+    const data = d;
+    const UID = data?.POST_OWNER_DETAIL?.POID;
 
     return UID === filter;
   });
 
   
 
-  const Post = filter?.length > 10  ? filterByUID : acnUP;
+  const Post = filter?.length > 10  ? filterByUID : TUser;
 
   if (isLoading === true) {
     return <></>;
@@ -72,9 +79,9 @@ const Post = ({ filter = "" ,position='feed'}) => {
       className="flex flex-col gap-8  self-center  p-2 my-2 h-auto  rounded-md"
     >
       {Post?.map((d) => {
-        const data = d._document.data.value.mapValue.fields;
-        const PID = data?.PID.stringValue;
-        const PON = data?.POST_OWNER_DETAIL.mapValue.fields.PON.stringValue;
+        const data = d;
+        const PID = data?.PID;
+        const PON = data?.POST_OWNER_DETAIL.PON;
 
         return <PostCard data={data} name={PON} key={PID} />;
       })}
