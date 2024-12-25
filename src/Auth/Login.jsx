@@ -1,21 +1,30 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogin, setUpdateFeed } from "../redux/services/authSlice";
 
-import { auth } from "../firebase/firebase";
+import { auth, storage } from "../firebase/firebase";
 import addData from "../redux/services/Hooks/AddData";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import GetAdminData from "../redux/services/Hooks/GetAdminData";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Spin } from "antd";
+import UpdateData from "../redux/services/Hooks/UpdateData";
 
 const Login = () => {
   const [loginState, setLoginState] = useState(true);
+  const { UserData, Story, admin, adminProfile, userAvatar, updateFeed } =
+    useSelector((deserializedState) => deserializedState.authSlice);
   const dispatch = useDispatch();
+
+  const [passAlert, setPassalert] = useState("");
+  const [imageSrc, setImageSrc] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
 
   const {
     register,
@@ -32,21 +41,86 @@ const Login = () => {
     const email = data.email;
     const password = data.password;
 
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then(function (user) {
-        console.log("User registered successfully!", user);
-        const uid = user.user.uid;
-        console.log(uid);
-        addData("users", email, uid, name);
-        setIsLoading(false);
-        toast.success("Signup successful");
+    function getFirstChars(name) {
+      if (!name) return []; // Handle empty string case
 
+      const words = name?.split(" ");
+      const firstChars = [];
+      for (const word of words) {
+        firstChars.push(word[0]);
+      }
+      return firstChars;
+    }
+
+    const firstCharacters = getFirstChars(name);
+
+    const nick =
+      firstCharacters.length > 0
+        ? firstCharacters?.reduce((prev, curr) => prev + curr)
+        : null;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      let imageUrl = "";
+      let profile = [];
+      if (profileImage) {
+        const fileSize = profileImage?.size;
+        const PFID = nick + "PF" + fileSize;
+        const uid = user.uid;
+
+        const path = `user_photo/${user.uid}/${PFID}/${profileImage.name}`;
+
+        const storageRef = ref(storage, path);
+        const uploadTask = await uploadBytesResumable(storageRef, profileImage);
+        imageUrl = await getDownloadURL(uploadTask.ref);
+
+        profile = [
+          {
+            PFID,
+            PFPATH: imageUrl,
+            isImage: true,
+            uploaded_at: Date.now(),
+          },
+        ];
+        addData("users", email, uid, name);
+
+        const Data = {
+          PFID: nick + "PF" + `${fileSize}`,
+          isImage: true,
+          PFPATH: imageUrl,
+        };
+
+        const Datal = {
+          PFID: nick + "PF" + `${fileSize}`,
+          isImage: true,
+          PFPATH: imageUrl,
+        };
+
+        UpdateData("profile", uid, "USID", Data, Datal);
+
+        // Update user's display name and photo
+        await updateProfile(user, {
+          displayName: name,
+          photoURL: imageUrl,
+        })
+          .then((data) => console.log(data))
+          .catch((error) => console.log(error));
         setLoginState(true);
-      })
-      .catch(function (error) {
-        setIsLoading(false);
-        toast.error("Signup Failed!");
-      });
+      }
+
+      toast.success("Signup successful");
+      setIsLoading(false);
+    } catch {
+      setIsLoading(false);
+
+      toast.error("Signup Failed!");
+    }
   };
 
   const [isLoading, setIsLoading] = useState(false);
@@ -65,17 +139,16 @@ const Login = () => {
         password
       );
       // Login successful, navigate or handle user
-      console.log("User logged in:", userCredential);
 
       const getAdmin = [GetAdminData("users", user_name)];
 
       Promise.all(getAdmin)
-        .then((data) => {
+        .then(() => {
           setIsLoading(false);
           dispatch(setUpdateFeed(true));
         })
         .catch((error) => console.log(error));
-
+      window.location.reload(true);
       dispatch(setLogin(true));
     } catch (error) {
       setIsLoading(false);
@@ -84,20 +157,59 @@ const Login = () => {
     }
   };
 
+  const validatePassword = (password) => {
+    const validations = [
+      {
+        test: (pw) => pw.length >= 8,
+        message: "*At least 8 characters long.\n ",
+      },
+      {
+        test: (pw) => /[A-Z]/.test(pw),
+        message: "*At least one uppercase letter.\n ",
+      },
+      {
+        test: (pw) => /[a-z]/.test(pw),
+        message: "*At least one lowercase letter.\n ",
+      },
+      { test: (pw) => /[0-9]/.test(pw), message: "*At least one number.\n " },
+      {
+        test: (pw) => /[@$!%*?&#]/.test(pw),
+        message:
+          "*At least one special character\n (@, $, !, %, *, ?, &, #).\n",
+      },
+    ];
+
+    return validations
+      .filter(({ test }) => !test(password))
+      .map(({ message }) => [message]);
+  };
+
+  const PwTyping = (e) => {
+    const newPw = e.target.value;
+    setPassalert(validatePassword(newPw));
+  };
+
   const onSubmit = async (data) => {
     loginState === false ? SignUp(data) : SignIn(data);
   };
 
+  const ProfilePictureSelected = (e) => {
+    const imgSrc = e.target.files[0];
+    setProfileImage(imgSrc);
+    if (imgSrc) {
+      const url = URL.createObjectURL(imgSrc);
+      setImageSrc(url);
+    }
+  };
+
   return (
     <div className=" flex relative flex-col justify-center items-center w-full h-screen ">
-      <div className="flex w-full justify-center items-center h-screen bg-transparent">
-        <div className="w-full max-w-md p-4 bg-[#212121] rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold text-center mb-4">
-            {loginState === false
-              ? "Sign up with Queed"
-              : "Login with Queed"}
-          </h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
+      <h1 className="text-2xl font-bold text-center mb-4">
+        {loginState === false ? "Sign up with Queed" : "Login with Queed"}
+      </h1>
+      <div className="flex w-full  gap-5 justify-center bg-[#212121] items-center h-screen">
+        <div className="w-[30%] h-full  p-4 bg-[#212121] rounded-lg shadow-md">
+          <form className="  " onSubmit={handleSubmit(onSubmit)}>
             {!loginState && (
               <div className="mb-6">
                 <label
@@ -142,7 +254,7 @@ const Login = () => {
                 </span>
               )}
             </div>
-            <div className="mb-6">
+            <div className="mb-6 flex wrap flex-col flex w-full ">
               <label
                 htmlFor="password"
                 className="block text-sm font-medium text-gray-300 mb-2"
@@ -154,9 +266,17 @@ const Login = () => {
                 {...register("password", { required: true })}
                 type="password"
                 id="password"
+                min="8"
+                onChange={(e) => PwTyping(e)}
                 className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
               />
+              {!loginState && (
+                <pre className=" flex p-2 invert-none rc-textarea-affix-wrapper flex-wrap max-w-full w-full  italic text-red-600 ">
+                  {passAlert}
+                </pre>
+              )}
+
               {errors.password && (
                 <span className=" flex p-2  italic text-red-600 ">
                   {errors.password.message}
@@ -216,6 +336,39 @@ const Login = () => {
             </div>
           </form>
         </div>
+        {loginState === false && (
+          <div className=" flex flex-col w-[30%] h-full justify-start items-center gap-2 ">
+            <p className="block text-lg tracking-wide p-2 font-medium text-gray-300">
+              Select profile picture
+            </p>
+            <div className=" invert-none flex rounded-md justify-center items-center w-full h-[45%] ">
+              <img
+                className=" object-cover h-[90%] rounded w-auto "
+                src={imageSrc ? imageSrc : userAvatar}
+                alt=""
+                srcset=""
+              />
+            </div>
+            <div className=" flex p-2 justify-between items-center gap-2 ">
+              <div className=" relative p-1 bg-blue-600 rounded px-2 font-medium flex justify-center items-center ">
+                <p> Choose Photo </p>
+                <input
+                  className=" absolute top-[-20%] w-full left-2 opacity-0  "
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => ProfilePictureSelected(e)}
+                />
+              </div>
+
+              <div
+                onClick={() => setImageSrc(false)}
+                className=" relative p-1 bg-blue-900 rounded px-2 font-medium flex justify-center items-center "
+              >
+                <p> Remove Photo </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

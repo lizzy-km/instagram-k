@@ -42,6 +42,7 @@ function App() {
   const isUserLog = useAuthState(auth);
 
   const isAuth = isUserLog[0]?.accessToken?.length > 0 ? true : false;
+  
 
   const dispatch = useDispatch();
 
@@ -90,7 +91,7 @@ function App() {
     ResponsiveFun();
   }, [window.innerWidth]);
 
-  const { admin, hasNewStory, updateFeed } = useSelector(
+  const { admin, hasNewStory, updateFeed,isLogin } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -163,7 +164,7 @@ function App() {
       </div>
 
       <BrowserRouter>
-        {isAuth === true && <NavBar />}
+        {isAuth === true && isLogin && <NavBar />}
         {blur === true && (
           <section
             style={{
@@ -214,7 +215,7 @@ function App() {
         )}
 
         <section className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center ">
-          {isAuth === true ? (
+          {isAuth === true  && isLogin ? (
             <Routes>
               <Route exact path="/*" element={<HomeFeed />} />
               <Route exact path="/game" element={<Game />} />
@@ -235,7 +236,7 @@ function App() {
             </Routes>
           )}
         </section>
-        {isAuth === true && !isDeskTop && (
+        {isAuth === true  && isLogin && !isDeskTop && (
           <section
             style={{
               bottom: bottomNav ? "8%" : 10,

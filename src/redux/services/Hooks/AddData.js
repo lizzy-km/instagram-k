@@ -33,14 +33,6 @@ const addData = async (colName = "users", uemail = "", username = "", name) => {
     isLogin: false,
     nick_name: nickName,
     bio: bio,
-    profile_picture: [
-      {
-        PFID: shortName + "PF" + date,
-        src: "",
-        isActive: true,
-        uploaded_at: Date.now(),
-      },
-    ],
     cover_photo: [
       {
         CVID: shortName + "CV" + date,
