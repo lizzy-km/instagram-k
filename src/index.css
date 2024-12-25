@@ -4,7 +4,7 @@
 
 body {
   color: #d4d4d4;
-  filter : invert(95%);
+  filter : invert(100%);
   backdrop-filter: 10%;
 }
 
@@ -28,6 +28,6 @@ body {
 }
 
 .invert-none {
-  --tw-invert: invert(95%) !important;
+  --tw-invert: invert(100%) !important;
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }

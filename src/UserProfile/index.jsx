@@ -171,11 +171,11 @@ const UserProfile = () => {
 
         <div
           style={{
-            width: !isDeskTop ? "100%" : "60%",
+            width: !isDeskTop ? "100%" : "45%",
           }}
           className={` ${
             !isDeskTop ? "px-0" : "px-4"
-          } " flex flex-col gap-4   w-[50%] h-screen rounded-md " `}
+          } " flex flex-col gap-4    h-screen rounded-md " `}
         >
           <CreatePost position={"user"} />
 
