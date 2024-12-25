@@ -19,6 +19,7 @@ import {
   setDesktop,
   setMobile,
   setTablet,
+  setPostLimit
 } from "./redux/services/animateSlice";
 import CreatePostBox from "./Components/CreatePostBox";
 import CreateStory from "./Components/CreateStory";
@@ -56,6 +57,7 @@ function App() {
     addProfile,
     bottomNav,
     sentMsg,
+    postLimit
   } = useSelector((state) => state.animateSlice);
 
   let ScreenSize = window?.innerWidth;
@@ -135,8 +137,18 @@ function App() {
 
   const page = document.getElementById("page");
 
+  page?.addEventListener("scroll",()=> {
+    if((page.offsetHeight*(postLimit-1))<page.scrollTop ){
+      dispatch(setPostLimit(postLimit+5))
+    }
+    
+  })
+
   !isDeskTop &&
     page?.addEventListener("scroll", () => {
+
+      
+
       scrollTopNum.length < 2
         ? scrollTopNum.push(page.scrollTop)
         : (scrollTopNum.shift(), scrollTopNum.push(page.scrollTop));
@@ -147,7 +159,7 @@ function App() {
 
         if (prev > curr && prev !== undefined) {
           setBotNav(true);
-          
+
         }
         if (prev < curr && prev !== undefined) {
           setBotNav(false);

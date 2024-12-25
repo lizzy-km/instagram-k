@@ -18,7 +18,8 @@ const initialState = {
   bottomNav: true,
   showChat:false,
   sentMsg:true,
-  botNav:true
+  botNav:true,
+  postLimit:5
 };
 
 const STORAGE_KEY = "Animate";
@@ -102,7 +103,10 @@ export const animateSlice = createSlice({
     setBottomNav: (state, { payload }) => {
       state.bottomNav = payload;
     },
-    
+    setPostLimit: (state, { payload }) => {
+      state.postLimit = payload;
+    },
+
   },
 });
 
@@ -130,6 +134,8 @@ export const {
   chatOn,
   showChat,
   sentMsg,
-  sentMessage
+  sentMessage,
+  setPostLimit,
+  postLimit
 } = animateSlice.actions;
 export default animateSlice.reducer;

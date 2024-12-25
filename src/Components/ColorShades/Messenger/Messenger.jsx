@@ -5,7 +5,7 @@ import {
   useCollectionDataOnce,
 } from "react-firebase-hooks/firestore";
 import { auth, firestore } from "../../../firebase/firebase";
-import { addDoc, collection, orderBy, query, where } from "firebase/firestore";
+import { addDoc, collection, limit, orderBy, query, where } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import Icon from "@mdi/react";
 import {
@@ -28,6 +28,8 @@ const Messenger = () => {
   const { adminProfile } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
+    const { isMobile, postLimit } = useSelector((state) => state.animateSlice);
+  
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"));
@@ -90,7 +92,7 @@ const Messenger = () => {
         </div>
       </div>
 
-      <main className=" flex w-full flex-col mt-[18%] justify- h-[95%] max-h-[95%] overflow-scroll items-end gap-2 ">
+      <main className=" flex w-full flex-col mt-[0%] justify- h-[100%%] max-h-[100%%] overflow-scroll items-end gap-2 ">
         {targetMessage &&
           targetMessage.map((msg) => (
             <ChatMessage key={msg.id} message={msg} />
@@ -125,6 +127,12 @@ function ChatMessage(props) {
 
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
 
+  const userRf = collection(firestore, "users");
+  const userQuery = query(userRf, where("UID", "==", uid));
+  const [TUser] = useCollectionDataOnce(userQuery, { idField: "id" });
+
+  const TU = TUser?.length > 0 ? TUser[0]  :[]
+
   return (
     <section
       className={` ${
@@ -138,7 +146,7 @@ function ChatMessage(props) {
       >
         <img
           className="invert-none rounded-full object-cover w-[30px] h-[30px] "
-          src={photoURL || userAvatar}
+          src={TU?.profile?.length > 0 ? TU?.profile[0]?.PFPATH : userAvatar}
         />
         <p className=" invert-none tracking-wide text-sm font-sans px-2 py-1 bg-[#333333] rounded-lg ">
           {text}
