@@ -11,7 +11,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import PostCard from "../HomeFeed/Components/PostCard";
 
 const UserProfile = () => {
-  const { userAvatar, UserData } = useSelector(
+  const { userAvatar } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -25,18 +25,20 @@ const UserProfile = () => {
     (state) => state.animateSlice
   );
 
-  const user = UserData?.find((d) => d.id === UID?.user)?._document.data.value
-    .mapValue.fields;
-
   const userRf = collection(firestore, "USER_POSTS");
   const userQuery = query(userRf, orderBy("UPLOADED_AT", "desc"));
   const [TUser] = useCollectionData(userQuery, { idField: "id" });
+
+  const userPfRf = collection(firestore, "users");
+  const userPfQuery = query(userPfRf, where("UID", "==", UID.user));
+  const [PUser] = useCollectionData(userPfQuery, { idField: "id" });
 
   const userPost = TUser?.filter(
     (tu) => tu.POST_OWNER_DETAIL.POID === UID.user
   );
 
-  const userProfile = TUser?.profile?.[0]?.PFPATH;
+  const userProfile = PUser?.length > 0 ? PUser[0]?.profile?.[0]?.PFPATH : "";
+  const user = PUser?.length > 0 ? PUser[0] : [];
 
   const sendMessage = () => {
     dispatch(chatOn(false));
@@ -96,35 +98,34 @@ const UserProfile = () => {
             }}
             className=" w-full h-auto absolute left-0 flex justify-between items-center "
           >
-            <div className=" flex gap-2 justify-start items-center w-auto " >
-            <div
-              style={{
-                width: isMobile ? "60px" : "150px",
-                height: isMobile ? "60px" : "150px",
-              }}
-              className=" cursor-pointer p-1 bg-[#333333] rounded-full  "
-            >
-              <img
-                className=" invert-none rounded-full h-[100%] w-full  object-cover "
-                src={userProfile?.length > 10 ? userProfile : userAvatar}
-                alt=""
-                srcset=""
-              />
-            </div>
+            <div className=" flex gap-2 justify-start items-center w-auto ">
+              <div
+                style={{
+                  width: isMobile ? "60px" : "150px",
+                  height: isMobile ? "60px" : "150px",
+                }}
+                className=" cursor-pointer p-1 bg-[#333333] rounded-full  "
+              >
+                <img
+                  className=" invert-none rounded-full h-[100%] w-full  object-cover "
+                  src={userProfile?.length > 10 ? userProfile : userAvatar}
+                  alt=""
+                  srcset=""
+                />
+              </div>
 
-            <p
-              style={{
-                fontSize: isMobile ? "0.8rem" : "2.2rem",
-              }}
-              className=" px-2 text-[2.2rem] bg-[#21212157] backdrop-blur rounded flex w-auto tracking-wide gap-2 font-medium "
-            >
-              {user?.user_name?.stringValue}{" "}
-              {user?.nick_name?.stringValue && (
-                <p className=" font-thin ">({user.nick_name?.stringValue})</p>
-              )}
-            </p>
+              <p
+                style={{
+                  fontSize: isMobile ? "0.8rem" : "2.2rem",
+                }}
+                className=" px-2 text-[2.2rem] bg-[#21212157] backdrop-blur rounded flex w-auto tracking-wide gap-2 font-medium "
+              >
+                {user?.user_name}{" "}
+                {user?.nick_name && (
+                  <p className=" font-thin ">({user.nick_name})</p>
+                )}
+              </p>
             </div>
-          
 
             {uid !== UID?.user && (
               <div className=" flex gap-4 w-auto h-full  justify-end items-end p-1 ">
@@ -132,8 +133,14 @@ const UserProfile = () => {
                   onClick={sendMessage}
                   className=" bg-[#121212] cursor-pointer hover:bg-[#181818] tracking-wide flex justify-center gap-1 items-center text-center w-auto px-2 rounded-md py-2 "
                 >
-                  <p className={` ${isMobile ? " text-sm ":'' } `} > Send Message</p>{" "}
-                  <Icon path={mdiSendVariantOutline} size={isMobile ? 0.7:1} />
+                  <p className={` ${isMobile ? " text-sm " : ""} `}>
+                    {" "}
+                    Send Message
+                  </p>{" "}
+                  <Icon
+                    path={mdiSendVariantOutline}
+                    size={isMobile ? 0.7 : 1}
+                  />
                 </div>
               </div>
             )}
@@ -163,7 +170,7 @@ const UserProfile = () => {
           }}
           className={` ${
             !isDeskTop ? "px-0" : "px-4"
-          } " flex flex-col gap-4   w-[60%] h-screen rounded-md " `}
+          } " flex flex-col gap-4   w-[50%] h-screen rounded-md " `}
         >
           <CreatePost position={"user"} />
 
