@@ -47,6 +47,11 @@ const Watch = () => {
     }
   }, [imageList, UserData]);
 
+  useEffect(()=> {
+    document.title = "Queed | Gallery"
+
+  },[])
+
   return (
     <div
       id="mainWidth"

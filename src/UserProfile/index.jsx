@@ -9,6 +9,7 @@ import { auth, firestore } from "../firebase/firebase";
 import { collection, orderBy, query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import PostCard from "../HomeFeed/Components/PostCard";
+import { useEffect } from "react";
 
 const UserProfile = () => {
   const { userAvatar } = useSelector(
@@ -39,6 +40,10 @@ const UserProfile = () => {
 
   const userProfile = PUser?.length > 0 ? PUser[0]?.profile?.[0]?.PFPATH : "";
   const user = PUser?.length > 0 ? PUser[0] : [];
+
+  useEffect(()=> {
+    document.title = user?.user_name
+  },[user?.user_name])
 
   const sendMessage = () => {
     dispatch(chatOn(false));

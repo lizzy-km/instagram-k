@@ -16,12 +16,15 @@ const HomeFeed = () => {
 
   const getAdmin = [GetAdminData()];
 
+
   useEffect(() => {
     Promise.all(getAdmin)
       .then((data) => {
         dispatch(addAdmin(data[0]));
       })
       .catch((error) => console.log(error));
+      document.title = "Queed | Newfeed"
+
   }, []);
   if (admin?.UID?.stringValue)
     return (

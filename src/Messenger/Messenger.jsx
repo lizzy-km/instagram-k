@@ -25,6 +25,11 @@ const MessengerApp = () => {
 
   const targetId = useParams();
 
+  useEffect(()=> {
+    document.title = "Queed | Chat"
+
+  },[])
+
 
   const messagesRf = collection(firestore, "MESSAGES");
   const quer = query(messagesRf, orderBy("createdAt"));
