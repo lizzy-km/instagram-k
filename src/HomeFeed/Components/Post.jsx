@@ -15,7 +15,7 @@ const Post = ({ filter = "" ,position='feed'}) => {
   const [isLoading, setIsLoading] = useState(true);
 
    const userRf = collection(firestore, "USER_POSTS");
-    const userQuery = query(userRf,orderBy("UPLOADED_AT"));
+    const userQuery = query(userRf,orderBy("UPLOADED_AT","desc"));
     const [TUser] = useCollectionData(userQuery, { idField: "id" });
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const Post = ({ filter = "" ,position='feed'}) => {
       }}
       className="flex flex-col gap-8  self-center  p-2 my-2 h-auto  rounded-md"
     >
-      {Post?.reverse()?.map((d) => {
+      {Post?.map((d) => {
         const data = d;
         const PID = data?.PID;
         const PON = data?.POST_OWNER_DETAIL.PON;

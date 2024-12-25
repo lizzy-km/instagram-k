@@ -5,7 +5,10 @@ import Post from "../HomeFeed/Components/Post";
 import Icon from "@mdi/react";
 import { mdiSendVariantOutline } from "@mdi/js";
 import { chatOn, messengerOn } from "../redux/services/animateSlice";
-import { auth } from "../firebase/firebase";
+import { auth, firestore } from "../firebase/firebase";
+import { collection, orderBy, query, where } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import PostCard from "../HomeFeed/Components/PostCard";
 
 const UserProfile = () => {
   const { userAvatar, UserData } = useSelector(
@@ -25,11 +28,18 @@ const UserProfile = () => {
   const user = UserData?.find((d) => d.id === UID?.user)?._document.data.value
     .mapValue.fields;
 
-  const userProfile =
-    user?.profile?.arrayValue.values[0]?.mapValue.fields?.PFPATH?.stringValue;
+  const userRf = collection(firestore, "USER_POSTS");
+  const userQuery = query(userRf, orderBy("UPLOADED_AT", "desc"));
+  const [TUser] = useCollectionData(userQuery, { idField: "id" });
+
+  const userPost = TUser?.filter(
+    (tu) => tu.POST_OWNER_DETAIL.POID === UID.user
+  );
+
+  const userProfile = TUser?.profile?.[0]?.PFPATH;
 
   const sendMessage = () => {
-    dispatch(chatOn(false))
+    dispatch(chatOn(false));
     localStorage.setItem("targetId", UID?.user);
 
     dispatch(
@@ -82,14 +92,15 @@ const UserProfile = () => {
           />
           <div
             style={{
-              bottom: !isDeskTop ? "2%" : "8%",
+              bottom: isMobile ? "2%" : "8%",
             }}
-            className=" w-full h-auto absolute left-0 flex justify-start items-center "
+            className=" w-full h-auto absolute left-0 flex justify-between items-center "
           >
+            <div className=" flex gap-2 justify-start items-center w-auto " >
             <div
               style={{
-                width: !isDeskTop ? "70px" : "150px",
-                height: !isDeskTop ? "70px" : "150px",
+                width: isMobile ? "60px" : "150px",
+                height: isMobile ? "60px" : "150px",
               }}
               className=" cursor-pointer p-1 bg-[#333333] rounded-full  "
             >
@@ -103,24 +114,26 @@ const UserProfile = () => {
 
             <p
               style={{
-                fontSize: !isDeskTop ? "1.1rem" : "2.2rem",
+                fontSize: isMobile ? "0.8rem" : "2.2rem",
               }}
-              className=" px-2 text-[2.2rem] flex w-auto tracking-wide gap-2 font-medium "
+              className=" px-2 text-[2.2rem] bg-[#21212157] backdrop-blur rounded flex w-auto tracking-wide gap-2 font-medium "
             >
               {user?.user_name?.stringValue}{" "}
               {user?.nick_name?.stringValue && (
                 <p className=" font-thin ">({user.nick_name?.stringValue})</p>
               )}
             </p>
+            </div>
+          
 
             {uid !== UID?.user && (
-              <div className=" flex gap-4 w-[40%] justify-end items-center p-1 ">
+              <div className=" flex gap-4 w-auto h-full  justify-end items-end p-1 ">
                 <div
                   onClick={sendMessage}
-                  className=" bg-[#121212] cursor-pointer hover:bg-[#181818] tracking-wide flex justify-center gap-1 items-center text-center w-[45%] px-2 rounded-md py-2 "
+                  className=" bg-[#121212] cursor-pointer hover:bg-[#181818] tracking-wide flex justify-center gap-1 items-center text-center w-auto px-2 rounded-md py-2 "
                 >
-                  <p> Send Message</p>{" "}
-                  <Icon path={mdiSendVariantOutline} size={1} />
+                  <p className={` ${isMobile ? " text-sm ":'' } `} > Send Message</p>{" "}
+                  <Icon path={mdiSendVariantOutline} size={isMobile ? 0.7:1} />
                 </div>
               </div>
             )}
@@ -154,8 +167,13 @@ const UserProfile = () => {
         >
           <CreatePost position={"user"} />
 
-          <Post position={"user"} filter={UID?.user} />
+          {userPost?.map((d) => {
+            const data = d;
+            const PID = data?.PID;
+            const PON = data?.POST_OWNER_DETAIL.PON;
 
+            return <PostCard data={data} name={PON} key={PID} />;
+          })}
           <div className=" flex justify-center items-center w-full min-h-[70px] "></div>
         </div>
       </section>
