@@ -20,6 +20,10 @@ const Login = () => {
   const [loginState, setLoginState] = useState(true);
   const { UserData, Story, admin, adminProfile, userAvatar, updateFeed } =
     useSelector((deserializedState) => deserializedState.authSlice);
+
+     const { isTablet, isMobile, isDeskTop } = useSelector(
+        (state) => state.animateSlice
+      );
   const dispatch = useDispatch();
 
   const [passAlert, setPassalert] = useState("");
@@ -207,8 +211,43 @@ const Login = () => {
       <h1 className="text-2xl font-bold text-center mb-4">
         {loginState === false ? "Sign up with Queed" : "Login with Queed"}
       </h1>
-      <div className="flex w-full  gap-5 justify-center bg-[#212121] items-center h-screen">
-        <div className="w-[30%] h-full  p-4 bg-[#212121] rounded-lg shadow-md">
+      
+      <div className={` ${isDeskTop ? "flex":'flex-col  overflow-auto max-h-screen gap-1 pb-2  justify-start '}  w-full  gap-5 justify-center bg-[#212121] items-center h-screen`}>
+      {loginState === false && (
+          <div className={`${ isDeskTop ? "w-[30%]" : 'w-[90%] h-[60%] ' }" flex flex-col  h-full justify-start items-center gap-2 "`}>
+            <p className="block text-lg tracking-wide p-2 font-medium text-gray-300">
+              Select profile picture
+            </p>
+            <div className=" invert-none flex rounded-md justify-center items-center h-[250px] rounded-full w-[250px] p-1 ">
+              <img
+                className=" object-cover bg-center w-full h-full rounded-full  rounded w-auto "
+                src={imageSrc ? imageSrc : userAvatar}
+                alt=""
+                srcset=""
+              />
+            </div>
+            <div className=" flex p-2 justify-between items-center gap-2 ">
+              <div className=" relative p-1 bg-blue-600 rounded px-2 font-medium flex justify-center items-center ">
+                <p> Choose Photo </p>
+                <input
+                  className=" absolute top-[-20%] w-full left-2 opacity-0  "
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => ProfilePictureSelected(e)}
+                  required
+                />
+              </div>
+
+              <div
+                onClick={() => setImageSrc(false)}
+                className=" relative cursor-pointer p-1 bg-blue-900 rounded px-2 font-medium flex justify-center items-center "
+              >
+                <p> Remove Photo </p>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className={` ${ isDeskTop ? "w-[30%]" : 'w-[90%] h-[40%] pb-2 ' } " h-full  p-4 bg-[#212121] rounded-lg shadow-md"`}>
           <form className="  " onSubmit={handleSubmit(onSubmit)}>
             {!loginState && (
               <div className="mb-6">
@@ -335,40 +374,11 @@ const Login = () => {
               )}
             </div>
           </form>
-        </div>
-        {loginState === false && (
-          <div className=" flex flex-col w-[30%] h-full justify-start items-center gap-2 ">
-            <p className="block text-lg tracking-wide p-2 font-medium text-gray-300">
-              Select profile picture
-            </p>
-            <div className=" invert-none flex rounded-md justify-center items-center w-full h-[45%] ">
-              <img
-                className=" object-cover h-[90%] rounded w-auto "
-                src={imageSrc ? imageSrc : userAvatar}
-                alt=""
-                srcset=""
-              />
-            </div>
-            <div className=" flex p-2 justify-between items-center gap-2 ">
-              <div className=" relative p-1 bg-blue-600 rounded px-2 font-medium flex justify-center items-center ">
-                <p> Choose Photo </p>
-                <input
-                  className=" absolute top-[-20%] w-full left-2 opacity-0  "
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => ProfilePictureSelected(e)}
-                />
-              </div>
-
-              <div
-                onClick={() => setImageSrc(false)}
-                className=" relative p-1 bg-blue-900 rounded px-2 font-medium flex justify-center items-center "
-              >
-                <p> Remove Photo </p>
-              </div>
-            </div>
+          <div className="w-full h-[5%] " >
+            
           </div>
-        )}
+        </div>
+       
       </div>
     </div>
   );
