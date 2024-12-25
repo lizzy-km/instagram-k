@@ -4,12 +4,12 @@ import CreatePost from "../HomeFeed/Components/CreatePost";
 import Post from "../HomeFeed/Components/Post";
 import Icon from "@mdi/react";
 import { mdiSendVariantOutline } from "@mdi/js";
-import { chatOn, messengerOn } from "../redux/services/animateSlice";
+import { chatOn, messengerOn, setBottomNav } from "../redux/services/animateSlice";
 import { auth, firestore } from "../firebase/firebase";
 import { collection, orderBy, query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import PostCard from "../HomeFeed/Components/PostCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const UserProfile = () => {
   const { userAvatar } = useSelector(
@@ -57,11 +57,42 @@ const UserProfile = () => {
     dispatch(chatOn(true));
   };
 
+  const [botNav, setBotNav] = useState(true);
+
+  useEffect(() => {
+    dispatch(setBottomNav(botNav));
+  }, [botNav]);
+
+  let scrollTopNum = [];
+
+  const page = document.getElementById("pages");
+
+  !isDeskTop &&
+    page?.addEventListener("scroll", () => {
+      scrollTopNum.length < 2
+        ? scrollTopNum.push(page.scrollTop)
+        : (scrollTopNum.shift(), scrollTopNum.push(page.scrollTop));
+
+      for (let i = 0; i < scrollTopNum.length; i++) {
+        const prev = scrollTopNum[i - 1];
+        const curr = scrollTopNum[i];
+
+        if (prev > curr && prev !== undefined) {
+          setBotNav(true);
+          
+        }
+        if (prev < curr && prev !== undefined) {
+          setBotNav(false);
+        }
+      }
+    });
+
+
   const bg =
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2F328652225_477950631031057_4570664772778110705_n%20(2).jpg?alt=media&token=ada5ce90-591d-47a6-88cb-07e80e9117d7";
 
   return (
-    <section className=" flex flex-col items-center relative   bg-[#121212] w-full   h-screen max-h-screen overflow-y-auto overflow-x-hidden ">
+    <section id="pages" className=" flex flex-col items-center relative   bg-[#121212] w-full   h-screen max-h-screen overflow-y-auto overflow-x-hidden ">
       <section
         style={{
           height: !isDeskTop ? "30%" : "80%",

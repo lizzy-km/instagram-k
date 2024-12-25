@@ -17,7 +17,8 @@ const initialState = {
   addProfile: false,
   bottomNav: true,
   showChat:false,
-  sentMsg:true
+  sentMsg:true,
+  botNav:true
 };
 
 const STORAGE_KEY = "Animate";
@@ -101,6 +102,7 @@ export const animateSlice = createSlice({
     setBottomNav: (state, { payload }) => {
       state.bottomNav = payload;
     },
+    
   },
 });
 

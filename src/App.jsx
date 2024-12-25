@@ -147,6 +147,7 @@ function App() {
 
         if (prev > curr && prev !== undefined) {
           setBotNav(true);
+          
         }
         if (prev < curr && prev !== undefined) {
           setBotNav(false);
@@ -214,7 +215,7 @@ function App() {
           </section>
         )}
 
-        <section className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center ">
+        <section id="page" className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center ">
           {isAuth === true  && isLogin ? (
             <Routes>
               <Route exact path="/*" element={<HomeFeed />} />
