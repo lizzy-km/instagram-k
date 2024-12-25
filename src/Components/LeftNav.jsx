@@ -16,10 +16,11 @@ import {
   queryEqual,
   where,
 } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const LeftNav = () => {
   const { isTablet, isMobile } = useSelector((state) => state.animateSlice);
-  const { updateFeed, isSearch } = useSelector(
+  const { updateFeed, isSearch, userAvatar } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -33,19 +34,22 @@ const LeftNav = () => {
   const [searchValue, setValue] = useState("");
   const [searchText, setSearchText] = useState("");
 
+  const userRf = collection(firestore, "users");
+  const userQuery = query(userRf);
+  const [TUser] = useCollectionData(userQuery, { idField: "id" });
+
+  function searchByName(arr, name) {
+    return arr?.filter((item) =>
+      item.user_name?.toLowerCase().includes(name.toLowerCase())
+    );
+  }
+
   const getSearchData = async (e) => {
     e.preventDefault();
     setSearchText(e.target.value);
-    await getDocs(
-      query(
-        collection(firestore, "users"),
-        where("user_name", "==", e.target.value),
-      )
-    ).then((data) => {
-      setValue(data?.docs);
-    });
-  };
 
+    setValue(searchByName(TUser, searchText));
+  };
 
   return (
     <section
@@ -119,31 +123,32 @@ const LeftNav = () => {
           }}
           className=" flex justify-start items-center flex-col px-2 py-3 absolute top-[120%] left-0 w-full min-h-[200px] bg-[#2d2d2d] rounded-xl   "
         >
-          {searchValue?.length > 0 ? (
+          {searchValue?.length > 0 && searchText?.length > 1 ? (
             searchValue?.map((sv) => {
               return (
                 <NavLink
-                  to={`/${sv?._document?.data?.value.mapValue.fields.UID?.stringValue}`}
+                  onClick={() => {
+                    dispatch(setIsSearch(false));
+                    setSearchText("");
+                    setValue([]);
+                  }}
+                  to={`/${sv?.UID}`}
                   className=" flex text-lg justify-start items-center p-2 rounded-lg hover-bg-[#333333] gap-2      w-[95%] h-[50px] "
                 >
                   <div className=" bg-[#2d2d2d] p-1 w-[50px] h-[50px] rounded-full ">
                     <img
                       className=" invert-none w-[100%] h-[100%] object-cover rounded-full "
                       src={
-                        sv?._document?.data.value.mapValue.fields.profile
-                          .arrayValue.values[0].mapValue.fields.PFPATH
-                          .stringValue
+                        sv?.profile?.length > 0 &&
+                        sv?.profile[0]?.PFPATH?.length > 0
+                          ? sv?.profile[0].PFPATH
+                          : userAvatar
                       }
                       alt=""
                       srcset=""
                     />
                   </div>
-                  <p>
-                    {
-                      sv?._document?.data.value.mapValue.fields.user_name
-                        ?.stringValue
-                    }
-                  </p>
+                  <p>{sv?.user_name}</p>
                 </NavLink>
               );
             })
