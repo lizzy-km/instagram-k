@@ -8,13 +8,11 @@ import { collection, query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const MessageCard = () => {
-  const { UserData, updateFeed } = useSelector(
-    (deserializedState) => deserializedState.authSlice
-  );
-  const { isTablet, isMobile, isDeskTop } = useSelector(
+ 
+  const {  isMobile } = useSelector(
     (deserializedState) => deserializedState.animateSlice
   );
-  const { account, noti, messenger, showChat } = useSelector(
+  const {  messenger } = useSelector(
     (state) => state.animateSlice
   );
   const Admin = auth.currentUser;
@@ -23,7 +21,6 @@ const MessageCard = () => {
   const userQuery = query(userRf,where("UID","!=",Admin?.uid));
   const [TUser] = useCollectionData(userQuery, { idField: "id" });
 
-  console.log(TUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
