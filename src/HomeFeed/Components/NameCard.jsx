@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 const NameCard = ({userAvatar,UID,userPfData,name,uploaded_at,time} ) => {
     
   return (
-    <div className=" absolute bottom-2 left-0 w-full px-2  h-[45px]   flex justify-between items-center ">
+    <div className=" absolute bottom-2 left-0 w-full p-2  h-[55px]   flex justify-start items-center ">
     <div className=" w-auto h-full  gap-2    flex justify-center items-center ">
       <NavLink
         onClick={() =>

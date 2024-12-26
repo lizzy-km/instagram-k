@@ -215,10 +215,10 @@ const PostCard = ({ name, data }) => {
   return (
     <section
       id="mw"
-      className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-center   py-4     w-[100%] "
+      className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-center   py-4   w-[100%] "
     >
       <div className=" flex w-full h-auto rounded-t-md justify-between  ">
-        <div className="  w-full  flex-col relative   rounded-tl-md h-auto min-h-[50px]  flex justify-between items-end ">
+        <div className="  w-full  flex-col relative  h-auto py-4  flex justify-start items-end ">
           <NameCard
             userAvatar={userAvatar}
             UID={UID}
