@@ -19,7 +19,7 @@ import {
   setDesktop,
   setMobile,
   setTablet,
-  setPostLimit
+  setPostLimit,
 } from "./redux/services/animateSlice";
 import CreatePostBox from "./Components/CreatePostBox";
 import CreateStory from "./Components/CreateStory";
@@ -29,7 +29,7 @@ import Loading from "./Loading/Loading";
 import ViewStory from "./HomeFeed/Components/ViewStory";
 import Noti from "./Noti/Noti";
 import PostDetail from "./PostDetail/PostDetail";
-import {  ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import AddProfileBox from "./Components/AddProfileBox";
 
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -42,19 +42,13 @@ function App() {
   const isUserLog = useAuthState(auth);
   // const {user} = useAuthState(auth);
 
+  const user = auth.currentUser;
 
-  const user = auth.currentUser
-
-  const uid = user.uid
-
-  
-  
+  const uid = user ?  user.uid : ''
 
   const isAuth = isUserLog[0]?.accessToken?.length > 0 ? true : false;
-  
 
   const dispatch = useDispatch();
-
 
   const {
     blur,
@@ -65,14 +59,10 @@ function App() {
     addProfile,
     bottomNav,
     sentMsg,
-    postLimit
+    postLimit,
   } = useSelector((state) => state.animateSlice);
 
   let ScreenSize = window?.innerWidth;
-
- 
-
-
 
   window.addEventListener("resize", () => {
     ResponsiveFun();
@@ -101,7 +91,7 @@ function App() {
     ResponsiveFun();
   }, [window.innerWidth]);
 
-  const { admin, hasNewStory, updateFeed,isLogin } = useSelector(
+  const { admin, hasNewStory, updateFeed, isLogin } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -145,18 +135,14 @@ function App() {
 
   const page = document.getElementById("page");
 
-  page?.addEventListener("scroll",()=> {
-    if((page.offsetHeight*(postLimit-1))<page.scrollTop ){
-      dispatch(setPostLimit(postLimit+5))
+  page?.addEventListener("scroll", () => {
+    if (page.offsetHeight * (postLimit - 1) < page.scrollTop) {
+      dispatch(setPostLimit(postLimit + 5));
     }
-    
-  })
+  });
 
   !isDeskTop &&
     page?.addEventListener("scroll", () => {
-
-      
-
       scrollTopNum.length < 2
         ? scrollTopNum.push(page.scrollTop)
         : (scrollTopNum.shift(), scrollTopNum.push(page.scrollTop));
@@ -167,7 +153,6 @@ function App() {
 
         if (prev > curr && prev !== undefined) {
           setBotNav(true);
-
         }
         if (prev < curr && prev !== undefined) {
           setBotNav(false);
@@ -175,47 +160,44 @@ function App() {
       }
     });
 
-     // Function to set a cookie
-     function setCookie(name, value, days) {
-      const date = new Date();
-      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000); // Expiry date
-      document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
-    }
+  // Function to set a cookie
+  function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000); // Expiry date
+    document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
+  }
 
-    // Function to get a cookie by name
-    function getCookie(name) {
-      const cookies = document.cookie.split('; ');
-      for (let i = 0; i < cookies.length; i++) {
-        const [key, value] = cookies[i].split('=');
-        if (key === name) {
-          return value;
-        }
+  // Function to get a cookie by name
+  function getCookie(name) {
+    const cookies = document.cookie.split("; ");
+    for (let i = 0; i < cookies.length; i++) {
+      const [key, value] = cookies[i].split("=");
+      if (key === name) {
+        return value;
       }
-      return null;
     }
+    return null;
+  }
 
-    // Track user online/offline status
-   async function trackUserStatus() {
-      const isOnline = navigator.onLine; // Check if the user is online
-      const status = isOnline ? 'online' : 'offline';
-      setCookie(uid, status, 1); // Save status in cookie for 1 day
-      console.log(`User Id ${uid} is currently ${status}`);
-      await UpdateData('status',uid,'pid',status,'')
-    }
+  // Track user online/offline status
+  async function trackUserStatus() {
+    const isOnline = navigator.onLine; // Check if the user is online
+    const status = isOnline ? "online" : "offline";
+    setCookie(uid, status, 1); // Save status in cookie for 1 day
+    console.log(`User Id ${uid} is currently ${status}`);
+    await UpdateData("status", uid, "pid", status, "");
+  }
 
-   
+  // Initial check
+  useEffect(() => {
+    trackUserStatus();
+    const initialStatus = getCookie(uid);
+    console.log(`Initial status from cookie: ${initialStatus}`);
+  }, []);
 
-    // Initial check
-   useEffect( () => {
-      trackUserStatus();
-      const initialStatus = getCookie(uid);
-      console.log(`Initial status from cookie: ${initialStatus}`);
-    },[]);
-
-    // Listen for online/offline events
-    window.addEventListener('online', trackUserStatus);
-    window.addEventListener('offline', trackUserStatus);
-
+  // Listen for online/offline events
+  window.addEventListener("online", trackUserStatus);
+  window.addEventListener("offline", trackUserStatus);
 
   return (
     <section
@@ -277,8 +259,11 @@ function App() {
           </section>
         )}
 
-        <section id="page" className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center ">
-          {isAuth === true  && isLogin ? (
+        <section
+          id="page"
+          className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center "
+        >
+          {isAuth === true && isLogin ? (
             <Routes>
               <Route exact path="/*" element={<HomeFeed />} />
               <Route exact path="/game" element={<Game />} />
@@ -299,7 +284,7 @@ function App() {
             </Routes>
           )}
         </section>
-        {isAuth === true  && isLogin && !isDeskTop && (
+        {isAuth === true && isLogin && !isDeskTop && (
           <section
             style={{
               bottom: bottomNav ? "8%" : 10,
