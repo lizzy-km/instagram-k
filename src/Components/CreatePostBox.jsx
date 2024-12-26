@@ -334,13 +334,13 @@ const CreatePostBox = () => {
                 );
               })}
             {imfurlForUp.length < 11 && (
-              <div className=" cursor-pointer justify-center self-center items-center  h-[100px]   flex w-full bg-[#111111]  rounded-lg  ">
+              <div className=" cursor-pointer justify-center self-center items-center  h-[50px]   flex w-full bg-[#11111157]  rounded-lg  ">
                 <div className="flex cursor-pointer self-center items-center justify-center  h-full w-full">
                   <label
                     for="dropzone-file"
-                    className="flex flex-col items-center   justify-center w-[100%] h-[100%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
+                    className="flex flex-col items-center   justify-center w-auto h-[100%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
                   >
-                    <div className="flex h-full w-full flex-col cursor-pointer relative items-center justify-center  ">
+                    <div className="flex h-full w-[50px] flex-col cursor-pointer relative items-center justify-center  ">
                       <Icon path={mdiPlusBoxMultipleOutline} size={10} />
                       <input
                         onClick={() => setPID(UID + "_" + Date.now())}
