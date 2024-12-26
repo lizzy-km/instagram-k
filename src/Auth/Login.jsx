@@ -21,9 +21,9 @@ const Login = () => {
   const { UserData, Story, admin, adminProfile, userAvatar, updateFeed } =
     useSelector((deserializedState) => deserializedState.authSlice);
 
-     const { isTablet, isMobile, isDeskTop } = useSelector(
-        (state) => state.animateSlice
-      );
+  const { isTablet, isMobile, isDeskTop } = useSelector(
+    (state) => state.animateSlice
+  );
   const dispatch = useDispatch();
 
   const [passAlert, setPassalert] = useState("");
@@ -113,12 +113,23 @@ const Login = () => {
           displayName: name,
           photoURL: imageUrl,
         })
-          .then((data) => console.log(data))
+          .then((data) => console.log("data"))
           .catch((error) => console.log(error));
+
+        await signInWithEmailAndPassword(auth, email, password);
+        const getAdmin = [GetAdminData("users", name)];
+
+        Promise.all(getAdmin)
+          .then(() => {
+            setIsLoading(false);
+            dispatch(setUpdateFeed(true));
+          })
+          .catch((error) => console.log(error));
+        window.location.reload(true);
+        dispatch(setLogin(true));
         setLoginState(true);
       }
 
-      toast.success("Signup successful");
       setIsLoading(false);
     } catch {
       setIsLoading(false);
@@ -211,10 +222,20 @@ const Login = () => {
       <h1 className="text-2xl font-bold text-center mb-4">
         {loginState === false ? "Sign up with Queed" : "Login with Queed"}
       </h1>
-      
-      <div className={` ${isDeskTop ? "flex":'flex-col  overflow-auto max-h-screen gap-1 pb-2  justify-start '}  w-full  gap-5 justify-center bg-[#212121] items-center h-screen`}>
-      {loginState === false && (
-          <div className={`${ isDeskTop ? "w-[30%]" : 'w-[90%] h-[60%] ' }" flex flex-col  h-full justify-start items-center gap-2 "`}>
+
+      <div
+        className={` ${
+          isDeskTop
+            ? "flex"
+            : "flex-col  overflow-auto max-h-screen gap-1 pb-2  justify-start "
+        }  w-full  gap-5 justify-center bg-[#212121] items-center h-screen`}
+      >
+        {loginState === false && (
+          <div
+            className={`${
+              isDeskTop ? "w-[30%]" : "w-[90%] h-[60%] "
+            }" flex flex-col  h-full justify-start items-center gap-2 "`}
+          >
             <p className="block text-lg tracking-wide p-2 font-medium text-gray-300">
               Select profile picture
             </p>
@@ -247,7 +268,11 @@ const Login = () => {
             </div>
           </div>
         )}
-        <div className={` ${ isDeskTop ? "w-[30%]" : 'w-[90%] h-[40%] pb-2 ' } " h-full  p-4 bg-[#212121] rounded-lg shadow-md"`}>
+        <div
+          className={` ${
+            isDeskTop ? "w-[30%]" : "w-[90%] h-[40%] pb-2 "
+          } " h-full  p-4 bg-[#212121] rounded-lg shadow-md"`}
+        >
           <form className="  " onSubmit={handleSubmit(onSubmit)}>
             {!loginState && (
               <div className="mb-6">
@@ -374,11 +399,8 @@ const Login = () => {
               )}
             </div>
           </form>
-          <div className="w-full h-[5%] " >
-            
-          </div>
+          <div className="w-full h-[5%] "></div>
         </div>
-       
       </div>
     </div>
   );
