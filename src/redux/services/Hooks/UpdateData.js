@@ -84,6 +84,12 @@ const UpdateData = async (
     })
       .catch((error) => console.log(error));
   }
+  if (colName === "status") {
+    await updateDoc(userRef, {
+      status: Data,
+    })
+      .catch((error) => console.log(error));
+  }
 };
 
 export default UpdateData;

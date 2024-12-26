@@ -215,7 +215,7 @@ const PostCard = ({ name, data }) => {
   return (
     <section
       id="mw"
-      className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-center   py-4    w-[100%] "
+      className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-center   py-4     w-[100%] "
     >
       <div className=" flex w-full h-auto rounded-t-md justify-between  ">
         <div className="  w-full  flex-col relative   rounded-tl-md h-auto min-h-[50px]  flex justify-between items-end ">
@@ -272,7 +272,7 @@ const PostCard = ({ name, data }) => {
             {PostImg?.map((d) => {
               const url = d?.downloadURL;
               const className = {
-                rounded: "rxl",
+                rounded: "",
               };
               return (
                 <ImageCard
@@ -290,7 +290,7 @@ const PostCard = ({ name, data }) => {
           PostImg?.map((d) => {
             const url = d.downloadURL;
             const className = {
-              rounded: "rxl",
+              rounded: "",
             };
             return (
               <ImageCard
@@ -308,7 +308,7 @@ const PostCard = ({ name, data }) => {
         <div className=" w-full h-[500px] bg-[#3333332f] rounded-md opacity-[0.5]  "></div>
       )}
 
-      <div className=" flex flex-col w-full justify-between items-center py-2  ">
+      <div className=" flex flex-col w-full justify-between items-center py-2   ">
         <div className=" flex w-full justify-between items-center  ">
           <div className=" flex gap-3 items-center  ">
             {liked ? (
