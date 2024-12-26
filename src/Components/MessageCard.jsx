@@ -47,7 +47,7 @@ const MessageCard = () => {
   };
 
   return (
-    <div className=" flex flex-col w-full gap-2  justify-start items-start ">
+    <div className=" flex flex-col w-full gap-2 h-full max-h-full overflow-scroll  justify-start items-start ">
       {uniqueArray?.map((d) => {
         const data = d
         const UID = data.UID;
