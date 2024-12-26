@@ -16,7 +16,7 @@ import UpdateData from "../redux/services/Hooks/UpdateData";
 import { setUpdateFeed } from "../redux/services/authSlice";
 import checkFileType from "../redux/services/Hooks/CheckFileType";
 import Icon from "@mdi/react";
-import { mdiImageAlbum } from "@mdi/js";
+import { mdiImageAlbum, mdiPlusBoxMultipleOutline } from "@mdi/js";
 import { doc, setDoc } from "firebase/firestore";
 const CreateStory = () => {
   const [option, setOption] = useState("Public");
@@ -307,26 +307,26 @@ const CreateStory = () => {
              
             </div> :
           !imfurlForUp?.downloadURL ? (
-            <div className=" cursor-pointer self-center h-[250px] flex w-[250px]   rounded-full  ">
-              <div className="flex cursor-pointer  items-center justify-center w-full">
-                <label
-                  for="dropzone-file"
-                  className="flex flex-col items-start  opacity-50 justify-start w-full h-full border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
-                >
-                  <div className="flex  cursor-pointer self-center  flex-col relative items-center justify-center  ">
-                    <Icon path={mdiImageAlbum} size={10} />
-
-                    <input
-                      onClick={() => setSTID(UID + "_" + Date.now())}
-                      onChange={CreateNewStory}
-                      id="dropzone-file"
-                      type="file"
-                      className=" top-0 left-0 absolute w-full opacity-0 h-full "
-                    />
-                  </div>
-                </label>
-              </div>
+            <div className=" cursor-pointer justify-center self-center items-center  h-[100%]   flex w-full bg-[#11111157]  rounded-lg  ">
+            <div className="flex cursor-pointer self-center items-center justify-center  h-full w-full">
+              <label
+                for="dropzone-file"
+                className="flex flex-col items-center   justify-center w-auto h-[] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
+              >
+                <div className="flex h-[80px] w-[80px] flex-col cursor-pointer relative items-center justify-center  ">
+                  <Icon path={mdiPlusBoxMultipleOutline} size={10} />
+                  <input
+                   onClick={() => setSTID(UID + "_" + Date.now())}
+                   onChange={CreateNewStory}
+                   id="dropzone-file"
+                   type="file"
+                    className=" absolute cursor-pointer w-full opacity-0 h-full "
+                  />
+                </div>
+              </label>
             </div>
+          </div>
+            
           ) : (
             <div className=" flex justify-center w-full h-[90%] items-center p-1 rounded ">
               {isImage ? (
