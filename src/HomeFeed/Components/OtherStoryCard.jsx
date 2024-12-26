@@ -168,7 +168,7 @@ const OtherStoryCard = ({ data, translateX }) => {
             </NavLink>
           </div>
 
-          <div className=" rounded-b-md relative z-[9] w-full p-0 ">
+          <div className=" invert-none rounded-b-md relative z-[9] w-full p-0 ">
             <div className="  bg-img rounded-b-md    text-[#d1d1d1] font-[450]  ">
               <p className=" p-2 flex w-full h-full backdrop-shadow ">{name}</p>
             </div>

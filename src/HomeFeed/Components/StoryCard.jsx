@@ -54,10 +54,10 @@ const StoryCard = ({ translateX, data }) => {
       >
         <div className=" relative scale-100 bg-[#242526] max-h-full flex flex-col justify-between items-start w-full h-full rounded-md ">
           <div className="h-[100%] scale-100 h-full w-full  max-h-full bg-[#242526] absolute flex gap-1 justify-start items-center  bg-center object-center    object-cover rounded-md ">
-            <div className="h-[100%] scale-100 h-full w-full  max-h-full bg-[#242526]  flex gap-1 justify-start items-center  bg-center object-center    object-cover rounded-md ">
+            <div className="h-[100%] scale-100  w-full  max-h-full bg-[#242526]  flex gap-1 justify-start items-center  bg-center object-center    object-cover rounded-md ">
               {isImage && (
                 <img
-                  className=" invert-none transition-all  cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-full  h-full  bg-center object-center    object-cover rounded-md "
+                  className=" invert-none transition-all  cursor-pointer hover:brightness-75 brightness-95 hover:size-[102%] w-full  h-[100%]  bg-center object-center    object-cover rounded-md "
                   src={img_url?.length > 0 ? img_url : userAvatar}
                   alt="story_picture"
                   srcSet=""
@@ -97,7 +97,7 @@ const StoryCard = ({ translateX, data }) => {
             </NavLink>
           </div>
 
-          <div className=" rounded-b-md relative z-[9] w-full p-0 ">
+          <div className=" invert-none rounded-b-md relative z-[9] w-full p-0 ">
             <div className="  bg-img rounded-b-md    text-[#d1d1d1] font-[450]  ">
               <p className=" p-2 flex w-full h-full backdrop-shadow ">
                 Your story

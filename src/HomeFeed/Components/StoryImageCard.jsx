@@ -59,7 +59,7 @@ const StoryImageCard = ({ PID, url, updateFeed, AID, UID, setMenu, menu }) => {
   };
 
   return (
-    <div className="   min-w-full w-full flex-col  justify-center items-center py-0   h-full ">
+    <div className="  relative  min-w-full w-full flex-col  justify-center items-center py-0 bg-[#333333]   h-full ">
       {AID === UID && (
         <div
           
@@ -92,7 +92,7 @@ const StoryImageCard = ({ PID, url, updateFeed, AID, UID, setMenu, menu }) => {
           style={{
             width: isMobile ? "100%" : "100%",
           }}
-          className={`invert-none cursor-pointer h-full  min-w-full  bg-[#24252657] ${!isMobile ? 'rounded-2xl': ''}     snap-center transition-all   object-cover object-top `}  
+          className={`invert-none absolute top-[8%] cursor-pointer h-[85%]  min-w-full  bg-[#24252657] ${!isMobile ? 'round': ''}     snap-center transition-all   object-cover object-center `}  
           alt=""
           srcset=""
         />

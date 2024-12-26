@@ -332,7 +332,7 @@ const RightNav = () => {
             id="messenger"
             style={{
               visibility: messenger === true ? "visible" : "hidden",
-              height: messenger === true ? "80vh" : "0",
+              height: messenger === true ? isMobile === true?  "100vh" :"80vh" : "0",
               width:
                 messenger === true
                   ? isMobile === true

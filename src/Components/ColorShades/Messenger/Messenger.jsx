@@ -71,8 +71,8 @@ const Messenger = () => {
   }, [messages, targetMessage]);
 
   return (
-    <section className=" flex flex-col gap-4  h-full overflow-scroll bg-[#181818]   rounded justify-start items-start w-full ">
-      <div className=" bg-[#333333] rounded-t flex justify-between items-center w-full  ">
+    <section className=" flex flex-col gap-4  h-full overflow-scroll bg-[#181818]   rounded justify-end items-start w-full ">
+      <div className=" bg-[#333333] rounded-t flex justify-between items-center h-[10%] w-full  ">
        
         <UserCard
             className={" border-none rounded-none   w-[80%] "}
@@ -92,7 +92,7 @@ const Messenger = () => {
         </div>
       </div>
 
-      <main className=" flex w-full flex-col mt-[0%] justify- h-[100%%] max-h-[100%%] overflow-scroll items-end gap-2 ">
+      <main className=" flex w-full flex-col mt-[0%] justify- h-[80%] p-2 max-h-[80%] overflow-scroll items-end gap-2 ">
         {targetMessage &&
           targetMessage.map((msg) => (
             <ChatMessage key={msg.id} message={msg} />
@@ -102,7 +102,7 @@ const Messenger = () => {
       </main>
 
       <form
-        className=" flex bg-[#181818] h-auto rounded-lg justify-between w-full p-2 items-center "
+        className=" flex bg-[#181818] h-[10%] rounded-lg justify-between w-full p-2 items-center "
         onSubmit={sendMessage}
       >
         <input
