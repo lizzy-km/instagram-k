@@ -60,6 +60,7 @@ const PostCard = ({ name, data }) => {
   const timeInYr = (timeInMon / 12).toFixed(0);
 
   useEffect(() => {
+     
     timeInMon > 12
       ? setTime(`${timeInYr}Y`)
       : timeInWk > 4
@@ -82,6 +83,8 @@ const PostCard = ({ name, data }) => {
   const quer = query(userRf, where("UID", "==", UID));
 
   const [user] = useCollectionDataOnce(quer, { idField: "id" })
+
+  const status = user?.length > 0 ? user[0]?.status  :'offline'
 
   const POID = hasPostD ? UID : "0";
 
@@ -226,6 +229,7 @@ const PostCard = ({ name, data }) => {
             name={name}
             uploaded_at={uploaded_at}
             time={time}
+            status={status}
           />
 
           <div

@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-const NameCard = ({userAvatar,UID,userPfData,name,uploaded_at,time} ) => {
+const NameCard = ({userAvatar,UID,userPfData,name,uploaded_at,time,status} ) => {
     
   return (
     <div className=" absolute bottom-2 left-0 w-full p-2  h-[55px]   flex justify-start items-center ">
@@ -22,6 +22,8 @@ const NameCard = ({userAvatar,UID,userPfData,name,uploaded_at,time} ) => {
         <div className=" -z-10 rotate-[60deg] left-[1px] top-[1px] rounded-sm bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
         <div className=" -z-10 rotate-[80deg] left-[1px] top-[1px] rounded-sm bg-[#ca3e4796] w-[38px] h-[38px] absolute "></div>
 
+      
+
         <img
           className=" invert-none w-full   h-full rounded-full object-cover cursor-pointer "
           src={
@@ -35,9 +37,14 @@ const NameCard = ({userAvatar,UID,userPfData,name,uploaded_at,time} ) => {
       </NavLink>
       <NavLink
         to={`/${UID}`}
-        className=" flex-col cursor-pointer rounded-br px-2  h-full min-w-[100px]  w-auto flex justify-start items-start tracking-wide text-base  "
+        className=" flex-col  cursor-pointer rounded-br px-2  h-full min-w-[100px]  w-auto flex justify-start items-start tracking-wide text-base  "
       >
-        <p>{name}</p>
+        <p className=' relative flex gap-2 ' >{name}
+      {status ==='online' && <div className=' absolute -right-3 top-[45%] invert-none flex rounded-full p-[3px] bg-green-400 ' >
+          
+          </div>
+      }  
+        </p>
         <time
           dateTime={uploaded_at}
           datatype="UTC"
@@ -46,6 +53,7 @@ const NameCard = ({userAvatar,UID,userPfData,name,uploaded_at,time} ) => {
           {" "}
           {time}{" "}
         </time>
+       
       </NavLink>
     </div>
   </div>

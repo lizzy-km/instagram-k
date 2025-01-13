@@ -186,7 +186,7 @@ function App() {
     console.log(status);
     
     setCookie(uid, status, 1); // Save status in cookie for 1 day
-    await UpdateData("status", uid, "pid", status, "");
+     UpdateData("status", uid, "pid", status, "")
   }
 
   // Initial check

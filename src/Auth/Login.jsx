@@ -155,12 +155,19 @@ const Login = () => {
       );
       // Login successful, navigate or handle user
 
+      const user = userCredential.user;
+
       const getAdmin = [GetAdminData("users", user_name)];
 
+      await UpdateData("status", user.uid, "pid", 'online', "");
+
+
+
       Promise.all(getAdmin)
-        .then(() => {
+        .then((data) => {
           setIsLoading(false);
           dispatch(setUpdateFeed(true));
+
         })
         .catch((error) => console.log(error));
       window.location.reload(true);
