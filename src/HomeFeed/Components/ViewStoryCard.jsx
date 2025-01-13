@@ -209,7 +209,7 @@ const ViewStoryCard = ({ userData }) => {
                 updateFeed={updateFeed}
                 deleteStory={deleteStory}
                 PID={Stdata?.STID?.stringValue}
-                key={STID}
+                key={Stdata?.STID?.stringValue}
                 url={img_url}
               />
               )}
