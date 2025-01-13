@@ -119,6 +119,9 @@ const ViewStoryCard = ({ userData }) => {
     SD?.STORY_IMAGE_PATH?.mapValue.fields?.downloadURL?.stringValue;
   const STIDd = Stdata?.id;
 
+  console.log(Stdata?.STID?.stringValue);
+  
+
   return (
     <div
       style={{
@@ -205,7 +208,7 @@ const ViewStoryCard = ({ userData }) => {
                 setMenu={setMenu}
                 updateFeed={updateFeed}
                 deleteStory={deleteStory}
-                PID={STID}
+                PID={Stdata?.STID?.stringValue}
                 key={STID}
                 url={img_url}
               />

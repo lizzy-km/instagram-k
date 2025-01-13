@@ -33,8 +33,9 @@ const StoryImageCard = ({ PID, url, updateFeed, AID, UID, setMenu, menu }) => {
   }, []);
 
   const deleteStory = async () => {
+    console.log(PID)
 
-    const storyRef = doc(firestore, "/USER_STORYS", `/${PID}`);
+    const storyRef = doc(firestore, "/USER_STORYS/", `${PID}`);
 
       await deleteDoc(storyRef)
         .then((data) => {
