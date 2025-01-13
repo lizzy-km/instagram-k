@@ -13,82 +13,91 @@ const UpdateData = async (
   Data = {},
   Datal = {}
 ) => {
-
-
   const postRef = doc(firestore, "/USER_POSTS", `/${PID}`);
   const userRef = doc(firestore, "/users", `/${UID}/`);
   const udRef = doc(firestore, "/USER_POSTS", `/${PID}`);
-  
 
-  if (colName === "delete_user_post") {
-    await deleteDoc(postRef).catch((error) => console.log(error));
-  }
-  if (colName === "liked_posts") {
-    await updateDoc(userRef, {
-      liked_post: arrayUnion(Data),
-    }).catch((error) => console.log(error));
+  switch (colName) {
+    case "status":
+      await updateDoc(userRef, {
+        status: Data,
+      })
+        .then(() => {
+          console.log("Document successfully updated!");
+        })
+        .catch((error) => console.log(error));
+      break;
 
-    await updateDoc(udRef, {
-      "POST_DETAIL.LIKES": arrayUnion(Datal),
-    }).catch((error) => console.log(error));
-  }
+    case "delete_user_post":
+      await deleteDoc(postRef).catch((error) => console.log(error));
+      break;
 
-  if (colName === "unliked_posts") {
-    await updateDoc(userRef, {
-      liked_post: arrayRemove(Data),
-    }).catch((error) => console.log(error));
+    case "liked_posts":
+      await updateDoc(userRef, {
+        liked_post: arrayUnion(Data),
+      }).catch((error) => console.log(error));
+      await updateDoc(udRef, {
+        "POST_DETAIL.LIKES": arrayUnion(Datal),
+      }).catch((error) => console.log(error));
+      break;
 
-    await updateDoc(udRef, {
-      "POST_DETAIL.LIKES": arrayRemove(Datal),
-    }).catch((error) => console.log(error));
-  }
-  if (colName === "shared_posts") {
-    await updateDoc(userRef, {
-      shared_posts: arrayUnion(Data),
-    }).catch((error) => console.log(error));
+    case "unliked_posts":
+      await updateDoc(userRef, {
+        liked_post: arrayRemove(Data),
+      }).catch((error) => console.log(error));
 
-    await updateDoc(udRef, {
-      "POST_DETAIL.SHARES": arrayUnion(Datal),
-    }).catch((error) => console.log(error));
-  }
-  if (colName === "unshared_posts") {
-    await updateDoc(userRef, {
-      shared_posts: arrayRemove(Data),
-    }).catch((error) => console.log(error));
+      await updateDoc(udRef, {
+        "POST_DETAIL.LIKES": arrayRemove(Datal),
+      }).catch((error) => console.log(error));
 
-    await updateDoc(udRef, {
-      "POST_DETAIL.SHARES": arrayRemove(Datal),
-    }).catch((error) => console.log(error));
-  }
-  if (colName === "saved_posts") {
-    await updateDoc(userRef, {
-      saved_posts: arrayUnion(Data),
-    }).catch((error) => console.log(error));
-  }
-  if (colName === "unsaved_posts") {
-    await updateDoc(userRef, {
-      saved_posts: arrayRemove(Data),
-    }).catch((error) => console.log(error));
-  }
+      break;
 
-  if (colName === "story") {
-    await updateDoc(userRef, {
-      story: [Data],
-    })
-      .catch((error) => console.log(error));
-  }
+    case "shared_posts":
+      await updateDoc(userRef, {
+        shared_posts: arrayUnion(Data),
+      }).catch((error) => console.log(error));
 
-  if (colName === "profile") {
-    await updateDoc(userRef, {
-      profile: [Data],
-    })
-      .catch((error) => console.log(error));
-  }
-  if (colName === "status") {
-    await updateDoc(userRef, {
-      status: Data,
-    })
-      .catch((error) => console.log(error));
+      await updateDoc(udRef, {
+        "POST_DETAIL.SHARES": arrayUnion(Datal),
+      }).catch((error) => console.log(error));
+      break;
+
+    case "unshared_posts":
+      await updateDoc(userRef, {
+        shared_posts: arrayRemove(Data),
+      }).catch((error) => console.log(error));
+
+      await updateDoc(udRef, {
+        "POST_DETAIL.SHARES": arrayRemove(Datal),
+      }).catch((error) => console.log(error));
+      break;
+
+    case "saved_posts":
+      await updateDoc(userRef, {
+        saved_posts: arrayUnion(Data),
+      }).catch((error) => console.log(error));
+      break;
+
+    case "unsaved_posts":
+      await updateDoc(userRef, {
+        saved_posts: arrayRemove(Data),
+      }).catch((error) => console.log(error));
+      break;
+
+    case "story":
+      await updateDoc(userRef, {
+        story: [Data],
+      }).catch((error) => console.log(error));
+      break;
+
+    case "profile":
+      await updateDoc(userRef, {
+        profile: [Data],
+      }).catch((error) => console.log(error));
+      break;
+
+    default:
+      break;
   }
 };
 

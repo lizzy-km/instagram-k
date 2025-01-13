@@ -17,6 +17,7 @@ import Icon from "@mdi/react";
 import { mdiPlus } from "@mdi/js";
 import Messenger from "./ColorShades/Messenger/Messenger";
 import MessageCard from "./MessageCard";
+import UpdateData from "../redux/services/Hooks/UpdateData";
 
 const RightNav = () => {
   const { account, noti, messenger, menu } = useSelector(
@@ -295,14 +296,20 @@ const RightNav = () => {
                 </p>
               </NavLink>
               <Link
-                onClick={() => {
-                  dispatch(setLogin(false));
-                  dispatch(addAdmin([]));
-                  dispatch(addUserData([]));
-                  auth.currentUser && auth.signOut();
+                onClick={async() => {
+                 
+                  
+                  await UpdateData("status", admin?.UID?.stringValue, "pid", "offline", "").then(() => {
+                    dispatch(setLogin(false));
+                    dispatch(addAdmin([]));
+                    dispatch(addUserData([]));
+                    auth.currentUser && auth.signOut();
 
                   localStorage.clear();
                   Cookies.remove("adminData");
+                  }).catch((error) => console.log(error));
+
+                  
                 }}
                 className=" text-[#d4d4d4]  flex w-[90%] px-2  py-1 hover:bg-[#33333364] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center "
               >

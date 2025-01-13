@@ -183,8 +183,9 @@ function App() {
   async function trackUserStatus() {
     const isOnline = navigator.onLine; // Check if the user is online
     const status = isOnline ? "online" : "offline";
+    console.log(status);
+    
     setCookie(uid, status, 1); // Save status in cookie for 1 day
-    console.log(`User Id ${uid} is currently ${status}`);
     await UpdateData("status", uid, "pid", status, "");
   }
 
@@ -192,7 +193,6 @@ function App() {
   useEffect(() => {
     trackUserStatus();
     const initialStatus = getCookie(uid);
-    console.log(`Initial status from cookie: ${initialStatus}`);
   }, []);
 
   // Listen for online/offline events
