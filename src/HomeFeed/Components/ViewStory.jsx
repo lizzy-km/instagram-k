@@ -91,10 +91,10 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
     <div
       className={` flex justify-start items-center ${
         isDeskTop && "p-2"
-      } w-full h-full `}
+      } w-full h-full gap-10 `}
     >
       {isDeskTop && (
-        <div className="   justify-start items-start h-full flex flex-col gap-2 ">
+        <div className=" w-[20%]   justify-start items-start h-full flex flex-col gap-2 ">
           <div className=" w-full h-[65px] flex justify-between p-2 items-center ">
             <div
               onClick={() => {
@@ -144,10 +144,10 @@ const uniqueArray = arrayWithDuplicates.reduce((acc, curr) => {
 
       <div
         style={{
-          width: isDeskTop ? "50%" : "100%",
+          width: isDeskTop ? "70%" : "100%",
           padding: isDeskTop ? "0" : 0,
         }}
-        className=" flex justify-center items-center  h-full p-0  backdrop-brightness-50 backdrop-blur "
+        className=" flex justify-start items-center  h-full p-0   "
       >
 
          <ViewStoryCard userData={uniqueArray} />

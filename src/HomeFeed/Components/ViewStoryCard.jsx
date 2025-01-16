@@ -125,10 +125,10 @@ const ViewStoryCard = ({ userData }) => {
   return (
     <div
       style={{
-        width: isDeskTop ? "55%" : isMobile ? "100%" :'70%',
-        height :  isDeskTop ? "100%" : isMobile ? "100%" :'90%',
+        width: isDeskTop ? "400px" : isMobile ? "100%" :'70%',
+        height :  isDeskTop ? "98%" : isMobile ? "100%" :'90%',
       }}
-      className=" min-w-[45%]  z-[9999] h-full relative  rounded-2xl flex justify-start items-start "
+      className="   z-[9999] h-full relative  rounded-xl flex justify-start items-start "
     >
       {storyId?.length > 0 && (
         <>
@@ -173,7 +173,7 @@ const ViewStoryCard = ({ userData }) => {
           </div>
 
           {!isLoading ? (
-            <div className=" absolute cursor-pointer flex justify-center items-center  w-full h-full object-cover rounded-2xl ">
+            <div className=" absolute cursor-pointer flex justify-center items-center  w-full h-full object-cover rounded-xl ">
               {UserStory?.length > 1 ? (
                 <Carousel loop={false} slideInterval={0} slide={false}>
                   {UserStory?.reverse()?.map((ust) => {

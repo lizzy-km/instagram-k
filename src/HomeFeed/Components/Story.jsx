@@ -57,67 +57,44 @@ const Story = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    async function USER_STORY() {
-      setIsLoading(true);
+  function getTime(miliSec) {
+    const diffTime = realTime - miliSec;
+    const timeInSec = diffTime / 1000;
+    const timeINMin = (timeInSec / 60).toFixed(0);
+    const timeInHours = (timeINMin / 60).toFixed(0);
 
-      await getDocs(collection(firestore, "/USER_STORYS"))
-        .then((data) => {
-          setUSER_STORYS(data?.docs);
-          setIsLoading(false);
-        })
-        .catch((error) => console.log(error))
-        .finally(() => {
-          setIsLoading(false);
+    return { timeINMin, timeInSec, timeInHours };
+  }
 
-          USER_STORYS?.map(async (data) => {
-            const storyRef = doc(firestore, "/USER_STORYS", `/${data?.id}`);
+  async function USER_STORY() {
+    setIsLoading(true);
 
-            const miliSec =
-              data?._document?.createTime.timestamp.seconds * 1000;
+    await getDocs(collection(firestore, "/USER_STORYS"))
+      .then((data) => {
+        setUSER_STORYS(data?.docs);
+        setIsLoading(false);
+        data?.docs?.map(async (data) => {
+          const storyRef = doc(firestore, "/USER_STORYS", `/${data?.id}`);
 
-            const diffTime = realTime - miliSec;
-            const timeInSec = diffTime / 1000;
-            const timeINMin = (timeInSec / 60).toFixed(0);
-            const timeInHr = (timeINMin / 60).toFixed(0);
+          const miliSec = data?._document?.createTime.timestamp.seconds * 1000;
+          const { timeINMin } = getTime(miliSec);
 
-            timeInHr > 23 ? await deleteDoc(storyRef) : null;
-          });
+          if (timeINMin > 1440) {
+            await deleteDoc(storyRef);
+          }
         });
-    }
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }
 
+  useEffect(() => {
     USER_STORY();
   }, []);
 
   useEffect(() => {
-    async function USER_STORY() {
-      setIsLoading(true);
-
-      await getDocs(collection(firestore, "/USER_STORYS"))
-        .then((data) => {
-          setUSER_STORYS(data?.docs);
-          setIsLoading(false);
-        })
-        .catch((error) => console.log(error))
-        .finally(() => {
-          setIsLoading(false);
-
-          USER_STORYS?.map(async (data) => {
-            const storyRef = doc(firestore, "/USER_STORYS", `/${data?.id}`);
-
-            const miliSec =
-              data?._document?.createTime.timestamp.seconds * 1000;
-
-            const diffTime = realTime - miliSec;
-            const timeInSec = diffTime / 1000;
-            const timeINMin = (timeInSec / 60).toFixed(0);
-            const timeInHr = (timeINMin / 60).toFixed(0);
-
-            timeInHr > 23 ? await deleteDoc(storyRef) : null;
-          });
-        });
-    }
-
     USER_STORY();
   }, [updateFeed]);
 

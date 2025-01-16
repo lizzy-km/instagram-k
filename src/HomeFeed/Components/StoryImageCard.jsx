@@ -60,7 +60,7 @@ const StoryImageCard = ({ PID, url, updateFeed, AID, UID, setMenu, menu }) => {
   };
 
   return (
-    <div className="  relative  min-w-full w-full flex-col  justify-center items-center py-0 bg-[#333333]   h-full ">
+    <div className={`  relative  min-w-full ${!isMobile && 'rounded-lg'}  w-full flex-col  justify-center items-center py-0 bg-[#333333]   h-full `}>
       {AID === UID && (
         <div
           
