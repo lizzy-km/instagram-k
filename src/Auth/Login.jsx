@@ -240,8 +240,8 @@ const Login = () => {
         {loginState === false && (
           <div
             className={`${
-              isDeskTop ? "w-[30%]" : "w-[100%] h-[30%] "
-            }" flex flex-col  h-full justify-start items-center gap-2 "`}
+              isDeskTop ? "w-[30%] h-full " : "w-[100%] h-[30%] "
+            }" flex flex-col   justify-start items-center gap-2 "`}
           >
             <p className="block text-lg tracking-wide p-2 font-medium text-gray-300">
               Select profile picture
