@@ -183,7 +183,6 @@ function App() {
   async function trackUserStatus() {
     const isOnline = navigator.onLine; // Check if the user is online
     const status = isOnline ? "online" : "offline";
-    console.log(status);
     
     setCookie(uid, status, 1); // Save status in cookie for 1 day
      UpdateData("status", uid, "pid", status, "")
@@ -198,6 +197,11 @@ function App() {
   // Listen for online/offline events
   window.addEventListener("online", trackUserStatus);
   window.addEventListener("offline", trackUserStatus);
+
+  const WHeight = window.innerHeight;
+
+  console.log(WHeight);
+  
 
   return (
     <section

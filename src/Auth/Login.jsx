@@ -234,19 +234,19 @@ const Login = () => {
         className={` ${
           isDeskTop
             ? "flex"
-            : "flex-col  overflow-auto max-h-screen gap-1 pb-2  justify-start "
+            : "flex-col  overflow-auto max-h-screen gap-1 pb-1  justify-start items-start "
         }  w-full  gap-5 justify-center bg-[#212121] items-center h-screen`}
       >
         {loginState === false && (
           <div
             className={`${
-              isDeskTop ? "w-[30%]" : "w-[90%] h-[60%] "
+              isDeskTop ? "w-[30%]" : "w-[100%] h-[30%] "
             }" flex flex-col  h-full justify-start items-center gap-2 "`}
           >
             <p className="block text-lg tracking-wide p-2 font-medium text-gray-300">
               Select profile picture
             </p>
-            <div className=" invert-none flex rounded-md justify-center items-center h-[250px] rounded-full w-[250px] p-1 ">
+            <div className={ ` ${isDeskTop ? 'h-[250px] w-[250px] ' :' h-[70px] w-[70px] ' } " invert-none flex rounded-md justify-center items-center rounded-full  p-1 "`}>
               <img
                 className=" object-cover bg-center w-full h-full rounded-full  rounded w-auto "
                 src={imageSrc ? imageSrc : userAvatar}
@@ -277,7 +277,7 @@ const Login = () => {
         )}
         <div
           className={` ${
-            isDeskTop ? "w-[30%]" : "w-[90%] h-[40%] pb-2 "
+            isDeskTop ? "w-[30%]" : "w-[90%] h-[50%] p-2 "
           } " h-full  p-4 bg-[#212121] rounded-lg shadow-md"`}
         >
           <form className="  " onSubmit={handleSubmit(onSubmit)}>
