@@ -198,9 +198,7 @@ function App() {
   window.addEventListener("online", trackUserStatus);
   window.addEventListener("offline", trackUserStatus);
 
-  const WHeight = window.innerHeight;
 
-  console.log(WHeight);
   
 
   return (
