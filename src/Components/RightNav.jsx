@@ -18,6 +18,7 @@ import { mdiPlus } from "@mdi/js";
 import Messenger from "./ColorShades/Messenger/Messenger";
 import MessageCard from "./MessageCard";
 import UpdateData from "../redux/services/Hooks/UpdateData";
+import Noti from "../Noti/Noti";
 
 const RightNav = () => {
   const { account, noti, messenger, menu } = useSelector(
@@ -330,10 +331,12 @@ const RightNav = () => {
                     : "100%"
                   : 0,
             }}
-            className={`Noti flex w-full   backdrop-blur-md  rounded-md bg-[#2121214e] rounded-[${
+            className={`Noti flex w-full    backdrop-blur-md  rounded-md bg-[#2121214e] rounded-[${
               isMobile ? "0" : "6"
             }px]`}
-          ></div>
+          >
+            <Noti/>
+          </div>
 
           <div
             id="messenger"
