@@ -7,9 +7,7 @@ import { useEffect } from "react";
 import { addAdmin } from "../redux/services/authSlice";
 
 const HomeFeed = () => {
-  const { isTablet, isMobile, isDeskTop } = useSelector(
-    (state) => state.animateSlice
-  );
+ 
   const dispatch = useDispatch();
 
   const { admin } = useSelector((state) => state.authSlice);
@@ -29,30 +27,14 @@ const HomeFeed = () => {
   if (admin?.UID?.stringValue)
     return (
       <div
-        style={{
-          width: isMobile
-            ? "100%"
-            : isTablet
-            ? "95%"
-            : isDeskTop
-            ? "35%"
-            : "100%",
-        }}
-        className=" relative h-auto flex  bg-transparent mt-[80px]    p-0 w-[40%] gap-3 flex-col justify-start items-start  "
+       
+        className=" w-full md:w-[95%] lg:w-[35%] relative h-auto flex   bg-transparent mt-[80px]    p-0 w-[40%] gap-3 flex-col justify-start items-start  "
       >
         <Story />
 
         <div
-          style={{
-            width: isMobile
-              ? "100%"
-              : isTablet
-              ? "90%"
-              : isDeskTop
-              ? "90%"
-              : "90%",
-          }}
-          className="  w-[full]  items-center h-auto top-[270px] px-2 flex flex-col gap-6 "
+         
+          className=" w-full md:w-[80%] lg:w-[90%]   items-center h-auto top-[270px] px-2 flex flex-col gap-6 "
         >
           <CreatePost />
           <Post />

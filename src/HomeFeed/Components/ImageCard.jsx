@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 const ImageCard = ({ PID, url,className }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +18,6 @@ const ImageCard = ({ PID, url,className }) => {
 
   const rounded = className?.rounded === 'rxl' ? ' rounded-xl ' : ''
 
-  const { isMobile } = useSelector((state) => state.animateSlice);
   return (
     <div className=" w-full h-full ">
       {isLoading === true ? (
@@ -32,10 +30,8 @@ const ImageCard = ({ PID, url,className }) => {
           src={url}
           key={PID + "_" + url}
           id="imgW"
-          style={{
-            width: isMobile ? "100%" : "100%",
-          }}
-          className={` invert-none cursor-pointer h-full ${rounded}   bg-[#242526]   snap-center transition-all   object-cover object-top  `}
+          
+          className={` w-full  invert-none cursor-pointer h-full ${rounded}   bg-[#242526]   snap-center transition-all   object-cover object-top  `}
                     alt=""
           srcset=""
         />

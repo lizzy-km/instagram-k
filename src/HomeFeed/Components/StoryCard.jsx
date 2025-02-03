@@ -22,7 +22,6 @@ const StoryCard = ({ translateX, data }) => {
 
   const isImage = true;
 
-  const STID = data?.id;
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);

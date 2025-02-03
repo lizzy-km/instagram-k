@@ -62,7 +62,7 @@ const Post = ({ filter = "", position = "feed" }) => {
       style={{
         width: isMobile ? "100%" : position === "user" ? "80%" : "95%",
       }}
-      className="flex flex-col gap-[50px]  self-center  p-2 my-2 h-auto  rounded-md"
+      className="flex  flex-col gap-[50px]  self-center  p-2 my-2 h-auto  rounded-md"
     >
       {Post?.length > 0 &&
         Post?.map((d) => {

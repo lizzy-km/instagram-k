@@ -278,7 +278,7 @@ const RightNav = () => {
               >
                 <Icon path={mdiPlus} size={1} />
                 <p className="font-[500] text-[16px] tracking-wide">
-                  Add Profile Picture
+                  Change Profile Picture
                 </p>
               </div>
 
