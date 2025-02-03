@@ -50,7 +50,6 @@ const addData = async (colName = "users", uemail = "", username = "", name) => {
     saved_posts: [],
     friends: [],
     email: email,
-    password: "Lizzy-020",
   };
 
   const postData = {
