@@ -6,6 +6,7 @@ body {
   color: #d4d4d4;
   filter : invert(100%);
   backdrop-filter: 10%;
+  overflow: hidden;
 }
 
 .cl-internal-b3fm6y,

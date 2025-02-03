@@ -84,7 +84,7 @@ const MessengerApp = () => {
   }, [messages, targetMessage]);
 
   return (
-    <section className=" flex flex-col gap-4  h-auto overflow-hidden p-1 justify-end items-end w-full ">
+    <section className=" flex flex-col gap-4 max-h-screen  h-screen overflow-hidden p-1 justify-end items-end w-full ">
       <main className=" flex w-full flex-col mt-[18%] justify- h-[85%] max-h-[85%] overflow-scroll items- gap-2 ">
         {targetMessage &&
           targetMessage?.map((msg) => (

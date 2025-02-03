@@ -28,13 +28,13 @@ const HomeFeed = () => {
     return (
       <div
        
-        className=" w-full md:w-[95%] lg:w-[35%] relative h-auto flex   bg-transparent mt-[80px]    p-0 w-[40%] gap-3 flex-col justify-start items-start  "
+        className=" w-full md:w-[95%] lg:w-[35%] relative h-auto  overflow-hidden flex   bg-transparent mt-[80px]    p-0 w-[40%] gap-3 flex-col justify-start items-start  "
       >
         <Story />
 
         <div
          
-          className=" w-full md:w-[80%] lg:w-[90%]   items-center h-auto top-[270px] px-2 flex flex-col gap-6 "
+          className=" w-full md:w-[80%] lg:w-[90%]   items-center h-auto  px-2 flex flex-col gap-6 "
         >
           <CreatePost />
           <Post />

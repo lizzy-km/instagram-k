@@ -191,12 +191,9 @@ function App() {
   // Initial check
   useEffect(() => {
     trackUserStatus();
-    const initialStatus = getCookie(uid);
   }, []);
 
-  // Listen for online/offline events
-  window.addEventListener("online", trackUserStatus);
-  window.addEventListener("offline", trackUserStatus);
+  
 
 
   
@@ -204,7 +201,7 @@ function App() {
   return (
     <section
       id="page"
-      className="    bg-main relative snap-mandatory overflow-auto max-h-screen w-full flex flex-col justify-start items-start h-screen "
+      className="    bg-main relative snap-mandatory overflow-hidden min-h-screen max-h-screen  w-full flex flex-col justify-start items-start h-screen "
     >
       <div className=" absolute right-0 max-h-[70px] h-[70px] top-0 ">
         <ToastContainer autoClose={1000} />
@@ -263,7 +260,7 @@ function App() {
 
         <section
           id="page"
-          className=" w-full snap-center  absolute top-0 left-0  h-auto overflow-hidden    backdrop-blur-md bg-[#181818] items-start flex justify-center "
+          className=" w-full snap-center  fixed top-0 left-0  h-screen max-h-screen overflow-auto    backdrop-blur-md bg-[#181818] items-start flex justify-center "
         >
           {isAuth === true && isLogin ? (
             <Routes>

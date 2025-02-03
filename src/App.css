@@ -11,7 +11,13 @@
 * :focus :active  {
   --tw-ring-color: none !important;
   border-color: none !important;
-}    
+}   
+
+body {
+  /* overflow: hidden; */
+  max-height: screen;
+  height: screen;
+}
 
 
 .Toastify {

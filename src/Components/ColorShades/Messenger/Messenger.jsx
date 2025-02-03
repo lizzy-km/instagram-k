@@ -63,11 +63,11 @@ const Messenger = () => {
     });
 
     inputRef.current.value = "";
-    dummy.current.scrollIntoView({ behavior: "smooth" });
+    // dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    dummy.current.scrollIntoView({ behavior: "smooth" });
+    // dummy.current.scrollIntoView({ behavior: "smooth" });
   }, [messages, targetMessage]);
 
   return (
