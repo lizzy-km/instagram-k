@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setImageList } from "../authSlice";
+import { imageList, setImageList } from "../authSlice";
 const DataCard = ({ data }) => {
   const dispatch = useDispatch();
-  const { userAvatar, UserData, admin, hasNewStory, updateFeed } = useSelector(
+  const { userAvatar, UserData, admin, hasNewStory, updateFeed,imageList } = useSelector(
     (deserializedState) => deserializedState.authSlice
   );
 
@@ -21,18 +21,21 @@ const DataCard = ({ data }) => {
     ?.PFPATH?.stringValue;
 
   const name = POD?.PON?.stringValue;
+
+  const isExist = imageList?.findIndex((img) => img?.url === url) > 0
+
+  console.log("isExist", isExist);
+
   useEffect(() => {
-    userProfileById?.length > 10 &&  dispatch(
-      setImageList({
-        url,
-        name: name,
-        userProfile: userProfileById,
-        UID: UID,
-      })
+
+    userProfileById?.length > 10 && !isExist &&  dispatch(
+      setImageList({url: url, userProfile: userProfileById, name: name})
     );
     // console.log(userProfileById);
     
   }, [userProfileById]);
+
+  // console.log("DataCard Rendered",imageList);
 
   return;
 };

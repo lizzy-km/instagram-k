@@ -5,6 +5,7 @@ import "./index.css";
 import { Provider } from "react-redux";
 import { store } from "./redux/services/store";
 import { SpeedInsights } from "@vercel/speed-insights/react"
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 // import '@mantine/core/styles.css';
 
 
@@ -12,11 +13,15 @@ import { SpeedInsights } from "@vercel/speed-insights/react"
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-     <SpeedInsights/>
-        <Provider store={store}>
+    <SpeedInsights />
+
+    <Provider store={store}>
+      <ChakraProvider value={defaultSystem} >
         <App />
-        </Provider>
-        
-    
+      </ChakraProvider>
+
+    </Provider>
+
+
   </React.StrictMode>
 );

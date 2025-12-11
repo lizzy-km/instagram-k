@@ -334,23 +334,30 @@ const CreatePostBox = () => {
                 );
               })}
             {imfurlForUp.length < 11 && (
-              <div className=" cursor-pointer justify-center self-center items-center  h-[50px]   flex w-full bg-[#11111157]  rounded-lg  ">
+              <div className=" cursor-pointer justify-center self-center items-center  h-[60px]   flex w-full bg-[#11111157]  rounded-lg  ">
                 <div className="flex cursor-pointer self-center items-center justify-center  h-full w-full">
-                  <label
-                    for="dropzone-file"
-                    className="flex flex-col items-center   justify-center w-auto h-[100%] border-2 border-[#343536] border-dashed rounded-lg cursor-pointer bg-[#212121] "
-                  >
-                    <div className="flex h-full w-[50px] flex-col cursor-pointer relative items-center justify-center  ">
-                      <Icon path={mdiPlusBoxMultipleOutline} size={10} />
-                      <input
+                 <div className="flex h-full w-[60px] flex-col cursor-pointer relative items-center justify-center  ">
+                  <div className=" relative border border-[#d8d8d8] rounded w-full h-full flex justify-center items-center  ">
+                       <div className=" absolute w-[80%] h-1 bg-[#d8d8d8] rounded " >
+
+                       </div>
+
+                       <div className=" rotate-[90deg] absolute w-[80%] h-1 bg-[#d8d8d8] rounded " >
+
+                       </div>
+
+
+
+                       <input
                         onClick={() => setPID(UID + "_" + Date.now())}
                         onChange={CreateNewPost}
                         id="dropzone-file"
                         type="file"
                         className=" absolute cursor-pointer w-full opacity-0 h-full "
                       />
+                  </div>
+                     
                     </div>
-                  </label>
                 </div>
               </div>
             )}

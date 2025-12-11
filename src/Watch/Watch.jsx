@@ -3,7 +3,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import ImageCard from "./ImageCard";
 import GetData from "../redux/services/Hooks/GetData";
 import { Component, useEffect, useState } from "react";
-import { unmountComponentAtNode } from "react-dom";
 
 const Watch = () => {
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ const Watch = () => {
 
   const deskWidth = mainWidth / (+cardWidth + 25);
 
-  const deskCount = deskWidth > 0 ? deskWidth : 7;
+  const deskCount = deskWidth > 0 ? deskWidth : 8;
 
   const totalCardRow = isDeskTop ? deskCount : isMobile ? 1 : 3;
 
@@ -42,6 +41,7 @@ const Watch = () => {
 
   useEffect(() => {
     for (let i = 0; i < totalCardRow?.toFixed(0); i++) {
+      // console.log("cardPerCol", imageList);
       newArray?.push([imageList.slice(i * cardPerCol, cardPerCol * (i + 1))]);
       setRealData(newArray);
     }

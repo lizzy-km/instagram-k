@@ -33,17 +33,17 @@ const Noti = () => {
 
   return (
     <div className=" flex flex-col w-full h-full justify-start items-start  gap-1   ">
-      <div>
+      {/* <div>
         <button onClick={AddNewNoti}>Add Noti</button>
-      </div>
-      Noti
+      </div> */}
+      {/* Noti */}
       {NOTIFICATION?.map((data) => {
         return (
           <div
             key={data.id}
             className="flex justify-start w-full h-[60px]  bg-[#212121] p-2 tracking-wider items-start"
           >
-            <p>{data.text}</p>
+            {/* <p>{data.text}</p> */}
           </div>
         );
       })}
