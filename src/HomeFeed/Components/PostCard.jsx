@@ -57,22 +57,22 @@ const PostCard = ({ name, data }) => {
   const timeInDay = (timeInHr / 24).toFixed(0);
   const timeInWk = (timeInDay / 7).toFixed(0);
   const timeInMon = (timeInWk / 4).toFixed(0);
-  const timeInYr = (timeInMon / 12).toFixed(0);
+  const timeInYr = `${diffUpTimeINMilSec.getDate()}/${diffUpTimeINMilSec.getUTCMonth()+1}/${diffUpTimeINMilSec.getUTCFullYear()}`
 
   useEffect(() => {
      
-    timeInMon > 12
-      ? setTime(`${timeInYr}Y`)
+    timeInMon > 11
+      ? setTime(`${timeInYr}`)
       : timeInWk > 4
-      ? setTime(`${timeInMon}M`)
+      ? setTime(`${timeInMon}Month ago`)
       : timeInDay > 7
-      ? setTime(`${timeInWk}W`)
+      ? setTime(`${timeInWk}Week ago`)
       : timeInHr > 23
-      ? setTime(`${timeInDay}D`)
+      ? setTime(`${timeInDay}Day ago`)
       : timeINMin > 60
-      ? setTime(`${timeInHr}H`)
+      ? setTime(`${timeInHr}Hour ago`)
       : timeInSec > 60
-      ? setTime(`${timeINMin}m`)
+      ? setTime(`${timeINMin}minute ago`)
       : timeInSec < 60
       ? setTime(`just now`)
       : 0;
