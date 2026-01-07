@@ -255,7 +255,7 @@ const Login = () => {
               />
             </div>
             <div className=" flex p-2 justify-between items-center gap-2 ">
-              <div className=" relative p-1 bg-blue-600 rounded px-2 font-medium flex justify-center items-center ">
+              <div className=" relative p-1 bg-yellow-600 rounded px-2 font-medium flex justify-center items-center ">
                 <p> Choose Photo </p>
                 <input
                   className=" absolute top-[-20%] w-full left-2 opacity-0  "
@@ -268,7 +268,7 @@ const Login = () => {
 
               <div
                 onClick={() => setImageSrc(false)}
-                className=" relative cursor-pointer p-1 bg-blue-900 rounded px-2 font-medium flex justify-center items-center "
+                className=" relative cursor-pointer p-1 bg-yellow-900 rounded px-2 font-medium flex justify-center items-center "
               >
                 <p> Remove Photo </p>
               </div>
@@ -293,7 +293,7 @@ const Login = () => {
                   {...register("name", { required: true })}
                   type="text"
                   id="name"
-                  className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-500"
                   required
                 />
                 {errors.name && (
@@ -316,7 +316,7 @@ const Login = () => {
                 {...register("email", { required: true })}
                 type="email"
                 id="email"
-                className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-500"
                 required
               />
               {errors.email && (
@@ -339,7 +339,7 @@ const Login = () => {
                 id="password"
                 min="8"
                 onChange={(e) => PwTyping(e)}
-                className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-[#333333] rounded-lg border border-gray-300 focus:outline-none focus:ring-1 focus:ring-yellow-500"
                 required
               />
               {!loginState && (
@@ -361,14 +361,14 @@ const Login = () => {
               <button
                 disabled={isLoading && true}
                 type="submit"
-                className="w-full px-3 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 rounded-lg bg-yellow-600 text-white font-medium hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
               >
                 {isLoading ? <Spin /> : "Login "}
               </button>
             ) : isUserExist ? (
               <div
                 disabled={isLoading && true}
-                className="w-full px-3 py-2 cursor-not-allowed rounded-lg flex justify-center items-center bg-blue-900 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 cursor-not-allowed rounded-lg flex justify-center items-center bg-yellow-900 text-white font-medium hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
               >
                 <p>Signup</p>
               </div>
@@ -376,7 +376,7 @@ const Login = () => {
               <button
                 disabled={isLoading && true}
                 type="submit"
-                className="w-full px-3 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 rounded-lg bg-yellow-600 text-white font-medium hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
               >
                 {isLoading ? <Spin /> : "SignUp "}
               </button>
@@ -392,14 +392,14 @@ const Login = () => {
               {loginState === true ? (
                 <button
                   onClick={() => setLoginState(false)}
-                  className="text-sm cursor-pointer text-blue-600 hover:underline ml-1"
+                  className="text-sm cursor-pointer text-yellow-600 hover:underline ml-1"
                 >
                   Sign up
                 </button>
               ) : (
                 <button
                   onClick={() => setLoginState(true)}
-                  className="text-sm cursor-pointer text-blue-600 hover:underline ml-1"
+                  className="text-sm cursor-pointer text-yellow-600 hover:underline ml-1"
                 >
                   Login
                 </button>

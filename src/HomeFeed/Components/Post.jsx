@@ -16,7 +16,8 @@ const Post = ({ filter = "", position = "feed" }) => {
   const userRf = collection(firestore, "USER_POSTS");
   const userQuery = query(
     userRf,
-    orderBy("UPLOADED_AT", "desc")
+    orderBy("UPLOADED_AT", "desc"),
+    // limit(5)
   );
   const [TUser] = useCollectionData(userQuery, { idField: "id" });
 

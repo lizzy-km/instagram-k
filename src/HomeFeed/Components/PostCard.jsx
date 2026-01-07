@@ -7,6 +7,8 @@ import { Carousel } from "flowbite-react";
 import {
   mdiBookmark,
   mdiBookmarkOutline,
+  mdiChevronLeft,
+  mdiChevronRight,
   mdiContentCopy,
   mdiDeleteForeverOutline,
   mdiDotsHorizontal,
@@ -57,25 +59,25 @@ const PostCard = ({ name, data }) => {
   const timeInDay = (timeInHr / 24).toFixed(0);
   const timeInWk = (timeInDay / 7).toFixed(0);
   const timeInMon = (timeInWk / 4).toFixed(0);
-  const timeInYr = `${diffUpTimeINMilSec.getDate()}/${diffUpTimeINMilSec.getUTCMonth()+1}/${diffUpTimeINMilSec.getUTCFullYear()}`
+  const timeInYr = `${diffUpTimeINMilSec.getDate()}/${diffUpTimeINMilSec.getUTCMonth() + 1}/${diffUpTimeINMilSec.getUTCFullYear()}`
 
   useEffect(() => {
-     
+
     timeInMon > 11
       ? setTime(`${timeInYr}`)
       : timeInWk > 4
-      ? setTime(`${timeInMon}Month ago`)
-      : timeInDay > 7
-      ? setTime(`${timeInWk}Week ago`)
-      : timeInHr > 23
-      ? setTime(`${timeInDay}Day ago`)
-      : timeINMin > 60
-      ? setTime(`${timeInHr}Hour ago`)
-      : timeInSec > 60
-      ? setTime(`${timeINMin}minute ago`)
-      : timeInSec < 60
-      ? setTime(`just now`)
-      : 0;
+        ? setTime(`${timeInMon}Month ago`)
+        : timeInDay > 7
+          ? setTime(`${timeInWk}Week ago`)
+          : timeInHr > 23
+            ? setTime(`${timeInDay}Day ago`)
+            : timeINMin > 60
+              ? setTime(`${timeInHr}Hour ago`)
+              : timeInSec > 60
+                ? setTime(`${timeINMin}minute ago`)
+                : timeInSec < 60
+                  ? setTime(`just now`)
+                  : 0;
   }, []);
   const POD = data?.POST_OWNER_DETAIL;
   const UID = POD.POID;
@@ -84,7 +86,7 @@ const PostCard = ({ name, data }) => {
 
   const [user] = useCollectionDataOnce(quer, { idField: "id" })
 
-  const status = user?.length > 0 ? user[0]?.status  :'offline'
+  const status = user?.length > 0 ? user[0]?.status : 'offline'
 
   const POID = hasPostD ? UID : "0";
 
@@ -110,20 +112,20 @@ const PostCard = ({ name, data }) => {
     const upData =
       type === "liked_posts" || type === "unliked_posts"
         ? {
-            LPID: PID,
-            POID: POID,
-          }
+          LPID: PID,
+          POID: POID,
+        }
         : type === "shared_posts" || type === "unshared_posts"
-        ? {
+          ? {
             SHPID: PID,
             POID: POID,
           }
-        : type === "saved_posts" || type === "unsaved_posts"
-        ? {
-            SPID: PID,
-            POID: POID,
-          }
-        : {};
+          : type === "saved_posts" || type === "unsaved_posts"
+            ? {
+              SPID: PID,
+              POID: POID,
+            }
+            : {};
 
     const upUData = {
       POID: POID,
@@ -218,7 +220,7 @@ const PostCard = ({ name, data }) => {
   return (
     <section
       id="mw"
-      className=" snap-center relative border-b border-[#d4d4d46d] flex flex-col justify-start items-center   py-4   w-[100%] "
+      className=" h-auto snap-center  relative border-b border-[#d4d4d46d] flex flex-col justify-start items-center   py-4   w-[100%] "
     >
       <div className=" flex w-full h-auto rounded-t-md justify-between  ">
         <div className="  w-full  flex-col relative  h-auto py-4  flex justify-start items-end ">
@@ -272,23 +274,33 @@ const PostCard = ({ name, data }) => {
 
       {!loading ? (
         PostImg?.length > 1 ? (
-          <Carousel loop={false} slideInterval={0} slide={false}>
-            {PostImg?.map((d) => {
-              const url = d?.downloadURL;
-              const className = {
-                rounded: "",
-              };
-              return (
-                <ImageCard
-                  className={className}
-                  UID={UID}
-                  PID={PID}
-                  key={url}
-                  data={d}
-                  url={url}
-                />
-              );
-            })}
+          <Carousel children={PostImg?.map((d) => {
+            const url = d?.downloadURL;
+            const className = {
+              rounded: "",
+            };
+            return (
+              <ImageCard
+                className={className}
+                UID={UID}
+                PID={PID}
+                key={url}
+                data={d}
+                url={url}
+              />
+            );
+          })} rightControl={
+            <div className=" rounded-full moveStory ">
+              <Icon path={mdiChevronRight} size={1} />
+            </div>
+          }
+            leftControl={
+              <div className=" moveStory ">
+                <Icon path={mdiChevronLeft} size={1} />
+              </div>
+            }
+            className="carousel" loop={false} slideInterval={0} slide={false}>
+            
           </Carousel>
         ) : (
           PostImg?.map((d) => {
