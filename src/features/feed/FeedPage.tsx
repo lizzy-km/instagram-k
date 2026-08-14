@@ -20,13 +20,13 @@ export function FeedPage({ currentUserId, filterByOwnerId }: FeedPageProps) {
     : posts;
 
   return (
-    <div className="flex flex-col gap-[50px] self-center p-2 my-2 h-auto w-full rounded-md">
+    <div className="flex w-full flex-col gap-4">
       {!filterByOwnerId && <CreatePostBar avatarUrl={avatarUrl} firstName={firstName} />}
 
       {isLoading && (
         <div className="flex flex-col gap-4">
-          <Skeleton className="h-[400px] w-full" />
-          <Skeleton className="h-[400px] w-full" />
+          <Skeleton className="h-[420px] w-full" />
+          <Skeleton className="h-[420px] w-full" />
         </div>
       )}
 
@@ -38,9 +38,11 @@ export function FeedPage({ currentUserId, filterByOwnerId }: FeedPageProps) {
         <EmptyState title="No posts yet" description="When posts are shared, they'll show up here." />
       )}
 
-      {visiblePosts?.map((post) => (
-        <PostCard key={post.PID} post={post} currentUserId={currentUserId} defaultAvatar={avatarUrl} />
-      ))}
+      <div className="flex flex-col gap-4">
+        {visiblePosts?.map((post) => (
+          <PostCard key={post.PID} post={post} currentUserId={currentUserId} defaultAvatar={avatarUrl} />
+        ))}
+      </div>
     </div>
   );
 }

@@ -21,31 +21,24 @@ export function NameCard({
   status,
 }: NameCardProps) {
   return (
-    <div className="absolute bottom-2 left-0 w-full p-2 h-[55px] flex justify-start items-center">
-      <div className="w-auto h-full gap-2 flex justify-center items-center">
-        <NavLink to={`/${UID}`} className="relative w-[40px] h-[40px] justify-center items-center">
-          <Image
-            src={userProfilePhotoUrl || userAvatar}
-            alt={name}
-            aspectRatio="1 / 1"
-            containerClassName="rounded-full cursor-pointer"
-          />
-        </NavLink>
-        <NavLink
-          to={`/${UID}`}
-          className="flex-col cursor-pointer rounded-br px-2 h-full min-w-[100px] w-auto flex justify-start items-start tracking-wide text-base"
-        >
-          <p className="relative flex gap-2">
-            {name}
-            {status === "online" && (
-              <span className="absolute -right-3 top-[45%] flex rounded-full p-[3px] bg-[var(--color-online)]" />
-            )}
-          </p>
-          <time dateTime={new Date(uploadedAtMs).toISOString()} className="opacity-75 text-[12px]">
-            {timeLabel}
-          </time>
-        </NavLink>
-      </div>
+    <div className="flex items-center gap-3">
+      <NavLink to={`/${UID}`} className="relative shrink-0">
+        <Image
+          src={userProfilePhotoUrl || userAvatar}
+          alt={name}
+          aspectRatio="1 / 1"
+          containerClassName="w-10 h-10 rounded-full"
+        />
+        {status === "online" && (
+          <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--color-bg-elevated)] bg-[var(--color-online)]" />
+        )}
+      </NavLink>
+      <NavLink to={`/${UID}`} className="flex flex-col leading-tight">
+        <span className="text-sm font-semibold text-[var(--color-text)]">{name}</span>
+        <time dateTime={new Date(uploadedAtMs).toISOString()} className="text-xs text-[var(--color-text-faint)]">
+          {timeLabel}
+        </time>
+      </NavLink>
     </div>
   );
 }

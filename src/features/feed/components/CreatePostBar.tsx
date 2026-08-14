@@ -10,19 +10,15 @@ export function CreatePostBar({ avatarUrl, firstName }: CreatePostBarProps) {
   const setCreatePostOpen = useUiStore((s) => s.setCreatePostOpen);
 
   return (
-    <div className="tracking-wider self-center justify-center items-center flex py-2 p-3 min-h-[80px] w-full bg-[var(--color-bg-elevated)] rounded-md">
-      <div className="px-2 flex rounded-md justify-between flex-col items-center w-full h-full">
-        <div className="flex justify-between gap-2 items-center w-full h-full">
-          <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="w-[40px] h-[40px] rounded-full shrink-0" />
-          <button
-            type="button"
-            onClick={() => setCreatePostOpen(true)}
-            className="flex justify-start items-center w-[93%] rounded-full bg-[var(--color-surface)] h-[40px] px-4 text-left text-[var(--color-text-muted)]"
-          >
-            {`What's on your mind${firstName ? `, ${firstName}` : ""}?`}
-          </button>
-        </div>
-      </div>
+    <div className="flex w-full items-center gap-3 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-3 shadow-[var(--shadow-sm)]">
+      <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="w-11 h-11 rounded-full shrink-0" />
+      <button
+        type="button"
+        onClick={() => setCreatePostOpen(true)}
+        className="flex h-11 flex-1 items-center rounded-[var(--radius-full)] bg-[var(--color-surface)] px-4 text-left text-sm text-[var(--color-text-muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--color-surface-hover)]"
+      >
+        {`What's on your mind${firstName ? `, ${firstName}` : ""}?`}
+      </button>
     </div>
   );
 }

@@ -80,10 +80,10 @@ export function CreatePostModal({ currentUserId, currentUserName, avatarUrl }: C
       }}
       labelledBy="create-post-title"
     >
-      <div className="text-[var(--color-text)] p-4 flex flex-col gap-3 rounded-md w-[min(90vw,500px)]">
-        <div className="flex items-center gap-2">
-          <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="w-[40px] h-[40px] rounded-full" />
-          <h2 id="create-post-title" className="font-medium">
+      <div className="flex w-[min(92vw,480px)] flex-col gap-4 p-5 text-[var(--color-text)]">
+        <div className="flex items-center gap-3">
+          <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="w-10 h-10 rounded-full" />
+          <h2 id="create-post-title" className="text-sm font-semibold">
             {currentUserName}
           </h2>
         </div>
@@ -92,28 +92,36 @@ export function CreatePostModal({ currentUserId, currentUserName, avatarUrl }: C
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
           placeholder="What's on your mind?"
-          className="bg-[var(--color-surface)] rounded p-2 w-full min-h-[80px] outline-none resize-none"
+          className="min-h-[100px] w-full resize-none rounded-[var(--radius-md)] bg-[var(--color-surface)] p-3 text-sm outline-none placeholder:text-[var(--color-text-faint)] focus:ring-2 focus:ring-[var(--color-accent-soft)]"
           autoFocus
         />
 
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex flex-wrap gap-2">
           {images.map((img) => (
-            <Image key={img.downloadURL} src={img.downloadURL} alt="" aspectRatio="1 / 1" containerClassName="w-[100px] h-[100px] rounded" />
+            <Image
+              key={img.downloadURL}
+              src={img.downloadURL}
+              alt=""
+              aspectRatio="1 / 1"
+              containerClassName="w-20 h-20 rounded-[var(--radius-sm)]"
+            />
           ))}
 
           {uploading && (
-            <div className="w-[100px] h-[100px] flex items-center justify-center bg-[var(--color-surface)] rounded">
-              <Spinner size={24} />
+            <div className="flex h-20 w-20 items-center justify-center rounded-[var(--radius-sm)] bg-[var(--color-surface)]">
+              <Spinner size={22} />
             </div>
           )}
 
-          <label className="cursor-pointer w-[100px] h-[100px] flex items-center justify-center bg-[var(--color-surface)] rounded border border-dashed border-[var(--color-border)]">
-            <span className="text-2xl">+</span>
+          <label className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-[var(--radius-sm)] border border-dashed border-[var(--color-border-strong)] text-[var(--color-text-faint)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+            </svg>
             <input type="file" accept="image/*" onChange={handleFileSelected} className="hidden" />
           </label>
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end pt-1">
           <Button onClick={handleSubmit} disabled={images.length === 0 || submitting}>
             {submitting ? "Posting..." : "Post"}
           </Button>

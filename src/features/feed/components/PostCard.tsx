@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { NameCard } from "./NameCard";
 import { PostImageCarousel } from "./PostImageCarousel";
@@ -69,12 +69,24 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted }: Post
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!copied) return;
     const timeout = setTimeout(() => setCopied(false), 2000);
     return () => clearTimeout(timeout);
   }, [copied]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    function onClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, [menuOpen]);
 
   async function toggleLike() {
     if (!ownerId) return;
@@ -134,37 +146,37 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted }: Post
   }
 
   return (
-    <section className="h-auto relative border-b border-[var(--color-border)] flex flex-col justify-start items-center py-4 w-full">
-      <div className="flex w-full h-auto rounded-t-md justify-between">
-        <div className="w-full flex-col relative h-auto py-4 flex justify-start items-end">
-          <NameCard
-            userAvatar={defaultAvatar}
-            UID={ownerId ?? ""}
-            userProfilePhotoUrl={owner?.profile?.[0]?.src ?? null}
-            name={ownerName}
-            uploadedAtMs={uploadedAtMs ?? 0}
-            timeLabel={timeLabel}
-            status={owner?.status ?? null}
-          />
+    <article className="w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--shadow-sm)]">
+      <div className="flex items-center justify-between px-4 py-3">
+        <NameCard
+          userAvatar={defaultAvatar}
+          UID={ownerId ?? ""}
+          userProfilePhotoUrl={owner?.profile?.[0]?.src ?? null}
+          name={ownerName}
+          uploadedAtMs={uploadedAtMs ?? 0}
+          timeLabel={timeLabel}
+          status={owner?.status ?? null}
+        />
 
+        <div className="relative" ref={menuRef}>
           <button
             type="button"
             aria-label="Post options"
             onClick={() => setMenuOpen((v) => !v)}
-            className="transition-transform absolute right-0 bottom-2 w-[40px] bg-[var(--color-bg-overlay)] h-[40px] flex justify-center items-center rounded cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-text-faint)] transition-colors hover:bg-[var(--color-surface)] hover:text-[var(--color-text-muted)]"
           >
-            <Icon path={mdiDotsHorizontal} size={1} />
+            <Icon path={mdiDotsHorizontal} size={0.9} />
           </button>
 
           {menuOpen && (
-            <section className="z-[999] text-sm tracking-wide flex flex-col gap-2 p-2 rounded-md bg-[var(--color-bg-overlay)] backdrop-blur absolute right-2 top-12 min-w-[25%] min-h-[40px]">
+            <div className="absolute right-0 top-[calc(100%+6px)] z-[999] w-48 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-1.5 shadow-[var(--shadow-lg)] animate-[scale-in_var(--duration-fast)_var(--ease-standard)]">
               <button
                 type="button"
                 onClick={copyLink}
-                className="flex gap-1 cursor-pointer hover:bg-[var(--color-surface)] p-2 rounded-md justify-start items-center"
+                className="flex w-full items-center gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2 text-sm text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface)]"
               >
                 <Icon path={mdiContentCopy} size={0.8} />
-                <span>{copied ? "Copied!" : "Copy Link"}</span>
+                <span>{copied ? "Copied!" : "Copy link"}</span>
               </button>
 
               {ownerId === currentUserId && (
@@ -172,57 +184,61 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted }: Post
                   type="button"
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="flex gap-1 cursor-pointer hover:bg-[var(--color-surface)] p-2 rounded-md justify-start items-center disabled:opacity-50"
+                  className="flex w-full items-center gap-2.5 rounded-[var(--radius-sm)] px-2.5 py-2 text-sm text-[var(--color-danger)] transition-colors hover:bg-[var(--color-danger-soft)] disabled:opacity-50"
                 >
-                  <Icon path={mdiDeleteForeverOutline} size={0.9} />
+                  <Icon path={mdiDeleteForeverOutline} size={0.85} />
                   <span>{deleting ? "Deleting..." : "Delete"}</span>
                 </button>
               )}
-            </section>
+            </div>
           )}
         </div>
       </div>
 
       {images.length > 0 && <PostImageCarousel images={images} />}
 
-      <div className="flex flex-col w-full justify-between items-center py-2">
-        <div className="flex w-full justify-between items-center">
-          <div className="flex gap-3 items-center">
-            <button
-              type="button"
-              onClick={toggleLike}
-              aria-pressed={liked}
-              className={`flex p-1 gap-1 items-center cursor-pointer rounded-full ${liked ? "text-[var(--color-accent)]" : ""}`}
-            >
-              <Icon path={liked ? mdiHeart : mdiHeartOutline} size={1} />
-              {likeCount !== 0 && (
-                <span className="text-sm">
-                  {likeCount} {likeCount > 1 ? "likes" : "like"}
-                </span>
-              )}
-            </button>
+      {caption && (
+        <p className="whitespace-pre-wrap px-4 pt-3 text-sm leading-relaxed text-[var(--color-text)]">{caption}</p>
+      )}
 
-            <button type="button" onClick={toggleShare} aria-pressed={shared} className="flex p-1 gap-1 items-center cursor-pointer rounded-full">
-              <Icon path={shared ? mdiShare : mdiShareOutline} size={1} />
-              {shareCount !== 0 && (
-                <span className="text-sm">
-                  {shareCount} {shareCount > 1 ? "shares" : "share"}
-                </span>
-              )}
-            </button>
-          </div>
+      <div className="flex items-center justify-between px-3 py-2.5">
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={toggleLike}
+            aria-pressed={liked}
+            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm font-medium transition-colors duration-[var(--duration-fast)] ${
+              liked ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface)]"
+            }`}
+          >
+            <Icon path={liked ? mdiHeart : mdiHeartOutline} size={1.05} />
+            {likeCount > 0 && <span>{likeCount}</span>}
+          </button>
 
-          <button type="button" onClick={toggleSave} aria-pressed={saved} className="flex p-2 items-center cursor-pointer rounded-full">
-            <Icon path={saved ? mdiBookmark : mdiBookmarkOutline} size={1} />
+          <button
+            type="button"
+            onClick={toggleShare}
+            aria-pressed={shared}
+            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm font-medium transition-colors duration-[var(--duration-fast)] ${
+              shared ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface)]"
+            }`}
+          >
+            <Icon path={shared ? mdiShare : mdiShareOutline} size={1.05} />
+            {shareCount > 0 && <span>{shareCount}</span>}
           </button>
         </div>
-      </div>
 
-      {caption && (
-        <p className="border-l-[1.5px] border-[var(--color-border)] px-2 py-2 text-sm max-w-[80%] whitespace-pre-wrap tracking-wide self-start w-[80%] h-auto">
-          {caption}
-        </p>
-      )}
-    </section>
+        <button
+          type="button"
+          onClick={toggleSave}
+          aria-pressed={saved}
+          className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)] ${
+            saved ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface)]"
+          }`}
+        >
+          <Icon path={saved ? mdiBookmark : mdiBookmarkOutline} size={1.05} />
+        </button>
+      </div>
+    </article>
   );
 }
