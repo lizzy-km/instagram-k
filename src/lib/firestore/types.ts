@@ -98,6 +98,18 @@ export interface MessageDoc {
   id: string;
   mid: string;
   text: string;
-  senderId: string;
+  uid: string;
+  target: string;
+  photoURL: string | null;
   createdAt: number;
+}
+
+export interface NotificationDoc {
+  id: string;
+  uid: string;
+  target: string;
+  type: "like" | "share" | "comment" | "follow";
+  text: string;
+  createdAt: number;
+  read: boolean;
 }
