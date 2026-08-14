@@ -117,45 +117,56 @@ export function LoginPage() {
   const onSubmit = handleSubmit((values) => (isSignUp ? signUp(values) : signIn(values)));
 
   return (
-    <div className="flex relative flex-col justify-center items-center w-full h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
-      <h1 className="text-2xl font-bold text-center mb-4">{isSignUp ? "Sign up with Queed" : "Login with Queed"}</h1>
+    <div className="flex min-h-screen w-full items-center justify-center bg-[var(--color-bg)] px-4 py-10 text-[var(--color-text)]">
+      <div className="w-full max-w-sm">
+        <div className="mb-8 flex flex-col items-center gap-2 text-center">
+          <img src="/Logo.svg" alt="Queed" className="h-10 w-10" />
+          <h1 className="text-xl font-bold">{isSignUp ? "Create your account" : "Welcome back"}</h1>
+          <p className="text-sm text-[var(--color-text-muted)]">
+            {isSignUp ? "Sign up to start sharing with Queed" : "Log in to continue to Queed"}
+          </p>
+        </div>
 
-      <div className="flex flex-col md:flex-row w-full gap-5 justify-center items-center h-screen bg-[var(--color-bg-elevated)] overflow-auto">
-        {isSignUp && (
-          <div className="w-full md:w-[30%] flex flex-col justify-start items-center gap-2 p-4">
-            <p className="block text-lg tracking-wide font-medium">Select profile picture</p>
-            <div className="h-[150px] w-[150px] flex rounded-full justify-center items-center overflow-hidden bg-[var(--color-surface)]">
-              {imagePreviewUrl && <img className="object-cover w-full h-full" src={imagePreviewUrl} alt="" />}
+        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 shadow-[var(--shadow-md)]">
+          {isSignUp && (
+            <div className="mb-5 flex flex-col items-center gap-2">
+              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-[var(--color-surface)]">
+                {imagePreviewUrl ? (
+                  <img className="h-full w-full object-cover" src={imagePreviewUrl} alt="" />
+                ) : (
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" className="text-[var(--color-text-faint)]" aria-hidden="true">
+                    <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+                  </svg>
+                )}
+              </div>
+              <label className="cursor-pointer text-sm font-medium text-[var(--color-accent)] hover:underline">
+                {imagePreviewUrl ? "Change photo" : "Add a profile photo"}
+                <input type="file" accept="image/*" onChange={handleProfileImageSelected} className="hidden" />
+              </label>
             </div>
-            <label className="relative cursor-pointer p-1 bg-yellow-600 rounded px-2 font-medium">
-              Choose Photo
-              <input type="file" accept="image/*" onChange={handleProfileImageSelected} className="absolute inset-0 opacity-0" />
-            </label>
-          </div>
-        )}
+          )}
 
-        <div className="w-full md:w-[30%] p-4 bg-[var(--color-bg-elevated)] rounded-lg shadow-md">
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} className="flex flex-col gap-4">
             {isSignUp && (
-              <div className="mb-6">
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
+              <div>
+                <label htmlFor="name" className="mb-1.5 block text-xs font-medium text-[var(--color-text-muted)]">
                   Name
                 </label>
                 <Input id="name" {...register("name", { required: isSignUp })} required={isSignUp} />
-                {errors.name && <span className="flex p-2 italic text-red-500">Name is required</span>}
+                {errors.name && <p className="mt-1 text-xs text-[var(--color-danger)]">Name is required</p>}
               </div>
             )}
 
-            <div className="mb-6">
-              <label htmlFor="email" className="block text-sm font-medium mb-2">
+            <div>
+              <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-[var(--color-text-muted)]">
                 Email
               </label>
               <Input id="email" type="email" {...register("email", { required: true })} required />
-              {errors.email && <span className="flex p-2 italic text-red-500">Email is required</span>}
+              {errors.email && <p className="mt-1 text-xs text-[var(--color-danger)]">Email is required</p>}
             </div>
 
-            <div className="mb-6 flex flex-col w-full">
-              <label htmlFor="password" className="block text-sm font-medium mb-2">
+            <div>
+              <label htmlFor="password" className="mb-1.5 block text-xs font-medium text-[var(--color-text-muted)]">
                 Password
               </label>
               <Input
@@ -165,27 +176,27 @@ export function LoginPage() {
                 required
               />
               {isSignUp && passwordIssues.length > 0 && (
-                <ul className="p-2 text-sm italic text-red-500">
+                <ul className="mt-1.5 space-y-0.5 text-xs text-[var(--color-text-faint)]">
                   {passwordIssues.map((issue) => (
-                    <li key={issue}>* {issue}</li>
+                    <li key={issue}>· {issue}</li>
                   ))}
                 </ul>
               )}
-              {errors.password && <span className="flex p-2 italic text-red-500">Password is required</span>}
+              {errors.password && <p className="mt-1 text-xs text-[var(--color-danger)]">Password is required</p>}
             </div>
 
-            <Button type="submit" disabled={isLoading} className="w-full flex justify-center">
-              {isLoading ? <Spinner size={20} /> : isSignUp ? "Sign up" : "Login"}
+            <Button type="submit" disabled={isLoading} size="lg" className="mt-1 w-full">
+              {isLoading ? <Spinner size={18} /> : isSignUp ? "Sign up" : "Log in"}
             </Button>
-
-            <div className="text-center flex justify-center mt-4 gap-1">
-              <span className="text-sm">{isSignUp ? "Already have an account?" : "You don't have any account?"}</span>
-              <button type="button" onClick={() => setIsSignUp((v) => !v)} className="text-sm text-yellow-500 hover:underline">
-                {isSignUp ? "Login" : "Sign up"}
-              </button>
-            </div>
           </form>
         </div>
+
+        <p className="mt-5 text-center text-sm text-[var(--color-text-muted)]">
+          {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+          <button type="button" onClick={() => setIsSignUp((v) => !v)} className="font-medium text-[var(--color-accent)] hover:underline">
+            {isSignUp ? "Log in" : "Sign up"}
+          </button>
+        </p>
       </div>
     </div>
   );
