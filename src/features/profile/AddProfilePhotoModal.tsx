@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "@/firebase/firebase";
 import { checkFileType } from "@/lib/checkFileType";
+import { uploadFileToR2 } from "@/lib/r2Upload";
 import { updateProfilePhoto } from "@/lib/firestore/updateProfilePhoto";
 import { queryKeys } from "@/lib/query/keys";
 import { useUiStore } from "@/stores/useUiStore";
@@ -37,9 +36,8 @@ export function AddProfilePhotoModal({ currentUserId }: AddProfilePhotoModalProp
     setUploading(true);
     try {
       const photoId = `${currentUserId}_${Date.now()}`;
-      const path = `user_photo/${currentUserId}/${photoId}/${file.name}`;
-      const snapshot = await uploadBytes(ref(storage, path), file);
-      setDownloadUrl(await getDownloadURL(snapshot.ref));
+      const key = `user_photo/${currentUserId}/${photoId}/${file.name}`;
+      setDownloadUrl(await uploadFileToR2(file, key));
     } finally {
       setUploading(false);
     }

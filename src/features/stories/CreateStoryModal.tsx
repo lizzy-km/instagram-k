@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "@/firebase/firebase";
 import { Modal, Button, Spinner, Image } from "@/Components/ui";
 import { checkFileType } from "@/lib/checkFileType";
+import { uploadFileToR2 } from "@/lib/r2Upload";
 import { createStory } from "@/lib/firestore/storyActions";
 import { queryKeys } from "@/lib/query/keys";
 import { useUiStore } from "@/stores/useUiStore";
@@ -44,13 +43,10 @@ export function CreateStoryModal({ currentUserId, currentUserName }: CreateStory
     setPreviewUrl(URL.createObjectURL(file));
 
     const storyId = `${currentUserId}_${Date.now()}`;
-    const filePath = `user_story/${currentUserId}/${storyId}/${file.name}`;
-    const storageRef = ref(storage, filePath);
+    const key = `user_story/${currentUserId}/${storyId}/${file.name}`;
 
     try {
-      const snapshot = await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(snapshot.ref);
-      setDownloadUrl(url);
+      setDownloadUrl(await uploadFileToR2(file, key));
     } finally {
       setUploading(false);
     }

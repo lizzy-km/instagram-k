@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "@/firebase/firebase";
 import { checkFileType } from "@/lib/checkFileType";
+import { uploadFileToR2 } from "@/lib/r2Upload";
 import { createPost } from "@/lib/firestore/createPost";
 import { queryKeys } from "@/lib/query/keys";
 import { useUiStore } from "@/stores/useUiStore";
@@ -44,9 +43,8 @@ export function CreatePostModal({ currentUserId, currentUserName, avatarUrl }: C
     setUploading(true);
     try {
       const postId = `${currentUserId}_${Date.now()}`;
-      const filePath = `user_post/${currentUserId}/${postId}/${file.name}`;
-      const snapshot = await uploadBytes(ref(storage, filePath), file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
+      const key = `user_post/${currentUserId}/${postId}/${file.name}`;
+      const downloadURL = await uploadFileToR2(file, key);
       setImages((prev) => [...prev, { downloadURL }]);
     } finally {
       setUploading(false);

@@ -7,10 +7,10 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { auth, storage } from "@/firebase/firebase";
+import { auth } from "@/firebase/firebase";
 import { createUserDoc } from "@/lib/firestore/createUser";
 import { setUserOnlineStatus } from "@/lib/firestore/postActions";
+import { uploadFileToR2 } from "@/lib/r2Upload";
 import { queryKeys } from "@/lib/query/keys";
 import { Button, Input, Spinner } from "@/Components/ui";
 
@@ -72,9 +72,8 @@ export function LoginPage() {
         const initials = firstName(name).join("");
         const fileSize = profileImage.size;
         const profileId = `${initials}PF${fileSize}`;
-        const path = `user_photo/${user.uid}/${profileId}/${profileImage.name}`;
-        const uploadTask = await uploadBytesResumable(ref(storage, path), profileImage);
-        photoURL = await getDownloadURL(uploadTask.ref);
+        const key = `user_photo/${user.uid}/${profileId}/${profileImage.name}`;
+        photoURL = await uploadFileToR2(profileImage, key);
         profile.push({
           PPID: profileId,
           src: photoURL,
