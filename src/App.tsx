@@ -75,7 +75,7 @@ function App() {
   const isLoggedIn = isAuthenticated && Boolean(uid);
 
   return (
-    <section className="bg-[var(--color-bg)] relative min-h-screen w-full flex flex-col justify-start items-start">
+    <section className="bg-[var(--color-bg)] relative min-h-screen w-full flex flex-col">
       <div className="fixed right-0 max-h-[70px] h-[70px] top-0 z-[9999]">
         <ToastContainer autoClose={1000} />
       </div>
