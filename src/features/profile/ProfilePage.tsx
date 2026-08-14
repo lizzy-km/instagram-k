@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ProfileHeader } from "./components/ProfileHeader";
 import { FeedPage } from "@/features/feed/FeedPage";
 import { useUserByUsername } from "@/lib/query/hooks";
-import { useMessengerStore } from "@/stores/useMessengerStore";
 import { EmptyState, Skeleton } from "@/Components/ui";
 import { DEFAULT_COVER_URL } from "@/lib/defaultAssets";
 
@@ -15,7 +14,7 @@ interface ProfilePageProps {
 export function ProfilePage({ currentUserId, defaultAvatar }: ProfilePageProps) {
   const { user: username } = useParams<{ user: string }>();
   const { data: profileUser, isLoading } = useUserByUsername(username);
-  const openThread = useMessengerStore((s) => s.openThread);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (profileUser?.user_name) {
@@ -54,7 +53,7 @@ export function ProfilePage({ currentUserId, defaultAvatar }: ProfilePageProps) 
         avatarUrl={profileUser.profile?.[0]?.src || defaultAvatar}
         coverUrl={profileUser.cover_photo?.[0]?.src || DEFAULT_COVER_URL}
         isOwnProfile={isOwnProfile}
-        onSendMessage={() => openThread(profileUser.UID)}
+        onSendMessage={() => navigate(`/message/${profileUser.UID}`)}
       />
 
       <div className="mx-auto mt-6 max-w-2xl px-4 pb-8">

@@ -1,6 +1,6 @@
+import { useNavigate, useParams } from "react-router-dom";
 import { ThreadList } from "./ThreadList";
 import { ChatThread } from "./ChatThread";
-import { useMessengerStore } from "@/stores/useMessengerStore";
 
 interface MessengerPanelProps {
   currentUserId: string;
@@ -9,18 +9,25 @@ interface MessengerPanelProps {
 }
 
 export function MessengerPanel({ currentUserId, currentUserAvatar, defaultAvatar }: MessengerPanelProps) {
-  const { activeThreadUserId, openThread } = useMessengerStore();
+  const { id: targetUserId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
-  if (activeThreadUserId && activeThreadUserId !== currentUserId) {
+  if (targetUserId && targetUserId !== currentUserId) {
     return (
       <ChatThread
         currentUserId={currentUserId}
-        targetUserId={activeThreadUserId}
+        targetUserId={targetUserId}
         currentUserAvatar={currentUserAvatar}
         defaultAvatar={defaultAvatar}
       />
     );
   }
 
-  return <ThreadList currentUserId={currentUserId} defaultAvatar={defaultAvatar} onSelect={openThread} />;
+  return (
+    <ThreadList
+      currentUserId={currentUserId}
+      defaultAvatar={defaultAvatar}
+      onSelect={(userId) => navigate(`/message/${userId}`)}
+    />
+  );
 }

@@ -127,6 +127,14 @@ function App() {
                   <Route path="/group" element={<GroupPage />} />
                   <Route path="/saved" element={<SavedPage currentUserId={uid} defaultAvatar={defaultAvatar} />} />
                   <Route
+                    path="/message"
+                    element={
+                      <div className="mx-auto flex h-[calc(100vh-68px)] w-full max-w-2xl flex-col pt-[68px]">
+                        <MessengerPanel currentUserId={uid} currentUserAvatar={avatarUrl} defaultAvatar={defaultAvatar} />
+                      </div>
+                    }
+                  />
+                  <Route
                     path="/message/:id"
                     element={
                       <div className="mx-auto flex h-[calc(100vh-68px)] w-full max-w-2xl flex-col pt-[68px]">

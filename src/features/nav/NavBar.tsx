@@ -6,7 +6,6 @@ import { Image } from "@/Components/ui";
 import { Icon } from "@/Components/icons/Icon";
 import { mdiSendVariantOutline } from "@/Components/icons/paths";
 import { useIsDesktop, useIsMobile } from "@/stores/useUiStore";
-import { useMessengerStore } from "@/stores/useMessengerStore";
 import { useNavigate } from "react-router-dom";
 
 interface NavBarProps {
@@ -41,7 +40,6 @@ export function NavBar({ userId, userName, avatarUrl }: NavBarProps) {
   const isDesktop = useIsDesktop();
   const navigate = useNavigate();
   const [accountOpen, setAccountOpen] = useState(false);
-  const openThread = useMessengerStore((s) => s.openThread);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -75,7 +73,7 @@ export function NavBar({ userId, userName, avatarUrl }: NavBarProps) {
           </svg>
         </IconButton>
 
-        <IconButton label="Messenger" onClick={() => openThread(userId)}>
+        <IconButton label="Messenger" onClick={() => navigate("/message")}>
           <Icon path={mdiSendVariantOutline} size={0.85} />
         </IconButton>
 

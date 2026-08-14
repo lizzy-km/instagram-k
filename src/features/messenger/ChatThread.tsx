@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { collection, orderBy, query, where } from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
 import { sendMessage, threadId } from "@/lib/firestore/messages";
 import { useCollectionDataWithId } from "@/lib/useCollectionDataWithId";
 import { useUser } from "@/lib/query/hooks";
-import { useMessengerStore } from "@/stores/useMessengerStore";
 import { ChatMessage } from "./components/ChatMessage";
 import { Image } from "@/Components/ui";
 import { Icon } from "@/Components/icons/Icon";
@@ -19,7 +19,7 @@ interface ChatThreadProps {
 }
 
 export function ChatThread({ currentUserId, targetUserId, currentUserAvatar, defaultAvatar }: ChatThreadProps) {
-  const closeThread = useMessengerStore((s) => s.closeThread);
+  const navigate = useNavigate();
   const { data: targetUser } = useUser(targetUserId);
   const mid = threadId(currentUserId, targetUserId);
   // Scoped to this thread's mid, not just filtered client-side afterward -
@@ -57,7 +57,7 @@ export function ChatThread({ currentUserId, targetUserId, currentUserAvatar, def
         <button
           type="button"
           aria-label="Back to conversations"
-          onClick={closeThread}
+          onClick={() => navigate("/message")}
           className="flex h-8 w-8 items-center justify-center rounded-full text-[var(--color-text-muted)] transition-colors hover:bg-[var(--color-surface)]"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
