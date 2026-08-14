@@ -36,9 +36,9 @@ export function WatchPage({ defaultAvatar }: WatchPageProps) {
       <h1 className="mb-4 text-lg font-bold text-[var(--color-text)]">Gallery</h1>
 
       {isLoading && (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+        <div className="columns-2 gap-3 sm:columns-3 md:columns-4">
           {Array.from({ length: 8 }).map((_, i) => (
-            <Skeleton key={i} className="aspect-square" />
+            <Skeleton key={i} className="mb-3 aspect-[4/5] w-full break-inside-avoid" />
           ))}
         </div>
       )}
@@ -47,7 +47,7 @@ export function WatchPage({ defaultAvatar }: WatchPageProps) {
         <EmptyState title="No media yet" description="Photos shared in posts will appear here." />
       )}
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+      <div className="columns-2 gap-3 sm:columns-3 md:columns-4">
         {images.map((img) => {
           const owner = usersById.get(img.ownerId);
           return (
