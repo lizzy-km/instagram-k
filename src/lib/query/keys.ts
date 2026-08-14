@@ -6,6 +6,7 @@ export const queryKeys = {
   },
   posts: {
     all: ["posts"] as const,
+    byId: (postId: string) => ["posts", "by-id", postId] as const,
     byOwner: (ownerId: string) => ["posts", "by-owner", ownerId] as const,
   },
   stories: {
@@ -14,5 +15,15 @@ export const queryKeys = {
   },
   messages: {
     thread: (threadId: string) => ["messages", "thread", threadId] as const,
+  },
+  comments: {
+    byPost: (postId: string) => ["comments", "by-post", postId] as const,
+  },
+  follows: {
+    following: (userId: string) => ["follows", "following", userId] as const,
+    followers: (userId: string) => ["follows", "followers", userId] as const,
+  },
+  activity: {
+    byUser: (userId: string) => ["activity", "by-user", userId] as const,
   },
 } as const;

@@ -65,6 +65,24 @@ export interface PostDetail {
   POST_CAPTION: string | null;
   LIKES: LikedPostRef[] | null;
   SHARES: SharedPostRef[] | null;
+  HASHTAGS?: string[];
+}
+
+export interface CommentDoc {
+  id: string;
+  postId: string;
+  authorId: string;
+  authorName: string;
+  text: string;
+  createdAt: number;
+}
+
+/** A follow edge: followerId follows followingId. Doc ID is `${followerId}_${followingId}`. */
+export interface FollowDoc {
+  id: string;
+  followerId: string;
+  followingId: string;
+  createdAt: number;
 }
 
 export interface PostDoc {
@@ -112,4 +130,30 @@ export interface NotificationDoc {
   text: string;
   createdAt: number;
   read: boolean;
+}
+
+export type ActivityType =
+  | "post_created"
+  | "post_liked"
+  | "post_unliked"
+  | "post_shared"
+  | "post_unshared"
+  | "post_saved"
+  | "post_unsaved"
+  | "post_commented"
+  | "post_deleted"
+  | "story_created"
+  | "story_deleted"
+  | "profile_updated"
+  | "user_followed"
+  | "user_unfollowed";
+
+/** A single row in a user's own activity log - what *they* did, not what happened to them. */
+export interface ActivityDoc {
+  id: string;
+  userId: string;
+  type: ActivityType;
+  targetId?: string;
+  targetLabel?: string;
+  createdAt: number;
 }

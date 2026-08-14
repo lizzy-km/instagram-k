@@ -47,6 +47,8 @@ export function ProfilePage({ currentUserId, defaultAvatar }: ProfilePageProps) 
   return (
     <div className="w-full pt-[68px]">
       <ProfileHeader
+        userId={profileUser.UID}
+        currentUserId={currentUserId}
         userName={profileUser.user_name}
         nickName={profileUser.nick_name || null}
         avatarUrl={profileUser.profile?.[0]?.src || defaultAvatar}

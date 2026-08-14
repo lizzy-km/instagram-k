@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { NameCard } from "./NameCard";
 import { PostImageCarousel } from "./PostImageCarousel";
+import { CommentList } from "@/features/comments/CommentList";
 import { Icon } from "@/Components/icons/Icon";
+import { CaptionText } from "@/Components/ui";
 import {
   mdiBookmark,
   mdiBookmarkOutline,
+  mdiCommentOutline,
   mdiContentCopy,
   mdiDeleteForeverOutline,
   mdiDotsHorizontal,
@@ -17,6 +21,8 @@ import {
 import { timeAgo } from "@/lib/useTimeAgo";
 import { deletePost as deletePostRemote } from "@/lib/firestore/posts";
 import { likePost, unlikePost, sharePost, unsharePost } from "@/lib/firestore/postActions";
+import { createNotification } from "@/lib/firestore/notifications";
+import { logActivity } from "@/lib/firestore/activity";
 import { useUser } from "@/lib/query/hooks";
 import { queryKeys } from "@/lib/query/keys";
 import { useLibraryStore } from "@/stores/useLibraryStore";
@@ -71,7 +77,9 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!copied) return;
@@ -100,6 +108,16 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
       await (nextLiked ? likePost : unlikePost)(currentUserId, post.PID, ref);
       queryClient.invalidateQueries({ queryKey: queryKeys.users.byUid(currentUserId) });
       queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
+      logActivity(currentUserId, nextLiked ? "post_liked" : "post_unliked", post.PID);
+      if (nextLiked && ownerId !== currentUserId) {
+        createNotification({
+          uid: currentUserId,
+          target: ownerId,
+          type: "like",
+          text: ownerName,
+          createdAt: Date.now(),
+        }).catch(() => {});
+      }
     } catch {
       setLikedOverride(!nextLiked);
       setLikeCountOverride(likeCount + (nextLiked ? -1 : 1));
@@ -116,6 +134,16 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
       await (nextShared ? sharePost : unsharePost)(currentUserId, post.PID, ref);
       queryClient.invalidateQueries({ queryKey: queryKeys.users.byUid(currentUserId) });
       queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
+      logActivity(currentUserId, nextShared ? "post_shared" : "post_unshared", post.PID);
+      if (nextShared && ownerId !== currentUserId) {
+        createNotification({
+          uid: currentUserId,
+          target: ownerId,
+          type: "share",
+          text: ownerName,
+          createdAt: Date.now(),
+        }).catch(() => {});
+      }
     } catch {
       setSharedOverride(!nextShared);
       setShareCountOverride(shareCount + (nextShared ? -1 : 1));
@@ -123,8 +151,13 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
   }
 
   function toggleSave() {
-    if (saved) unsave(post.PID);
-    else save(post.PID);
+    if (saved) {
+      unsave(post.PID);
+      logActivity(currentUserId, "post_unsaved", post.PID);
+    } else {
+      save(post.PID);
+      logActivity(currentUserId, "post_saved", post.PID);
+    }
   }
 
   async function copyLink() {
@@ -141,6 +174,7 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
     try {
       await deletePostRemote(post.PID);
       queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
+      logActivity(currentUserId, "post_deleted", post.PID);
       onDeleted?.();
     } finally {
       setDeleting(false);
@@ -204,11 +238,13 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
         </div>
       </div>
 
-      {images.length > 0 && <PostImageCarousel images={images} />}
-
-      {caption && (
-        <p className="whitespace-pre-wrap px-4 pt-3 text-sm leading-relaxed text-[var(--color-text)]">{caption}</p>
+      {images.length > 0 && (
+        <button type="button" className="block w-full" onClick={() => navigate(`/${ownerId}/post_detail/${post.PID}`)}>
+          <PostImageCarousel images={images} />
+        </button>
       )}
+
+      {caption && <CaptionText text={caption} className="whitespace-pre-wrap px-4 pt-3 text-sm leading-relaxed text-[var(--color-text)]" />}
 
       <div className="flex items-center justify-between px-3 py-2.5">
         <div className="flex items-center gap-1">
@@ -222,6 +258,17 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
           >
             <Icon path={liked ? mdiHeart : mdiHeartOutline} size={1.05} />
             {likeCount > 0 && <span>{likeCount}</span>}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setCommentsOpen((v) => !v)}
+            aria-pressed={commentsOpen}
+            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm font-medium transition-colors duration-[var(--duration-fast)] ${
+              commentsOpen ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface)]"
+            }`}
+          >
+            <Icon path={mdiCommentOutline} size={1.05} />
           </button>
 
           <button
@@ -248,6 +295,17 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
           <Icon path={saved ? mdiBookmark : mdiBookmarkOutline} size={1.05} />
         </button>
       </div>
+
+      {commentsOpen && ownerId && (
+        <div className="border-t border-[var(--color-border)]">
+          <CommentList
+            postId={post.PID}
+            postOwnerId={ownerId}
+            currentUserId={currentUserId}
+            currentUserName={currentUser?.user_name ?? "Unknown"}
+          />
+        </div>
+      )}
     </article>
   );
 }

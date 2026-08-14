@@ -63,5 +63,41 @@ service cloud.firestore {
         && request.resource.data.uid == request.auth.uid;
       allow update, delete: if false;
     }
+
+    // COMMENTS/{commentId} - comments are public once posted (read is not
+    // field-scoped since every read here is always via a where("postId", ...)
+    // query, never an unscoped list). Only the author can delete their own.
+    match /COMMENTS/{commentId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if false;
+      allow delete: if request.auth != null
+        && resource.data.authorId == request.auth.uid;
+    }
+
+    // FOLLOWS/{followId} - a follow edge, doc ID is `${followerId}_${followingId}`.
+    // Only the follower can create/delete their own follow edge. Reads are
+    // always scoped by a where() on followerId or followingId (see
+    // fetchFollowing/fetchFollowers), never an unscoped list.
+    match /FOLLOWS/{followId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.followerId == request.auth.uid;
+      allow update: if false;
+      allow delete: if request.auth != null
+        && resource.data.followerId == request.auth.uid;
+    }
+
+    // ACTIVITY/{activityId} - a private per-user activity log. Only the
+    // owning user can read or create their own rows (queried via
+    // where("userId", "==", uid), never an unscoped list). Immutable.
+    match /ACTIVITY/{activityId} {
+      allow read: if request.auth != null
+        && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if false;
+    }
   }
 }

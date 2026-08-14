@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "./keys";
 import { fetchUserByUid, fetchUserByUsername, fetchAllUsers } from "@/lib/firestore/users";
-import { fetchAllPosts, fetchPostsByOwner } from "@/lib/firestore/posts";
+import { fetchAllPosts, fetchPostById, fetchPostsByOwner } from "@/lib/firestore/posts";
 import { fetchActiveStories } from "@/lib/firestore/stories";
+import { fetchFollowers, fetchFollowing } from "@/lib/firestore/follows";
 
 const MISSING_PROFILE_MAX_POLLS = 4;
 
@@ -42,6 +43,14 @@ export function useAllPosts() {
   });
 }
 
+export function usePost(postId: string | null | undefined) {
+  return useQuery({
+    queryKey: queryKeys.posts.byId(postId ?? ""),
+    queryFn: () => fetchPostById(postId as string),
+    enabled: Boolean(postId),
+  });
+}
+
 export function usePostsByOwner(ownerId: string | null | undefined) {
   return useQuery({
     queryKey: queryKeys.posts.byOwner(ownerId ?? ""),
@@ -63,5 +72,29 @@ export function useStoriesByOwner(ownerId: string | null | undefined) {
   return {
     ...rest,
     data: ownerId ? data?.filter((s) => s.STORY_OWNER_DETAIL?.STOID === ownerId) : [],
+  };
+}
+
+export function useFollowing(userId: string | null | undefined) {
+  return useQuery({
+    queryKey: queryKeys.follows.following(userId ?? ""),
+    queryFn: () => fetchFollowing(userId as string),
+    enabled: Boolean(userId),
+  });
+}
+
+export function useFollowers(userId: string | null | undefined) {
+  return useQuery({
+    queryKey: queryKeys.follows.followers(userId ?? ""),
+    queryFn: () => fetchFollowers(userId as string),
+    enabled: Boolean(userId),
+  });
+}
+
+export function useIsFollowing(followerId: string | null | undefined, followingId: string | null | undefined) {
+  const { data: following, ...rest } = useFollowing(followerId);
+  return {
+    ...rest,
+    data: Boolean(following?.some((f) => f.followingId === followingId)),
   };
 }

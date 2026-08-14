@@ -1,9 +1,19 @@
-import { collection, doc, getDocs, orderBy, query, where, deleteDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query, where, deleteDoc } from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
 import { toFirestoreOpError } from "./errors";
 import type { PostDoc } from "./types";
 
 const POSTS_COLLECTION = "USER_POSTS";
+
+export async function fetchPostById(postId: string): Promise<PostDoc | null> {
+  try {
+    const snap = await getDoc(doc(firestore, POSTS_COLLECTION, postId));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...(snap.data() as Omit<PostDoc, "id">) };
+  } catch (error) {
+    throw toFirestoreOpError(error, `Failed to fetch post ${postId}`);
+  }
+}
 
 export async function fetchAllPosts(): Promise<PostDoc[]> {
   try {

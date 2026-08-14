@@ -8,5 +8,6 @@ export { EmptyState } from "./EmptyState";
 export { Modal } from "./Modal";
 export { ErrorBoundary } from "./ErrorBoundary";
 export { Image } from "./Image";
+export { CaptionText } from "./CaptionText";
 export { Tabs, TabPanel } from "./Tabs";
 export type { TabItem } from "./Tabs";

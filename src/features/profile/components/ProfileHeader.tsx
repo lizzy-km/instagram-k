@@ -1,8 +1,14 @@
+import { useState } from "react";
 import { Image, Button } from "@/Components/ui";
 import { Icon } from "@/Components/icons/Icon";
 import { mdiSendVariantOutline } from "@/Components/icons/paths";
+import { FollowButton } from "@/features/follow/FollowButton";
+import { FollowListModal } from "@/features/follow/FollowListModal";
+import { useFollowers, useFollowing } from "@/lib/query/hooks";
 
 interface ProfileHeaderProps {
+  userId: string;
+  currentUserId: string;
   userName: string;
   nickName: string | null;
   avatarUrl: string;
@@ -11,7 +17,20 @@ interface ProfileHeaderProps {
   onSendMessage: () => void;
 }
 
-export function ProfileHeader({ userName, nickName, avatarUrl, coverUrl, isOwnProfile, onSendMessage }: ProfileHeaderProps) {
+export function ProfileHeader({
+  userId,
+  currentUserId,
+  userName,
+  nickName,
+  avatarUrl,
+  coverUrl,
+  isOwnProfile,
+  onSendMessage,
+}: ProfileHeaderProps) {
+  const { data: followers } = useFollowers(userId);
+  const { data: following } = useFollowing(userId);
+  const [listModal, setListModal] = useState<"followers" | "following" | null>(null);
+
   return (
     <div className="w-full">
       <Image src={coverUrl} alt="" aspectRatio="3 / 1" containerClassName="w-full" />
@@ -30,13 +49,33 @@ export function ProfileHeader({ userName, nickName, avatarUrl, coverUrl, isOwnPr
           </div>
         </div>
 
-        {!isOwnProfile && (
-          <Button variant="secondary" onClick={onSendMessage} className="self-start sm:self-auto">
-            <Icon path={mdiSendVariantOutline} size={0.8} />
-            Message
-          </Button>
-        )}
+        <div className="flex items-center gap-2">
+          {!isOwnProfile && (
+            <>
+              <FollowButton currentUserId={currentUserId} targetUserId={userId} targetUserName={userName} />
+              <Button variant="secondary" onClick={onSendMessage}>
+                <Icon path={mdiSendVariantOutline} size={0.8} />
+                Message
+              </Button>
+            </>
+          )}
+        </div>
       </div>
+
+      <div className="mx-auto mt-4 flex max-w-2xl gap-5 px-4 text-sm">
+        <button type="button" onClick={() => setListModal("followers")} className="hover:underline">
+          <span className="font-semibold text-[var(--color-text)]">{followers?.length ?? 0}</span>{" "}
+          <span className="text-[var(--color-text-muted)]">Followers</span>
+        </button>
+        <button type="button" onClick={() => setListModal("following")} className="hover:underline">
+          <span className="font-semibold text-[var(--color-text)]">{following?.length ?? 0}</span>{" "}
+          <span className="text-[var(--color-text-muted)]">Following</span>
+        </button>
+      </div>
+
+      {listModal && (
+        <FollowListModal open userId={userId} mode={listModal} onClose={() => setListModal(null)} />
+      )}
     </div>
   );
 }

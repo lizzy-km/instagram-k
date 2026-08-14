@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Image } from "@/Components/ui";
 import { Icon } from "@/Components/icons/Icon";
-import { mdiBookmark } from "@/Components/icons/paths";
+import { mdiBookmark, mdiCommentOutline } from "@/Components/icons/paths";
 import { logoutUser } from "@/lib/firestore/authActions";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
@@ -29,6 +29,16 @@ export function MenuPage({ userId, userName, avatarUrl }: MenuPageProps) {
         >
           <Icon path={mdiBookmark} size={0.85} />
           <span>Saved posts</span>
+        </NavLink>
+
+        <div className="h-px bg-[var(--color-border)]" />
+
+        <NavLink
+          to="/activity"
+          className="flex items-center gap-3 px-4 py-3 text-sm text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface)]"
+        >
+          <Icon path={mdiCommentOutline} size={0.85} />
+          <span>Your activity</span>
         </NavLink>
 
         <div className="h-px bg-[var(--color-border)]" />

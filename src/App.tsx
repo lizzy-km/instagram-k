@@ -34,6 +34,10 @@ const MessengerPanel = lazy(() =>
 const PostDetailPage = lazy(() =>
   import("@/features/post/PostDetailPage").then((m) => ({ default: m.PostDetailPage }))
 );
+const HashtagPage = lazy(() => import("@/features/hashtags/HashtagPage").then((m) => ({ default: m.HashtagPage })));
+const ActivityPage = lazy(() =>
+  import("@/features/activity/ActivityPage").then((m) => ({ default: m.ActivityPage }))
+);
 
 function getBreakpoint(width: number): Breakpoint {
   if (width < 770) return "mobile";
@@ -132,10 +136,12 @@ function App() {
                   />
                   <Route path="/notification" element={<NotificationsPage currentUserId={uid} />} />
                   <Route path="/menu" element={<MenuPage userId={uid} userName={admin.user_name} avatarUrl={avatarUrl} />} />
+                  <Route path="/activity" element={<ActivityPage userId={uid} />} />
+                  <Route path="/tags/:tag" element={<HashtagPage currentUserId={uid} defaultAvatar={defaultAvatar} />} />
 
                   <Route path="/profile/:username" element={<Navigate to="/:username" replace />} />
+                  <Route path="/:uid/post_detail/:pid" element={<PostDetailPage currentUserId={uid} />} />
                   <Route path="/:user" element={<ProfilePage currentUserId={uid} defaultAvatar={defaultAvatar} />} />
-                  <Route path="/:uid/post_detail/:pid" element={<PostDetailPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               )}

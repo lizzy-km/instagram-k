@@ -3,6 +3,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { checkFileType } from "@/lib/checkFileType";
 import { uploadFileToR2 } from "@/lib/r2Upload";
 import { createPost } from "@/lib/firestore/createPost";
+import { extractHashtags } from "@/lib/hashtags";
+import { logActivity } from "@/lib/firestore/activity";
 import { queryKeys } from "@/lib/query/keys";
 import { useUiStore } from "@/stores/useUiStore";
 import { Modal, Button, Image, Spinner } from "@/Components/ui";
@@ -61,9 +63,16 @@ export function CreatePostModal({ currentUserId, currentUserName, avatarUrl }: C
         UPLOADED_AT: Date.now(),
         isImg: true,
         POST_OWNER_DETAIL: { POID: currentUserId, PON: currentUserName },
-        POST_DETAIL: { POST_CAPTION: caption || null, POST_IMAGE_PATH: images, LIKES: [], SHARES: [] },
+        POST_DETAIL: {
+          POST_CAPTION: caption || null,
+          POST_IMAGE_PATH: images,
+          LIKES: [],
+          SHARES: [],
+          HASHTAGS: extractHashtags(caption),
+        },
       });
       queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
+      logActivity(currentUserId, "post_created", postId);
       reset();
       setOpen(false);
     } finally {
