@@ -7,6 +7,21 @@ interface WatchPageProps {
   defaultAvatar: string;
 }
 
+const GALLERY_ASPECT_RATIOS = ["3 / 4", "1 / 1", "4 / 5", "2 / 3", "5 / 4", "3 / 5"];
+
+function hashString(value: string): number {
+  let hash = 0;
+  for (let i = 0; i < value.length; i++) {
+    hash = (hash << 5) - hash + value.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function aspectRatioFor(key: string): string {
+  return GALLERY_ASPECT_RATIOS[hashString(key) % GALLERY_ASPECT_RATIOS.length] ?? "1 / 1";
+}
+
 export function WatchPage({ defaultAvatar }: WatchPageProps) {
   const { data: posts, isLoading } = useAllPosts();
   const { data: users } = useAllUsers();
@@ -57,6 +72,7 @@ export function WatchPage({ defaultAvatar }: WatchPageProps) {
               ownerId={img.ownerId}
               ownerName={owner?.user_name ?? ""}
               ownerAvatarUrl={owner?.profile?.[0]?.src || defaultAvatar}
+              aspectRatio={aspectRatioFor(`${img.postId}_${img.url}`)}
             />
           );
         })}
