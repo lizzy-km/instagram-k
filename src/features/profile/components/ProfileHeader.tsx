@@ -1,7 +1,6 @@
-import { Image } from "@/Components/ui";
+import { Image, Button } from "@/Components/ui";
 import { Icon } from "@/Components/icons/Icon";
 import { mdiSendVariantOutline } from "@/Components/icons/paths";
-import { useIsDesktop, useIsMobile } from "@/stores/useUiStore";
 
 interface ProfileHeaderProps {
   userName: string;
@@ -13,61 +12,31 @@ interface ProfileHeaderProps {
 }
 
 export function ProfileHeader({ userName, nickName, avatarUrl, coverUrl, isOwnProfile, onSendMessage }: ProfileHeaderProps) {
-  const isDesktop = useIsDesktop();
-  const isMobile = useIsMobile();
-
   return (
-    <section
-      style={{ height: !isDesktop ? "30%" : "80%" }}
-      className="w-full relative flex flex-col justify-center items-center bg-[var(--color-bg-elevated)]"
-    >
-      <div className="absolute w-full h-[70%] top-0 blur-xl opacity-30 brightness-[.45]">
-        <Image src={coverUrl} alt="" aspectRatio="16 / 9" containerClassName="h-full w-full" />
-      </div>
+    <div className="w-full">
+      <Image src={coverUrl} alt="" aspectRatio="3 / 1" containerClassName="w-full" />
 
-      <div
-        style={{ width: !isDesktop ? "100%" : "60%", height: !isDesktop ? "100%" : "80%" }}
-        className="z-[10] relative flex flex-col justify-start items-start"
-      >
-        <Image
-          src={coverUrl}
-          alt=""
-          aspectRatio="16 / 7"
-          containerClassName={`w-full ${isDesktop ? "rounded-b" : ""}`}
-          containerStyle={{ height: !isDesktop ? "80%" : "70%" }}
-        />
-
-        <div style={{ bottom: isMobile ? "2%" : "8%" }} className="w-full h-auto absolute left-0 flex justify-between items-center px-2">
-          <div className="flex gap-2 justify-start items-center w-auto">
-            <Image
-              src={avatarUrl}
-              alt={userName}
-              aspectRatio="1 / 1"
-              containerClassName={`rounded-full ${isMobile ? "w-[60px] h-[60px]" : "w-[150px] h-[150px]"}`}
-            />
-
-            <p
-              style={{ fontSize: isMobile ? "0.9rem" : "2.2rem" }}
-              className="px-2 bg-[var(--color-bg-overlay)] backdrop-blur rounded flex w-auto tracking-wide gap-2 font-medium"
-            >
-              {userName} {nickName && <span className="font-thin">({nickName})</span>}
-            </p>
+      <div className="mx-auto flex max-w-2xl flex-col gap-3 px-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="-mt-10 flex items-end gap-4 sm:-mt-12">
+          <Image
+            src={avatarUrl}
+            alt={userName}
+            aspectRatio="1 / 1"
+            containerClassName="w-20 h-20 sm:w-24 sm:h-24 rounded-full ring-4 ring-[var(--color-bg)] shrink-0"
+          />
+          <div className="pb-1">
+            <h1 className="text-lg font-bold text-[var(--color-text)] sm:text-xl">{userName}</h1>
+            {nickName && <p className="text-sm text-[var(--color-text-faint)]">@{nickName}</p>}
           </div>
-
-          {!isOwnProfile && (
-            <div className="flex gap-4 w-auto h-full justify-end items-end p-1">
-              <button
-                type="button"
-                onClick={onSendMessage}
-                className="bg-[var(--color-bg)] cursor-pointer hover:brightness-110 tracking-wide flex justify-center gap-1 items-center text-center w-auto px-2 rounded-md py-2"
-              >
-                <span className={isMobile ? "text-sm" : ""}>Send Message</span>
-                <Icon path={mdiSendVariantOutline} size={isMobile ? 0.7 : 1} />
-              </button>
-            </div>
-          )}
         </div>
+
+        {!isOwnProfile && (
+          <Button variant="secondary" onClick={onSendMessage} className="self-start sm:self-auto">
+            <Icon path={mdiSendVariantOutline} size={0.8} />
+            Message
+          </Button>
+        )}
       </div>
-    </section>
+    </div>
   );
 }

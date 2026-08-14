@@ -73,19 +73,26 @@ export function AddProfilePhotoModal({ currentUserId }: AddProfilePhotoModalProp
       }}
       labelledBy="add-profile-photo-title"
     >
-      <div className="text-[var(--color-text)] p-4 flex flex-col gap-3 rounded-md w-[min(90vw,400px)]">
-        <h2 id="add-profile-photo-title" className="font-medium">
+      <div className="flex w-[min(92vw,380px)] flex-col gap-4 p-5 text-[var(--color-text)]">
+        <h2 id="add-profile-photo-title" className="text-base font-semibold">
           Change profile picture
         </h2>
 
         {!previewUrl ? (
-          <label className="cursor-pointer flex items-center justify-center h-[250px] w-full bg-[var(--color-surface)] rounded-lg border border-dashed border-[var(--color-border)]">
-            <span className="text-[var(--color-text-muted)]">Click to upload</span>
+          <label className="flex h-56 w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-[var(--radius-md)] border border-dashed border-[var(--color-border-strong)] text-[var(--color-text-faint)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+            </svg>
+            <span className="text-sm">Click to upload</span>
             <input type="file" accept="image/*" onChange={handleFileSelected} className="hidden" />
           </label>
         ) : (
-          <div className="flex justify-center items-center h-[250px] w-full">
-            {uploading ? <Spinner /> : <Image src={previewUrl} alt="" aspectRatio="1 / 1" containerClassName="rounded-full h-full" />}
+          <div className="flex h-56 w-full items-center justify-center">
+            {uploading ? (
+              <Spinner />
+            ) : (
+              <Image src={previewUrl} alt="" aspectRatio="1 / 1" containerClassName="h-full w-auto rounded-full" />
+            )}
           </div>
         )}
 

@@ -4,8 +4,7 @@ import { ProfileHeader } from "./components/ProfileHeader";
 import { FeedPage } from "@/features/feed/FeedPage";
 import { useUserByUsername } from "@/lib/query/hooks";
 import { useMessengerStore } from "@/stores/useMessengerStore";
-import { useIsDesktop } from "@/stores/useUiStore";
-import { EmptyState } from "@/Components/ui";
+import { EmptyState, Skeleton } from "@/Components/ui";
 import { DEFAULT_COVER_URL } from "@/lib/defaultAssets";
 
 interface ProfilePageProps {
@@ -17,7 +16,6 @@ export function ProfilePage({ currentUserId, defaultAvatar }: ProfilePageProps) 
   const { user: username } = useParams<{ user: string }>();
   const { data: profileUser, isLoading } = useUserByUsername(username);
   const openThread = useMessengerStore((s) => s.openThread);
-  const isDesktop = useIsDesktop();
 
   useEffect(() => {
     if (profileUser?.user_name) {
@@ -25,19 +23,29 @@ export function ProfilePage({ currentUserId, defaultAvatar }: ProfilePageProps) 
     }
   }, [profileUser?.user_name]);
 
-  if (isLoading) return null;
+  if (isLoading) {
+    return (
+      <div className="w-full pt-[68px]">
+        <Skeleton className="h-48 w-full rounded-none" />
+        <div className="mx-auto max-w-2xl px-4 pt-6">
+          <Skeleton className="h-6 w-40" />
+        </div>
+      </div>
+    );
+  }
 
   if (!profileUser) {
-    return <EmptyState title="User not found" description="This profile doesn't exist or was removed." />;
+    return (
+      <div className="flex w-full pt-[68px]">
+        <EmptyState title="User not found" description="This profile doesn't exist or was removed." />
+      </div>
+    );
   }
 
   const isOwnProfile = profileUser.UID === currentUserId;
 
   return (
-    <section
-      id="profile-page"
-      className="flex flex-col items-center relative bg-[var(--color-bg)] w-full h-screen max-h-screen overflow-y-auto overflow-x-hidden"
-    >
+    <div className="w-full pt-[68px]">
       <ProfileHeader
         userName={profileUser.user_name}
         nickName={profileUser.nick_name || null}
@@ -47,17 +55,9 @@ export function ProfilePage({ currentUserId, defaultAvatar }: ProfilePageProps) 
         onSendMessage={() => openThread(profileUser.UID)}
       />
 
-      <section
-        style={{
-          top: !isDesktop ? "31%" : "81%",
-          width: !isDesktop ? "100%" : "80%",
-        }}
-        className="absolute h-auto flex justify-center items-center p-2 gap-4"
-      >
-        <div style={{ width: !isDesktop ? "100%" : "45%" }} className="flex flex-col gap-4 rounded-md">
-          <FeedPage currentUserId={currentUserId} filterByOwnerId={profileUser.UID} />
-        </div>
-      </section>
-    </section>
+      <div className="mx-auto mt-6 max-w-2xl px-4 pb-8">
+        <FeedPage currentUserId={currentUserId} filterByOwnerId={profileUser.UID} />
+      </div>
+    </div>
   );
 }
