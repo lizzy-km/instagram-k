@@ -27,9 +27,11 @@ interface PostCardProps {
   currentUserId: string;
   defaultAvatar: string;
   onDeleted?: () => void;
+  /** When set, this post is shown because this user reshared it (profile view). */
+  sharedByName?: string;
 }
 
-export function PostCard({ post, currentUserId, defaultAvatar, onDeleted }: PostCardProps) {
+export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, sharedByName }: PostCardProps) {
   const queryClient = useQueryClient();
   const ownerId = post.POST_OWNER_DETAIL?.POID ?? null;
   const ownerName = post.POST_OWNER_DETAIL?.PON ?? "Unknown";
@@ -147,6 +149,13 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted }: Post
 
   return (
     <article className="w-full overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--shadow-sm)]">
+      {sharedByName && (
+        <div className="flex items-center gap-2 border-b border-[var(--color-border)] px-4 py-2 text-xs font-medium text-[var(--color-text-muted)]">
+          <Icon path={mdiShare} size={0.75} />
+          <span>Shared by {sharedByName}</span>
+        </div>
+      )}
+
       <div className="flex items-center justify-between px-4 py-3">
         <NameCard
           userAvatar={defaultAvatar}

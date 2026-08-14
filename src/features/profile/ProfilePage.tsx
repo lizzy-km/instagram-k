@@ -56,7 +56,12 @@ export function ProfilePage({ currentUserId, defaultAvatar }: ProfilePageProps) 
       />
 
       <div className="mx-auto mt-6 max-w-2xl px-4 pb-8">
-        <FeedPage currentUserId={currentUserId} filterByOwnerId={profileUser.UID} />
+        <FeedPage
+          currentUserId={currentUserId}
+          filterByOwnerId={profileUser.UID}
+          sharedPostIds={profileUser.shared_posts?.map((s) => s.SHPID) ?? []}
+          sharedByName={profileUser.user_name}
+        />
       </div>
     </div>
   );
