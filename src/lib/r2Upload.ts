@@ -18,7 +18,7 @@ export async function uploadFileToR2(file: File, key: string): Promise<string> {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ key, contentType: file.type }),
-    });
+    }); 
 
     if (!res.ok) {
       throw new R2UploadError(`Failed to get upload URL (${res.status})`);

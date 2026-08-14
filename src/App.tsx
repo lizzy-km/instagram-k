@@ -15,6 +15,7 @@ import { AddProfilePhotoModal } from "@/features/profile/AddProfilePhotoModal";
 import { NotFoundPage } from "@/features/notFound/NotFoundPage";
 import { ErrorBoundary, EmptyState, Spinner } from "@/Components/ui";
 import { useUiStore, type Breakpoint } from "@/stores/useUiStore";
+import { DEFAULT_AVATAR_URL } from "@/lib/defaultAssets";
 
 const FeedPage = lazy(() => import("@/features/feed/FeedPage").then((m) => ({ default: m.FeedPage })));
 const ProfilePage = lazy(() => import("@/features/profile/ProfilePage").then((m) => ({ default: m.ProfilePage })));
@@ -62,8 +63,7 @@ function App() {
 
   if (isLoading) return <PageFallback />;
 
-  const defaultAvatar =
-    "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2Fe8d7d05f392d9c2cf0285ce928fb9f4a.jpeg?alt=media&token=43dffced-a38e-40cf-9387-6a7071e40baa";
+  const defaultAvatar = DEFAULT_AVATAR_URL;
   const avatarUrl = admin?.profile?.[0]?.src || defaultAvatar;
 
   // isAuthenticated reflects Firebase Auth alone. `admin` (the Firestore

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { UserDoc } from "@/lib/firestore/types";
+import { DEFAULT_AVATAR_URL } from "@/lib/defaultAssets";
 
 interface SessionState {
   admin: UserDoc | null;
@@ -12,12 +13,9 @@ interface SessionState {
   bumpFeed: () => void;
 }
 
-const DEFAULT_AVATAR =
-  "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2Fe8d7d05f392d9c2cf0285ce928fb9f4a.jpeg?alt=media&token=43dffced-a38e-40cf-9387-6a7071e40baa";
-
 export const useSessionStore = create<SessionState>((set) => ({
   admin: null,
-  adminAvatarUrl: DEFAULT_AVATAR,
+  adminAvatarUrl: DEFAULT_AVATAR_URL,
   hasNewStory: false,
   feedVersion: 0,
   setAdmin: (admin) => set({ admin }),
