@@ -4,11 +4,19 @@ import { fetchUserByUid, fetchUserByUsername, fetchAllUsers } from "@/lib/firest
 import { fetchAllPosts, fetchPostsByOwner } from "@/lib/firestore/posts";
 import { fetchActiveStories } from "@/lib/firestore/stories";
 
+const MISSING_PROFILE_MAX_POLLS = 4;
+
 export function useUser(uid: string | null | undefined) {
   return useQuery({
     queryKey: queryKeys.users.byUid(uid ?? ""),
     queryFn: () => fetchUserByUid(uid as string),
     enabled: Boolean(uid),
+    // A user doc can briefly not exist yet right after sign-up (auth state
+    // resolves before the profile-creation write lands). Poll a few times
+    // instead of trusting a single "not found" result for the full staleTime,
+    // then give up so a genuinely missing profile doesn't poll forever.
+    refetchInterval: (query) =>
+      query.state.data === null && query.state.dataUpdateCount <= MISSING_PROFILE_MAX_POLLS ? 1500 : false,
   });
 }
 

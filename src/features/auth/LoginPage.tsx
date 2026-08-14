@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -10,6 +11,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { auth, storage } from "@/firebase/firebase";
 import { createUserDoc } from "@/lib/firestore/createUser";
 import { setUserOnlineStatus } from "@/lib/firestore/postActions";
+import { queryKeys } from "@/lib/query/keys";
 import { Button, Input, Spinner } from "@/Components/ui";
 
 interface LoginFormValues {
@@ -31,6 +33,7 @@ function firstName(name: string): string[] {
 }
 
 export function LoginPage() {
+  const queryClient = useQueryClient();
   const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [passwordIssues, setPasswordIssues] = useState<string[]>([]);
@@ -84,6 +87,11 @@ export function LoginPage() {
 
       await createUserDoc({ uid: user.uid, email: values.email, name, profile });
       await updateProfile(user, { displayName: name, photoURL });
+      // The auth state change fires as soon as createUserWithEmailAndPassword
+      // resolves, which races the profile doc write above - without this,
+      // the app's user-profile query can cache a "not found" result from
+      // before this doc existed and not refetch for its full staleTime.
+      await queryClient.invalidateQueries({ queryKey: queryKeys.users.byUid(user.uid) });
       setIsSignUp(false);
     } catch {
       toast.error("Signup Failed!");
