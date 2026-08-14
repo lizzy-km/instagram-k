@@ -1,12 +1,12 @@
+@import "./styles/tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  color: #d4d4d4;
-  filter : invert(100%);
-  backdrop-filter: 10%;
-  overflow: hidden;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .cl-internal-b3fm6y,
@@ -16,19 +16,9 @@ body {
 }
 
 .active > .out_line {
-  background-color: #ca3e47;
+  background-color: var(--color-accent);
 }
 
 * {
-  scrollbar-width: none;
   scroll-behavior: smooth;
-}
-
-::-webkit-scrollbar {
-  display: none;
-}
-
-.invert-none {
-  --tw-invert: invert(100%) !important;
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
