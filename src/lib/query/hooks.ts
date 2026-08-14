@@ -49,3 +49,11 @@ export function useActiveStories() {
     staleTime: 60_000,
   });
 }
+
+export function useStoriesByOwner(ownerId: string | null | undefined) {
+  const { data, ...rest } = useActiveStories();
+  return {
+    ...rest,
+    data: ownerId ? data?.filter((s) => s.STORY_OWNER_DETAIL?.STOID === ownerId) : [],
+  };
+}

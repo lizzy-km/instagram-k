@@ -16,8 +16,7 @@ export async function fetchActiveStories(): Promise<StoryDoc[]> {
 
     for (const d of snap.docs) {
       const data = d.data() as Omit<StoryDoc, "id">;
-      const createdAtMs = data.createdAtMs ?? null;
-      const isStale = createdAtMs !== null && now - createdAtMs > STORY_TTL_MS;
+      const isStale = now - data.UPLOADED_AT > STORY_TTL_MS;
 
       if (isStale) {
         stale.push(d.id);
@@ -36,5 +35,13 @@ export async function fetchActiveStories(): Promise<StoryDoc[]> {
     return active;
   } catch (error) {
     throw toFirestoreOpError(error, "Failed to fetch stories");
+  }
+}
+
+export async function deleteStory(storyId: string): Promise<void> {
+  try {
+    await deleteDoc(doc(firestore, STORIES_COLLECTION, storyId));
+  } catch (error) {
+    throw toFirestoreOpError(error, `Failed to delete story ${storyId}`);
   }
 }

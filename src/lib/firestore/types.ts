@@ -79,12 +79,19 @@ export interface PostDoc {
 
 export interface StoryOwnerDetail {
   STOID: string;
+  STON: string;
+}
+
+export interface StoryDetail {
+  STORY_IMAGE_PATH: PostImage | null;
 }
 
 export interface StoryDoc {
   id: string;
+  STID: string;
+  UPLOADED_AT: number;
   STORY_OWNER_DETAIL: StoryOwnerDetail | null;
-  createdAtMs: number | null;
+  STORY_DETAIL: StoryDetail | null;
 }
 
 export interface MessageDoc {
