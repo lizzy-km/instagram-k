@@ -1,18 +1,27 @@
 import { useState } from "react";
-import type { ImgHTMLAttributes } from "react";
+import type { CSSProperties, ImgHTMLAttributes } from "react";
 
-interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "onError" | "onLoad"> {
+interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "onError" | "onLoad" | "style"> {
   aspectRatio?: string;
   containerClassName?: string;
+  containerStyle?: CSSProperties;
 }
 
-export function Image({ src, alt, aspectRatio = "1 / 1", containerClassName = "", className = "", ...props }: ImageProps) {
+export function Image({
+  src,
+  alt,
+  aspectRatio = "1 / 1",
+  containerClassName = "",
+  containerStyle,
+  className = "",
+  ...props
+}: ImageProps) {
   const [status, setStatus] = useState<"loading" | "loaded" | "error">(src ? "loading" : "error");
 
   return (
     <div
       className={`relative overflow-hidden bg-[var(--color-surface)] ${containerClassName}`}
-      style={{ aspectRatio }}
+      style={{ aspectRatio, ...containerStyle }}
     >
       {status === "loading" && <div className="absolute inset-0 animate-pulse bg-[var(--color-surface)]" />}
 
