@@ -12,8 +12,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "allowJs": true,
-    "checkJs": false,
 
     "strict": true,
     "noUncheckedIndexedAccess": true,
