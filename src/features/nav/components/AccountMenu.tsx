@@ -18,33 +18,36 @@ export function AccountMenu({ open, userId, userName, avatarUrl }: AccountMenuPr
   if (!open) return null;
 
   return (
-    <div className="flex w-full backdrop-blur-lg bg-[var(--color-bg-elevated)] rounded-md">
-      <div className="w-full h-full flex flex-col p-2 justify-start items-start gap-2">
-        <button
-          type="button"
-          onClick={() => setAddProfileOpen(true)}
-          className="text-[var(--color-text)] flex w-[90%] px-2 py-1 hover:bg-[var(--color-surface)] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center"
-        >
-          <Icon path={mdiPlus} size={1} />
-          <p className="font-medium text-[16px] tracking-wide">Change Profile Picture</p>
-        </button>
+    <div className="w-full rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-1.5 shadow-[var(--shadow-lg)] animate-[scale-in_var(--duration-fast)_var(--ease-standard)]">
+      <NavLink
+        to={`/${userId}`}
+        className="flex items-center gap-3 rounded-[var(--radius-sm)] px-2.5 py-2 transition-colors hover:bg-[var(--color-surface)]"
+      >
+        <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="w-9 h-9 rounded-full shrink-0" />
+        <span className="text-sm font-semibold text-[var(--color-text)] truncate">{userName}</span>
+      </NavLink>
 
-        <NavLink
-          to={`/${userId}`}
-          className="text-[var(--color-text)] flex w-[90%] px-2 py-1 hover:bg-[var(--color-surface)] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center"
-        >
-          <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="w-[40px] h-[40px] rounded-full" />
-          <p className="font-medium text-[16px] tracking-wide">{userName}</p>
-        </NavLink>
+      <div className="my-1 h-px bg-[var(--color-border)]" />
 
-        <button
-          type="button"
-          onClick={() => logoutUser(userId)}
-          className="text-[var(--color-text)] flex w-[90%] px-2 py-1 hover:bg-[var(--color-surface)] rounded-md cursor-pointer gap-2 h-[45px] justify-start items-center"
-        >
-          <p className="hover:text-red-500">Logout</p>
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={() => setAddProfileOpen(true)}
+        className="flex w-full items-center gap-3 rounded-[var(--radius-sm)] px-2.5 py-2 text-sm text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface)]"
+      >
+        <Icon path={mdiPlus} size={0.85} />
+        <span>Change profile picture</span>
+      </button>
+
+      <button
+        type="button"
+        onClick={() => logoutUser(userId)}
+        className="flex w-full items-center gap-3 rounded-[var(--radius-sm)] px-2.5 py-2 text-sm text-[var(--color-danger)] transition-colors hover:bg-[var(--color-danger-soft)]"
+      >
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z" />
+        </svg>
+        <span>Log out</span>
+      </button>
     </div>
   );
 }

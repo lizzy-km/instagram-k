@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Icon } from "@/Components/icons/Icon";
 import { mdiCloseCircleMultiple } from "@/Components/icons/paths";
-import { Image } from "@/Components/ui";
+import { Image, EmptyState } from "@/Components/ui";
 import { useAllUsers } from "@/lib/query/hooks";
 
 interface SearchBarProps {
@@ -13,6 +13,7 @@ export function SearchBar({ defaultAvatar }: SearchBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const { data: users } = useAllUsers();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const results = useMemo(() => {
     if (searchText.length <= 1) return [];
@@ -20,60 +21,78 @@ export function SearchBar({ defaultAvatar }: SearchBarProps) {
     return users?.filter((u) => u.user_name?.toLowerCase().includes(needle)) ?? [];
   }, [users, searchText]);
 
+  function open() {
+    setIsOpen(true);
+    requestAnimationFrame(() => inputRef.current?.focus());
+  }
+
   function close() {
     setIsOpen(false);
     setSearchText("");
   }
 
   return (
-    <div
-      style={{ width: isOpen ? "80%" : "40px" }}
-      className="pr-2 relative transition-all bg-[var(--color-surface)] px-1 flex h-[40px] rounded-full justify-start items-center"
-    >
-      <button type="button" aria-label="Search" onClick={() => setIsOpen(true)} className="cursor-pointer px-2">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
-        </svg>
-      </button>
+    <div className="relative">
+      <div
+        className={`flex h-10 items-center rounded-[var(--radius-full)] bg-[var(--color-surface)] transition-[width] duration-[var(--duration-base)] ease-[var(--ease-standard)] ${
+          isOpen ? "w-64" : "w-10"
+        }`}
+      >
+        <button
+          type="button"
+          aria-label="Search"
+          onClick={open}
+          className="flex h-10 w-10 shrink-0 items-center justify-center text-[var(--color-text-muted)]"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+          </svg>
+        </button>
 
-      {isOpen && (
-        <>
-          <input
-            autoFocus
-            onChange={(e) => setSearchText(e.target.value)}
-            value={searchText}
-            placeholder="Search"
-            className="transition-all bg-transparent outline-none border-none tracking-wide px-1 flex h-[40px] w-full justify-start items-center text-[var(--color-text)]"
-          />
-          <button type="button" aria-label="Close search" onClick={close} className="cursor-pointer opacity-50">
-            <Icon path={mdiCloseCircleMultiple} size={1} />
-          </button>
+        {isOpen && (
+          <>
+            <input
+              ref={inputRef}
+              onChange={(e) => setSearchText(e.target.value)}
+              value={searchText}
+              placeholder="Search"
+              className="h-full w-full bg-transparent text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-faint)] outline-none"
+            />
+            <button
+              type="button"
+              aria-label="Close search"
+              onClick={close}
+              className="flex h-10 w-9 shrink-0 items-center justify-center text-[var(--color-text-faint)] hover:text-[var(--color-text-muted)]"
+            >
+              <Icon path={mdiCloseCircleMultiple} size={0.85} />
+            </button>
+          </>
+        )}
+      </div>
 
-          <div className="flex justify-start items-center flex-col px-2 py-3 absolute top-[120%] left-0 w-full min-h-[100px] bg-[var(--color-surface)] rounded-xl z-[999]">
-            {searchText.length > 1 && results.length > 0 ? (
-              results.map((u) => (
-                <NavLink
-                  key={u.UID}
-                  onClick={close}
-                  to={`/${u.UID}`}
-                  className="flex text-lg justify-start items-center p-2 rounded-lg hover:bg-[var(--color-bg-elevated)] gap-2 w-[95%] h-[50px]"
-                >
-                  <Image
-                    src={u.profile?.[0]?.src || defaultAvatar}
-                    alt=""
-                    aspectRatio="1 / 1"
-                    containerClassName="w-[50px] h-[50px] rounded-full"
-                  />
-                  <p>{u.user_name}</p>
-                </NavLink>
-              ))
-            ) : searchText.length > 1 ? (
-              <div className="flex p-2 rounded-lg bg-[var(--color-bg-elevated)] w-[95%] h-[40px] items-center">
-                <p>No search results.</p>
-              </div>
-            ) : null}
-          </div>
-        </>
+      {isOpen && searchText.length > 1 && (
+        <div className="absolute left-0 top-[calc(100%+8px)] z-[999] w-72 max-h-96 overflow-y-auto rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-2 shadow-[var(--shadow-lg)] animate-[scale-in_var(--duration-fast)_var(--ease-standard)]">
+          {results.length > 0 ? (
+            results.map((u) => (
+              <NavLink
+                key={u.UID}
+                onClick={close}
+                to={`/${u.UID}`}
+                className="flex items-center gap-3 rounded-[var(--radius-sm)] p-2 transition-colors hover:bg-[var(--color-surface)]"
+              >
+                <Image
+                  src={u.profile?.[0]?.src || defaultAvatar}
+                  alt=""
+                  aspectRatio="1 / 1"
+                  containerClassName="w-10 h-10 rounded-full shrink-0"
+                />
+                <span className="text-sm font-medium text-[var(--color-text)] truncate">{u.user_name}</span>
+              </NavLink>
+            ))
+          ) : (
+            <EmptyState title="No results" description={`No one matching "${searchText}"`} />
+          )}
+        </div>
       )}
     </div>
   );

@@ -7,7 +7,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(({ className = 
   return (
     <select
       ref={ref}
-      className={`rounded-md border border-[var(--color-border)] bg-[var(--color-bg-elevated)] text-[var(--color-text)] px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)] ${className}`}
+      className={`rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] text-[var(--color-text)] px-3.5 py-2.5 text-sm transition-colors duration-[var(--duration-fast)] outline-none focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent-soft)] ${className}`}
       {...props}
     />
   );

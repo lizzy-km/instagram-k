@@ -7,18 +7,15 @@
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-}
-
-.cl-internal-b3fm6y,
-.cl-userButtonPopoverFooter,
-.cl-internal-uyu30o {
-  display: none !important;
-}
-
-.active > .out_line {
-  background-color: var(--color-accent);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 * {
   scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
 }

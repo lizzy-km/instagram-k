@@ -36,7 +36,12 @@ export function Tabs({ items, value, onChange, className = "" }: TabsProps) {
   }
 
   return (
-    <div ref={listRef} role="tablist" className={`flex gap-1 ${className}`} onKeyDown={onKeyDown}>
+    <div
+      ref={listRef}
+      role="tablist"
+      className={`inline-flex gap-1 rounded-[var(--radius-md)] bg-[var(--color-surface)] p-1 ${className}`}
+      onKeyDown={onKeyDown}
+    >
       {items.map((item) => {
         const selected = item.value === value;
         return (
@@ -48,10 +53,10 @@ export function Tabs({ items, value, onChange, className = "" }: TabsProps) {
             aria-controls={`${baseId}-panel-${item.value}`}
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(item.value)}
-            className={`px-3 py-1.5 text-sm rounded-md transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-accent)] ${
+            className={`px-3.5 py-1.5 text-sm font-medium rounded-[var(--radius-sm)] transition-all duration-[var(--duration-fast)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] ${
               selected
-                ? "bg-[var(--color-accent)] text-white"
-                : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface)]"
+                ? "bg-[var(--color-bg-elevated)] text-[var(--color-text)] shadow-[var(--shadow-sm)]"
+                : "text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
             }`}
           >
             {item.label}

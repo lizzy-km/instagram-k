@@ -7,6 +7,7 @@ import "./App.css";
 import { useCurrentUser } from "@/features/auth/useCurrentUser";
 import { LoginPage } from "@/features/auth/LoginPage";
 import { NavBar } from "@/features/nav/NavBar";
+import { BottomTabBar } from "@/features/nav/components/BottomTabBar";
 import { StoryRail } from "@/features/stories/StoryRail";
 import { ViewStoryModal } from "@/features/stories/ViewStoryModal";
 import { CreateStoryModal } from "@/features/stories/CreateStoryModal";
@@ -14,7 +15,7 @@ import { CreatePostModal } from "@/features/feed/CreatePostModal";
 import { AddProfilePhotoModal } from "@/features/profile/AddProfilePhotoModal";
 import { NotFoundPage } from "@/features/notFound/NotFoundPage";
 import { ErrorBoundary, EmptyState, Spinner } from "@/Components/ui";
-import { useUiStore, type Breakpoint } from "@/stores/useUiStore";
+import { useUiStore, useIsMobile, type Breakpoint } from "@/stores/useUiStore";
 import { DEFAULT_AVATAR_URL } from "@/lib/defaultAssets";
 
 const FeedPage = lazy(() => import("@/features/feed/FeedPage").then((m) => ({ default: m.FeedPage })));
@@ -51,6 +52,7 @@ function PageFallback() {
 function App() {
   const { uid, isAuthenticated, admin, isLoading, isProfileMissing } = useCurrentUser();
   const setBreakpoint = useUiStore((s) => s.setBreakpoint);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     function onResize() {
@@ -89,51 +91,55 @@ function App() {
           </>
         )}
 
-        <ErrorBoundary>
-          <Suspense fallback={<PageFallback />}>
-            {!isLoggedIn ? (
-              <Routes>
-                <Route path="/*" element={<LoginPage />} />
-              </Routes>
-            ) : isProfileMissing ? (
-              <div className="flex w-full h-screen items-center justify-center">
-                <EmptyState
-                  title="We couldn't find your profile"
-                  description="Your account signed in, but no profile data exists for it yet. Try refreshing, or contact support if this keeps happening."
-                />
-              </div>
-            ) : !uid || !admin ? (
-              <PageFallback />
-            ) : (
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <div className="w-full flex flex-col items-center gap-6 pt-[90px]">
-                      <StoryRail currentUserId={uid} defaultAvatar={defaultAvatar} />
-                      <FeedPage currentUserId={uid} />
-                    </div>
-                  }
-                />
-                <Route path="/game" element={<GamePage />} />
-                <Route path="/gallery" element={<WatchPage defaultAvatar={defaultAvatar} />} />
-                <Route path="/group" element={<GroupPage />} />
-                <Route path="/saved" element={<SavedPage currentUserId={uid} defaultAvatar={defaultAvatar} />} />
-                <Route
-                  path="/message/:id"
-                  element={<MessengerPanel currentUserId={uid} currentUserAvatar={avatarUrl} defaultAvatar={defaultAvatar} />}
-                />
-                <Route path="/notification" element={<NotificationsPage currentUserId={uid} />} />
-                <Route path="/menu" element={<MenuPage userId={uid} userName={admin.user_name} avatarUrl={avatarUrl} />} />
+        <div className={isLoggedIn && isMobile ? "pb-16" : ""}>
+          <ErrorBoundary>
+            <Suspense fallback={<PageFallback />}>
+              {!isLoggedIn ? (
+                <Routes>
+                  <Route path="/*" element={<LoginPage />} />
+                </Routes>
+              ) : isProfileMissing ? (
+                <div className="flex w-full h-screen items-center justify-center">
+                  <EmptyState
+                    title="We couldn't find your profile"
+                    description="Your account signed in, but no profile data exists for it yet. Try refreshing, or contact support if this keeps happening."
+                  />
+                </div>
+              ) : !uid || !admin ? (
+                <PageFallback />
+              ) : (
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <div className="w-full max-w-xl mx-auto flex flex-col items-center gap-6 pt-[76px] px-3">
+                        <StoryRail currentUserId={uid} defaultAvatar={defaultAvatar} />
+                        <FeedPage currentUserId={uid} />
+                      </div>
+                    }
+                  />
+                  <Route path="/game" element={<GamePage />} />
+                  <Route path="/gallery" element={<WatchPage defaultAvatar={defaultAvatar} />} />
+                  <Route path="/group" element={<GroupPage />} />
+                  <Route path="/saved" element={<SavedPage currentUserId={uid} defaultAvatar={defaultAvatar} />} />
+                  <Route
+                    path="/message/:id"
+                    element={<MessengerPanel currentUserId={uid} currentUserAvatar={avatarUrl} defaultAvatar={defaultAvatar} />}
+                  />
+                  <Route path="/notification" element={<NotificationsPage currentUserId={uid} />} />
+                  <Route path="/menu" element={<MenuPage userId={uid} userName={admin.user_name} avatarUrl={avatarUrl} />} />
 
-                <Route path="/profile/:username" element={<Navigate to="/:username" replace />} />
-                <Route path="/:user" element={<ProfilePage currentUserId={uid} defaultAvatar={defaultAvatar} />} />
-                <Route path="/:uid/post_detail/:pid" element={<PostDetailPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            )}
-          </Suspense>
-        </ErrorBoundary>
+                  <Route path="/profile/:username" element={<Navigate to="/:username" replace />} />
+                  <Route path="/:user" element={<ProfilePage currentUserId={uid} defaultAvatar={defaultAvatar} />} />
+                  <Route path="/:uid/post_detail/:pid" element={<PostDetailPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              )}
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+
+        {isLoggedIn && isMobile && uid && admin && <BottomTabBar avatarUrl={avatarUrl} userId={uid} />}
       </BrowserRouter>
     </section>
   );

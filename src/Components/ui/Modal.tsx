@@ -64,7 +64,7 @@ export function Modal({ open, onClose, children, labelledBy }: ModalProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[999] flex items-center justify-center bg-[var(--color-bg-overlay)] backdrop-blur-sm p-4"
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-[var(--color-bg-overlay)] backdrop-blur-md p-4 animate-[fade-in_var(--duration-base)_var(--ease-standard)]"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -74,7 +74,7 @@ export function Modal({ open, onClose, children, labelledBy }: ModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby={labelledBy}
-        className="max-h-[90vh] overflow-auto rounded-lg bg-[var(--color-bg-elevated)] shadow-xl"
+        className="max-h-[90vh] overflow-auto rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] shadow-[var(--shadow-lg)] animate-[scale-in_var(--duration-base)_var(--ease-standard)]"
       >
         {children}
       </div>
