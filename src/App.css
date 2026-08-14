@@ -136,12 +136,3 @@ body {
   @apply p-0 shadow-md flex min-w-[140.6px] h-full bg-[#242526] rounded-md;
 }
 
-.carousel {
-  div{
-    @apply rounded-none
-  }
-}
-
-.moveStory{
-  @apply cursor-pointer relative flex justify-center items-center w-[24px] h-[24px] !rounded-full bg-[#333333];
-}

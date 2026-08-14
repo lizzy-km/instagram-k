@@ -6,6 +6,7 @@ export { Spinner } from "./Spinner";
 export { Skeleton } from "./Skeleton";
 export { EmptyState } from "./EmptyState";
 export { Modal } from "./Modal";
+export { ErrorBoundary } from "./ErrorBoundary";
 export { Image } from "./Image";
 export { Tabs, TabPanel } from "./Tabs";
 export type { TabItem } from "./Tabs";
