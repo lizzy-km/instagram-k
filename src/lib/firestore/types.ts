@@ -73,8 +73,10 @@ export interface CommentDoc {
   postId: string;
   authorId: string;
   authorName: string;
+  authorAvatar: string | null;
   text: string;
   createdAt: number;
+  editedAt?: number;
 }
 
 /** A follow edge: followerId follows followingId. Doc ID is `${followerId}_${followingId}`. */

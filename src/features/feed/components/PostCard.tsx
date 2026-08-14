@@ -303,6 +303,8 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
             postOwnerId={ownerId}
             currentUserId={currentUserId}
             currentUserName={currentUser?.user_name ?? "Unknown"}
+            currentUserAvatar={currentUser?.profile?.[0]?.src}
+            defaultAvatar={defaultAvatar}
           />
         </div>
       )}

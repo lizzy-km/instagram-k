@@ -16,10 +16,13 @@ export function MenuPage({ userId, userName, avatarUrl }: MenuPageProps) {
     <div className="mx-auto w-full max-w-md px-3 pb-8 pt-[76px]">
       <NavLink
         to={`/${userId}`}
-        className="mb-4 flex items-center gap-3 rounded-[var(--radius-md)] p-2 transition-colors hover:bg-[var(--color-surface)]"
+        className="mb-4 flex items-center gap-3 rounded-[var(--radius-md)] border border-[var(--color-border)] p-3 transition-colors hover:bg-[var(--color-surface)]"
       >
         <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="w-12 h-12 rounded-full shrink-0" />
-        <span className="text-base font-semibold text-[var(--color-text)]">{userName}</span>
+        <div className="flex flex-col">
+          <span className="text-base font-semibold text-[var(--color-text)]">{userName}</span>
+          <span className="text-xs text-[var(--color-text-faint)]">View your profile</span>
+        </div>
       </NavLink>
 
       <div className="overflow-hidden rounded-[var(--radius-md)] border border-[var(--color-border)]">

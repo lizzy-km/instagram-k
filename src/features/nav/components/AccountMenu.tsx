@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Image } from "@/Components/ui";
 import { Icon } from "@/Components/icons/Icon";
-import { mdiPlus } from "@/Components/icons/paths";
+import { mdiPlus, mdiClockOutline } from "@/Components/icons/paths";
 import { logoutUser } from "@/lib/firestore/authActions";
 import { useUiStore } from "@/stores/useUiStore";
 
@@ -25,6 +25,16 @@ export function AccountMenu({ open, userId, userName, avatarUrl }: AccountMenuPr
       >
         <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="w-9 h-9 rounded-full shrink-0" />
         <span className="text-sm font-semibold text-[var(--color-text)] truncate">{userName}</span>
+      </NavLink>
+
+      <div className="my-1 h-px bg-[var(--color-border)]" />
+
+      <NavLink
+        to="/activity"
+        className="flex items-center gap-3 rounded-[var(--radius-sm)] px-2.5 py-2 text-sm text-[var(--color-text)] transition-colors hover:bg-[var(--color-surface)]"
+      >
+        <Icon path={mdiClockOutline} size={0.85} />
+        <span>Your activity</span>
       </NavLink>
 
       <div className="my-1 h-px bg-[var(--color-border)]" />

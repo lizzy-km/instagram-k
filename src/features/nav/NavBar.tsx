@@ -53,6 +53,9 @@ export function NavBar({ userId, userName, avatarUrl }: NavBarProps) {
     return () => document.removeEventListener("mousedown", onClickOutside);
   }, [accountOpen]);
 
+
+  // console.log(avatarUrl)
+
   return (
     <header className="fixed top-0 z-[99] flex w-full items-center justify-between gap-3 border-b border-[var(--color-border)] bg-[var(--color-bg)]/85 px-4 py-2.5 backdrop-blur-md">
       <div className="flex items-center gap-3">
@@ -82,7 +85,7 @@ export function NavBar({ userId, userName, avatarUrl }: NavBarProps) {
             type="button"
             aria-label="Account settings"
             onClick={() => setAccountOpen((v) => !v)}
-            className={`flex h-9 w-9 items-center justify-center rounded-full ring-2 transition-all duration-[var(--duration-fast)] ${
+            className={`flex h-9 w-9 bg-white/40 items-center justify-center rounded-full ring-2 transition-all duration-[var(--duration-fast)] ${
               accountOpen ? "ring-[var(--color-accent)]" : "ring-transparent hover:ring-[var(--color-border-strong)]"
             }`}
           >

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { activityQuery } from "@/lib/firestore/activity";
 import { useCollectionDataWithId } from "@/lib/useCollectionDataWithId";
 import { timeAgo } from "@/lib/useTimeAgo";
@@ -52,8 +53,29 @@ const ACTIVITY_ICON: Record<ActivityType, string> = {
   user_unfollowed: mdiHeart,
 };
 
+const POST_ACTIVITY_TYPES: ActivityType[] = [
+  "post_created",
+  "post_liked",
+  "post_unliked",
+  "post_shared",
+  "post_unshared",
+  "post_saved",
+  "post_unsaved",
+  "post_commented",
+];
+
+const USER_ACTIVITY_TYPES: ActivityType[] = ["user_followed", "user_unfollowed"];
+
+function activityLinkFor(item: ActivityDoc): string | null {
+  if (!item.targetId) return null;
+  if (POST_ACTIVITY_TYPES.includes(item.type)) return `/_/post_detail/${item.targetId}`;
+  if (USER_ACTIVITY_TYPES.includes(item.type)) return `/${item.targetId}`;
+  return null;
+}
+
 export function ActivityPage({ userId }: ActivityPageProps) {
   const [activity, loading] = useCollectionDataWithId<ActivityDoc>(activityQuery(userId));
+  const navigate = useNavigate();
 
   return (
     <div className="mx-auto w-full max-w-xl px-3 pb-8 pt-[76px]">
@@ -71,20 +93,31 @@ export function ActivityPage({ userId }: ActivityPageProps) {
       )}
 
       <div className="flex flex-col gap-1">
-        {activity?.map((item) => (
-          <div key={item.id} className="flex items-center gap-3 rounded-[var(--radius-md)] p-3">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface)] text-[var(--color-text-muted)]">
-              <Icon path={ACTIVITY_ICON[item.type]} size={0.85} />
-            </div>
-            <div className="flex flex-col">
-              <p className="text-sm text-[var(--color-text)]">
-                {ACTIVITY_LABEL[item.type]}
-                {item.targetLabel ? ` ${item.targetLabel}` : ""}
-              </p>
-              <span className="text-xs text-[var(--color-text-faint)]">{timeAgo(item.createdAt)}</span>
-            </div>
-          </div>
-        ))}
+        {activity?.map((item) => {
+          const link = activityLinkFor(item);
+          const Wrapper = link ? "button" : "div";
+          return (
+            <Wrapper
+              key={item.id}
+              type={link ? "button" : undefined}
+              onClick={link ? () => navigate(link) : undefined}
+              className={`flex w-full items-center gap-3 rounded-[var(--radius-md)] p-3 text-left transition-colors ${
+                link ? "cursor-pointer hover:bg-[var(--color-surface)]" : ""
+              }`}
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface)] text-[var(--color-text-muted)]">
+                <Icon path={ACTIVITY_ICON[item.type]} size={0.85} />
+              </div>
+              <div className="flex flex-col">
+                <p className="text-sm text-[var(--color-text)]">
+                  {ACTIVITY_LABEL[item.type]}
+                  {item.targetLabel ? ` ${item.targetLabel}` : ""}
+                </p>
+                <span className="text-xs text-[var(--color-text-faint)]">{timeAgo(item.createdAt)}</span>
+              </div>
+            </Wrapper>
+          );
+        })}
       </div>
     </div>
   );

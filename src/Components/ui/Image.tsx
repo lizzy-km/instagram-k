@@ -18,6 +18,7 @@ export function Image({
 }: ImageProps) {
   const [status, setStatus] = useState<"loading" | "loaded" | "error">(src ? "loading" : "error");
 
+  // console.log(src)
   return (
     <div
       className={`relative overflow-hidden bg-[var(--color-surface)] ${containerClassName}`}
@@ -39,7 +40,7 @@ export function Image({
         <img
           src={src}
           alt={alt}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity ${status === "loaded" ? "opacity-100" : "opacity-0"} ${className}`}
+          className={`absolute  inset-0 h-full w-full object-cover transition-opacity ${status === "loaded" ? "opacity-100" : "opacity-0"} ${className}`}
           onLoad={() => setStatus("loaded")}
           onError={() => setStatus("error")}
           {...props}

@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, orderBy, query, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
 import { toFirestoreOpError } from "./errors";
 
@@ -12,6 +12,7 @@ export async function addComment(params: {
   postId: string;
   authorId: string;
   authorName: string;
+  authorAvatar?: string | null;
   text: string;
 }): Promise<void> {
   try {
@@ -19,6 +20,7 @@ export async function addComment(params: {
       postId: params.postId,
       authorId: params.authorId,
       authorName: params.authorName,
+      authorAvatar: params.authorAvatar ?? null,
       text: params.text,
       createdAt: Date.now(),
     });
@@ -32,5 +34,16 @@ export async function deleteComment(commentId: string): Promise<void> {
     await deleteDoc(doc(firestore, COMMENTS_COLLECTION, commentId));
   } catch (error) {
     throw toFirestoreOpError(error, `Failed to delete comment ${commentId}`);
+  }
+}
+
+export async function updateComment(commentId: string, text: string): Promise<void> {
+  try {
+    await updateDoc(doc(firestore, COMMENTS_COLLECTION, commentId), {
+      text,
+      editedAt: Date.now(),
+    });
+  } catch (error) {
+    throw toFirestoreOpError(error, `Failed to update comment ${commentId}`);
   }
 }

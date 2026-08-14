@@ -3,7 +3,7 @@ import { firestore } from "@/firebase/firebase";
 import { toFirestoreOpError } from "./errors";
 
 export function threadId(userIdA: string, userIdB: string): string {
-  return [userIdA, userIdB].sort().join("_");
+  return [userIdA, userIdB].join("_");
 }
 
 export async function sendMessage(params: {

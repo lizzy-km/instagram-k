@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { Image } from "@/Components/ui";
 import { Icon } from "@/Components/icons/Icon";
-import { mdiImageMultiple, mdiBookmark } from "@/Components/icons/paths";
+import { mdiImageMultiple, mdiBookmark, mdiDotsHorizontal } from "@/Components/icons/paths";
 import { queryKeys } from "@/lib/query/keys";
 
 function tabClass({ isActive }: { isActive: boolean }) {
@@ -44,6 +44,10 @@ export function BottomTabBar({ avatarUrl, userId }: BottomTabBarProps) {
 
       <NavLink to="/saved" className={tabClass}>
         <Icon path={mdiBookmark} size={0.9} />
+      </NavLink>
+
+      <NavLink to="/menu" className={tabClass}>
+        <Icon path={mdiDotsHorizontal} size={0.9} />
       </NavLink>
 
       <NavLink to={`/${userId}`} className={tabClass}>

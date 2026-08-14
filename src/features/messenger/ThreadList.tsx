@@ -1,6 +1,6 @@
 import { useAllUsers } from "@/lib/query/hooks";
 import { ThreadListItem } from "./components/ThreadListItem";
-import { EmptyState } from "@/Components/ui";
+import { EmptyState, Skeleton } from "@/Components/ui";
 
 interface ThreadListProps {
   currentUserId: string;
@@ -9,7 +9,7 @@ interface ThreadListProps {
 }
 
 export function ThreadList({ currentUserId, defaultAvatar, onSelect }: ThreadListProps) {
-  const { data: users } = useAllUsers();
+  const { data: users, isLoading } = useAllUsers();
   const others = users?.filter((u) => u.UID !== currentUserId) ?? [];
 
   return (
@@ -19,7 +19,13 @@ export function ThreadList({ currentUserId, defaultAvatar, onSelect }: ThreadLis
       </div>
 
       <div className="flex-1 overflow-y-auto p-2">
-        {others.length === 0 ? (
+        {isLoading ? (
+          <div className="flex flex-col gap-2 p-2">
+            <Skeleton className="h-14 w-full" />
+            <Skeleton className="h-14 w-full" />
+            <Skeleton className="h-14 w-full" />
+          </div>
+        ) : others.length === 0 ? (
           <EmptyState title="No conversations yet" description="Message someone to start a conversation." />
         ) : (
           others.map((user) => (

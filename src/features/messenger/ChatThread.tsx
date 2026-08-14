@@ -26,6 +26,8 @@ export function ChatThread({ currentUserId, targetUserId, currentUserAvatar, def
   // Firestore rules evaluate list queries against every doc they *could*
   // match, so an unscoped query can never satisfy a rule that depends on
   // per-document fields like mid, even if every returned doc would pass.
+
+  // console.log(mid)
   const messagesQuery = useMemo(
     () => query(collection(firestore, "MESSAGES"), where("mid", "==", mid), orderBy("createdAt")),
     [mid]
@@ -37,6 +39,8 @@ export function ChatThread({ currentUserId, targetUserId, currentUserAvatar, def
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [thread?.length]);
+
+  // console.log(thread)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
