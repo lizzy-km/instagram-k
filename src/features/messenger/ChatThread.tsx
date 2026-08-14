@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { collection, orderBy, query } from "firebase/firestore";
+import { collection, orderBy, query, where } from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
 import { sendMessage, threadId } from "@/lib/firestore/messages";
 import { useCollectionDataWithId } from "@/lib/useCollectionDataWithId";
@@ -16,15 +16,18 @@ interface ChatThreadProps {
 }
 
 export function ChatThread({ currentUserId, targetUserId, currentUserAvatar, defaultAvatar }: ChatThreadProps) {
+  const mid = threadId(currentUserId, targetUserId);
+  // Scoped to this thread's mid, not just filtered client-side afterward -
+  // Firestore rules evaluate list queries against every doc they *could*
+  // match, so an unscoped query can never satisfy a rule that depends on
+  // per-document fields like mid, even if every returned doc would pass.
   const messagesQuery = useMemo(
-    () => query(collection(firestore, "MESSAGES"), orderBy("createdAt")),
-    []
+    () => query(collection(firestore, "MESSAGES"), where("mid", "==", mid), orderBy("createdAt")),
+    [mid]
   );
-  const [messages] = useCollectionDataWithId<MessageDoc>(messagesQuery);
+  const [thread] = useCollectionDataWithId<MessageDoc>(messagesQuery);
   const bottomRef = useRef<HTMLSpanElement>(null);
   const [text, setText] = useState("");
-
-  const thread = messages?.filter((m) => m.mid === threadId(currentUserId, targetUserId));
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });

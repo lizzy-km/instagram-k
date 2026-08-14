@@ -34,6 +34,10 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted }: Post
   const ownerId = post.POST_OWNER_DETAIL?.POID ?? null;
   const ownerName = post.POST_OWNER_DETAIL?.PON ?? "Unknown";
   const { data: owner } = useUser(ownerId);
+  // Whether *this* user liked/shared the post only lives on their own
+  // user doc's liked_post/shared_posts arrays - the post's own LIKES/SHARES
+  // are just an aggregate count, they don't identify who liked it.
+  const { data: currentUser } = useUser(currentUserId);
 
   const images = post.POST_DETAIL?.POST_IMAGE_PATH ?? [];
   const caption = post.POST_DETAIL?.POST_CAPTION;
@@ -41,13 +45,24 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted }: Post
   const uploadedAtMs = post.UPLOADED_AT;
   const timeLabel = useMemo(() => (uploadedAtMs ? timeAgo(uploadedAtMs) : ""), [uploadedAtMs]);
 
-  const likes = post.POST_DETAIL?.LIKES?.filter((l) => l.LPID === post.PID) ?? [];
-  const shares = post.POST_DETAIL?.SHARES?.filter((s) => s.SHPID === post.PID) ?? [];
+  const likeCountFromServer = post.POST_DETAIL?.LIKES?.length ?? 0;
+  const shareCountFromServer = post.POST_DETAIL?.SHARES?.length ?? 0;
+  const likedByMe = currentUser?.liked_post?.some((l) => l.LPID === post.PID) ?? false;
+  const sharedByMe = currentUser?.shared_posts?.some((s) => s.SHPID === post.PID) ?? false;
 
-  const [liked, setLiked] = useState(false);
-  const [shared, setShared] = useState(false);
-  const [likeCount, setLikeCount] = useState(likes.length);
-  const [shareCount, setShareCount] = useState(shares.length);
+  // Optimistic overrides: null means "trust server-derived state above",
+  // set to a boolean the instant the user clicks so the UI responds
+  // immediately instead of waiting on the next refetch.
+  const [likedOverride, setLikedOverride] = useState<boolean | null>(null);
+  const [sharedOverride, setSharedOverride] = useState<boolean | null>(null);
+  const [likeCountOverride, setLikeCountOverride] = useState<number | null>(null);
+  const [shareCountOverride, setShareCountOverride] = useState<number | null>(null);
+
+  const liked = likedOverride ?? likedByMe;
+  const shared = sharedOverride ?? sharedByMe;
+  const likeCount = likeCountOverride ?? likeCountFromServer;
+  const shareCount = shareCountOverride ?? shareCountFromServer;
+
   const { isSaved, save, unsave } = useLibraryStore();
   const saved = isSaved(post.PID);
 
@@ -64,28 +79,32 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted }: Post
   async function toggleLike() {
     if (!ownerId) return;
     const nextLiked = !liked;
-    setLiked(nextLiked);
-    setLikeCount((c) => c + (nextLiked ? 1 : -1));
+    setLikedOverride(nextLiked);
+    setLikeCountOverride(likeCount + (nextLiked ? 1 : -1));
     const ref = { LPID: post.PID, POID: ownerId };
     try {
       await (nextLiked ? likePost : unlikePost)(currentUserId, post.PID, ref);
+      queryClient.invalidateQueries({ queryKey: queryKeys.users.byUid(currentUserId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
     } catch {
-      setLiked(!nextLiked);
-      setLikeCount((c) => c + (nextLiked ? -1 : 1));
+      setLikedOverride(!nextLiked);
+      setLikeCountOverride(likeCount + (nextLiked ? -1 : 1));
     }
   }
 
   async function toggleShare() {
     if (!ownerId) return;
     const nextShared = !shared;
-    setShared(nextShared);
-    setShareCount((c) => c + (nextShared ? 1 : -1));
+    setSharedOverride(nextShared);
+    setShareCountOverride(shareCount + (nextShared ? 1 : -1));
     const ref = { SHPID: post.PID, POID: ownerId };
     try {
       await (nextShared ? sharePost : unsharePost)(currentUserId, post.PID, ref);
+      queryClient.invalidateQueries({ queryKey: queryKeys.users.byUid(currentUserId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
     } catch {
-      setShared(!nextShared);
-      setShareCount((c) => c + (nextShared ? -1 : 1));
+      setSharedOverride(!nextShared);
+      setShareCountOverride(shareCount + (nextShared ? -1 : 1));
     }
   }
 

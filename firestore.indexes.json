@@ -15,6 +15,14 @@
         { "fieldPath": "POST_OWNER_DETAIL.POID", "order": "ASCENDING" },
         { "fieldPath": "UPLOADED_AT", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "MESSAGES",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "mid", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
