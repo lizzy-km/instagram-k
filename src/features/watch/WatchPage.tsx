@@ -31,23 +31,23 @@ export function WatchPage({ defaultAvatar }: WatchPageProps) {
     [posts]
   );
 
-  if (isLoading) {
-    return (
-      <div className="relative pt-[100px] min-h-screen w-[95%] p-2 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <Skeleton key={i} className="aspect-square" />
-        ))}
-      </div>
-    );
-  }
-
-  if (images.length === 0) {
-    return <EmptyState title="No media yet" description="Photos shared in posts will appear here." />;
-  }
-
   return (
-    <div className="relative pt-[100px] min-h-screen w-[95%] p-2">
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+    <div className="mx-auto w-full max-w-5xl px-3 pb-8 pt-[76px]">
+      <h1 className="mb-4 text-lg font-bold text-[var(--color-text)]">Gallery</h1>
+
+      {isLoading && (
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <Skeleton key={i} className="aspect-square" />
+          ))}
+        </div>
+      )}
+
+      {!isLoading && images.length === 0 && (
+        <EmptyState title="No media yet" description="Photos shared in posts will appear here." />
+      )}
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
         {images.map((img) => {
           const owner = usersById.get(img.ownerId);
           return (

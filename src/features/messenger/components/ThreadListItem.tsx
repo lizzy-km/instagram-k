@@ -12,12 +12,19 @@ export function ThreadListItem({ user, defaultAvatar, onClick }: ThreadListItemP
     <button
       type="button"
       onClick={onClick}
-      className="w-full h-auto p-2 flex gap-2 items-center hover:bg-[var(--color-surface)] rounded-md text-left"
+      className="flex w-full items-center gap-3 rounded-[var(--radius-md)] p-2 text-left transition-colors hover:bg-[var(--color-surface)]"
     >
-      <Image src={user.profile?.[0]?.src || defaultAvatar} alt="" aspectRatio="1 / 1" containerClassName="w-[45px] h-[45px] rounded-full" />
+      <div className="relative shrink-0">
+        <Image src={user.profile?.[0]?.src || defaultAvatar} alt="" aspectRatio="1 / 1" containerClassName="w-12 h-12 rounded-full" />
+        {user.status === "online" && (
+          <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[var(--color-bg-elevated)] bg-[var(--color-online)]" />
+        )}
+      </div>
       <div className="flex flex-col">
-        <span className="font-medium">{user.user_name}</span>
-        {user.status === "online" && <span className="text-xs text-[var(--color-online)]">online</span>}
+        <span className="text-sm font-semibold text-[var(--color-text)]">{user.user_name}</span>
+        <span className="text-xs text-[var(--color-text-faint)]">
+          {user.status === "online" ? "Active now" : "Offline"}
+        </span>
       </div>
     </button>
   );

@@ -20,22 +20,20 @@ export function SavedPage({ currentUserId, defaultAvatar }: SavedPageProps) {
   const savedPosts = posts?.filter((p) => savedPostIds.includes(p.PID));
 
   return (
-    <div className="flex flex-col gap-[50px] self-center p-2 my-2 h-auto w-full max-w-2xl rounded-md pt-[100px]">
-      <h1 className="text-xl font-medium px-2">Saved posts</h1>
+    <div className="mx-auto flex w-full max-w-xl flex-col gap-4 px-3 pb-8 pt-[76px]">
+      <h1 className="text-lg font-bold text-[var(--color-text)]">Saved posts</h1>
 
-      {isLoading && (
-        <div className="flex flex-col gap-4">
-          <Skeleton className="h-[400px] w-full" />
-        </div>
-      )}
+      {isLoading && <Skeleton className="h-[420px] w-full" />}
 
       {!isLoading && savedPosts?.length === 0 && (
         <EmptyState title="No saved posts" description="Posts you bookmark will show up here." />
       )}
 
-      {savedPosts?.map((post) => (
-        <PostCard key={post.PID} post={post} currentUserId={currentUserId} defaultAvatar={defaultAvatar} />
-      ))}
+      <div className="flex flex-col gap-4">
+        {savedPosts?.map((post) => (
+          <PostCard key={post.PID} post={post} currentUserId={currentUserId} defaultAvatar={defaultAvatar} />
+        ))}
+      </div>
     </div>
   );
 }

@@ -9,18 +9,19 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message, isOwn, defaultAvatar }: ChatMessageProps) {
   return (
-    <section className={`flex w-full gap-2 ${isOwn ? "justify-end" : "justify-start"}`}>
-      <div className={`flex justify-end items-end gap-2 ${isOwn ? "flex-row-reverse" : ""}`}>
-        <Image
-          src={message.photoURL || defaultAvatar}
-          alt=""
-          aspectRatio="1 / 1"
-          containerClassName="rounded-full w-[30px] h-[30px]"
-        />
-        <p className="tracking-wide text-sm px-3 py-2 text-center bg-[var(--color-surface)] rounded-lg">
-          {message.text}
-        </p>
-      </div>
-    </section>
+    <div className={`flex w-full items-end gap-2 ${isOwn ? "flex-row-reverse" : ""}`}>
+      {!isOwn && (
+        <Image src={message.photoURL || defaultAvatar} alt="" aspectRatio="1 / 1" containerClassName="w-7 h-7 rounded-full shrink-0" />
+      )}
+      <p
+        className={`max-w-[75%] rounded-[var(--radius-lg)] px-3.5 py-2 text-sm leading-snug ${
+          isOwn
+            ? "rounded-br-[var(--radius-sm)] bg-[var(--color-accent)] text-white"
+            : "rounded-bl-[var(--radius-sm)] bg-[var(--color-surface)] text-[var(--color-text)]"
+        }`}
+      >
+        {message.text}
+      </p>
+    </div>
   );
 }
