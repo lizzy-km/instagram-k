@@ -1,0 +1,21 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "NOTIFICATION",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "target", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "USER_POSTS",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "POST_OWNER_DETAIL.POID", "order": "ASCENDING" },
+        { "fieldPath": "UPLOADED_AT", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
