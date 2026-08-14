@@ -96,7 +96,10 @@ export function LoginPage() {
     setIsLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
-      await setUserOnlineStatus(userCredential.user.uid, "online");
+      // Presence is best-effort - a failure here (e.g. the user doc not
+      // existing yet) must not be reported as a login failure once auth
+      // itself has already succeeded.
+      setUserOnlineStatus(userCredential.user.uid, "online").catch(() => {});
     } catch {
       toast.error("Login Failed");
     } finally {

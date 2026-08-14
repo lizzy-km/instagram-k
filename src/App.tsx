@@ -13,7 +13,7 @@ import { CreateStoryModal } from "@/features/stories/CreateStoryModal";
 import { CreatePostModal } from "@/features/feed/CreatePostModal";
 import { AddProfilePhotoModal } from "@/features/profile/AddProfilePhotoModal";
 import { NotFoundPage } from "@/features/notFound/NotFoundPage";
-import { ErrorBoundary, Spinner } from "@/Components/ui";
+import { ErrorBoundary, EmptyState, Spinner } from "@/Components/ui";
 import { useUiStore, type Breakpoint } from "@/stores/useUiStore";
 
 const FeedPage = lazy(() => import("@/features/feed/FeedPage").then((m) => ({ default: m.FeedPage })));
@@ -48,7 +48,7 @@ function PageFallback() {
 }
 
 function App() {
-  const { uid, isAuthenticated, admin, isLoading } = useCurrentUser();
+  const { uid, isAuthenticated, admin, isLoading, isProfileMissing } = useCurrentUser();
   const setBreakpoint = useUiStore((s) => s.setBreakpoint);
 
   useEffect(() => {
@@ -66,6 +66,12 @@ function App() {
     "https://firebasestorage.googleapis.com/v0/b/look-vince.appspot.com/o/assets%2Fe8d7d05f392d9c2cf0285ce928fb9f4a.jpeg?alt=media&token=43dffced-a38e-40cf-9387-6a7071e40baa";
   const avatarUrl = admin?.profile?.[0]?.src || defaultAvatar;
 
+  // isAuthenticated reflects Firebase Auth alone. `admin` (the Firestore
+  // user doc) can still be null right after login while its query is
+  // in flight - that must not be treated as "not logged in" and bounce
+  // the user back to the Login page.
+  const isLoggedIn = isAuthenticated && Boolean(uid);
+
   return (
     <section className="bg-[var(--color-bg)] relative min-h-screen w-full flex flex-col justify-start items-start">
       <div className="fixed right-0 max-h-[70px] h-[70px] top-0 z-[9999]">
@@ -73,7 +79,7 @@ function App() {
       </div>
 
       <BrowserRouter>
-        {isAuthenticated && uid && admin && (
+        {isLoggedIn && uid && admin && (
           <>
             <NavBar userId={uid} userName={admin.user_name} avatarUrl={avatarUrl} />
             <CreatePostModal currentUserId={uid} currentUserName={admin.user_name} avatarUrl={avatarUrl} />
@@ -85,7 +91,20 @@ function App() {
 
         <ErrorBoundary>
           <Suspense fallback={<PageFallback />}>
-            {isAuthenticated && uid && admin ? (
+            {!isLoggedIn ? (
+              <Routes>
+                <Route path="/*" element={<LoginPage />} />
+              </Routes>
+            ) : isProfileMissing ? (
+              <div className="flex w-full h-screen items-center justify-center">
+                <EmptyState
+                  title="We couldn't find your profile"
+                  description="Your account signed in, but no profile data exists for it yet. Try refreshing, or contact support if this keeps happening."
+                />
+              </div>
+            ) : !uid || !admin ? (
+              <PageFallback />
+            ) : (
               <Routes>
                 <Route
                   path="/"
@@ -111,10 +130,6 @@ function App() {
                 <Route path="/:user" element={<ProfilePage currentUserId={uid} defaultAvatar={defaultAvatar} />} />
                 <Route path="/:uid/post_detail/:pid" element={<PostDetailPage />} />
                 <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            ) : (
-              <Routes>
-                <Route path="/*" element={<LoginPage />} />
               </Routes>
             )}
           </Suspense>

@@ -8,7 +8,7 @@ import { setUserOnlineStatus } from "@/lib/firestore/postActions";
 export function useCurrentUser() {
   const [firebaseUser, authLoading] = useAuthState(auth);
   const uid = firebaseUser?.uid ?? null;
-  const { data: admin, isLoading: profileLoading } = useUser(uid);
+  const { data: admin, isLoading: profileLoading, isError: profileError } = useUser(uid);
   const setAdmin = useSessionStore((s) => s.setAdmin);
 
   useEffect(() => {
@@ -36,5 +36,6 @@ export function useCurrentUser() {
     isAuthenticated: Boolean(firebaseUser),
     admin: admin ?? null,
     isLoading: authLoading || profileLoading,
+    isProfileMissing: Boolean(firebaseUser) && !profileLoading && !profileError && !admin,
   };
 }
