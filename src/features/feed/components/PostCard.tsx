@@ -107,7 +107,7 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
     try {
       await (nextLiked ? likePost : unlikePost)(currentUserId, post.PID, ref);
       queryClient.invalidateQueries({ queryKey: queryKeys.users.byUid(currentUserId) });
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       logActivity(currentUserId, nextLiked ? "post_liked" : "post_unliked", post.PID);
       if (nextLiked && ownerId !== currentUserId) {
         createNotification({
@@ -133,7 +133,7 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
     try {
       await (nextShared ? sharePost : unsharePost)(currentUserId, post.PID, ref);
       queryClient.invalidateQueries({ queryKey: queryKeys.users.byUid(currentUserId) });
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       logActivity(currentUserId, nextShared ? "post_shared" : "post_unshared", post.PID);
       if (nextShared && ownerId !== currentUserId) {
         createNotification({
@@ -173,7 +173,7 @@ export function PostCard({ post, currentUserId, defaultAvatar, onDeleted, shared
     setDeleting(true);
     try {
       await deletePostRemote(post.PID);
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       logActivity(currentUserId, "post_deleted", post.PID);
       onDeleted?.();
     } finally {

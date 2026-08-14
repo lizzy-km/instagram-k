@@ -1,9 +1,42 @@
-import { collection, doc, getDoc, getDocs, orderBy, query, where, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  where,
+  deleteDoc,
+  type QueryDocumentSnapshot,
+  type DocumentData,
+} from "firebase/firestore";
 import { firestore } from "@/firebase/firebase";
 import { toFirestoreOpError } from "./errors";
 import type { PostDoc } from "./types";
 
 const POSTS_COLLECTION = "USER_POSTS";
+export const POSTS_PAGE_SIZE = 10;
+
+export interface PostsPage {
+  posts: PostDoc[];
+  cursor: QueryDocumentSnapshot<DocumentData> | null;
+}
+
+export async function fetchPostsPage(cursor: QueryDocumentSnapshot<DocumentData> | null): Promise<PostsPage> {
+  try {
+    const base = query(collection(firestore, POSTS_COLLECTION), orderBy("UPLOADED_AT", "desc"), limit(POSTS_PAGE_SIZE));
+    const q = cursor ? query(base, startAfter(cursor)) : base;
+    const snap = await getDocs(q);
+    return {
+      posts: snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<PostDoc, "id">) })),
+      cursor: snap.docs.at(-1) ?? null,
+    };
+  } catch (error) {
+    throw toFirestoreOpError(error, "Failed to fetch posts page");
+  }
+}
 
 export async function fetchPostById(postId: string): Promise<PostDoc | null> {
   try {

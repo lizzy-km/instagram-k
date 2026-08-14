@@ -5,7 +5,6 @@ import { uploadFileToR2 } from "@/lib/r2Upload";
 import { createPost } from "@/lib/firestore/createPost";
 import { extractHashtags } from "@/lib/hashtags";
 import { logActivity } from "@/lib/firestore/activity";
-import { queryKeys } from "@/lib/query/keys";
 import { useUiStore } from "@/stores/useUiStore";
 import { Modal, Button, Image, Spinner } from "@/Components/ui";
 import type { PostImage } from "@/lib/firestore/types";
@@ -71,7 +70,7 @@ export function CreatePostModal({ currentUserId, currentUserName, avatarUrl }: C
           HASHTAGS: extractHashtags(caption),
         },
       });
-      queryClient.invalidateQueries({ queryKey: queryKeys.posts.all });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       logActivity(currentUserId, "post_created", postId);
       reset();
       setOpen(false);

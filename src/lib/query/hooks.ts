@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { queryKeys } from "./keys";
 import { fetchUserByUid, fetchUserByUsername, fetchAllUsers } from "@/lib/firestore/users";
-import { fetchAllPosts, fetchPostById, fetchPostsByOwner } from "@/lib/firestore/posts";
+import { fetchAllPosts, fetchPostById, fetchPostsByOwner, fetchPostsPage } from "@/lib/firestore/posts";
 import { fetchActiveStories } from "@/lib/firestore/stories";
 import { fetchFollowers, fetchFollowing } from "@/lib/firestore/follows";
 
@@ -40,6 +40,16 @@ export function useAllPosts() {
   return useQuery({
     queryKey: queryKeys.posts.all,
     queryFn: fetchAllPosts,
+  });
+}
+
+/** Paginated feed: 10 posts per page, fetch the next page as the caller scrolls. */
+export function usePostsFeed() {
+  return useInfiniteQuery({
+    queryKey: queryKeys.posts.feed(),
+    queryFn: ({ pageParam }) => fetchPostsPage(pageParam),
+    initialPageParam: null as Awaited<ReturnType<typeof fetchPostsPage>>["cursor"],
+    getNextPageParam: (lastPage) => (lastPage.posts.length > 0 ? lastPage.cursor : undefined),
   });
 }
 

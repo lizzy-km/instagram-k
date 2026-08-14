@@ -6,6 +6,7 @@ export const queryKeys = {
   },
   posts: {
     all: ["posts"] as const,
+    feed: () => ["posts", "feed"] as const,
     byId: (postId: string) => ["posts", "by-id", postId] as const,
     byOwner: (ownerId: string) => ["posts", "by-owner", ownerId] as const,
   },
