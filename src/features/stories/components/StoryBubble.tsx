@@ -10,30 +10,26 @@ interface StoryBubbleProps {
 
 export function StoryBubble({ label, avatarUrl, hasStory, isOwn, onClick }: StoryBubbleProps) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="transition-all tracking-wider flex min-w-[145px] h-full bg-[var(--color-bg-elevated)] rounded-md text-left"
-    >
-      <div className="relative w-full h-full flex flex-col justify-between items-start rounded-md">
-        <div
-          className={`h-full w-full absolute rounded-md ring-2 ${
-            hasStory ? "ring-[var(--color-accent)]" : "ring-transparent"
-          }`}
-        >
-          <Image src={avatarUrl} alt="" aspectRatio="145 / 250" containerClassName="w-full h-full rounded-md" />
+    <button type="button" onClick={onClick} className="flex w-[68px] shrink-0 flex-col items-center gap-1.5">
+      <div
+        className={`relative rounded-full p-[2px] ${
+          hasStory ? "bg-gradient-to-tr from-[var(--color-accent)] to-orange-400" : "bg-[var(--color-border)]"
+        }`}
+      >
+        <div className="rounded-full bg-[var(--color-bg)] p-[2px]">
+          <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="w-14 h-14 rounded-full" />
         </div>
-
-        <div className="z-[9] p-2 w-full h-[50px] flex justify-start items-start">
-          <div className="rounded-full w-[40px] h-[40px] p-[3px] bg-[var(--color-accent)]">
-            <Image src={avatarUrl} alt="" aspectRatio="1 / 1" containerClassName="rounded-full" />
+        {isOwn && !hasStory && (
+          <div className="pointer-events-none absolute bottom-0 right-0 flex h-5 w-5 items-center justify-center rounded-full border-2 border-[var(--color-bg)] bg-[var(--color-accent)] text-white">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+            </svg>
           </div>
-        </div>
-
-        <div className="relative z-[9] w-full p-0 rounded-b-md bg-gradient-to-t from-black/70 to-transparent">
-          <p className="p-2 text-white font-medium">{isOwn ? "Your story" : label}</p>
-        </div>
+        )}
       </div>
+      <span className="w-full truncate text-center text-xs text-[var(--color-text-muted)]">
+        {isOwn ? "Your story" : label}
+      </span>
     </button>
   );
 }

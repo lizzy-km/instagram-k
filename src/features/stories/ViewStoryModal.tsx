@@ -29,7 +29,7 @@ export function ViewStoryModal({ currentUserId, defaultAvatar }: ViewStoryModalP
 
   return (
     <Modal open={open} onClose={close}>
-      <div className="w-[400px] max-w-full h-[80vh]">
+      <div className="h-[85vh] w-[min(92vw,400px)] bg-black">
         <ViewStoryCard
           story={story}
           ownerName={owner?.user_name ?? ""}

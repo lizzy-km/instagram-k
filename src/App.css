@@ -5,16 +5,3 @@
 [type='text'], [type='email'], [type='url'], [type='password'], [type='number'], [type='date'], [type='datetime-local'], [type='month'], [type='search'], [type='tel'], [type='time'], [type='week'], textarea, select {
   border-radius: var(--radius-sm);
 }
-
-.story {
-  @apply w-full flex justify-start items-center gap-3;
-}
-
-.story-holder {
-  @apply h-full gap-3 flex overflow-x-auto overflow-y-hidden justify-start items-center;
-  scrollbar-width: none;
-}
-
-.story-holder::-webkit-scrollbar {
-  display: none;
-}

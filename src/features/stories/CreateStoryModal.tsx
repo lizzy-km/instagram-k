@@ -80,22 +80,25 @@ export function CreateStoryModal({ currentUserId, currentUserName }: CreateStory
       }}
       labelledBy="create-story-title"
     >
-      <div className="text-[var(--color-text)] p-4 flex flex-col gap-4 rounded-md w-[min(90vw,420px)]">
-        <h2 id="create-story-title" className="text-lg font-medium">
+      <div className="flex w-[min(92vw,380px)] flex-col gap-4 p-5 text-[var(--color-text)]">
+        <h2 id="create-story-title" className="text-base font-semibold">
           Create story
         </h2>
 
         {!previewUrl ? (
-          <label className="cursor-pointer flex items-center justify-center h-[300px] w-full bg-[var(--color-surface)] rounded-lg border border-dashed border-[var(--color-border)]">
-            <span className="text-[var(--color-text-muted)]">Click to upload an image</span>
+          <label className="flex h-80 w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-[var(--radius-md)] border border-dashed border-[var(--color-border-strong)] text-[var(--color-text-faint)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+            </svg>
+            <span className="text-sm">Click to upload an image</span>
             <input type="file" accept="image/*" onChange={handleFileSelected} className="hidden" />
           </label>
         ) : (
-          <div className="flex justify-center items-center h-[300px] w-full rounded-md relative">
+          <div className="relative flex h-80 w-full items-center justify-center overflow-hidden rounded-[var(--radius-md)] bg-[var(--color-surface)]">
             {uploading ? (
               <Spinner />
             ) : (
-              <Image src={previewUrl} alt="Story preview" aspectRatio="9 / 16" containerClassName="h-full rounded-md" />
+              <Image src={previewUrl} alt="Story preview" aspectRatio="9 / 16" containerClassName="h-full w-full" />
             )}
           </div>
         )}
